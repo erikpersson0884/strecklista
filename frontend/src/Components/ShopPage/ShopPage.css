@@ -1,0 +1,29 @@
+
+.shopPage {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+    width: 100%;
+}
+
+.showCartButton {
+    background-color: var(--green-color);
+    position: sticky;
+    bottom: 2rem;
+    right: 2rem;
+
+    width: 5rem;
+    aspect-ratio: 1/1;
+    padding: 1rem;
+    border-radius: 1rem;
+    border: .1rem #fff solid;
+}
+
+.showCartButton img {
+    height: 100%;
+    aspect-ratio: 1/1;
+}

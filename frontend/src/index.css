@@ -2,7 +2,11 @@
 
 :root {
     --main-background-color: #444444;
+    --primary-color: #000;
+    --glass-color: #000000c0;
     --text-color: #fff;
+    --link-color: #09cdda;
+    --green-color: #0bc70b;
 }
 
 * {
@@ -22,3 +26,7 @@ body {
     height: 100%;
 }
 
+a   {
+    color: var(--link-color);
+    /* text-decoration: none; */
+}

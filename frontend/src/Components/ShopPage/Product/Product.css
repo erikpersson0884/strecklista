@@ -1,0 +1,29 @@
+
+
+.product {
+    background-color: var(--primary-color);
+
+    width: 40%;
+    padding: 1rem;
+}
+
+.product .productImage {
+    background-color: grey;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    
+
+    padding: .5rem;
+    aspect-ratio: 1 / 1;
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.product img {
+    max-height: 100%;
+}

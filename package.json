@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev-frontend": "cd frontend && npm run dev"
+    "dev-frontend": "cd frontend && npm run dev",
+    "dev": "npm run dev-frontend"
   },
   "author": "Erik Persson"
 }
