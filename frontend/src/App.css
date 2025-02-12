@@ -19,3 +19,9 @@
     padding: 0;
     outline: inherit;
 }
+
+.noUlFormatting {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}

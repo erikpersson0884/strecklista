@@ -12,10 +12,10 @@ const InventoryContext = createContext<InventoryContextProps | undefined>(undefi
 
 export const InventoryProvider = ({ children }: { children: ReactNode }) => {
     const [products, setProducts] = useState<Product[]>([
-        { id: 1, name: 'Coca Cola', price: 20, amountInStock: 10, imageUrl: 'https://cmxsapnc.cloudimg.io/fit/1200x1200/fbright5/_img_/18964/somersby-pear-45.jpg' },
-        { id: 2, name: 'Fanta', price: 20, amountInStock: 10, imageUrl: 'https://imagedelivery.net/8fY6if2LOxn7UCgUdZYwog/11800/contain' },
-        { id: 1, name: 'Coca Cola', price: 16, amountInStock: 140, imageUrl: 'https://cmxsapnc.cloudimg.io/fit/1200x1200/fbright5/_img_/18964/somersby-pear-45.jpg' },
-        { id: 2, name: 'Fanta', price: 12, amountInStock: 301, imageUrl: 'https://imagedelivery.net/8fY6if2LOxn7UCgUdZYwog/11800/contain' },
+        { id: 1, name: 'Coca Cola', price: 20, amountInStock: 10, available: true, imageUrl: 'https://cmxsapnc.cloudimg.io/fit/1200x1200/fbright5/_img_/18964/somersby-pear-45.jpg' },
+        { id: 2, name: 'Fanta', price: 20, amountInStock: 10, available: true, imageUrl: 'https://imagedelivery.net/8fY6if2LOxn7UCgUdZYwog/11800/contain' },
+        { id: 345, name: 'Coca Cola', price: 16, amountInStock: 140, available: true, imageUrl: 'https://cmxsapnc.cloudimg.io/fit/1200x1200/fbright5/_img_/18964/somersby-pear-45.jpg' },
+        { id: 223, name: 'Fanta', price: 12, amountInStock: 301, available: true, imageUrl: 'https://imagedelivery.net/8fY6if2LOxn7UCgUdZYwog/11800/contain' },
     ]);
 
     const addProduct = (product: Product) => {
@@ -26,6 +26,8 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
         setProducts(products.map(product => 
             product.id === id ? { ...product, ...updatedProduct } : product
         ));
+
+        console.log(products);
     };
 
     const removeProduct = (id: number) => {

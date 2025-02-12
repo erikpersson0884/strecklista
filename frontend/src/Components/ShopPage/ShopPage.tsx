@@ -2,7 +2,6 @@ import React from 'react';
 import Drink from './Product/Product';
 import './shopPage.css';
 import { useInventory } from '../../Contexts/InventoryContext';
-import { useCart } from '../../Contexts/CartContext';
 import Cart from './Cart/Cart';
 
 

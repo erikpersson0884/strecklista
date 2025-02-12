@@ -8,7 +8,7 @@ import { useCart } from '../../../Contexts/CartContext';
 
 const Product: React.FC<{ product: ProductT }> = ({ product }) => {
     
-    const {orderItems, addProduct} = useCart();
+    const {addProduct} = useCart();
 
     return (
         <div className="product" onClick={() => addProduct(product)}>

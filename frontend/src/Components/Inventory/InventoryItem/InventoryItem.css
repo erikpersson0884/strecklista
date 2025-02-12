@@ -1,0 +1,40 @@
+
+
+.inventory-item {
+    background-color: var(--glass-color);
+
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    box-sizing: border-box;
+    padding: 1rem;
+}
+
+.inventory-item .input-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 4rem;    
+
+    width: 100%;
+}
+
+.inventory-item .product-info {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+
+    flex: 1;
+}
+
+.inventory-item .product-actions {
+    display: flex;
+    flex-direction: row;
+    gap: .5rem;
+}
+
+.inventory-item .product-actions button {
+    height: 2rem;
+    aspect-ratio: 1/1;
+}

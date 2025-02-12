@@ -30,3 +30,8 @@ a   {
     color: var(--link-color);
     /* text-decoration: none; */
 }
+
+button img {
+    height: 100%;
+    aspect-ratio: 1/1;
+}
