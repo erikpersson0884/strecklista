@@ -8,3 +8,11 @@ export interface Product {
     available: boolean;
     imageUrl: string;
 }
+
+export interface User {
+    id: number;
+    name: string;
+    nick: string;
+    balance: number;
+    imageUrl: string;
+}
