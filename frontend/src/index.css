@@ -31,6 +31,16 @@ a   {
     /* text-decoration: none; */
 }
 
+button {
+    background-color: var(--green-color);
+    color: var(--text-color);
+    cursor: pointer;
+
+    padding: .5rem 1rem;
+    border: none;
+
+}
+
 button img {
     height: 100%;
     aspect-ratio: 1/1;

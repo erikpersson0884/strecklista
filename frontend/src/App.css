@@ -10,6 +10,10 @@
     height: 100%;
 }
 
+#root>* {
+    width: 100%;
+}
+
 .no-button-formatting {
     background: none;
     border: none;
@@ -24,4 +28,14 @@
     list-style-type: none;
     padding: 0;
     margin: 0;
+}
+
+
+
+.close-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 1rem;
+    cursor: pointer;
 }

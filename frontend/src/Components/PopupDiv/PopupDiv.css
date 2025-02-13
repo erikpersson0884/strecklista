@@ -1,0 +1,24 @@
+
+
+.popup-div {
+    background-color: var(--primary-color);
+
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+
+    position: absolute;
+    top: 25%;
+
+    width: max-content !important;
+    padding: .5rem;
+    border: #fff .1rem solid;
+    margin-inline: auto;
+}
+
+
+
+.popup-div .popup-actions {
+    display: flex;
+    justify-content: space-between;
+}
