@@ -10,7 +10,7 @@ interface CartContextType {
     addProduct: (item: Product) => void;
     removeItem: (product: Product) => void;
     clearOrder: () => void;
-    buyProducts: () => boolean;
+    buyProducts: (arg0: string) => boolean;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -41,9 +41,11 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         setItems([]);
     };
 
-    const buyProducts = (): boolean => {
+    const buyProducts = (userId: string): boolean => {
         // Implement buying products
-        return false;
+
+        clearOrder();
+        return true; //TODO: implement buying products
     }
 
     return (

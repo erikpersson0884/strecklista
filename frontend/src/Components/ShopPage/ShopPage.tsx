@@ -12,7 +12,7 @@ const ShopPage: React.FC = () => {
 
     return (
         <>
-            {displayCart ? <Cart /> : null}
+            {displayCart ? <Cart closeCart={() => setDisplayCart(false)}/> : null}
 
             <div className='shopPage'>
                 {products.map((product, index) => (

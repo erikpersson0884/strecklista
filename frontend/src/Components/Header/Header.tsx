@@ -8,12 +8,12 @@ const Header: React.FC = () => {
         <header className="page-header">
             <img src="/images/prit25.png" alt="logo" height={100} />
             
-            <nav>
+            {/* <nav> */}
                 <Link to="/">Strecka</Link>
                 <Link to="/inventory">Inventory</Link>
                 <Link to="/balance">Tillgodo</Link>
 
-            </nav>
+            {/* </nav> */}
         </header>
     );
 };

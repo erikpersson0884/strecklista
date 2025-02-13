@@ -12,7 +12,9 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [currentUser, setCurrentUser] = useState<User | null>(null);
+    const [currentUser, setCurrentUser] = useState<User | null>(        
+        {id:231, name:"Erik", nick:"Göken", balance:193, imageUrl:"99832" }
+    );
 
     const login = () => {
         setIsAuthenticated(true);

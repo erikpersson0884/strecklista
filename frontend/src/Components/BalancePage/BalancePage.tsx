@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import './BalancePage.css';
 
 import { useUsersContext } from '../../Contexts/UsersContext';
+import { useAuth } from '../../Contexts/AuthContext';
 import { User } from '../../Types';
 
 import RefillPopup from './RefillPopup';
 
 const BalancePage: React.FC = () => {
+    const { currentUser } = useAuth();
     const { users } = useUsersContext();
     const [selectedUser, setSelectedUser] = useState<User | null>(null);
     const [showPopup, setShowPopup] = useState(false);
@@ -25,13 +27,27 @@ const BalancePage: React.FC = () => {
         <>
             {users.length > 0 ? (
                 <div className='balancepage'>
-                    {users.map(user => (
+
+                    {currentUser && (
+                        <>
+                            <UserDiv 
+                                user={currentUser} 
+                                key={currentUser.id}
+                                onOpenPopup={handleOpenPopup}
+                            />
+
+                            <hr />
+                        </>
+                    )}
+    
+                    {users.filter((user) => user.id !== currentUser?.id).map(user => (
                         <UserDiv 
                             user={user} 
                             key={user.id}
                             onOpenPopup={handleOpenPopup}
                         />
                     ))}
+
                 </div>
             ) : (
                 <h1>No users found :(</h1>
