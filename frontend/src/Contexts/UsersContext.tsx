@@ -6,12 +6,18 @@ interface UsersContextType {
     users: User[];
     addUser: (user: User) => void;
     removeUser: (id: number) => void;
+    addUserBalance: (id: number, amount: number) => void;
 }
 
 const UsersContext = createContext<UsersContextType | undefined>(undefined);
 
 export const UsersProvider = ({ children }: { children: ReactNode }) => {
-    const [users, setUsers] = useState<User[]>([]);
+    const [users, setUsers] = useState<User[]>([
+        {id:1, name:"Oliver", nick:"Cal", balance:4847, imageUrl:"haosd" },
+        {id:231, name:"Erik", nick:"Göken", balance:193, imageUrl:"99832" },
+        {id:31, name:"Emma", nick:"Dino", balance:-591, imageUrl:"asdf983" }
+    ]);
+    
 
     const addUser = (user: User) => {
         setUsers((prevUsers) => [...prevUsers, user]);
@@ -21,8 +27,18 @@ export const UsersProvider = ({ children }: { children: ReactNode }) => {
         setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id));
     };
 
+    const addUserBalance = (id: number, amount: number) => {
+        setUsers((prevUsers) => prevUsers.map((user) => {
+            if (user.id === id) {
+                return { ...user, balance: user.balance + amount };
+            }
+            return user;
+        }));
+    };
+
+
     return (
-        <UsersContext.Provider value={{ users, addUser, removeUser }}>
+        <UsersContext.Provider value={{ users, addUser, removeUser, addUserBalance }}>
             {children}
         </UsersContext.Provider>
     );
