@@ -10,7 +10,7 @@
     width: 100%;
 }
 
-.showCartButton {
+#root .showCartButton {
     background-color: var(--green-color);
     position: sticky;
     bottom: 2rem;
