@@ -36,6 +36,11 @@ button {
     color: var(--text-color);
     cursor: pointer;
 
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
     padding: .5rem 1rem;
     border: none;
 }

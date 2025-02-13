@@ -41,6 +41,10 @@
     background-color: brown;
 }
 
+.add-button {
+    background-color: var(--green-color);
+}
+
 .close-button {
     position: absolute;
     top: 0;
