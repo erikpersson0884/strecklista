@@ -13,9 +13,9 @@ const UsersContext = createContext<UsersContextType | undefined>(undefined);
 
 export const UsersProvider = ({ children }: { children: ReactNode }) => {
     const [users, setUsers] = useState<User[]>([
-        {id:1, name:"Oliver", nick:"Cal", balance:4847, imageUrl:"haosd" },
-        {id:231, name:"Erik", nick:"Göken", balance:193, imageUrl:"99832" },
-        {id:31, name:"Emma", nick:"Dino", balance:-591, imageUrl:"asdf983" }
+        {id:"2", name:"Oliver", nick:"Cal", balance:4847, imageUrl:"haosd" },
+        {id:"231", name:"Erik", nick:"Göken", balance:193, imageUrl:"99832" },
+        {id:"31", name:"Emma", nick:"Dino", balance:-591, imageUrl:"asdf983" }
     ]);
     
 

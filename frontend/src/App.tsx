@@ -9,6 +9,8 @@ import { InventoryProvider } from './Contexts/InventoryContext';
 import { CartProvider } from './Contexts/CartContext';
 import { UsersProvider } from './Contexts/UsersContext';
 import { AuthProvider } from './Contexts/AuthContext';
+import PurchasesPage from './Components/PurchasesPage/PurchasesPage';
+import { PurchasesProvider } from './Contexts/PurchasesContext';
 
 
 function App() {
@@ -18,6 +20,7 @@ function App() {
         <InventoryProvider>
         <CartProvider>
         <UsersProvider>
+        <PurchasesProvider>
             <BrowserRouter>
                 <Header />
 
@@ -25,8 +28,10 @@ function App() {
                     <Route path="/" element={<ShopPage />} />
                     <Route path="/inventory" element={<Inventory />} />
                     <Route path='/balance' element={<BalancePage />} />
+                    <Route path="/purchases" element={<PurchasesPage />} />
                 </Routes>
             </BrowserRouter>
+        </PurchasesProvider>
         </UsersProvider>
         </CartProvider>
         </InventoryProvider>

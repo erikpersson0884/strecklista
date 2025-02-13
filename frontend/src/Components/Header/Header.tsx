@@ -12,6 +12,7 @@ const Header: React.FC = () => {
                 <Link to="/">Strecka</Link>
                 <Link to="/inventory">Inventory</Link>
                 <Link to="/balance">Tillgodo</Link>
+                <Link to="/purchases">Purchases</Link>
 
             {/* </nav> */}
         </header>

@@ -16,3 +16,18 @@ export interface User {
     balance: number;
     imageUrl: string;
 }
+
+export interface Purchase {
+    id: string;
+    items: PurchaseItem[];
+    amount: number;
+    date: Date;
+    buyingUser: User;
+    paygingUser: User;
+}
+
+interface PurchaseItem {
+    name: string;
+    amount: number;
+    price: number;
+}
