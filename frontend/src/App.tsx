@@ -8,26 +8,29 @@ import BalancePage from './Components/BalancePage/BalancePage';
 import { InventoryProvider } from './Contexts/InventoryContext';
 import { CartProvider } from './Contexts/CartContext';
 import { UsersProvider } from './Contexts/UsersContext';
+import { AuthProvider } from './Contexts/AuthContext';
 
 
 function App() {
 
     return (
+        <AuthProvider>
         <InventoryProvider>
-            <CartProvider>
-                <UsersProvider>
-                <BrowserRouter>
-                    <Header />
+        <CartProvider>
+        <UsersProvider>
+            <BrowserRouter>
+                <Header />
 
-                    <Routes>
-                        <Route path="/" element={<ShopPage />} />
-                        <Route path="/inventory" element={<Inventory />} />
-                        <Route path='/balance' element={<BalancePage />} />
-                    </Routes>
-                </BrowserRouter>
-                </UsersProvider>
-            </CartProvider>
+                <Routes>
+                    <Route path="/" element={<ShopPage />} />
+                    <Route path="/inventory" element={<Inventory />} />
+                    <Route path='/balance' element={<BalancePage />} />
+                </Routes>
+            </BrowserRouter>
+        </UsersProvider>
+        </CartProvider>
         </InventoryProvider>
+        </AuthProvider>
       
     )
 }
