@@ -35,6 +35,5 @@
 }
 
 .inventory-item .product-actions button {
-    height: 2rem;
-    aspect-ratio: 1/1;
+    padding: .2rem;
 }

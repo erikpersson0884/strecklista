@@ -30,7 +30,16 @@
     margin: 0;
 }
 
+.action-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1rem;
+}
 
+.cancel-button {
+    background-color: brown;
+}
 
 .close-button {
     position: absolute;

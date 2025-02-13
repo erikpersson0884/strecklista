@@ -15,7 +15,7 @@
 }
 
 html {
-    height: 100%
+    min-height: 100%;
 }
 
 body {
@@ -23,7 +23,7 @@ body {
     color: var(--text-color);
 
     font-family: Inter;
-    height: 100%;
+    min-height: 100vh;
 }
 
 a   {
@@ -38,7 +38,6 @@ button {
 
     padding: .5rem 1rem;
     border: none;
-
 }
 
 button img {

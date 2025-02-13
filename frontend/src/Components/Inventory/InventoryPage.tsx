@@ -10,8 +10,8 @@ const InventoryPage: React.FC = () => {
 
     return (
         <ul className='inventory-page noUlFormatting'>    
-            {products.map((product, index) => (
-                <InventoryItem key={index} product={product} />
+            {products.map((product) => (
+                <InventoryItem key={product.id} product={product} />
             ))}
         </ul>
     );

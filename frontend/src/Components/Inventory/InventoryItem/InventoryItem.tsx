@@ -20,12 +20,20 @@ const InventoryItem: React.FC<InventoryItemProps> = ({ product }) => {
         updateProduct(updatedProduct.id, updatedProduct);
     };
 
+    const handleCancel = () => {
+        setUpdatedProduct(product);
+    };
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value, type, checked } = e.target;
         setUpdatedProduct(prevState => ({
             ...prevState,
-            [name]: type === 'checkbox' ? checked : value
+            [name]: type === 'checkbox' ? checked : type === 'number' ? parseFloat(value) : value
         }));
+    };
+
+    const handleDelete = () => {
+            window.confirm('Är du säker på att du vill ta bort produkten?') && removeProduct(product.id);
     };
 
     return (
@@ -59,15 +67,19 @@ const InventoryItem: React.FC<InventoryItemProps> = ({ product }) => {
                         checked={updatedProduct.available}
                         onChange={handleChange}
                     />
-                    <button onClick={() => removeProduct(product.id)}>
+                    <button onClick={handleDelete}>
                         <img src='/images/delete-white.svg' alt='Delete' height={10}/>
                     </button>
                 </div>
             </div>
 
             {isChanged && (
-                <button onClick={handleUpdate}> Uppdatera
-                </button>
+                <div className='action-buttons'>
+                    <button onClick={handleUpdate}> Uppdatera
+                    </button>
+                    <button className='cancel-button' onClick={handleCancel}> Avbryt
+                    </button>
+                </div>
             )}
         </li>
     );
