@@ -1,9 +1,10 @@
 import './App.css'
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import Header from './Components/Header/Header';
 import ShopPage from './Components/ShopPage/ShopPage';
 import Inventory from './Components/Inventory/InventoryPage';
 import BalancePage from './Components/BalancePage/BalancePage';
+import NotFound from './Components/NotFound/NotFound';
 
 import { InventoryProvider } from './Contexts/InventoryContext';
 import { CartProvider } from './Contexts/CartContext';
@@ -29,6 +30,8 @@ function App() {
                     <Route path="/inventory" element={<Inventory />} />
                     <Route path='/balance' element={<BalancePage />} />
                     <Route path="/purchases" element={<PurchasesPage />} />
+                    {/* <Route path="*" element={<Navigate to="/" replace />} /> */}
+                    <Route path="*" element={<NotFound />} />
                 </Routes>
             </BrowserRouter>
         </PurchasesProvider>
