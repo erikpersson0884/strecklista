@@ -18,10 +18,10 @@ const BalancePage: React.FC = () => {
         setShowPopup(true);
     };
 
-    const handleClosePopup = () => {
-        setShowPopup(false);
-        setSelectedUser(null);
-    };
+    // const handleClosePopup = () => {
+    //     setShowPopup(false);
+    //     setSelectedUser(null);
+    // };
 
     return (
         <>
@@ -83,7 +83,7 @@ const UserDiv: React.FC<UserDivProps> = ({ user, onOpenPopup }) => {
                 className='add-button no-button-formatting' 
                 onClick={() => onOpenPopup(user)}
             >
-                <img src='/images/add.svg' alt='add' height={10} />
+                <img src='images/add.svg' alt='add' height={10} />
             </button>
         </div>
     );

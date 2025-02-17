@@ -1,12 +1,12 @@
-import React, { createContext, useState, useContext, ReactNode } from 'react';
+import { createContext, useState, useContext, ReactNode } from 'react';
 import { User } from '../Types';
 
 
 interface UsersContextType {
     users: User[];
     addUser: (user: User) => void;
-    removeUser: (id: number) => void;
-    addUserBalance: (id: number, amount: number) => void;
+    removeUser: (id: string) => void;
+    addUserBalance: (id: string, amount: number) => void;
 }
 
 const UsersContext = createContext<UsersContextType | undefined>(undefined);
@@ -23,11 +23,11 @@ export const UsersProvider = ({ children }: { children: ReactNode }) => {
         setUsers((prevUsers) => [...prevUsers, user]);
     };
 
-    const removeUser = (id: number) => {
+    const removeUser = (id: string) => {
         setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id));
     };
 
-    const addUserBalance = (id: number, amount: number) => {
+    const addUserBalance = (id: string, amount: number) => {
         setUsers((prevUsers) => prevUsers.map((user) => {
             if (user.id === id) {
                 return { ...user, balance: user.balance + amount };

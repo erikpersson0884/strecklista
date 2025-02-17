@@ -16,7 +16,7 @@ const AddProductPopup: React.FC<AddProductPopupProps> = ({ closePopup = () => {}
 
     const [newProduct, setNewProduct] = React.useState<Product>(
         {
-            id: 0,
+            id: "0",
             name: "",
             price: 0,
             amountInStock: 0,
@@ -41,7 +41,13 @@ const AddProductPopup: React.FC<AddProductPopupProps> = ({ closePopup = () => {}
     };
 
     return (
-        <PopupDiv title="Lägg till vara" doAction={handleAddProduct} showPopupDiv={showPopupDiv} setShowPopupDiv={setShowPopupDiv}>
+        <PopupDiv 
+            title="Lägg till vara" 
+            doAction={handleAddProduct} 
+            showPopupDiv={showPopupDiv} 
+            setShowPopupDiv={setShowPopupDiv}
+            cancelAction={closePopup}
+        >
             <div>
                 <label>Varunamn</label>
                 <input type="text" name="name" value={newProduct.name} onChange={handleInputChange} />

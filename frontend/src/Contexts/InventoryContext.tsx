@@ -4,25 +4,26 @@ import { Product } from '../Types';
 interface InventoryContextProps {
     products: Product[];
     addProduct: (product: Product) => void;
-    updateProduct: (id: number, updatedProduct: Partial<Product>) => void;
-    removeProduct: (id: number) => void;
+    updateProduct: (id: string, updatedProduct: Partial<Product>) => void;
+    removeProduct: (id: string) => void;
+    changeProductAmount: (id: string, amount: number) => void;
 }
 
 const InventoryContext = createContext<InventoryContextProps | undefined>(undefined);
 
 export const InventoryProvider = ({ children }: { children: ReactNode }) => {
     const [products, setProducts] = useState<Product[]>([
-        { id: 1, name: 'Coca Cola', price: 20, amountInStock: 10, available: true, imageUrl: 'https://cmxsapnc.cloudimg.io/fit/1200x1200/fbright5/_img_/18964/somersby-pear-45.jpg' },
-        { id: 2, name: 'Fanta', price: 20, amountInStock: 10, available: true, imageUrl: 'https://imagedelivery.net/8fY6if2LOxn7UCgUdZYwog/11800/contain' },
-        { id: 345, name: 'Coca Cola', price: 16, amountInStock: 140, available: true, imageUrl: 'https://cmxsapnc.cloudimg.io/fit/1200x1200/fbright5/_img_/18964/somersby-pear-45.jpg' },
-        { id: 223, name: 'Fanta', price: 12, amountInStock: 301, available: true, imageUrl: 'https://imagedelivery.net/8fY6if2LOxn7UCgUdZYwog/11800/contain' },
+        { id: "1", name: 'Coca Cola', price: 20, amountInStock: 10, available: true, imageUrl: 'https://cmxsapnc.cloudimg.io/fit/1200x1200/fbright5/_img_/18964/somersby-pear-45.jpg' },
+        { id: "4", name: 'Fanta', price: 20, amountInStock: 10, available: true, imageUrl: 'https://imagedelivery.net/8fY6if2LOxn7UCgUdZYwog/11800/contain' },
+        { id: "3", name: 'Coca Cola', price: 16, amountInStock: 140, available: true, imageUrl: 'https://cmxsapnc.cloudimg.io/fit/1200x1200/fbright5/_img_/18964/somersby-pear-45.jpg' },
+        { id: "5", name: 'Fanta', price: 12, amountInStock: 301, available: true, imageUrl: 'https://imagedelivery.net/8fY6if2LOxn7UCgUdZYwog/11800/contain' },
     ]);
 
     const addProduct = (product: Product) => {
         setProducts([...products, product]);
     };
 
-    const updateProduct = (id: number, updatedProduct: Partial<Product>) => {
+    const updateProduct = (id: string, updatedProduct: Partial<Product>) => {
         setProducts(products.map(product => 
             product.id === id ? { ...product, ...updatedProduct } : product
         ));
@@ -30,12 +31,18 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
         console.log(products);
     };
 
-    const removeProduct = (id: number) => {
+    const changeProductAmount = (id: string, amount: number) => {
+        setProducts(products.map(product => 
+            product.id === id ? { ...product, amountInStock: product.amountInStock + amount } : product
+        ));
+    };
+
+    const removeProduct = (id: string) => {
         setProducts(products.filter(product => product.id !== id));
     };
 
     return (
-        <InventoryContext.Provider value={{ products, addProduct, updateProduct, removeProduct }}>
+        <InventoryContext.Provider value={{ products, addProduct, updateProduct, removeProduct, changeProductAmount }}>
             {children}
         </InventoryContext.Provider>
     );

@@ -21,7 +21,7 @@ function App() {
         <CartProvider>
         <UsersProvider>
         <PurchasesProvider>
-            <BrowserRouter>
+            <BrowserRouter basename='/strecklista/'>
                 <Header />
 
                 <Routes>

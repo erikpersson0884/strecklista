@@ -50,7 +50,7 @@ const Cart: React.FC<CartProps> = ({ closeCart }) => {
                         <span>{item.amount}st</span>
                         <span>{item.amount * item.price}kr</span>
                         <button onClick={() => removeItem(item)}>
-                            <img src="/images/delete.svg" alt="delete" height={10}/>
+                            <img src="images/delete.svg" alt="delete" height={10}/>
                         </button>
                     </li>
                 ))}
@@ -58,7 +58,7 @@ const Cart: React.FC<CartProps> = ({ closeCart }) => {
 
             <div>
                 <p>Sträcka åt</p>
-                <select name="users" id="users" defaultValue={currentUser?.id || ''}>
+                <select name="users" id="users" value={selectedUser?.id || ''} onChange={handleSelectChange}>
                     {users.map((user: User) => (
                         <option key={user.id} value={user.id}>{user.nick}</option>
                     ))}

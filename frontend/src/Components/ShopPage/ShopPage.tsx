@@ -21,7 +21,7 @@ const ShopPage: React.FC = () => {
             </div>
 
             <button className='showCartButton no-button-formatting' onClick={() => setDisplayCart(!displayCart)}>
-                <img src="/images/shoppingcart.svg" alt="shopping cart" height={20}/>
+                <img src="images/shoppingcart.svg" alt="shopping cart" height={20}/>
 
             </button>
         </>

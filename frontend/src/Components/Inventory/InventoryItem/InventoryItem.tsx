@@ -5,9 +5,10 @@ import { useInventory } from '../../../Contexts/InventoryContext';
 
 interface InventoryItemProps {
     product: Product;
+    openRefill: () => void;
 }
 
-const InventoryItem: React.FC<InventoryItemProps> = ({ product }) => {
+const InventoryItem: React.FC<InventoryItemProps> = ({ product, openRefill }) => {
     const { updateProduct, removeProduct } = useInventory();
     const [updatedProduct, setUpdatedProduct] = useState(product);
     const [isChanged, setIsChanged] = useState(false);
@@ -43,21 +44,30 @@ const InventoryItem: React.FC<InventoryItemProps> = ({ product }) => {
                     <input
                         type="text"
                         name="name"
+                        placeholder='Produktnamn'
                         value={updatedProduct.name}
                         onChange={handleChange}
                     />
                     <input
                         type="number"
                         name="price"
+                        placeholder='Pris'
                         value={updatedProduct.price}
                         onChange={handleChange}
                     />
                     <input
                         type="text"
                         name="imageUrl"
+                        placeholder='Bildlänk'
                         value={updatedProduct.imageUrl}
                         onChange={handleChange}
                     />
+                    <div>
+                        <p>Antal i lager: {product.amountInStock} st</p>
+                        <button onClick={openRefill}>
+                            Fyll på
+                        </button>
+                    </div>
                 </div>
 
                 <div className='product-actions'>
@@ -68,7 +78,7 @@ const InventoryItem: React.FC<InventoryItemProps> = ({ product }) => {
                         onChange={handleChange}
                     />
                     <button onClick={handleDelete}>
-                        <img src='/images/delete-white.svg' alt='Delete' height={10}/>
+                        <img src='images/delete-white.svg' alt='Delete' height={10}/>
                     </button>
                 </div>
             </div>

@@ -61,7 +61,7 @@ const PopupDiv: React.FC<PopupDivProps> = ({
                     {acceptButtonText}
                 </button>
 
-                <button className="cancelButton" onClick={handleClose}>
+                <button className="cancel-button" onClick={handleClose}>
                     {cancelButtonText}
                 </button>
             </div>

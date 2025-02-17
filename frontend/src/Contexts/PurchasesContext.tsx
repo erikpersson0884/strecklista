@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, ReactNode } from 'react';
-import { Purchase, User } from '../Types';
+import { Purchase } from '../Types';
 
 
 interface PurchasesContextProps {
