@@ -2,11 +2,13 @@
 
 :root {
     --main-background-color: #444444;
-    --primary-color: #000;
+    --primary-color: #0e666c;
+    --secondary-color: #000;
     --glass-color: #000000c0;
     --text-color: #fff;
     --link-color: #09cdda;
     --green-color: #0bc70b;
+    --button-color: var(--primary-color);
 }
 
 * {
@@ -32,7 +34,7 @@ a   {
 }
 
 button {
-    background-color: var(--green-color);
+    background-color: var(--button-color);
     color: var(--text-color);
     cursor: pointer;
 
@@ -48,4 +50,12 @@ button {
 button img {
     height: 100%;
     aspect-ratio: 1/1;
+}
+
+select {
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+
+    padding: .5rem;
+    border-radius: .5rem;
 }

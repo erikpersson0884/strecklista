@@ -62,7 +62,7 @@ const InventoryItem: React.FC<InventoryItemProps> = ({ product, openRefill }) =>
                         value={updatedProduct.imageUrl}
                         onChange={handleChange}
                     />
-                    <div>
+                    <div className='amount-container'>
                         <p>Antal i lager: {product.amountInStock} st</p>
                         <button onClick={openRefill}>
                             Fyll på
@@ -77,7 +77,7 @@ const InventoryItem: React.FC<InventoryItemProps> = ({ product, openRefill }) =>
                         checked={updatedProduct.available}
                         onChange={handleChange}
                     />
-                    <button onClick={handleDelete}>
+                    <button className='delete-button' onClick={handleDelete}>
                         <img src='images/delete-white.svg' alt='Delete' height={10}/>
                     </button>
                 </div>

@@ -49,14 +49,14 @@ const Cart: React.FC<CartProps> = ({ closeCart }) => {
                         <span>{item.name}</span>
                         <span>{item.amount}st</span>
                         <span>{item.amount * item.price}kr</span>
-                        <button onClick={() => removeItem(item)}>
+                        <button className='delete-button' onClick={() => removeItem(item)}>
                             <img src="images/delete.svg" alt="delete" height={10}/>
                         </button>
                     </li>
                 ))}
             </ul>
 
-            <div>
+            <div className='select-paying-user'>
                 <p>Sträcka åt</p>
                 <select name="users" id="users" value={selectedUser?.id || ''} onChange={handleSelectChange}>
                     {users.map((user: User) => (

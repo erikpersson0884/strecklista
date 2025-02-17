@@ -1,18 +1,25 @@
 
 .cart {
-    background-color: var(--glass-color);
+    background-color: var(--secondary-color);
 
     display: flex;
     flex-direction: column;
     gap: 1rem;
 
-    box-sizing: border-box;
-    width: 100%;
-    padding: .5rem 1rem;
+    position: absolute;
+    top: 10rem;
 
+    box-sizing: border-box;
+    width: 80%;
+    padding: .5rem 1rem;
+    border: 1px solid #fff;
 }
 
 .cartList {
+    display: flex;
+    flex-direction: column;
+    gap: .3rem;
+
     width: 100%;
 }
 
@@ -24,6 +31,7 @@
 
     list-style: none;
 
+    padding-bottom: .4rem;
 }
 
 .cartList li>* {
@@ -33,4 +41,11 @@
 .cart button img {
     height: 100%;
     aspect-ratio: 1/1;
+}
+
+.cart .select-paying-user {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: .5rem;
 }
