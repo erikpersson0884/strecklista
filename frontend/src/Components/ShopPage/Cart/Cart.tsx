@@ -10,7 +10,6 @@ interface CartProps {
 }
 
 const Cart: React.FC<CartProps> = ({ closeCart }) => {
-
     const { items, removeItem } = useCart();
     const { buyProducts } = useCart();
     const { users } = useUsersContext();
@@ -38,7 +37,7 @@ const Cart: React.FC<CartProps> = ({ closeCart }) => {
     }
 
     return (
-        <div className='cart'>
+        <div className='cart' onClick={(e) => e.stopPropagation()}>
             <h2>Varukorg:</h2>
 
             <hr />

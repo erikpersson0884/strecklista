@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import './PopupDiv.css';
+import Shadowbox from "../Shadowbox/Shadowbox";
 
 interface PopupDivProps {
     children: React.ReactNode;
@@ -46,26 +47,28 @@ const PopupDiv: React.FC<PopupDivProps> = ({
     if (!showPopupDiv) return null;
 
     return (
-        <aside className="popup-div">
-            <button onClick={handleClose} className="close-button">
-                ×
-            </button>
-
-            <h1>{title}</h1>
-            <hr />
-            
-            {children}
-
-            <div className="popup-actions">
-                <button className="doButton" onClick={doAction}>
-                    {acceptButtonText}
+        <Shadowbox onClick={handleClose}>
+            <aside className="popup-div" onClick={(e) => e.stopPropagation()}>
+                <button onClick={handleClose} className="close-button">
+                    ×
                 </button>
 
-                <button className="cancel-button" onClick={handleClose}>
-                    {cancelButtonText}
-                </button>
-            </div>
-        </aside>
+                <h1>{title}</h1>
+                <hr />
+                
+                {children}
+
+                <div className="popup-actions">
+                    <button className="doButton" onClick={doAction}>
+                        {acceptButtonText}
+                    </button>
+
+                    <button className="cancel-button" onClick={handleClose}>
+                        {cancelButtonText}
+                    </button>
+                </div>
+            </aside>
+        </Shadowbox>
     );
 };
 

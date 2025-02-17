@@ -6,9 +6,6 @@
     flex-direction: column;
     gap: 1rem;
 
-    position: absolute;
-    top: 10rem;
-
     box-sizing: border-box;
     width: 80%;
     padding: .5rem 1rem;
