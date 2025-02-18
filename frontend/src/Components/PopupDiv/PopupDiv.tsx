@@ -11,6 +11,7 @@ interface PopupDivProps {
     cancelAction?: () => void;
     showPopupDiv: boolean;
     setShowPopupDiv: React.Dispatch<React.SetStateAction<boolean>>;
+    className?: string;
 }
 
 const PopupDiv: React.FC<PopupDivProps> = ({ 
@@ -21,7 +22,8 @@ const PopupDiv: React.FC<PopupDivProps> = ({
     doAction,
     cancelAction = () => {},
     showPopupDiv, 
-    setShowPopupDiv 
+    setShowPopupDiv,
+    className = ""
 }) => {
 
     useEffect(() => {
@@ -48,7 +50,7 @@ const PopupDiv: React.FC<PopupDivProps> = ({
 
     return (
         <Shadowbox onClick={handleClose}>
-            <aside className="popup-div" onClick={(e) => e.stopPropagation()}>
+            <aside className={"popup-div" + " " + className} onClick={(e) => e.stopPropagation()}>
                 <button onClick={handleClose} className="close-button">
                     ×
                 </button>

@@ -1,8 +1,9 @@
 import React from "react";
-import PopupDiv from "../PopupDiv/PopupDiv";
+import PopupDiv from "../../PopupDiv/PopupDiv";
+import "./AddProductPopup.css";
 
-import { useInventory } from "../../Contexts/InventoryContext";
-import { Product } from "../../Types";
+import { useInventory } from "../../../Contexts/InventoryContext";
+import { Product } from "../../../Types";
 
 interface AddProductPopupProps {
     closePopup?: () => void;
@@ -20,7 +21,7 @@ const AddProductPopup: React.FC<AddProductPopupProps> = ({ closePopup = () => {}
             name: "",
             price: 0,
             amountInStock: 0,
-            available: false,
+            available: true,
             imageUrl: ""
         }
     );
@@ -47,30 +48,31 @@ const AddProductPopup: React.FC<AddProductPopupProps> = ({ closePopup = () => {}
             showPopupDiv={showPopupDiv} 
             setShowPopupDiv={setShowPopupDiv}
             cancelAction={closePopup}
+            className="add-product-popup"
         >
-            <div>
+            <div className="inputdiv">
                 <label>Varunamn</label>
                 <input type="text" name="name" value={newProduct.name} onChange={handleInputChange} />
             </div>
 
-            <div>
+            <div className="inputdiv">
                 <label>Pris</label>
                 <input type="number" name="price" value={newProduct.price} onChange={handleInputChange} />
             </div>
 
-            <div>
+            <div className="inputdiv">
                 <label>Antal i lager</label>
                 <input type="number" name="amountInStock" value={newProduct.amountInStock} onChange={handleInputChange} />
             </div>
-            
-            <div>
-                <label>Finns i lager</label>
-                <input type="checkbox" name="available" checked={newProduct.available} onChange={handleInputChange} />
-            </div>
 
-            <div>
+            <div className="inputdiv">
                 <label>Bild URL</label>
                 <input type="text" name="imageUrl" value={newProduct.imageUrl} onChange={handleInputChange} />
+            </div>
+
+            <div className="availibility-container">
+                <label>Finns i lager</label>
+                <input type="checkbox" name="available" checked={newProduct.available} onChange={handleInputChange} />
             </div>
         </PopupDiv>
     );

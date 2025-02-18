@@ -1,23 +1,31 @@
 
-
 .inventory-item {
     background-color: var(--glass-color);
 
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     gap: 1rem;
 
     box-sizing: border-box;
     padding: 1rem;
 }
 
-.inventory-item .input-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 4rem;    
+.inventory-item-preview {
+    flex-direction: row;
+    align-items: center;
+}
 
-    width: 100%;
+.inventory-item-preview .product-name {
+    flex: 1;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.inventory-item-preview button {
+    padding: .2rem;
 }
 
 .inventory-item .amount-container {
@@ -27,20 +35,10 @@
     gap: .5rem;
 }
 
-.inventory-item .product-info {
+.inventory-item .inputs-container {
     display: flex;
     flex-direction: column;
-    gap: .5rem;
+    gap: 1rem;
 
     flex: 1;
-}
-
-.inventory-item .product-actions {
-    display: flex;
-    flex-direction: row;
-    gap: .5rem;
-}
-
-.inventory-item .product-actions button {
-    padding: .2rem;
 }

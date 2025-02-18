@@ -4,7 +4,7 @@ import './InventoryPage.css';
 import { Product } from '../../Types';
 import InventoryItem from './InventoryItem/InventoryItem';
 import { useInventory } from '../../Contexts/InventoryContext';
-import AddProductPopup from './AddProductPopup';
+import AddProductPopup from './AddProductPopup/AddProductPopup';
 import RefillProductPopup from './RefillProductPopup';
 
 const InventoryPage: React.FC = () => {

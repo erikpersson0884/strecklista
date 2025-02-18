@@ -40,17 +40,37 @@
 
 .cancel-button, .delete-button {
     background-color: brown;
+    color: #000000;
 }
 
-.doButton, .add-button {
+.do-button, .add-button {
     background-color: var(--green-color);
+}
+
+.disabled-button {
+    background-color: grey;
+
+    cursor: auto;
 }
 
 .close-button {
     background-color: grey;
+
+    cursor: pointer;
+
     position: absolute;
     top: 0;
     right: 0;
+
     padding: 1rem;
-    cursor: pointer;
+    border-radius: 0 0 0 1rem;
+    border-bottom: 1px solid #ffffff;
+    border-left: 1px solid #ffffff;
+
+}
+
+.inputdiv {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }

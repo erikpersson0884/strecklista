@@ -1,6 +1,6 @@
 
 .shadowbox {
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: var(--shadowbox-color);
 
     position: fixed;
     top: 0;

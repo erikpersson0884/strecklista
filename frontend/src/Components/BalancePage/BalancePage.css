@@ -18,12 +18,9 @@
     align-items: center;
     gap: 2rem;
 
-    position: relative;
-
-
     box-sizing: border-box;
     width: 100%;
-    /* padding: 1rem; */
+    padding: 1rem 2rem;
 }
 
 .balancepage .user-div img {
@@ -38,21 +35,14 @@
 }
 
 .name-div hr {
-    width: 200%;
+    width: 100%;
     border: #fff .05rem solid;
 }
 
 .balancepage .user-div .add-button {
     background-color: var(--green-color);
 
-    /* position: absolute;
-    top: 0;
-    right: 0; */
-    float: right;
-
-    height: 2rem;
-    padding: 0 0 .25rem .25rem;
-    aspect-ratio: 1/1;
-    border-radius: 0 0 0 1.5rem;
+    height: 3rem;
+    border-radius: 100%;
 }
 

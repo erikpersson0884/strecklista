@@ -41,39 +41,41 @@ const Cart: React.FC<CartProps> = ({ closeCart }) => {
             <h2>Varukorg:</h2>
 
             <hr />
-            
-            <ul className='cartList'>
-                {items.map((item, index) => (
-                    <li key={index}>
-                        <span className='item-name'>{item.name}</span>
 
-                        {/* <button className='add-button' onClick={() => addProduct(item)}>+</button> */}
-                        <span>{item.amount}st</span>
-                        {/* <button className='' onClick={() => decreaseProductAmount(item)}>-</button> */}
+            {items.length === 0 ? 
+                <p>Varukorgen är tom</p> 
+            : 
+            <>
+                <ul className='cartList'>
+                    {items.map((item, index) => (
+                        <li key={index}>
+                            <span className='item-name'>{item.name}</span>
 
-                        <span className='item-price'>{item.amount * item.price}kr</span>
-                        <button className='delete-button' onClick={() => removeItem(item)}>
-                            <img src="images/delete.svg" alt="delete" height={10}/>
-                        </button>
-                    </li>
-                ))}
-            </ul>
+                            {/* <button className='add-button' onClick={() => addProduct(item)}>+</button> */}
+                            <span>{item.amount}st</span>
+                            {/* <button className='' onClick={() => decreaseProductAmount(item)}>-</button> */}
 
-            <div className='select-paying-user'>
-                <p>Sträcka åt</p>
-                <select name="users" id="users" value={selectedUser?.id || ''} onChange={handleSelectChange}>
-                    {users.map((user: User) => (
-                        <option key={user.id} value={user.id}>{user.nick}</option>
+                            <span className='item-price'>{item.amount * item.price}kr</span>
+                            <button className='delete-button' onClick={() => removeItem(item)}>
+                                <img src="images/delete.svg" alt="delete" height={10}/>
+                            </button>
+                        </li>
                     ))}
-                </select>
-            </div>
+                </ul>
 
+                <hr />
 
-            
-            {items.length === 0 ? <p>Varukorgen är tom</p> : 
+                <div className='select-paying-user'>
+                    <p>Sträcka åt</p>
+                    <select name="users" id="users" value={selectedUser?.id || ''} onChange={handleSelectChange}>
+                        {users.map((user: User) => (
+                            <option key={user.id} value={user.id}>{user.nick}</option>
+                        ))}
+                    </select>
+                </div>
+
                 <button className='' onClick={handleBuyProducts}>Strecka</button>
-            }
-
+            </>}
         </div>
     );
 };

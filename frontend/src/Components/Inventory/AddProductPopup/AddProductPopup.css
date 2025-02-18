@@ -1,0 +1,10 @@
+
+.add-product-popup {
+    min-width: 15rem;
+}
+
+.add-product-popup .availibility-container {
+    display: flex;
+    flex-direction: row;
+    gap: .5rem;
+}
