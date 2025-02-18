@@ -7,7 +7,7 @@
     gap: 1rem;
 
     box-sizing: border-box;
-    width: 80%;
+    width: 100%;
     padding: .5rem 1rem;
     border: 1px solid #fff;
 }
@@ -15,7 +15,7 @@
 .cartList {
     display: flex;
     flex-direction: column;
-    gap: .3rem;
+    gap: .7rem;
 
     width: 100%;
 }
@@ -25,14 +25,34 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    gap: .9rem;
 
     list-style: none;
 
     padding-bottom: .4rem;
 }
 
-.cartList li>* {
+.cart .item-name {
+    word-break: break-word;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     flex: 1;
+
+    max-width: 15ch;
+    margin-right: auto;
+}
+
+.cartList .item-price {
+    /* flex: 1; */
+    min-width: 3ch;
+    text-align: center;
+}
+
+.cart .delete-button {
+    box-sizing: border-box;
+    padding: .2rem;
+    height: 100%;
 }
 
 .cart button img {

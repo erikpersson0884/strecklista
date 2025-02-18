@@ -45,9 +45,13 @@ const Cart: React.FC<CartProps> = ({ closeCart }) => {
             <ul className='cartList'>
                 {items.map((item, index) => (
                     <li key={index}>
-                        <span>{item.name}</span>
+                        <span className='item-name'>{item.name}</span>
+
+                        {/* <button className='add-button' onClick={() => addProduct(item)}>+</button> */}
                         <span>{item.amount}st</span>
-                        <span>{item.amount * item.price}kr</span>
+                        {/* <button className='' onClick={() => decreaseProductAmount(item)}>-</button> */}
+
+                        <span className='item-price'>{item.amount * item.price}kr</span>
                         <button className='delete-button' onClick={() => removeItem(item)}>
                             <img src="images/delete.svg" alt="delete" height={10}/>
                         </button>

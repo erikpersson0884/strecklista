@@ -12,14 +12,14 @@ const Product: React.FC<{ product: ProductT }> = ({ product }) => {
 
     return (
         <div className="product" onClick={() => addProduct(product)}>
-            <div className='productImage'>
+            <div className='product-image'>
                 <img src={product.imageUrl} alt={product.name} />
             </div>
 
 
-            <div>
+            <div className='product-info'>
                 <h2>{product.name}</h2>
-                <div>
+                <div className='product-stats'>
                     <p>{product.price.toFixed(2)}:-</p>
                     <p>{product.amountInStock} i lager</p>
                 </div>

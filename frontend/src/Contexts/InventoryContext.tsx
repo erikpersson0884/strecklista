@@ -13,10 +13,10 @@ const InventoryContext = createContext<InventoryContextProps | undefined>(undefi
 
 export const InventoryProvider = ({ children }: { children: ReactNode }) => {
     const [products, setProducts] = useState<Product[]>([
-        { id: "1", name: 'Coca Cola', price: 20, amountInStock: 10, available: true, imageUrl: 'https://cmxsapnc.cloudimg.io/fit/1200x1200/fbright5/_img_/18964/somersby-pear-45.jpg' },
-        { id: "4", name: 'Fanta', price: 20, amountInStock: 10, available: true, imageUrl: 'https://imagedelivery.net/8fY6if2LOxn7UCgUdZYwog/11800/contain' },
-        { id: "3", name: 'Coca Cola', price: 16, amountInStock: 140, available: true, imageUrl: 'https://cmxsapnc.cloudimg.io/fit/1200x1200/fbright5/_img_/18964/somersby-pear-45.jpg' },
-        { id: "5", name: 'Fanta', price: 12, amountInStock: 301, available: true, imageUrl: 'https://imagedelivery.net/8fY6if2LOxn7UCgUdZYwog/11800/contain' },
+        { id: "1", name: 'Sommersby päron', price: 20, amountInStock: 10, available: true, imageUrl: 'https://cmxsapnc.cloudimg.io/fit/1200x1200/fbright5/_img_/18964/somersby-pear-45.jpg' },
+        { id: "4", name: 'Royal', price: 7, amountInStock: 10, available: true, imageUrl: 'https://imagedelivery.net/8fY6if2LOxn7UCgUdZYwog/11800/contain' },
+        { id: "3", name: 'Nudlar', price: 11, amountInStock: 140, available: true, imageUrl: 'https://d1ax460061ulao.cloudfront.net/1000x1000/8/f/8f9579852b5c9c8fab11b7aa15a8ad29.jpg' },
+        { id: "5", name: 'Sommersby jordgubb lime', price: 22, amountInStock: 301, available: true, imageUrl: 'https://imagedelivery.net/8fY6if2LOxn7UCgUdZYwog/11800/contain' },
     ]);
 
     const addProduct = (product: Product) => {

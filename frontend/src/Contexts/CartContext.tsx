@@ -8,6 +8,7 @@ interface OrderItemWithAmount extends Product {
 interface CartContextType {
     items: OrderItemWithAmount[];
     addProduct: (item: Product) => void;
+    decreaseProductAmount: (product: Product) => void;
     removeItem: (product: Product) => void;
     clearOrder: () => void;
     buyProducts: (arg0: string) => boolean;
@@ -33,6 +34,14 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         console.log(items);
     };
 
+    const decreaseProductAmount = (product: Product) => {
+        setItems((prevItems) => 
+            prevItems
+                .map(p => p.id === product.id ? { ...p, amount: p.amount - 1 } : p)
+                .filter(p => p.amount > 0)
+        );
+    };
+
     const removeItem = (product: Product) => {
         setItems((prevItems) => prevItems.filter(item => item.id !== product.id));
     };
@@ -51,7 +60,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
 
     return (
-        <CartContext.Provider value={{ items, addProduct, removeItem, clearOrder, buyProducts }}>
+        <CartContext.Provider value={{ items, addProduct, removeItem, decreaseProductAmount, clearOrder, buyProducts }}>
             {children}
         </CartContext.Provider>
     );
