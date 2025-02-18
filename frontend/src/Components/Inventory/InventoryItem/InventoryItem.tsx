@@ -14,7 +14,13 @@ const InventoryItem: React.FC<InventoryItemProps> = ({ product, openRefill }) =>
     const [isChanged, setIsChanged] = useState(false);
 
     useEffect(() => {
-        setIsChanged(JSON.stringify(updatedProduct) !== JSON.stringify(product));
+        product.name !== updatedProduct.name ||
+        product.price !== updatedProduct.price ||
+        product.imageUrl !== updatedProduct.imageUrl ||
+        product.available !== updatedProduct.available
+            ? setIsChanged(true)
+            : setIsChanged(false);
+            
     }, [updatedProduct, product]);
 
     const handleUpdate = () => {
