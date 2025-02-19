@@ -10,24 +10,35 @@ interface RefillPopupProps {
 }
 
 const RefillPopup: React.FC<RefillPopupProps> = ({ user, showPopupDiv, setShowPopupDiv }) => {
-    const [amount, setAmount] = useState<number>(0);
+    const [amount, setAmount] = useState<string>('');
     const { addUserBalance } = useUsersContext();
 
     const handleRefill = () => {
-        // if (amount <= 0) {
-        //     alert('Please enter a valid amount');
-        //     return;
-        // } To be able to also decrease balance, this is not currently in use
+        const numericAmount = parseFloat(amount);
+        if (isNaN(numericAmount)) {
+            alert('Please enter a valid amount');
+            return;
+        }
         
-        addUserBalance(user.id, amount);
+        addUserBalance(user.id, numericAmount);
         
         // Reset and close popup
-        setAmount(0);
+        setAmount('');
         setShowPopupDiv(false);
     };
 
     const handleClose = () => {
-        setAmount(0);
+        setAmount('');
+    }
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setAmount(e.target.value);
+    }
+
+    const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            handleRefill();
+        }
     }
 
     return (
@@ -45,9 +56,10 @@ const RefillPopup: React.FC<RefillPopupProps> = ({ user, showPopupDiv, setShowPo
                     id="amount" 
                     type="number" 
                     value={amount} 
-                    onChange={(e) => setAmount(Number(e.target.value))} 
-                />
-                <p>Nytt saldo: {user.balance + amount}kr</p>
+                    onChange={(e) => handleInputChange(e)} 
+                    onKeyPress={handleKeyPress}
+                />  
+                <p>Nytt saldo: {user.balance + (parseFloat(amount) || 0)}kr</p>
             </div>
         </PopupDiv>
     );

@@ -28,12 +28,21 @@ export const UsersProvider = ({ children }: { children: ReactNode }) => {
     };
 
     const addUserBalance = (id: string, amount: number) => {
-        setUsers((prevUsers) => prevUsers.map((user) => {
+        setUsers((prevUsers) => {
+            const userExists = prevUsers.some((user) => user.id === id);
+            if (!userExists) {
+                throw new Error(`User with id ${id} not found`);
+            }
+            return prevUsers.map((user) => {
             if (user.id === id) {
+                console.log(user);
                 return { ...user, balance: user.balance + amount };
             }
             return user;
-        }));
+            });
+        });
+
+        // console.log(users);
     };
 
 

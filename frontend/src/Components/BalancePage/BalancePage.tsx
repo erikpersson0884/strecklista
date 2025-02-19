@@ -31,7 +31,7 @@ const BalancePage: React.FC = () => {
                     {currentUser && (
                         <>
                             <UserDiv 
-                                user={currentUser} 
+                                user={users.find((user) => user.id === currentUser.id) as User} 
                                 key={currentUser.id}
                                 onOpenPopup={handleOpenPopup}
                             />
