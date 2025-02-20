@@ -4,14 +4,35 @@ import './Product.css';
 
 import { useCart } from '../../../Contexts/CartContext';
 
+interface ProductProps {
+    product: ProductT;
+    toggleFavourite: (product: ProductT) => void;
+    isFavourite: boolean;
+}
 
-
-const Product: React.FC<{ product: ProductT }> = ({ product }) => {
+const Product: React.FC<ProductProps> = ({ product, isFavourite, toggleFavourite }) => {
     
     const {addProduct} = useCart();
 
     return (
         <div className="product" onClick={() => addProduct(product)}>
+            <button className='favourite-button' onClick={(e) => {e.stopPropagation(); toggleFavourite(product)}}>
+
+                {isFavourite ? 
+                    <img 
+                        src="images/favourite-filled.svg" 
+                        alt="heart" 
+                        height={20}
+                    />
+                    :
+                    <img 
+                        src="images/favourite.svg" 
+                        alt="heart" 
+                        height={20}
+                    />
+                }
+            </button>
+
 
             <div className='product-image'>
                 <img src={product.imageUrl} alt={product.name} />
