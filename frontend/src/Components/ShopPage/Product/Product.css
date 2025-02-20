@@ -20,7 +20,7 @@
 }
 
 .product .product-image {
-    background-color: grey;
+    background-color: var(--image-background-color);
 
     display: flex;
     flex-direction: column;
@@ -68,7 +68,7 @@
 }
 
 .favourite-button {
-    background-color: black;
+    background-color: var(--secondary-color);
 
     position: absolute;
     top: .1rem;

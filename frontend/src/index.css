@@ -4,13 +4,21 @@
     --main-background-color: #444444;
     --primary-color: #0e666c;
     --secondary-color: #000;
+
     --glass-color: #000000c0;
+
     --text-color: #fff;
     --link-color: #09cdda;
-    --green-color: #107f10;
+
     --button-color: var(--primary-color);
+    --border-color: #fff;
+
     --shadowbox-color: rgba(0, 0, 0, 0.642);
+    --image-background-color: #7d7d7d;
+
+    --green-color: #107f10;
 }
+
 
 * {
     padding: 0;
