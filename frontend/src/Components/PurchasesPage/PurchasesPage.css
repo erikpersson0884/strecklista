@@ -3,8 +3,14 @@
 .purchase-item {
     display: flex;
     justify-content: space-between;
-    padding: 10px;
+    flex-wrap: wrap;;
+
+    padding: .5rem;
     border-bottom: 1px solid #e0e0e0;
+}
+
+.purchase-item-preview {
+    align-items: center;
 }
 
 .purchase-item-detailed {
@@ -30,4 +36,15 @@
     display: flex;
     justify-content: space-between;
     font-weight: bold;
+}
+
+.purchase-item-detailed .delete-button {
+    position: absolute;
+    right: 1rem;
+
+    width: min-content;
+}
+
+.delete-purchase-popup p {
+    max-width: 30ch;
 }

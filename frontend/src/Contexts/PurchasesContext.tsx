@@ -6,6 +6,7 @@ interface PurchasesContextProps {
     purchases: Purchase[];
     addPurchase: (purchase: Purchase) => void;
     getPurchasesForUser: (userId: string) => Purchase[];
+    deletePurchase: (id: string) => void;
 }
 
 const PurchasesContext = createContext<PurchasesContextProps | undefined>(undefined);
@@ -67,8 +68,12 @@ export const PurchasesProvider: React.FC<{ children: ReactNode }> = ({ children 
         return purchases.filter(purchase => purchase.paygingUser.id === userId);
     };
 
+    const deletePurchase = (id: string) => {
+        setPurchases((prevPurchases) => prevPurchases.filter(purchase => purchase.id !== id));
+    };
+
     return (
-        <PurchasesContext.Provider value={{ purchases, addPurchase, getPurchasesForUser }}>
+        <PurchasesContext.Provider value={{ purchases, addPurchase, getPurchasesForUser, deletePurchase }}>
             {children}
         </PurchasesContext.Provider>
     );

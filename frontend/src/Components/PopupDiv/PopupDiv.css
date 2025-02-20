@@ -9,13 +9,13 @@
 
     position: fixed;
 
-    width: max-content !important;
+    box-sizing: border-box;
+    width: max-content;
+    max-width: 80%;
     padding: .5rem;
     border: #fff .1rem solid;
     margin-inline: auto;
 }
-
-
 
 .popup-div .popup-actions {
     display: flex;
