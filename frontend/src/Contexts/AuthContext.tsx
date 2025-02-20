@@ -1,54 +1,50 @@
-import React, { createContext, useState, useContext, ReactNode } from 'react';
-import { User } from '../Types';
+import { createContext, useContext, useState, useEffect } from 'react';
+import { axiosInstance, setAuthToken } from '../api/AxiosInstance';
+
 
 interface AuthContextType {
+    token: string | null;
     isAuthenticated: boolean;
-    login: () => void;
+    login: (username: string, password: string) => void;
     logout: () => void;
-    currentUser: User | null;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [currentUser, setCurrentUser] = useState<User | null>(        
-        {id: "231", name:"Erik", nick:"Göken", balance:193, imageUrl:"99832" }
-    );
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+    const [token, setToken] = useState<string | null>(() => localStorage.getItem('authToken'));
+    const [ isAuthenticated, setIsAuthenticated ] = useState<boolean>(true);
 
-    const login = () => {
-        setIsAuthenticated(true);
+    useEffect(() => {
+        localStorage.setItem('authToken', token || '');
+        setAuthToken(token);
+        setIsAuthenticated(!!token);
+    }, [token]);
+
+    const login = (username: string, password: string) => {
+        axiosInstance.post('/auth/login', { username, password })
+            .then((response) => {
+                setToken(response.data.token);
+            })
+            .catch((error) => {
+                console.error('Failed to login:', error);
+            });
     };
 
     const logout = () => {
-        setIsAuthenticated(false);
+        setToken(null);
     };
-
-    const fetchUser = async () => {
-        const response = await fetch('http://localhost:8000/users/me', {
-            headers: {
-                Authorization: `Bearer ${savedToken}`
-            }
-        });
-        const data = await response.json();
-        setCurrentUser(data);
-    };
-
-    const savedToken: string | null = localStorage.getItem('token');
-    if (savedToken) {
-        fetchUser();
-    }
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated, login, logout, currentUser }}>
+        <AuthContext.Provider value={{ isAuthenticated, token, login, logout }}>
             {children}
         </AuthContext.Provider>
     );
 };
 
-export const useAuth = (): AuthContextType => {
+export const useAuth = () => {
     const context = useContext(AuthContext);
-    if (context === undefined) {
+    if (!context) {
         throw new Error('useAuth must be used within an AuthProvider');
     }
     return context;
