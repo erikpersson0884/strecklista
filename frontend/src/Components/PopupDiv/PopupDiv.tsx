@@ -5,15 +5,36 @@ import Shadowbox from "../Shadowbox/Shadowbox";
 interface PopupDivProps {
     children: React.ReactNode;
     title: string;
-    acceptButtonText?: string;
-    cancelButtonText?: string;
-    doAction: () => void;
-    cancelAction?: () => void;
+
     showPopupDiv: boolean;
     setShowPopupDiv: React.Dispatch<React.SetStateAction<boolean>>;
+
+    doAction: () => void;
+    cancelAction?: () => void;
+
+    acceptButtonText?: string;
+    cancelButtonText?: string;
     className?: string;
 }
 
+/**
+ * PopupDiv component.
+ * 
+ * This component renders a popup with a title, content, and action buttons.
+ * It also handles closing the popup when the Escape key is pressed.
+ * @param {string} title - The title of the popup.
+ * @param {boolean} showPopupDiv - A boolean indicating whether the popup should be shown.
+ * @param {React.Dispatch<React.SetStateAction<boolean>>} setShowPopupDiv - The function to set the visibility of the popup.
+
+ * @param {string} [acceptButtonText="Acceptera"] - The text for the accept button.
+ * @param {string} [cancelButtonText="Avbryt"] - The text for the cancel button.
+ * 
+ * @param {() => void} doAction - The function to be called when the accept button is clicked.
+ * @param {() => void} [cancelAction] - The function to be called when the cancel button is clicked.
+ * 
+ * @param {string} [className] - Additional class names for the popup.
+ * @returns {JSX.Element | null} The rendered PopupDiv component or null if not visible.
+ */
 const PopupDiv: React.FC<PopupDivProps> = ({ 
     children, 
     title, 
