@@ -17,6 +17,10 @@
     margin-inline: auto;
 }
 
+.popup-div h1 {
+    max-width: calc(100% - 2rem);
+}
+
 .popup-div .popup-actions {
     display: flex;
     justify-content: space-between;
