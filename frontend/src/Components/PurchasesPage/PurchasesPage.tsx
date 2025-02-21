@@ -70,7 +70,7 @@ const PurchasesPage: React.FC = () => {
                 />
                 ) : (
                     <button className='show-filter-button' onClick={() => setShowFilter(true)}>
-                        Show Filter
+                        Filtrera
                         <img src='images/filter.svg' alt='filter' />
                     </button>
                 )
