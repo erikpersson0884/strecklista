@@ -35,17 +35,15 @@ const RefillProductPopup: React.FC<RefillProductPopupProps> = ({ product, showPo
             setShowPopupDiv={setShowPopupDiv}
             cancelAction={handleClose}
         >
-            <div className="refill-content">
-                <p>Nuvarande antal: {product.amountInStock} st</p>
-                <label htmlFor="amount">Fyll på med: </label>
-                <input 
-                    id="amount" 
-                    type="number" 
-                    value={amount} 
-                    onChange={(e) => setAmount(Number(e.target.value))} 
-                />
-                <p>Nytt antal: {product.amountInStock + amount} st</p>
-            </div>
+            <p>Nuvarande antal: {product.amountInStock} st</p>
+            <label htmlFor="amount">Fyll på med: </label>
+            <input 
+                id="amount" 
+                type="number" 
+                value={amount} 
+                onChange={(e) => setAmount(Number(e.target.value))} 
+            />
+            <p>Nytt antal: {product.amountInStock + amount} st</p>
         </PopupDiv>
     );
 }

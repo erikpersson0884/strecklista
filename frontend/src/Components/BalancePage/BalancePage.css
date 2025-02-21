@@ -30,19 +30,20 @@
 .balancepage .user-div .name-div {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     gap: .3rem;
 }
 
-.name-div hr {
-    width: 100%;
-    border: #fff .05rem solid;
+.name-div h2 {
+    font-size: 1.5rem;
+}
+
+.name-div h3 {
+    font-size: 1rem;
 }
 
 .balancepage .user-div .add-button {
-    background-color: var(--green-color);
-
-    height: 3rem;
+    height: 2rem;
     border-radius: 100%;
 }
 

@@ -9,9 +9,8 @@ const PurchasesPage: React.FC = () => {
 
 
     return (
-        <div>
-            <h1>Purchases</h1>
-            <ul>
+        <div className='purchases-page'>
+            <ul className='purchases-list'>
                 {purchases.map((purchase) => (
                     <PurchaseItem key={purchase.id} purchase={purchase} />
                 ))}

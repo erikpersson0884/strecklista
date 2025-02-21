@@ -40,7 +40,7 @@
 
 .cancel-button, .delete-button {
     background-color: brown;
-    color: #000000;
+    color: #ffffff;
 }
 
 .do-button, .add-button {
@@ -48,7 +48,8 @@
 }
 
 .disabled-button {
-    background-color: grey;
+    background-color: var(--input-color);
+    color: var(--text-color-ligth);
 
     cursor: auto;
 }

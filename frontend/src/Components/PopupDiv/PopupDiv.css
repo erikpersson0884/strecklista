@@ -5,7 +5,7 @@
 
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1rem;
 
     position: fixed;
 
@@ -19,6 +19,14 @@
 
 .popup-div h1 {
     max-width: calc(100% - 2rem);
+}
+
+.popup-content {
+    display: flex;
+    flex-direction: column;
+    gap: .6rem;
+
+    padding: 1rem;
 }
 
 .popup-div .popup-actions {

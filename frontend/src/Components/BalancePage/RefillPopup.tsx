@@ -49,18 +49,16 @@ const RefillPopup: React.FC<RefillPopupProps> = ({ user, showPopupDiv, setShowPo
             setShowPopupDiv={setShowPopupDiv}
             cancelAction={handleClose}
         >
-            <div className="refill-content">
-                <p>Nuvarande saldo: {user.balance}kr</p>
-                <label htmlFor="amount">Fyll på med: </label>
-                <input 
-                    id="amount" 
-                    type="number" 
-                    value={amount} 
-                    onChange={(e) => handleInputChange(e)} 
-                    onKeyPress={handleKeyPress}
-                />  
-                <p>Nytt saldo: {user.balance + (parseFloat(amount) || 0)}kr</p>
-            </div>
+            <p>Nuvarande saldo: {user.balance}kr</p>
+            <label htmlFor="amount">Fyll på med: </label>
+            <input 
+                id="amount" 
+                type="number" 
+                value={amount} 
+                onChange={(e) => handleInputChange(e)} 
+                onKeyPress={handleKeyPress}
+            />  
+            <p>Nytt saldo: {user.balance + (parseFloat(amount) || 0)}kr</p>
         </PopupDiv>
     );
 }

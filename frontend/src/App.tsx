@@ -15,7 +15,8 @@ const App: React.FC = () => {
     return (    
         <>
             {
-                !isAuthenticated ? 
+                // !isAuthenticated ? 
+                false ? 
                     <div className='login-div'>
                         <p>Inte inloggad</p>
                         <button>Logga in</button>

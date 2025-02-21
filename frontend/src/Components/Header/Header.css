@@ -9,7 +9,20 @@
     gap: 1rem;  
 
     box-sizing: border-box;
-    padding: .5rem;
+    padding: .5rem 1.5rem;
+}
+
+.page-header .logo {
+    height: 4rem;
+}
+
+.page-header h1 {
+    font-size: 1.8rem;
+    color: var(--text-color);
+}
+
+.page-header a {
+    text-decoration: none;
 }
 
 .page-header>div {
@@ -31,7 +44,7 @@
     display: none;
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 650px) {
     .page-header .inline-header-nav {
         display: none;
     }
@@ -41,9 +54,13 @@
         flex-direction: column;
         align-items: center;
         gap: 1rem;
+        padding-bottom: 1rem;
     }
 
     .page-header .open-nav-button {
         display: block;
+        background-color: transparent;
+        padding: 0;
+        height: 2.5rem;
     }
 }

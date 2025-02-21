@@ -72,11 +72,8 @@ interface UserDivProps {
 const UserDiv: React.FC<UserDivProps> = ({ user, onOpenPopup }) => {
     return (
         <div className='user-div'>
-            {/* <img src='images/profile.svg' alt='profile' height={10} /> */}
-            
             <div className='name-div'>
                 <h2>{user.nick}</h2>
-                <hr />
                 <h3>{user.name}</h3>
             </div>
             <p>{user.balance} kr</p>

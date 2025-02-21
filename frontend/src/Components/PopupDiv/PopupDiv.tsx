@@ -79,7 +79,9 @@ const PopupDiv: React.FC<PopupDivProps> = ({
                 <h1>{title}</h1>
                 <hr />
                 
-                {children}
+                <div className="popup-content">
+                    {children}
+                </div>
 
                 <div className="popup-actions">
                     <button className="doButton" onClick={doAction}>

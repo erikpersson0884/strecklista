@@ -19,7 +19,11 @@ const Header: React.FC = () => {
         <header className="page-header">
             <div>
                 <Link to="/">
-                    <img src="images/prit25.png" alt="logo" height={100} />
+                    <img src="images/prit25.png" alt="logo" height={100} className= "logo"/>
+                </Link>
+
+                <Link to="/">
+                    <h1>Strecklista</h1>
                 </Link>
 
                 <HeaderNav className='inline-header-nav'/>
