@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext, ReactNode } from 'react';
 import { Product } from '../Types';
-import { axiosInstance } from '../api/AxiosInstance';
+import { axiosInstance } from '../api/axiosInstance';
 
 interface OrderItemWithAmount extends Product {
     amount: number;

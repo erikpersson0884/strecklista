@@ -1,0 +1,26 @@
+
+
+.filter-div {
+    background-color: var(--secondary-color);
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    
+    flex-wrap: wrap;
+    gap: .8rem;
+
+    width: max-content !important;
+    padding: 1rem;
+    border-radius: .4rem;
+    margin-inline: auto;
+}
+
+.filter-div>div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .5rem;
+
+    width: 100%;
+}

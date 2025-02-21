@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext, ReactNode } from 'react';
 import { Purchase } from '../Types';
+import purchasesTestData from './purchasesTestData.json';
 
 
 interface PurchasesContextProps {
@@ -12,53 +13,12 @@ interface PurchasesContextProps {
 const PurchasesContext = createContext<PurchasesContextProps | undefined>(undefined);
 
 export const PurchasesProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-    const [purchases, setPurchases] = useState<Purchase[]>([
-        {
-            id: '1',
-            items: [
-                { name: 'beer', amount: 6, price: 10 },
-                { name: 'cider', amount: 6, price: 10 }
-            ],
-            amount: 12,
-            buyingUser:  {id:"231", name:"Erik", nick:"Göken", balance:193, imageUrl:"99832" },
-            paygingUser: {id:"31", name:"Emma", nick:"Dino", balance:-591, imageUrl:"asdf983" },
+    const [purchases, setPurchases] = useState<Purchase[]>([]);
 
-            date: new Date('2023-01-01')
-        },
-        {
-            id: '2',
-            items: [
-                { name: 'pizza', amount: 2, price: 40 },
-                { name: 'beer', amount: 4, price: 10 }
-            ],
-            amount: 80,
-            buyingUser: {id:"31", name:"Emma", nick:"Dino", balance:-591, imageUrl:"asdf983" },
-            paygingUser: {id:"231", name:"Erik", nick:"Göken", balance:193, imageUrl:"99832" },
-            date: new Date('2023-02-01')
-        },
-        {
-            id: '24',
-            items: [
-                { name: 'pizza', amount: 8, price: 40 },
-                { name: 'beer', amount: 4, price: 4 }
-            ],
-            amount: 80,
-            buyingUser: {id:"31", name:"Emma", nick:"Dino", balance:-591, imageUrl:"asdf983" },
-            paygingUser: {id:"231", name:"Erik", nick:"Göken", balance:193, imageUrl:"99832" },
-            date: new Date('2023-02-01')
-        },
-        {
-            id: '21',
-            items: [
-                { name: 'pizza', amount: 2, price: 14 },
-                { name: 'beer', amount: 4, price: 10 }
-            ],
-            amount: 80,
-            buyingUser: {id:"31", name:"Emma", nick:"Dino", balance:-591, imageUrl:"asdf983" },
-            paygingUser: {id:"231", name:"Erik", nick:"Göken", balance:193, imageUrl:"99832" },
-            date: new Date('2023-02-01')
-        }
-    ]);
+    React.useEffect(() => {
+        setPurchases(purchasesTestData.map(purchase => ({ ...purchase, date: new Date(purchase.date) })) as Purchase[]);
+
+    }, []); //Todo: remove this line when you have a backend
 
     const addPurchase = (purchase: Purchase) => {
         setPurchases((prevPurchases) => [...prevPurchases, purchase]);

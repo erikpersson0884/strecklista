@@ -7,11 +7,11 @@ import BalancePage from './Components/BalancePage/BalancePage';
 import NotFound from './Components/NotFound/NotFound';
 
 
-import { useAuth } from './Contexts/AuthContext';
+// import { useAuth } from './Contexts/AuthContext';
 import PurchasesPage from './Components/PurchasesPage/PurchasesPage';
 
 const App: React.FC = () => {
-    const { isAuthenticated } = useAuth();
+    // const { isAuthenticated } = useAuth();
     return (    
         <>
             {
