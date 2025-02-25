@@ -71,3 +71,6 @@ If you want to contribute, follow these steps:
 ## Authors 
 - <a href="https://erikpersson0884.github.io/portfolio">Erik Persson</a> 🐦
 
+## Acknowledgments
+- <a href="https://github.com/Adenholm">Hanna Adenholm</a> for contributing a lot to the remake of the design
+- <a href="https://github.com/olillin">Oliver Lindell</a> for developing the backend planned to be used for this web application
