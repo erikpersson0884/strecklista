@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import './BalancePage.css';
 
-import { useUsersContext } from '../../Contexts/UsersContext';
-import { useAuth } from '../../Contexts/AuthContext';
+import { useUsersContext } from '../../contexts/UsersContext';
+import { useAuth } from '../../contexts/AuthContext';
 import { User } from '../../Types';
 
 import RefillPopup from './RefillPopup';

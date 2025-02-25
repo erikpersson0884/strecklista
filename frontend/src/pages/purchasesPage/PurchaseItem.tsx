@@ -1,7 +1,7 @@
 import React from 'react';
 import { Purchase } from '../../Types';
-import { usePurchasesContext } from '../../Contexts/PurchasesContext';
-import PopupDiv from '../PopupDiv/PopupDiv';
+import { usePurchasesContext } from '../../contexts/PurchasesContext';
+import PopupDiv from '../../components/PopupDiv/PopupDiv';
 
 interface PurchaseItemProps {
     purchase: Purchase;

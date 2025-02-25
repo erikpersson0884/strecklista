@@ -1,8 +1,8 @@
-import { InventoryProvider } from './Contexts/InventoryContext';
-import { CartProvider } from './Contexts/CartContext';
-import { UsersProvider } from './Contexts/UsersContext';
-import { AuthProvider } from './Contexts/AuthContext';
-import { PurchasesProvider } from './Contexts/PurchasesContext';
+import { InventoryProvider } from './contexts/InventoryContext';
+import { CartProvider } from './contexts/CartContext';
+import { UsersProvider } from './contexts/UsersContext';
+import { AuthProvider } from './contexts/AuthContext';
+import { PurchasesProvider } from './contexts/PurchasesContext';
 
 const Providers: React.FC<{children: React.ReactNode}> = ({ children }) => {
     return (

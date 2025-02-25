@@ -1,9 +1,9 @@
 import React from 'react';
 import './Cart.css';
-import { useCart } from '../../../Contexts/CartContext';
-import { useUsersContext } from '../../../Contexts/UsersContext';
+import { useCart } from '../../../contexts/CartContext';
+import { useUsersContext } from '../../../contexts/UsersContext';
 import { User } from '../../../Types';
-import { useAuth } from '../../../Contexts/AuthContext';
+import { useAuth } from '../../../contexts/AuthContext';
 
 interface CartProps {
     closeCart: () => void;       

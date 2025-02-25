@@ -1,14 +1,14 @@
-import './App.css'
+import './styles/App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Header from './Components/Header/Header';
-import ShopPage from './Components/ShopPage/ShopPage';
-import Inventory from './Components/Inventory/InventoryPage';
-import BalancePage from './Components/BalancePage/BalancePage';
-import NotFound from './Components/NotFound/NotFound';
 
+import Header from './layouts/header/Header';
 
-// import { useAuth } from './Contexts/AuthContext';
-import PurchasesPage from './Components/PurchasesPage/PurchasesPage';
+import ShopPage from './pages/shopPage/ShopPage';
+import Inventory from './pages/inventoryPage/InventoryPage';
+import BalancePage from './pages/balancePage/BalancePage';
+import PurchasesPage from './pages/purchasesPage/PurchasesPage';
+import NotFound from './pages/notFoundPage/NotFoundPage';
+
 
 const App: React.FC = () => {
     // const { isAuthenticated } = useAuth();

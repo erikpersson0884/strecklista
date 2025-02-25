@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Product } from '../../../Types';
 import './InventoryItem.css';
-import { useInventory } from '../../../Contexts/InventoryContext';
+import { useInventory } from '../../../contexts/InventoryContext';
 
 interface InventoryItemProps {
     product: Product;

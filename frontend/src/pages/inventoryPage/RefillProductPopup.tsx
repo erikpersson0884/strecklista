@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Product } from '../../Types';
-import PopupDiv from '../PopupDiv/PopupDiv';
-import { useInventory } from '../../Contexts/InventoryContext';
+import PopupDiv from '../../components/PopupDiv/PopupDiv';
+import { useInventory } from '../../contexts/InventoryContext';
 
 interface RefillProductPopupProps {
     product: Product;

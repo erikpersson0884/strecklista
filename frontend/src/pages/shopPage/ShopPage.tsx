@@ -1,9 +1,9 @@
 import React from 'react';
 import Product from './Product/Product';
 import './shopPage.css';
-import { useInventory } from '../../Contexts/InventoryContext';
+import { useInventory } from '../../contexts/InventoryContext';
 import Cart from './Cart/Cart';
-import Shadowbox from '../Shadowbox/Shadowbox';
+import Shadowbox from '../../components/Shadowbox/Shadowbox';
 import { Product as ProductT } from '../../Types';
 
 

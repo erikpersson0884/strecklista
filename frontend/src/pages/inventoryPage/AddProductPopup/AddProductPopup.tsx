@@ -1,8 +1,8 @@
 import React from "react";
-import PopupDiv from "../../PopupDiv/PopupDiv";
+import PopupDiv from "../../../components/PopupDiv/PopupDiv";
 import "./AddProductPopup.css";
 
-import { useInventory } from "../../../Contexts/InventoryContext";
+import { useInventory } from "../../../contexts/InventoryContext";
 import { Product } from "../../../Types";
 
 interface AddProductPopupProps {

@@ -3,7 +3,7 @@ import './InventoryPage.css';
 
 import { Product } from '../../Types';
 import InventoryItem from './InventoryItem/InventoryItem';
-import { useInventory } from '../../Contexts/InventoryContext';
+import { useInventory } from '../../contexts/InventoryContext';
 import AddProductPopup from './AddProductPopup/AddProductPopup';
 import RefillProductPopup from './RefillProductPopup';
 

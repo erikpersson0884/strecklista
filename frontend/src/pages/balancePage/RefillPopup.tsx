@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
+
+import PopupDiv from '../../components/PopupDiv/PopupDiv';
+
 import { User } from '../../Types';
-import PopupDiv from '../PopupDiv/PopupDiv';
-import { useUsersContext } from '../../Contexts/UsersContext';
+
+import { useUsersContext } from '../../contexts/UsersContext';
 
 interface RefillPopupProps {
     user: User;

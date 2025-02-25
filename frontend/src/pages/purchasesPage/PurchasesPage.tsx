@@ -2,8 +2,8 @@ import React from 'react';
 import './PurchasesPage.css';
 
 import Filter from './Filter/Filter';
-import { usePurchasesContext } from '../../Contexts/PurchasesContext';
-import { useUsersContext } from '../../Contexts/UsersContext';
+import { usePurchasesContext } from '../../contexts/PurchasesContext';
+import { useUsersContext } from '../../contexts/UsersContext';
 import PurchaseItem from './PurchaseItem';
 
 const ITEMS_PER_PAGE = 20;
