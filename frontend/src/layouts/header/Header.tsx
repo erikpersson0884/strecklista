@@ -1,6 +1,9 @@
 import React from 'react';
 import './Header.css';
 
+import prit25image from '../../assets/images/prit25.png';
+import menuIcon from '../../assets/images/menu-icon.svg';
+
 import { Link } from 'react-router-dom';
 
 const links = [
@@ -19,7 +22,7 @@ const Header: React.FC = () => {
         <header className="page-header">
             <div>
                 <Link to="/">
-                    <img src="images/prit25.png" alt="logo" height={100} className= "logo"/>
+                    <img src={prit25image} alt="logo" height={100} className= "logo"/>
                 </Link>
 
                 <Link to="/">
@@ -29,7 +32,7 @@ const Header: React.FC = () => {
                 <HeaderNav className='inline-header-nav'/>
 
                 <button className="open-nav-button" onClick={() =>  setNavOpen(!navOpen)}>
-                    <img src="images/menu-icon.svg" alt="menu" height={50} />
+                    <img src={menuIcon} alt="menu" height={50} />
                 </button>
             </div>
 

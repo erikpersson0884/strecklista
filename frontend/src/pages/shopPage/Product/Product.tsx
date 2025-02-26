@@ -2,6 +2,10 @@ import React from 'react';
 import { Product as ProductT } from '../../../Types';
 import './Product.css';
 
+import favouriteIcon from '../../../assets/images/favourite.svg';
+import favouriteIconFilled from '../../../assets/images/favourite-filled.svg';
+
+
 import { useCart } from '../../../contexts/CartContext';
 
 interface ProductProps {
@@ -20,13 +24,13 @@ const Product: React.FC<ProductProps> = ({ product, isFavourite, toggleFavourite
 
                 {isFavourite ? 
                     <img 
-                        src="images/favourite-filled.svg" 
+                        src={favouriteIconFilled}
                         alt="heart" 
                         height={20}
                     />
                     :
                     <img 
-                        src="images/favourite.svg" 
+                        src={favouriteIcon}
                         alt="heart" 
                         height={20}
                     />

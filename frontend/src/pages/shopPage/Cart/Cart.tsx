@@ -5,6 +5,8 @@ import { useUsersContext } from '../../../contexts/UsersContext';
 import { User } from '../../../Types';
 import { useAuth } from '../../../contexts/AuthContext';
 
+import deleteIcon from '../../../assets/images/delete-white.svg';
+
 interface CartProps {
     closeCart: () => void;       
 }
@@ -60,7 +62,7 @@ const Cart: React.FC<CartProps> = ({ closeCart }) => {
 
                             <span className='item-price'>{item.amount * item.price}kr</span>
                             <button className='delete-button' onClick={() => removeItem(item)}>
-                                <img src="images/delete.svg" alt="delete" height={10}/>
+                                <img src={deleteIcon} alt="delete" height={10}/>
                             </button>
                         </li>
                     ))}

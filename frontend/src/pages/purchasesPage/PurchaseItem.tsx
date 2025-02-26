@@ -3,6 +3,8 @@ import { Purchase } from '../../Types';
 import { usePurchasesContext } from '../../contexts/PurchasesContext';
 import PopupDiv from '../../components/PopupDiv/PopupDiv';
 
+import deleteIcon from '../../assets/images/delete-white.svg';
+
 interface PurchaseItemProps {
     purchase: Purchase;
 }
@@ -30,7 +32,7 @@ const PurchaseItem: React.FC<PurchaseItemProps> = ({ purchase }) => {
             ) : (
                 <li className="purchase-item-detailed purchase-item">
                     <button onClick={() => setShowPopupDiv(true)} className="delete-button">
-                        <img src="images/delete-white.svg" alt="Delete" />
+                        <img src={deleteIcon} alt="Delete" />
                     </button>
 
                     <div className='purchase-info'>

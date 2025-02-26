@@ -6,6 +6,8 @@ import Cart from './Cart/Cart';
 import Shadowbox from '../../components/Shadowbox/Shadowbox';
 import { Product as ProductT } from '../../Types';
 
+import shoppingCartIcon from '../../assets/images/shoppingcart.svg';
+
 
 const ShopPage: React.FC = () => {
     const { products } = useInventory();
@@ -55,7 +57,7 @@ const ShopPage: React.FC = () => {
             </div>
 
             <button className='showCartButton no-button-formatting' onClick={() => setDisplayCart(!displayCart)}>
-                <img src="images/shoppingcart.svg" alt="shopping cart" height={20}/>
+                <img src={shoppingCartIcon} alt="shopping cart" height={20}/>
             </button>
         </>
 
