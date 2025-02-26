@@ -55,9 +55,10 @@
     height: 100%;
 }
 
-.cart button img {
-    height: 100%;
-    aspect-ratio: 1/1;
+.cart .cart-footer {
+    display: flex;
+    flex-direction: column;
+    gap: .7rem;
 }
 
 .cart .select-paying-user {
@@ -65,4 +66,12 @@
     flex-direction: row;
     align-items: center;
     gap: .5rem;
+}
+
+.cart .open-comment-button {
+    margin-left: auto;
+}
+
+.cart .total {
+    font-weight: bold;
 }

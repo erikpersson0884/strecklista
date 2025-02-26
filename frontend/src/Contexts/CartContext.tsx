@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, ReactNode } from 'react';
+import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 import { Product } from '../Types';
 import { axiosInstance } from '../api/axiosInstance';
 
@@ -8,6 +8,7 @@ interface OrderItemWithAmount extends Product {
 
 interface CartContextType {
     items: OrderItemWithAmount[];
+    total: number;
     addProduct: (item: Product) => void;
     decreaseProductAmount: (product: Product) => void;
     removeItem: (product: Product) => void;
@@ -19,6 +20,7 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [items, setItems] = useState<OrderItemWithAmount[]>([]);
+    const [ total, setTotal ] = useState<number>(0);
 
     const addProduct = (item: Product) => {
         setItems((prevItems) => {
@@ -31,8 +33,6 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                 return [...prevItems, { ...item, amount: 1 }];
             }
         });
-
-        console.log(items);
     };
 
     const decreaseProductAmount = (product: Product) => {
@@ -51,11 +51,23 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         setItems([]);
     };
 
-    const buyProducts = (userId: string): boolean => {
+    useEffect(() => {
+        const newTotal = items.reduce((sum, item) => sum + item.price * item.amount, 0);
+        setTotal(newTotal);
+        console.log('Total:', newTotal);
+    }, [items]);
+
+    const buyProducts = (userId: string, comment?: string): boolean => {
         // Implement buying products
 
+        const body = {
+            userId,
+            products: items,
+            comment: comment || ''
+        }
+
         try {
-            axiosInstance.post('/api/purchases', { userId, products: items })
+            axiosInstance.post('/api/purchases', {body})
             .then(response => {
                 console.log('Purchase successful:', response.data);
             })
@@ -74,8 +86,10 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         return true; //TODO: implement buying products
     }
 
+
+
     return (
-        <CartContext.Provider value={{ items, addProduct, removeItem, decreaseProductAmount, clearOrder, buyProducts }}>
+        <CartContext.Provider value={{ items, addProduct, removeItem, decreaseProductAmount, clearOrder, buyProducts, total }}>
             {children}
         </CartContext.Provider>
     );

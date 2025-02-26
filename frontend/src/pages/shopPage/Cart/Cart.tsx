@@ -11,7 +11,7 @@ interface CartProps {
 
 const Cart: React.FC<CartProps> = ({ closeCart }) => {
     const { items, removeItem } = useCart();
-    const { buyProducts } = useCart();
+    const { buyProducts, total } = useCart();
     const { users } = useUsersContext();
     const { currentUser } = useAuth();
 
@@ -35,6 +35,9 @@ const Cart: React.FC<CartProps> = ({ closeCart }) => {
             }
         }
     }
+
+    const [showCommentInput, setShowCommentInput] = React.useState(false);
+    const [ comment, setComment ] = React.useState('');
 
     return (
         <div className='cart' onClick={(e) => e.stopPropagation()}>
@@ -61,17 +64,40 @@ const Cart: React.FC<CartProps> = ({ closeCart }) => {
                             </button>
                         </li>
                     ))}
+
+                    <li className='total'>
+                       <span>Totalt</span> 
+                       <span>{total} kr</span>
+                    </li>
                 </ul>
 
                 <hr />
 
-                <div className='select-paying-user'>
-                    <p>Sträcka åt</p>
-                    <select name="users" id="users" value={selectedUser?.id || ''} onChange={handleSelectChange}>
-                        {users.map((user: User) => (
-                            <option key={user.id} value={user.id}>{user.nick}</option>
-                        ))}
-                    </select>
+                <div className='cart-footer'>
+                    <div className='select-paying-user'>
+                        <p>Sträcka åt</p>
+                        <select name="users" id="users" value={selectedUser?.id || ''} onChange={handleSelectChange}>
+                            {users.map((user: User) => (
+                                <option key={user.id} value={user.id}>{user.nick}</option>
+                            ))}
+                        </select>
+
+                        <button
+                            onClick={() => setShowCommentInput(!showCommentInput)}
+                            className='open-comment-button'
+                        >
+                            Kommentar
+                        </button>
+                    </div>
+                    
+                    {showCommentInput && (
+                        <input
+                            type='text'
+                            placeholder='Kommentar'
+                            value={comment}
+                            onChange={(e) => setComment(e.target.value)}
+                        />    
+                    )}                
                 </div>
 
                 <button className='' onClick={handleBuyProducts}>Strecka</button>
