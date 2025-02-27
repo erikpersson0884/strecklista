@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import './BalancePage.css';
 
+import addIcon from '../../assets/images/add.svg';
+
 import { useUsersContext } from '../../contexts/UsersContext';
 import { useAuth } from '../../contexts/AuthContext';
 import { User } from '../../Types';
@@ -82,7 +84,7 @@ const UserDiv: React.FC<UserDivProps> = ({ user, onOpenPopup }) => {
                 className='add-button no-button-formatting' 
                 onClick={() => onOpenPopup(user)}
             >
-                <img src='images/add.svg' alt='add' height={10} />
+                <img src={addIcon} alt='add' height={10} />
             </button>
         </div>
     );

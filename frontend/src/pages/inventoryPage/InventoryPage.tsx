@@ -1,6 +1,9 @@
 import React from 'react';
 import './InventoryPage.css';
 
+import addIcon from '../../assets/images/add.svg';
+
+
 import { Product } from '../../Types';
 import InventoryItem from './InventoryItem/InventoryItem';
 import { useInventory } from '../../contexts/InventoryContext';
@@ -27,7 +30,7 @@ const InventoryPage: React.FC = () => {
             ))}
 
             <button className='add-button' onClick={() => setShowAddProductPopup(!showAddProductPopup)}>
-                <img src='images/add.svg' alt='Add product' />
+                <img src={addIcon} alt='Add product' />
                 <p>Lägg till vara</p>
             </button>
         </ul>

@@ -1,4 +1,8 @@
 import React, { useState, useEffect } from 'react';
+
+import editIcon from '../../../assets/images/edit.svg';
+import deleteIcon from '../../../assets/images/delete.svg';
+
 import { Product } from '../../../Types';
 import './InventoryItem.css';
 import { useInventory } from '../../../contexts/InventoryContext';
@@ -126,10 +130,10 @@ const InventoryItem: React.FC<InventoryItemProps> = ({ product, openRefill }) =>
 
 
                 <button onClick={() => setExpanded(true)}>
-                    <img src='images/edit.svg' alt='Redigera' height={10}/>
+                    <img src={editIcon} alt='Redigera' height={10}/>
                 </button>
                 <button className='delete-button' onClick={handleDelete}>
-                    <img src='images/delete.svg' alt='Delete' height={10}/>
+                    <img src={deleteIcon} alt='Delete' height={10}/>
                 </button>
             </li>
     );

@@ -1,6 +1,8 @@
 import React from 'react';
 import './PurchasesPage.css';
 
+import filterIcon from '../../assets/images/filter.svg';
+
 import Filter from './Filter/Filter';
 import { usePurchasesContext } from '../../contexts/PurchasesContext';
 import { useUsersContext } from '../../contexts/UsersContext';
@@ -71,7 +73,7 @@ const PurchasesPage: React.FC = () => {
                 ) : (
                     <button className='show-filter-button' onClick={() => setShowFilter(true)}>
                         Filtrera
-                        <img src='images/filter.svg' alt='filter' />
+                        <img src={filterIcon} alt='filter' />
                     </button>
                 )
             }
