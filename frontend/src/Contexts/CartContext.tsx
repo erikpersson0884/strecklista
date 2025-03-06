@@ -1,6 +1,5 @@
 import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 import { Product } from '../Types';
-import { axiosInstance } from '../api/axiosInstance';
 
 interface OrderItemWithAmount extends Product {
     amount: number;
@@ -60,25 +59,6 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const buyProducts = (userId: string, comment?: string): boolean => {
         // Implement buying products
 
-        const body = {
-            userId,
-            products: items,
-            comment: comment || ''
-        }
-
-        try {
-            axiosInstance.post('/api/purchases', {body})
-            .then(response => {
-                console.log('Purchase successful:', response.data);
-            })
-            .catch(error => {
-                console.error('Error purchasing products:', error);
-                return false;
-            });
-        } catch (error) {
-            console.error('Unexpected error:', error);
-            return false;
-        }
 
         console.log('Buying products for user with id:', userId);
         

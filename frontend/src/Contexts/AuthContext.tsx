@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { axiosInstance, setAuthToken } from '../api/axiosInstance';
+import { setAuthToken } from '../api/axiosInstance';
 import { User } from '../Types';
 
 interface AuthContextType {
@@ -24,14 +24,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }, [token]);
 
     const login = (username: string, password: string) => {
-        axiosInstance.post('/auth/login', { username, password })
-            .then((response) => {
-                setToken(response.data.token);
-                setCurrentUser(response.data.user);
-            })
-            .catch((error) => {
-                console.error('Failed to login:', error);
-            });
     };
 
     const logout = () => {

@@ -28,7 +28,7 @@ const InventoryItem: React.FC<InventoryItemProps> = ({ product, openRefill }) =>
     }, [updatedProduct, product]);
 
     const handleUpdate = () => {
-        updateProduct(updatedProduct.id, updatedProduct);
+        updateProduct(updatedProduct);
         setExpanded(false);
     };
 

@@ -1,29 +1,61 @@
 
+export interface Price {
+    price: number;
+    displayName: string;
+}
 
 export interface Product {
     id: string;
+
     name: string;
-    amountInStock: number;
+    imageUrl: string;
+
+    prices: Price[];
     price: number;
+
+    amountInStock: number;
+
     available: boolean;
+    favorite: boolean;
+}
+
+export interface Group {
+    id: string;
+    name: string;
+    users: string[];
+    products: Product[];
     imageUrl: string;
 }
 
 export interface User {
     id: string;
+
+    firstName: string
+    lastName: string
     name: string;
     nick: string;
-    balance: number;
+
     imageUrl: string;
+
+    balance: number;
 }
+
+
 
 export interface Purchase {
     id: string;
+
+    purchaseTime: number;
+    date: number;
+
+    
     items: PurchaseItem[];
     amount: number;
-    date: Date;
+
     buyingUser: User;
     paygingUser: User;
+
+    group: Group;
 }
 
 interface PurchaseItem {
