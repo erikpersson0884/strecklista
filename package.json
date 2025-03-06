@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev-frontend": "cd frontend && npm run dev",
-    "dev": "npm run dev-frontend",
+    "dev-backend": "cd dev-server && npm run dev",
+    "dev": "concurrently \"npm run dev-backend\" \"npm run dev-frontend\"",
     "build-frontend": "cd frontend && npm run build",
     "build": "npm run build-frontend",
     "deploy": "npm run build && gh-pages -d frontend/dist",
@@ -14,6 +15,7 @@
   },
   "author": "Erik Persson",
   "dependencies": {
-    "gh-pages": "^6.3.0"
+    "gh-pages": "^6.3.0",
+    "concurrently": "^7.0.0"
   }
 }
