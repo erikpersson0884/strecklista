@@ -24,7 +24,7 @@ const transformApiItemToProduct = (item: ApiItem): Product => ({
     name: item.displayName, // Map displayName -> name
     amountInStock: 0, // API does not provide stock, default to 0
     prices: item.prices, // Map prices
-    price: item.prices.find((price: any) => price.displayName === "Intern")?.price, // Map prices -> price where display_name is "intern"
+    price: item.prices.find((price: any) => price.displayName === "P.R.I.T.")?.price, // Map prices -> price where display_name is "intern"
     available: item.visible, // Map visible -> available
     imageUrl: item.icon || "", // Handle missing icon
     favorite: item.favorite
@@ -41,8 +41,9 @@ const transformProductToApiItem = (product: Product): ApiItem => ({
 
 
 export const getInventory = async (): Promise<Product[]> => {
-    const response = await api.get("/group/item");
-    const items = response.data.items.map(transformApiItemToProduct);
+    const response = await api.get("/api/group/item");
+    console.log(response.data.data.items);
+    const items = response.data.data.items.map(transformApiItemToProduct);
     return items;
 };
 

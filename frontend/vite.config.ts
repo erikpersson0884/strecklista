@@ -7,6 +7,13 @@ export default defineConfig({
 
     server: {
         port: 3000,
+        proxy: {
+            '/api': {
+                target: 'https://prittemp.olillin.com',
+                changeOrigin: true,
+                secure: false
+            }
+        }
     },
     plugins: [
         react(),

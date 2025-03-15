@@ -8,7 +8,6 @@ export interface PurchaseResponse {
 }
 
 export const getGroupPurchases = async (limit = 50, offset = 0): Promise<PurchaseResponse> => {
-
   try {
     const response = await api.get(`/group/purchase`, {
       params: { limit, offset },
