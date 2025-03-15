@@ -4,10 +4,14 @@ import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
     base: '/strecklista/',
-
     server: {
-        port: 3000,
+   	port: 3000,
     },
+	 test: {
+		globals: true,
+		environment: 'jsdom',
+		setupFiles: './src/test/setup.ts',
+	 },
     plugins: [
         react(),
         VitePWA({
