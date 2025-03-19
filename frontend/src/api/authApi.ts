@@ -1,4 +1,5 @@
 import api from "./axiosInstance";
+import { User } from "../types"; // Adjust the path to where the User type is defined
 
 export const authenticate = async () => {
   try {
@@ -8,11 +9,13 @@ export const authenticate = async () => {
     throw new Error(error.response?.data?.message || "Authentication failed");
   }
 }
-
-export const login = async (code: string) => {
+export const login = async (code: string): Promise<{ token: string; user: User }> => {
   try {
     const response = await api.post(`/login?code=${code}`);
-    return response.data.data; // Returns { token, user }
+    return {
+      token: response.data.access_token,
+      user: response.data.user,
+    };
   } catch (error: any) {
     throw new Error(error.response?.data?.message || "Login failed");
   }

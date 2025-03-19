@@ -1,31 +1,37 @@
-import { useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useEffect, useRef } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
+import "./AuthCallback.css";
 
 const AuthCallback = () => {
   const { exchangeCodeForToken } = useAuth();
-  const navigate = useNavigate();
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const hasRequested = useRef(false); // Prevents multiple requests
 
   useEffect(() => {
     const handleAuth = async () => {
+      if (hasRequested.current) return; // Prevent duplicate execution
+      hasRequested.current = true;
+
       const params = new URLSearchParams(location.search);
       const code = params.get("code");
 
       if (code) {
-        const success: boolean = await exchangeCodeForToken(code);
-        if (success) return;
+        await exchangeCodeForToken(code);
       }
-      alert("Login failed. Please try again.");
       navigate("/");
-      return;
     };
 
     handleAuth();
-  }, [location]);
+  }, [location]); // Dependency array remains unchanged
 
-
-  return <div>Logging in...</div>;
+  return (
+    <div className="auth-callback">
+      <p>Logging in...</p>
+    </div>
+  );
 };
 
 export default AuthCallback;

@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
+
 export default defineConfig({
     base: '/strecklista/',
 
@@ -9,9 +10,14 @@ export default defineConfig({
         port: 3000,
         proxy: {
             '/api': {
-                target: 'https://prittemp.olillin.com',
-                changeOrigin: true,
-                secure: false
+                target: 'https://prittemp.olillin.com', 
+                changeOrigin: true, 
+                secure: true, 
+            },
+            '/login': {
+                target: 'https://prittemp.olillin.com', 
+                changeOrigin: true, 
+                secure: true, 
             }
         }
     },

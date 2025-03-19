@@ -15,84 +15,77 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-	const [token, setToken] = useState<string | null>(null);
-	const [currentUser, setCurrentUser] = useState<User | null>(null);
-	const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+    const [token, setToken] = useState<string | null>(() => localStorage.getItem("authToken"));
+    const [currentUser, setCurrentUser] = useState<User | null>(null);
+    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(!!token);
 
-	useEffect(() => { // check if user is already authenticated on startup
-		const checkAuth = async () => {
-		const storedToken = localStorage.getItem("authToken");
-		if (storedToken) {
-			setToken(storedToken);
-		}
-		};
-		checkAuth();
-	}, []);
+    useEffect(() => {
+        if (token) {
+            setAuthTokenInAxios(token); // Ensure Axios has the token
+            localStorage.setItem("authToken", token); // Store token persistently
+        } else {
+            localStorage.removeItem("authToken");
+        }
+    }, [token]);
 
-	useEffect(() => {
-		const fetchUser = async () => {
-			if (token) {
-				localStorage.setItem("authToken", token);
-				const user: User = await getCurrentUser();
-				if (user) {
-					setAuthTokenInAxios(token);
-					setCurrentUser(user);
-					setIsAuthenticated(true);
-				}
-			} else {
-				localStorage.removeItem("authToken");
-				setCurrentUser(null);
-				setIsAuthenticated(false);
-			}
-		};
+    useEffect(() => {
+        const fetchUser = async () => {
+            if (!token) {
+                setCurrentUser(null);
+                setIsAuthenticated(false);
+                return;
+            }
 
-		fetchUser();
-	}, [token]);
+            try {
+                const user: User = await getCurrentUser();
+                setCurrentUser(user);
+                setIsAuthenticated(true);
+            } catch (error) {
+                console.error("Error fetching user:", error);
+                setCurrentUser(null);
+                setIsAuthenticated(false);
+                setToken(null); // Clear invalid token
+            }
+        };
 
-	
-	/**
-	 * Redirects the user to the authentication URL for login.
-	 * 
-	 * This function retrieves the authentication URL from the environment variables
-	 * and sets the window location to this URL, effectively redirecting the user
-	 * to the authentication page.
-	 * 
-	 * @async
-	 */
-	const authenticate = async () => {
-		const authenticationUrl = import.meta.env.VITE_AUTH_URL as string;
-		window.location.href = authenticationUrl;
-	};
+        fetchUser();
+    }, [token]); // Ensure it refetches user when token changes
 
-	const exchangeCodeForToken = async (code: string): Promise<boolean> => {
-		try {
-		const { token, user } = await login(code);
-		setToken(token);
-		setCurrentUser(user);
-		window.location.href = "/";
-		return true;
-		}
-		catch (error) {
-		console.error("Error exchanging code for token", error);
-		return false;
-		}
-	};
+    const authenticate = async () => {
+        const authenticationUrl = import.meta.env.VITE_AUTH_URL as string;
+        window.location.href = authenticationUrl;
+    };
 
-  const logout = () => {
-		setToken(null);
-	};
+    const exchangeCodeForToken = async (code: string): Promise<void> => {
+        try {
+            const { token, user } = await login(code);
 
-	return (
-		<AuthContext.Provider value={{ isAuthenticated, authenticate, logout, currentUser, exchangeCodeForToken }}>
-		{children}
-		</AuthContext.Provider>
-	);
+            setToken(token);
+            setCurrentUser(user);
+            setIsAuthenticated(true);
+        } catch (error) {
+            console.error("Error exchanging code for token", error);
+        }
+    };
+
+    const logout = () => {
+        setToken(null);
+        setCurrentUser(null);
+        setIsAuthenticated(false);
+        localStorage.removeItem("authToken");
+    };
+
+    return (
+        <AuthContext.Provider value={{ isAuthenticated, authenticate, logout, currentUser, exchangeCodeForToken }}>
+            {children}
+        </AuthContext.Provider>
+    );
 };
 
 export const useAuth = () => {
-	const context = useContext(AuthContext);
-	if (!context) {
-		throw new Error("useAuth must be used within an AuthProvider");
-	}
-	return context;
+    const context = useContext(AuthContext);
+    if (!context) {
+        throw new Error("useAuth must be used within an AuthProvider");
+    }
+    return context;
 };
