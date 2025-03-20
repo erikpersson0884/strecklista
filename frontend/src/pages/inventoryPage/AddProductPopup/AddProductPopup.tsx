@@ -3,7 +3,6 @@ import PopupDiv from "../../../components/PopupDiv/PopupDiv";
 import "./AddProductPopup.css";
 
 import { useInventory } from "../../../contexts/InventoryContext";
-import { Product } from "../../../Types";
 
 interface AddProductPopupProps {
     closePopup?: () => void;
@@ -14,30 +13,14 @@ interface AddProductPopupProps {
 const AddProductPopup: React.FC<AddProductPopupProps> = ({ closePopup = () => {}, setShowPopupDiv, showPopupDiv }) => {
     const { addProduct } = useInventory();
 
+    const [ name, setName ] = React.useState<string>("");
+    const [ price, setPrice ] = React.useState<number>(0);
+    const [ amountInStock, setAmountInStock ] = React.useState<number>(0);
+    const [ icon, seticon ] = React.useState<string>("");
+    const [ available, setAvailable ] = React.useState<boolean>(true);
 
-    const [newProduct, setNewProduct] = React.useState<Product>(
-        {
-            id: "0",
-            name: "",
-            price: 0,
-            amountInStock: 0,
-            available: true,
-            imageUrl: ""
-        }
-    );
-
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value, type, checked } = e.target;
-        setNewProduct({
-            ...newProduct,
-            [name]: type === "checkbox" ? checked : type === "number" ? parseFloat(value) : value
-        });
-    };
-
-    
-
-    const handleAddProduct = () => {
-        addProduct(newProduct);
+    const handleAddProduct = async () => {
+        await addProduct(name, [{ displayName: "P.R.I.T.", price: price }], icon);
         setShowPopupDiv(false);
     };
 
@@ -52,27 +35,27 @@ const AddProductPopup: React.FC<AddProductPopupProps> = ({ closePopup = () => {}
         >
             <div className="inputdiv">
                 <label>Varunamn</label>
-                <input type="text" name="name" value={newProduct.name} onChange={handleInputChange} />
+                <input type="text" name="name" value={name} onChange={(e) => setName(e.target.value)} />
             </div>
 
             <div className="inputdiv">
                 <label>Pris</label>
-                <input type="number" name="price" value={newProduct.price} onChange={handleInputChange} />
+                <input type="number" name="price" value={price} onChange={(e) => setPrice(Number(e.target.value))} />
             </div>
 
             <div className="inputdiv">
                 <label>Antal i lager</label>
-                <input type="number" name="amountInStock" value={newProduct.amountInStock} onChange={handleInputChange} />
+                <input type="number" name="amountInStock" value={amountInStock} onChange={(e) => setAmountInStock(Number(e.target.value))} />
             </div>
 
             <div className="inputdiv">
                 <label>Bild URL</label>
-                <input type="text" name="imageUrl" value={newProduct.imageUrl} onChange={handleInputChange} />
+                <input type="text" name="icon" value={icon} onChange={(e) => seticon(e.target.value)} />
             </div>
 
             <div className="availibility-container">
                 <label>Finns i lager</label>
-                <input type="checkbox" name="available" checked={newProduct.available} onChange={handleInputChange} />
+                <input type="checkbox" name="available" checked={available} onChange={(e) => setAvailable(e.target.checked)} />
             </div>
         </PopupDiv>
     );

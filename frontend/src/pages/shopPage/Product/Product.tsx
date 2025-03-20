@@ -38,7 +38,7 @@ const Product: React.FC<ProductProps> = ({ product, isFavourite, toggleFavourite
             </button>
 
             <div className='product-image'>
-                <img src={product.imageUrl} alt={product.name} />
+                <img src={product.icon} alt={product.name} />
             </div>
 
             <div className='product-info'>

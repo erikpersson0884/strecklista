@@ -56,11 +56,12 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         console.log('Total:', newTotal);
     }, [items]);
 
-    const buyProducts = (userId: string, comment?: string): boolean => {
+    const buyProducts = (userid: number, comment?: string): boolean => {
         // Implement buying products
 
 
         console.log('Buying products for user with id:', userId);
+        console.log('Comment:', comment);
         
         clearOrder();
         return true; //TODO: implement buying products
