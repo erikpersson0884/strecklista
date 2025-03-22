@@ -8,7 +8,7 @@ import Providers from './Providers';
 import ShopPage from './pages/shopPage/ShopPage';
 import Inventory from './pages/inventoryPage/InventoryPage';
 import BalancePage from './pages/balancePage/BalancePage';
-import PurchasesPage from './pages/purchasesPage/PurchasesPage';
+import TransactionsPage from './pages/transactionsPage/TransactionPage';
 import NotFound from './pages/notFoundPage/NotFoundPage';
 import LoginPage from './pages/loginPage/LoginPage';
 
@@ -19,34 +19,36 @@ import { useAuth } from './contexts/AuthContext';
 
 const App: React.FC = () => {
     const { isAuthenticated } = useAuth();
+    const baseName = '/strecklista/';
     return ( 
-        <>   
-            {
-                !isAuthenticated ? 
-                <BrowserRouter basename='/strecklista/'>
+        <>
+        {isAuthenticated ?
+                
+            <Providers >
+                <BrowserRouter basename={baseName}>
+                    <Header />
+                    
                     <Routes>
-                        <Route path="/" element={<LoginPage />} />
+                        <Route path="/" element={isAuthenticated ? <ShopPage /> : <LoginPage />} />
                         <Route path="/callback" element={<AuthCallback />} />
+                        <Route path="/inventory" element={<Inventory />} />
+                        <Route path='/balance' element={<BalancePage />} />
+                        <Route path="/transactions" element={<TransactionsPage />} />
                         <Route path="*" element={<NotFound />} />
                     </Routes>
                 </BrowserRouter>
-                :
-                <Providers >
-                    <BrowserRouter basename='/strecklista/'>
-                        <Header />
-
-                        <Routes>
-                            <Route path="/" element={<ShopPage />} />
-                            <Route path="/auth/callback" element={<AuthCallback />} />
-                            <Route path="/inventory" element={<Inventory />} />
-                            <Route path='/balance' element={<BalancePage />} />
-                            <Route path="/purchases" element={<PurchasesPage />} />
-                            <Route path="*" element={<NotFound />} />
-                        </Routes>
-                    </BrowserRouter>
-                </Providers>
-            }      
+            </Providers>
+        :
+            <BrowserRouter basename={baseName}>
+                <Routes>
+                    <Route path="/" element={<LoginPage />} />
+                    <Route path="/callback" element={<AuthCallback />} />
+                    <Route path="*" element={<NotFound />} />
+                </Routes>
+            </BrowserRouter>
+    }
         </>
+
     )
 }
 

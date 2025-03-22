@@ -1,53 +1,56 @@
-import { createContext, useState, useContext, ReactNode } from 'react';
+import { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 import { User } from '../Types';
+import { getUsers, makeDeposit } from '../api/usersApi';
 
 
 interface UsersContextType {
     users: User[];
-    addUser: (user: User) => void;
-    removeUser: (id: string) => void;
-    addUserBalance: (id: string, amount: number) => void;
+    addUserBalance: (id: number, amount: number) => Promise<void>;
+    getUserFromUserId: (userId: number) => User;
 }
 
 const UsersContext = createContext<UsersContextType | undefined>(undefined);
 
 export const UsersProvider = ({ children }: { children: ReactNode }) => {
-    const [users, setUsers] = useState<User[]>([
-        {id:"2", name:"Oliver", firstName: "Oliver", lastName: "Smith", nick:"Cal", balance:4847, imageUrl:"haosd" },
-        {id:"231", name:"Erik", firstName: "Erik", lastName: "Johnson", nick:"Göken", balance:193, imageUrl:"99832" },
-        {id:"31", name:"Emma", firstName: "Emma", lastName: "Brown", nick:"Dino", balance:-591, imageUrl:"asdf983" }
-    ]);
+    const [users, setUsers] = useState<User[]>([]);
     
-
-    const addUser = (user: User) => {
-        setUsers((prevUsers) => [...prevUsers, user]);
+    const fetchUsers = async () => {
+        try {
+            const fetchedUsers = await getUsers();
+            setUsers(fetchedUsers);
+        } catch (error) {
+            console.error('Failed to fetch users:', error);
+        }
     };
 
-    const removeUser = (id: string) => {
-        setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id));
+    useEffect(() => {
+        fetchUsers();
+    }, []);
+
+
+    const addUserBalance = async (id: number, amount: number) => {
+        console.log('IN USERCONTEXT:', id, amount);
+        const newBalance = await makeDeposit(id, amount)
+        setUserBalance(id, newBalance);
     };
 
-    const addUserBalance = (id: string, amount: number) => {
-        setUsers((prevUsers) => {
-            const userExists = prevUsers.some((user) => user.id === id);
-            if (!userExists) {
-                throw new Error(`User with id ${id} not found`);
-            }
-            return prevUsers.map((user) => {
-            if (user.id === id) {
-                console.log(user);
-                return { ...user, balance: user.balance + amount };
-            }
-            return user;
-            });
-        });
-
-        // console.log(users);
+    const setUserBalance = (id: number, newBalance: number) => {
+        setUsers((prevUsers) =>
+            prevUsers.map((user) =>
+                user.id === id ? { ...user, balance: newBalance } : user
+            )
+        );
     };
+
+    const getUserFromUserId = (userId: number): User => {
+        const user = users.find((user) => user.id === userId);
+        if (!user) throw new Error(`User with id ${userId} not found`);
+        return user;
+    }
 
 
     return (
-        <UsersContext.Provider value={{ users, addUser, removeUser, addUserBalance }}>
+        <UsersContext.Provider value={{ users, addUserBalance, getUserFromUserId }}>
             {children}
         </UsersContext.Provider>
     );

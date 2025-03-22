@@ -4,15 +4,14 @@ import { useCart } from '../../../contexts/CartContext';
 import { useUsersContext } from '../../../contexts/UsersContext';
 import { User } from '../../../Types';
 import { useAuth } from '../../../contexts/AuthContext';
-
-import deleteIcon from '../../../assets/images/delete-white.svg';
+import CartItem from './CartItem';
 
 interface CartProps {
     closeCart: () => void;       
 }
 
 const Cart: React.FC<CartProps> = ({ closeCart }) => {
-    const { items, removeItem } = useCart();
+    const { items } = useCart();
     const { buyProducts, total } = useCart();
     const { users } = useUsersContext();
     const { currentUser } = useAuth();
@@ -20,15 +19,15 @@ const Cart: React.FC<CartProps> = ({ closeCart }) => {
     const [ selectedUser, setSelectedUser ] = React.useState<User | null>(currentUser);
 
     const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const selectedUserId = e.target.value;
+        const selectedUserId = Number(e.target.value);
         const selectedUser = users.find(user => user.id === selectedUserId);
         setSelectedUser(selectedUser || null);
     }
 
-    const handleBuyProducts = () => {
+    const handleBuyProducts = async () => {
         if (!selectedUser) throw new Error('No user selected');
         else {
-            const successfullBuy: boolean = buyProducts(selectedUser.id);
+            const successfullBuy: boolean = await buyProducts(selectedUser.id);
 
             if (successfullBuy) {
                 closeCart();
@@ -52,19 +51,8 @@ const Cart: React.FC<CartProps> = ({ closeCart }) => {
             : 
             <>
                 <ul className='cartList'>
-                    {items.map((item, index) => (
-                        <li key={index}>
-                            <span className='item-name'>{item.name}</span>
-
-                            {/* <button className='add-button' onClick={() => addProduct(item)}>+</button> */}
-                            <span>{item.amount}st</span>
-                            {/* <button className='' onClick={() => decreaseProductAmount(item)}>-</button> */}
-
-                            <span className='item-price'>{item.amount * item.price}kr</span>
-                            <button className='delete-button' onClick={() => removeItem(item)}>
-                                <img src={deleteIcon} alt="delete" height={10}/>
-                            </button>
-                        </li>
+                    {items.map((item) => (
+                        <CartItem key={item.id} product={item} />
                     ))}
 
                     <li className='total'>

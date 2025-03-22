@@ -1,5 +1,5 @@
 import api from "./axiosInstance";
-import { User } from "../types"; // Adjust the path to where the User type is defined
+import { User } from "../Types"; // Adjust the path to where the User type is defined
 
 export const authenticate = async () => {
   try {

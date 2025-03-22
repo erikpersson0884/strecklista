@@ -1,48 +1,57 @@
 import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
-import { Product } from '../Types';
+import { Product, ProductInCart } from '../Types';
+import { makePurchase } from '../api/usersApi';
 
-interface OrderItemWithAmount extends Product {
-    amount: number;
-}
 
 interface CartContextType {
-    items: OrderItemWithAmount[];
+    items: ProductInCart[];
     total: number;
-    addProduct: (item: Product) => void;
-    decreaseProductAmount: (product: Product) => void;
-    removeItem: (product: Product) => void;
+    addProductToCart: (item: Product) => void;
+    setProductQuantity: (productId: number, quantity: number) => void;
+    decreaseProductQuantity: (Product: ProductInCart) => void;
+    increaseProductQuantity: (Product: ProductInCart) => void;
+    removeProductFromCart: (product: Product) => void;
     clearOrder: () => void;
-    buyProducts: (arg0: string) => boolean;
+    buyProducts: (arg0: number) => Promise<boolean>;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-    const [items, setItems] = useState<OrderItemWithAmount[]>([]);
+    const [ items, setItems ] = useState<ProductInCart[]>([]);
     const [ total, setTotal ] = useState<number>(0);
 
-    const addProduct = (item: Product) => {
+    const addProductToCart = (item: Product) => {
         setItems((prevItems) => {
             const existingItem = prevItems.find(i => i.id === item.id);
             if (existingItem) {
                 return prevItems.map(i => 
-                    i.id === item.id ? { ...i, amount: i.amount + 1 } : i
+                    i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
                 );
             } else {
-                return [...prevItems, { ...item, amount: 1 }];
+                return [...prevItems, { ...item, quantity: 1 }];
             }
         });
     };
 
-    const decreaseProductAmount = (product: Product) => {
-        setItems((prevItems) => 
-            prevItems
-                .map(p => p.id === product.id ? { ...p, amount: p.amount - 1 } : p)
-                .filter(p => p.amount > 0)
-        );
-    };
+    const setProductQuantity = (productId: number, quantity: number) => {
+        setItems((prevItems) => {
+            return prevItems.map(i => 
+                i.id === productId ? { ...i, quantity } : i
+            );
+        });
+    }
 
-    const removeItem = (product: Product) => {
+    const decreaseProductQuantity = (Product: ProductInCart) => {
+        setProductQuantity(Product.id, Product.quantity - 1);
+    }
+
+    const increaseProductQuantity = (Product: ProductInCart) => {
+        setProductQuantity(Product.id, Product.quantity + 1);
+    }
+
+
+    const removeProductFromCart = (product: Product) => {
         setItems((prevItems) => prevItems.filter(item => item.id !== product.id));
     };
 
@@ -51,26 +60,23 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     };
 
     useEffect(() => {
-        const newTotal = items.reduce((sum, item) => sum + item.price * item.amount, 0);
+        const newTotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
         setTotal(newTotal);
-        console.log('Total:', newTotal);
     }, [items]);
 
-    const buyProducts = (userid: number, comment?: string): boolean => {
-        // Implement buying products
-
-
-        console.log('Buying products for user with id:', userId);
-        console.log('Comment:', comment);
-        
-        clearOrder();
-        return true; //TODO: implement buying products
+    const buyProducts = async (userid: number): Promise<boolean> => { //TODO implement comment
+        const success = await makePurchase(userid, items);
+        if (success) {
+            clearOrder();
+            return true; 
+        }
+        else return false;
     }
 
 
 
     return (
-        <CartContext.Provider value={{ items, addProduct, removeItem, decreaseProductAmount, clearOrder, buyProducts, total }}>
+        <CartContext.Provider value={{ items, addProductToCart, removeProductFromCart, setProductQuantity, decreaseProductQuantity, increaseProductQuantity, clearOrder, buyProducts, total }}>
             {children}
         </CartContext.Provider>
     );

@@ -1,9 +1,6 @@
-import { DO_NOT_USE_OR_YOU_WILL_BE_FIRED_EXPERIMENTAL_CREATE_ROOT_CONTAINERS } from "react-dom/client";
-
-
 //  API Types
 export interface IApiUser {
-    id: IUserId;
+    id: string;
     firstName: string;
     lastName: string;
     nick: string;
@@ -12,7 +9,7 @@ export interface IApiUser {
 }
 
 export interface IApiGroup {
-    id: IGroupId;
+    id: string;
     prettyName: string;
     avatarUrl: string;
 }
@@ -34,20 +31,22 @@ export interface IApiPrice {
     displayName: string
 }
 
-interface IApiTransaction {
+// Frontend Types
+
+export interface Transaction {
     id: number
     type: "purchase" | "deposit"
-    createdBy: IUserId
-    createdFor: IUserId
+    createdBy: User
+    createdFor: User
     createdTime: number
 }
 
-export interface IApiPurchase extends IApiTransaction {
+export interface Purchase extends Transaction {
     type: "purchase",
-    items: IApiPurchaseItem[]
+    items: PurchaseItem[]
 }
 
-export interface IApiPurchaseItem {
+export interface PurchaseItem {
     item: {
         id: number
         displayName: string
@@ -57,15 +56,10 @@ export interface IApiPurchaseItem {
     purchasePrice: IApiPrice
 }
 
-export interface IApiDeposit extends IApiTransaction {
+export interface Deposit extends Transaction {
     type: "deposit",
-    amount: number
+    total: number
 }
-
-
-// Frontend Types
-export type IUserId = string;
-export type IGroupId = string;
 
 export interface Price {
     price: number;
@@ -90,8 +84,12 @@ export interface Product {
     timesPurchased: number
 }
 
+export interface ProductInCart extends Product {
+    quantity: number;
+}
+
 export interface Group {
-    id: DO_NOT_USE_OR_YOU_WILL_BE_FIRED_EXPERIMENTAL_CREATE_ROOT_CONTAINERS;
+    id: string;
     name: string;
     users: string[];
     products: Product[];
@@ -99,7 +97,7 @@ export interface Group {
 }
 
 export interface User {
-    id: number;
+    id: string;
 
     firstName: string
     lastName: string
@@ -109,28 +107,4 @@ export interface User {
     icon: string;
 
     balance: number;
-}
-
-
-
-export interface Purchase {
-    id: number;
-
-    purchaseTime: number;
-    date: number;
-
-    
-    items: PurchaseItem[];
-    amount: number;
-
-    buyingUser: User;
-    paygingUser: User;
-
-    group: Group;
-}
-
-interface PurchaseItem {
-    name: string;
-    amount: number;
-    price: number;
 }

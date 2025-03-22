@@ -76,3 +76,17 @@
 .cart .total {
     font-weight: bold;
 }
+
+.cart .quantity-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: .5rem;
+
+    width: min-content;
+}
+
+.quantity-container input {
+    width: 3ch;
+    text-align: center;
+}

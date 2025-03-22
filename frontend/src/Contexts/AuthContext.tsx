@@ -9,7 +9,7 @@ interface AuthContextType {
     authenticate: () => void;
     logout: () => void;
     currentUser: User | null;
-    exchangeCodeForToken: (code: string) => Promise<boolean>;
+    exchangeCodeForToken: (code: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -24,7 +24,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             setAuthTokenInAxios(token); // Ensure Axios has the token
             localStorage.setItem("authToken", token); // Store token persistently
         } else {
-            localStorage.removeItem("authToken");
+            // localStorage.removeItem("authToken");
         }
     }, [token]);
 
@@ -74,6 +74,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setIsAuthenticated(false);
         localStorage.removeItem("authToken");
     };
+
 
     return (
         <AuthContext.Provider value={{ isAuthenticated, authenticate, logout, currentUser, exchangeCodeForToken }}>

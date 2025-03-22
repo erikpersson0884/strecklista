@@ -10,7 +10,7 @@ const links = [
     { to: '/', text: 'Strecka' },
     { to: '/inventory', text: 'Inventory' },
     { to: '/balance', text: 'Tillgodo' },
-    { to: '/purchases', text: 'Purchases' },
+    { to: '/transactions', text: 'Transactions' },
 ]
 
 

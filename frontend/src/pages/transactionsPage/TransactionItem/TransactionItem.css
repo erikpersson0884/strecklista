@@ -1,0 +1,64 @@
+
+.transaction-item {
+    background-color: var(--secondary-color);
+    display: flex;
+    justify-content: space-between;
+
+    padding: .5rem;
+}
+
+.transaction-item-preview {
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.transaction-item-preview div {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+
+    flex: 1;
+}
+
+.transaction-item-preview p {
+    white-space: nowrap;
+    text-transform: capitalize;;
+}
+
+.transaction-item-preview .showDetailed-button {
+    margin-left: auto;
+}
+
+/* -- Detailed transaction item -- */
+
+.transaction-item-detailed {
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.transaction-item-detailed .delete-button {
+    position: absolute;
+    right: 1rem;
+}
+
+.transaction-item-detailed .total {
+    font-weight: bold;
+        
+    margin-top: 1rem;
+}
+
+.receipt-item, .receipt-header {
+    display: flex;
+    justify-content: space-between;
+    gap: .5rem;
+}
+
+.receipt-item>* {
+    flex: 1;
+    text-align: right;
+}
+
+.receipt-item>*:first-child {
+    text-align: left;
+}
