@@ -4,7 +4,8 @@
   "description": "A tally list",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test-frontend": "cd frontend && npm run test",
+    "test": "npm run test-frontend",
     "dev-frontend": "cd frontend && npm run dev",
     "dev-backend": "cd dev-server && npm run dev",
     "dev": "concurrently \"npm run dev-backend\" \"npm run dev-frontend\"",

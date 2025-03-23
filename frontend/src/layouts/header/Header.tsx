@@ -1,72 +1,49 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './Header.css';
-
 import prit25image from '../../assets/images/prit25.png';
 import menuIcon from '../../assets/images/menu-icon.svg';
-
-import { Link } from 'react-router-dom';
 
 const links = [
     { to: '/', text: 'Strecka' },
     { to: '/inventory', text: 'Inventory' },
     { to: '/balance', text: 'Tillgodo' },
     { to: '/purchases', text: 'Purchases' },
-]
-
+];
 
 const Header: React.FC = () => {
-
     const [navOpen, setNavOpen] = React.useState(false);
 
     return (
         <header className="page-header">
-            <div>
+            <div className="header-container">
                 <Link to="/">
-                    <img src={prit25image} alt="logo" height={100} className= "logo"/>
+                    <img src={prit25image} alt="Logo" className="logo" />
                 </Link>
 
                 <Link to="/">
                     <h1>Strecklista</h1>
                 </Link>
 
-                <HeaderNav className='inline-header-nav'/>
+                {/* Normal navigation, visibility controlled by CSS */}
+                <nav className={`header-nav ${navOpen ? "open" : ""}`}>
+                    {links.map(({ to, text }) => (
+                        <Link key={to} to={to} onClick={() => setNavOpen(false)}>
+                            {text}
+                        </Link>
+                    ))}
+                </nav>
 
-                <button className="open-nav-button" onClick={() =>  setNavOpen(!navOpen)}>
-                    <img src={menuIcon} alt="menu" height={50} />
+                <button 
+                    className="nav-toggle" 
+                    onClick={() => setNavOpen(!navOpen)}
+                    aria-label="Toggle navigation"
+                    aria-expanded={navOpen}
+                >
+                    <img src={menuIcon} alt="Menu" />
                 </button>
             </div>
-
-            {navOpen &&
-                <>
-                    <hr />
-                    <HeaderNav className='mobile-header-nav' setNavOpen={setNavOpen}/>
-                </> 
-                }
-
-
         </header>
-    );
-};
-
-interface HeaderNavProps {
-    className: string;
-    setNavOpen?: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const HeaderNav: React.FC<HeaderNavProps> = ({className, setNavOpen}) => {
-    return (
-        <nav className={'' + className}> 
-        
-            {links.map(link => 
-                <Link 
-                    to={link.to} 
-                    key={link.to} 
-                    onClick={() => setNavOpen && setNavOpen(false)}
-                >
-                    {link.text}
-                </Link>
-            )}
-        </nav>
     );
 };
 

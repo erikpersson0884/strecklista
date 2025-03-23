@@ -1,1 +1,3 @@
-global.importMeta = { env: { VITE_API_URL: "http://localhost:3001" } };
+const { TextEncoder, TextDecoder } = require('util');
+global.TextEncoder = TextEncoder;
+global.TextDecoder = TextDecoder;
