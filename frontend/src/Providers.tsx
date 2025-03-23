@@ -1,22 +1,19 @@
 import { InventoryProvider } from './contexts/InventoryContext';
 import { CartProvider } from './contexts/CartContext';
 import { UsersProvider } from './contexts/UsersContext';
-import { AuthProvider } from './contexts/AuthContext';
-import { PurchasesProvider } from './contexts/PurchasesContext';
+import { TransactionsProvider } from './contexts/TransactionsContext';
 
 const Providers: React.FC<{children: React.ReactNode}> = ({ children }) => {
     return (
-        <AuthProvider>
+        <UsersProvider>
             <InventoryProvider>
                 <CartProvider>
-                    <UsersProvider>
-                        <PurchasesProvider>
-                            {children}
-                        </PurchasesProvider>
-                    </UsersProvider>
+                    <TransactionsProvider>
+                        {children}
+                    </TransactionsProvider>
                 </CartProvider>
             </InventoryProvider>
-        </AuthProvider>
+        </UsersProvider>
     )
 }
 

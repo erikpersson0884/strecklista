@@ -2,16 +2,24 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
+
 export default defineConfig({
     base: '/strecklista/',
     server: {
-   	port: 3000,
+        port: 3000,
+        proxy: {
+            '/api': {
+                target: 'https://prittemp.olillin.com', 
+                changeOrigin: true, 
+                secure: true, 
+            },
+            '/login': {
+                target: 'https://prittemp.olillin.com', 
+                changeOrigin: true, 
+                secure: true, 
+            }
+        }
     },
-	 test: {
-		globals: true,
-		environment: 'jsdom',
-		setupFiles: './src/test/setup.ts',
-	 },
     plugins: [
         react(),
         VitePWA({

@@ -1,3 +1,65 @@
+//  API Types
+export interface IApiUser {
+    id: string;
+    firstName: string;
+    lastName: string;
+    nick: string;
+    avatarUrl: string;
+    balance: number;
+}
+
+export interface IApiGroup {
+    id: string;
+    prettyName: string;
+    avatarUrl: string;
+}
+
+export interface IApiItem {
+    id: number
+
+    addedTime: number
+    icon: string
+    displayName: string
+    prices: Price[]
+    timesPurchased: number
+    visible: boolean
+    favorite: boolean
+}
+
+export interface IApiPrice {
+    price: number
+    displayName: string
+}
+
+// Frontend Types
+
+export interface Transaction {
+    id: number
+    type: "purchase" | "deposit"
+    createdBy: User
+    createdFor: User
+    createdTime: number
+}
+
+export interface Purchase extends Transaction {
+    type: "purchase",
+    items: PurchaseItem[]
+}
+
+export interface PurchaseItem {
+    item: {
+        id: number
+        displayName: string
+        icon: string
+    }
+    quantity: number
+    purchasePrice: IApiPrice
+}
+
+export interface Deposit extends Transaction {
+    type: "deposit",
+    total: number
+}
 
 export interface Price {
     price: number;
@@ -5,10 +67,10 @@ export interface Price {
 }
 
 export interface Product {
-    id: string;
+    id: number;
 
     name: string;
-    imageUrl: string;
+    icon: string;
 
     prices: Price[];
     price: number;
@@ -17,6 +79,13 @@ export interface Product {
 
     available: boolean;
     favorite: boolean;
+    
+    addedTime: number;
+    timesPurchased: number
+}
+
+export interface ProductInCart extends Product {
+    quantity: number;
 }
 
 export interface Group {
@@ -24,7 +93,7 @@ export interface Group {
     name: string;
     users: string[];
     products: Product[];
-    imageUrl: string;
+    icon: string;
 }
 
 export interface User {
@@ -35,31 +104,7 @@ export interface User {
     name: string;
     nick: string;
 
-    imageUrl: string;
+    icon: string;
 
     balance: number;
-}
-
-
-
-export interface Purchase {
-    id: string;
-
-    purchaseTime: number;
-    date: number;
-
-    
-    items: PurchaseItem[];
-    amount: number;
-
-    buyingUser: User;
-    paygingUser: User;
-
-    group: Group;
-}
-
-interface PurchaseItem {
-    name: string;
-    amount: number;
-    price: number;
 }

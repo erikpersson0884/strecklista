@@ -1,17 +1,19 @@
 import axios from 'axios';
 
-// const API_URL = import.meta.env.VITE_API_URL;
-
 export const api = axios.create({
-    // baseURL: API_URL,
+    baseURL: '/',
 });
 
-export const setAuthToken = (token: string | null) => {
+export const setAuthToken = async (token: string | null) => {
     if (token) {
         api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
     } else {
         delete api.defaults.headers.common['Authorization'];
     }
 };
+
+const token = localStorage.getItem('authToken');
+if (token) setAuthToken(token);
 
 export default api;

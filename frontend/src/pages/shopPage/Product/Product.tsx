@@ -10,19 +10,20 @@ import { useCart } from '../../../contexts/CartContext';
 
 interface ProductProps {
     product: ProductT;
-    toggleFavourite: (product: ProductT) => void;
-    isFavourite: boolean;
 }
 
-const Product: React.FC<ProductProps> = ({ product, isFavourite, toggleFavourite }) => {
-    
-    const {addProduct} = useCart();
+const Product: React.FC<ProductProps> = ({ product }) => {
+    const { addProductToCart } = useCart();
+    const toggleFavourite = (product: ProductT) => {
+        // TODO: Implement a way to toggle favourites
+        // This is a placeholder implementation
+    }
 
     return (
-        <div className="product" onClick={() => addProduct(product)}>
+        <div className="product" onClick={() => addProductToCart(product)}>
             <button className='favourite-button' onClick={(e) => {e.stopPropagation(); toggleFavourite(product)}}>
 
-                {isFavourite ? 
+                {product.favorite ? 
                     <img 
                         src={favouriteIconFilled}
                         alt="heart" 
@@ -38,7 +39,7 @@ const Product: React.FC<ProductProps> = ({ product, isFavourite, toggleFavourite
             </button>
 
             <div className='product-image'>
-                <img src={product.imageUrl} alt={product.name} />
+                <img src={product.icon} alt={product.name} />
             </div>
 
             <div className='product-info'>

@@ -52,7 +52,7 @@ const BalancePage: React.FC = () => {
 
                 </div>
             ) : (
-                <h1>No users found :(</h1>
+                <p>No users found :(</p>
             )}
 
             {selectedUser && (

@@ -13,22 +13,22 @@ interface InventoryItemProps {
 }
 
 const InventoryItem: React.FC<InventoryItemProps> = ({ product, openRefill }) => {
-    const { updateProduct, removeProduct } = useInventory();
+    const { updateProduct, deleteProduct } = useInventory();
     const [updatedProduct, setUpdatedProduct] = useState(product);
     const [isChanged, setIsChanged] = useState(false);
 
     useEffect(() => {
         product.name !== updatedProduct.name ||
         product.price !== updatedProduct.price ||
-        product.imageUrl !== updatedProduct.imageUrl ||
+        product.icon !== updatedProduct.icon ||
         product.available !== updatedProduct.available
             ? setIsChanged(true)
             : setIsChanged(false);
             
     }, [updatedProduct, product]);
 
-    const handleUpdate = () => {
-        updateProduct(updatedProduct);
+    const handleUpdate = async () => {
+        await updateProduct(updatedProduct);
         setExpanded(false);
     };
 
@@ -46,7 +46,7 @@ const InventoryItem: React.FC<InventoryItemProps> = ({ product, openRefill }) =>
     };
 
     const handleDelete = () => {
-            window.confirm('Är du säker på att du vill ta bort produkten?') && removeProduct(product.id);
+        window.confirm('Är du säker på att du vill ta bort produkten?') && deleteProduct(product.id);
     };
 
     const [ expanded, setExpanded ] = useState(false);
@@ -79,12 +79,12 @@ const InventoryItem: React.FC<InventoryItemProps> = ({ product, openRefill }) =>
                         />
                     </div>
                     <div className='inputdiv'>
-                        <label htmlFor="imageUrl">Bildlänk: </label>
+                        <label htmlFor="icon">Bildlänk: </label>
                         <input
                             type="text"
-                            name="imageUrl"
+                            name="icon"
                             placeholder='Bildlänk'
-                            value={updatedProduct.imageUrl}
+                            value={updatedProduct.icon}
                             onChange={handleChange}
                         />
                     </div>
