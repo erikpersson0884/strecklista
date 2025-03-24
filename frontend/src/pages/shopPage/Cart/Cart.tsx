@@ -17,11 +17,14 @@ const Cart: React.FC<CartProps> = ({ closeCart }) => {
     const { currentUser } = useAuth();
 
     const [ selectedUser, setSelectedUser ] = React.useState<User | null>(currentUser);
-
-    const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const selectedUserId = Number(e.target.value);
+    const [showCommentInput, setShowCommentInput] = React.useState(false);
+    const [ comment, setComment ] = React.useState('');
+    
+    const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
+        const selectedUserId = e.target.value;
         const selectedUser = users.find(user => user.id === selectedUserId);
-        setSelectedUser(selectedUser || null);
+        if (!selectedUser) throw new Error(`Tried to select user with id: ${selectedUserId} user found`);
+        setSelectedUser(selectedUser);
     }
 
     const handleBuyProducts = async () => {
@@ -36,9 +39,6 @@ const Cart: React.FC<CartProps> = ({ closeCart }) => {
             }
         }
     }
-
-    const [showCommentInput, setShowCommentInput] = React.useState(false);
-    const [ comment, setComment ] = React.useState('');
 
     return (
         <div className='cart' onClick={(e) => e.stopPropagation()}>

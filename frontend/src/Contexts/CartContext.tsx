@@ -12,7 +12,7 @@ interface CartContextType {
     increaseProductQuantity: (Product: ProductInCart) => void;
     removeProductFromCart: (product: Product) => void;
     clearOrder: () => void;
-    buyProducts: (arg0: number) => Promise<boolean>;
+    buyProducts: (payingUser: string) => Promise<boolean>;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);

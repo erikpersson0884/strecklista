@@ -10,11 +10,15 @@
     position: fixed;
 
     box-sizing: border-box;
+    min-width: 20rem;
+    max-width: 100%;
     width: max-content;
-    max-width: 80%;
-    padding: .5rem;
+    padding: 1rem 2rem;
     border: #fff .1rem solid;
+    border-radius: 1rem;
     margin-inline: auto;
+
+    overflow: hidden;
 }
 
 .popup-div h1 {

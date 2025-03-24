@@ -7,10 +7,11 @@
     gap: 1rem;
 
     box-sizing: border-box;
-    width: 100%;
+    /* width: 100%; */
     max-width: 30rem;
     padding: .5rem 1rem;
     border: 1px solid #fff;
+    overflow: hidden;
 }
 
 .cartList {
@@ -45,7 +46,6 @@
 }
 
 .cartList .item-price {
-    /* flex: 1; */
     min-width: 3ch;
     text-align: center;
 }
@@ -89,4 +89,12 @@
 .quantity-container input {
     width: 3ch;
     text-align: center;
+}
+
+@media screen and (max-width: 30rem) {
+    .cart {
+        border: none;
+        border-top: 1px solid #fff;
+        border-bottom: 1px solid #fff;
+    }
 }

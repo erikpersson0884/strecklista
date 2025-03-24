@@ -13,8 +13,8 @@
 #root .showCartButton {
     background-color: var(--green-color);
 
-    position: fixed;
-    bottom: 2rem;
+    position: fixed; /* Ändra från sticky till fixed */
+    bottom: 3rem;
     right: 2rem;
 
     width: 5rem;

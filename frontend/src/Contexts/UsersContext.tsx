@@ -5,8 +5,8 @@ import { getUsers, makeDeposit } from '../api/usersApi';
 
 interface UsersContextType {
     users: User[];
-    addUserBalance: (id: number, amount: number) => Promise<void>;
-    getUserFromUserId: (userId: number) => User;
+    addUserBalance: (id: string, amount: number) => Promise<void>;
+    getUserFromUserId: (userId: string) => User;
 }
 
 const UsersContext = createContext<UsersContextType | undefined>(undefined);

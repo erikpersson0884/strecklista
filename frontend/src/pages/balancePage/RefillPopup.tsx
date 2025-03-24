@@ -13,29 +13,26 @@ interface RefillPopupProps {
 }
 
 const RefillPopup: React.FC<RefillPopupProps> = ({ user, showPopupDiv, setShowPopupDiv }) => {
-    const [amount, setAmount] = useState<string>('');
+    const [amountToDeposit, setAmountToDeposit] = useState<number>(0);
     const { addUserBalance } = useUsersContext();
 
     const handleRefill = () => {
-        const numericAmount = parseFloat(amount);
-        if (isNaN(numericAmount)) {
-            alert('Please enter a valid amount');
-            return;
-        }
-        
-        addUserBalance(user.id, numericAmount);
+        addUserBalance(user.id, amountToDeposit);
         
         // Reset and close popup
-        setAmount('');
         setShowPopupDiv(false);
+        handleClose();
     };
 
     const handleClose = () => {
-        setAmount('');
+        setAmountToDeposit(0);
     }
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setAmount(e.target.value);
+        console.log( typeof e.target.value);
+        const amount = parseFloat(e.target.value);
+        if (isNaN(amount)) return;
+        else setAmountToDeposit(amount);
     }
 
     const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -57,11 +54,12 @@ const RefillPopup: React.FC<RefillPopupProps> = ({ user, showPopupDiv, setShowPo
             <input 
                 id="amount" 
                 type="number" 
-                value={amount} 
+                value={amountToDeposit} 
+                step="100"
                 onChange={(e) => handleInputChange(e)} 
-                onKeyPress={handleKeyPress}
+                onKeyDown={handleKeyPress}
             />  
-            <p>Nytt saldo: {user.balance + (parseFloat(amount) || 0)}kr</p>
+            <p>Nytt saldo: {user.balance + (amountToDeposit)}kr</p>
         </PopupDiv>
     );
 }
