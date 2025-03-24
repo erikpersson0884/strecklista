@@ -2,6 +2,7 @@ import './styles/App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import Header from './layouts/header/Header';
+import Footer from './layouts/footer/Footer';
 
 import Providers from './Providers';
 
@@ -37,6 +38,8 @@ const App: React.FC = () => {
                         <Route path="*" element={<NotFound />} />
                     </Routes>
                 </BrowserRouter>
+
+                <Footer />
             </Providers>
         :
             <BrowserRouter basename={baseName}>
