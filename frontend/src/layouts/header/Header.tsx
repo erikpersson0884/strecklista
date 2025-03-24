@@ -29,49 +29,28 @@ const Header: React.FC = () => {
                     <h1>Strecklista</h1>
                 </Link>
 
-                <HeaderNav className='inline-header-nav'/>
-
                 <button 
                     className="open-nav-button" 
                     onClick={() => setNavOpen(!navOpen)}
                     aria-label="Toggle navigation"
                     aria-expanded={navOpen}
-                >                    
+                >
                     <img src={menuIcon} alt="menu" height={50} />
                 </button>
             </div>
 
-            {navOpen &&
-                <>
-                    <hr />
-                    <HeaderNav className='mobile-header-nav' setNavOpen={setNavOpen}/>
-                </> 
-            }
-
-
+            <nav className={'header-nav' + (navOpen ? ' open-nav' : '')}> 
+                {links.map(link => 
+                    <Link 
+                        to={link.to} 
+                        key={link.to} 
+                        onClick={() => setNavOpen && setNavOpen(false)}
+                    >
+                        {link.text}
+                    </Link>
+                )}
+            </nav>
         </header>
-    );
-};
-
-interface HeaderNavProps {
-    className: string;
-    setNavOpen?: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const HeaderNav: React.FC<HeaderNavProps> = ({className, setNavOpen}) => {
-    return (
-        <nav className={'' + className}> 
-        
-            {links.map(link => 
-                <Link 
-                    to={link.to} 
-                    key={link.to} 
-                    onClick={() => setNavOpen && setNavOpen(false)}
-                >
-                    {link.text}
-                </Link>
-            )}
-        </nav>
     );
 };
 
