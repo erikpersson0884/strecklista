@@ -6,10 +6,7 @@ import Footer from './layouts/footer/Footer';
 
 import Providers from './Providers';
 
-import ShopPage from './pages/shopPage/ShopPage';
-import Inventory from './pages/inventoryPage/InventoryPage';
-import BalancePage from './pages/balancePage/BalancePage';
-import TransactionsPage from './pages/transactionsPage/TransactionPage';
+import { pages } from './utils/pages';
 import NotFound from './pages/notFoundPage/NotFoundPage';
 import LoginPage from './pages/loginPage/LoginPage';
 
@@ -30,11 +27,9 @@ const App: React.FC = () => {
                     <Header />
                     
                     <Routes>
-                        <Route path="/" element={isAuthenticated ? <ShopPage /> : <LoginPage />} />
-                        <Route path="/callback" element={<AuthCallback />} />
-                        <Route path="/inventory" element={<Inventory />} />
-                        <Route path='/balance' element={<BalancePage />} />
-                        <Route path="/transactions" element={<TransactionsPage />} />
+                        {pages.map((page) =>
+                            <Route key={page.url} path={page.url} element={page.component} />
+                        )}                     
                         <Route path="*" element={<NotFound />} />
                     </Routes>
                 </BrowserRouter>

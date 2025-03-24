@@ -5,13 +5,8 @@ import prit25image from '../../assets/images/prit25.png';
 import menuIcon from '../../assets/images/menu-icon.svg';
 
 import { Link } from 'react-router-dom';
-
-const links = [
-    { to: '/', text: 'Strecka' },
-    { to: '/inventory', text: 'Inventory' },
-    { to: '/balance', text: 'Tillgodo' },
-    { to: '/purchases', text: 'Purchases' },
-]
+import { pages } from '../../utils/pages';
+import { Page } from '../../Types';
 
 
 const Header: React.FC = () => {
@@ -40,13 +35,13 @@ const Header: React.FC = () => {
             </div>
 
             <nav className={'header-nav' + (navOpen ? ' open-nav' : '')}> 
-                {links.map(link => 
+                {pages.map((page: Page) => 
                     <Link 
-                        to={link.to} 
-                        key={link.to} 
-                        onClick={() => setNavOpen && setNavOpen(false)}
+                        to={page.url} 
+                        key={page.url} 
+                        onClick={() => setNavOpen(false)}
                     >
-                        {link.text}
+                        {page.linkText}
                     </Link>
                 )}
             </nav>
