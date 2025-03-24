@@ -1,0 +1,26 @@
+name: Run Jest Tests
+
+on:
+  push:
+    branches: [main, dev] # Change as needed
+  pull_request:
+    branches: [main, dev] 
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18 # Change to match your project
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test -- --coverage
