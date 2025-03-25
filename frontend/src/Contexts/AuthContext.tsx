@@ -52,7 +52,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }, [token]); // Ensure it refetches user when token changes
 
     const authenticate = async () => {
-        const authenticationUrl = import.meta.env.VITE_AUTH_URL as string;
+        const authenticationUrl = (import.meta.env.VITE_AUTH_URL || process.env.VITE_AUTH_URL) as string;
         window.location.href = authenticationUrl;
     };
 

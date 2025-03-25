@@ -6,6 +6,7 @@ export default {
 	},
 	moduleNameMapper: {
 	  	"\\.(css|less|scss|sass)$": "identity-obj-proxy", // Mock CSS imports
-		"\\.(jpg|jpeg|png|gif|svg)$": "<rootDir>/jest.mock.js" // Mock images	},
+		"\\.(jpg|jpeg|png|gif|svg)$": "<rootDir>/jest.mock.js", // Mock images
+		"^@/contexts/(.*)$": "<rootDir>/src/contexts/$1",
  	}
 };

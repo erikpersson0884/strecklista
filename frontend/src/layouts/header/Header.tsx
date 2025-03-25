@@ -5,13 +5,19 @@ import prit25image from '../../assets/images/prit25.png';
 import menuIcon from '../../assets/images/menu-icon.svg';
 
 import { Link } from 'react-router-dom';
-import { pages } from '../../utils/pages';
-import { Page } from '../../Types';
+
 
 
 const Header: React.FC = () => {
-
     const [navOpen, setNavOpen] = React.useState(false);
+
+    const pages = [
+        { url: '/', linkText: 'Strecka'},
+        { url: '/inventory', linkText: 'Inventory'},
+        { url: '/balance', linkText: 'Tillgodo' },
+        { url: '/transactions', linkText: 'Transactions'},
+    ]
+    
 
     return (
         <header className="page-header">
@@ -35,7 +41,7 @@ const Header: React.FC = () => {
             </div>
 
             <nav className={'header-nav' + (navOpen ? ' open-nav' : '')}> 
-                {pages.map((page: Page) => 
+                {pages.map((page) => 
                     <Link 
                         to={page.url} 
                         key={page.url} 

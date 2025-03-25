@@ -14,7 +14,11 @@
     padding: 1rem;
     border-radius: 7px;
 
-    transition: all .01s linear; 
+    transition: all .1s linear; 
+}
+
+.product:hover {
+    transform: scale(1.05);
 }
 
 .product:active {

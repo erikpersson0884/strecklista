@@ -108,9 +108,3 @@ export interface User {
 
     balance: number;
 }
-
-export interface Page {
-    url: string;
-    linkText: string;
-    component: JSX.Element;
-}

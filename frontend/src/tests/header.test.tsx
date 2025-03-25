@@ -4,9 +4,13 @@ import '@testing-library/jest-dom';
 import { BrowserRouter } from 'react-router-dom';
 import Header from '../layouts/header/Header';
 
+
 describe('Header Component', () => {
     const renderWithBrowser = (ui: React.ReactNode) => {
-        return render(<BrowserRouter>{ui}</BrowserRouter>);
+        return render(
+            <BrowserRouter>
+                {ui}
+            </BrowserRouter>);
     };
     
     test('renders logo and title', () => {
@@ -23,7 +27,7 @@ describe('Header Component', () => {
         expect(screen.getByText('Strecka')).toBeInTheDocument();
         expect(screen.getByText('Inventory')).toBeInTheDocument();
         expect(screen.getByText('Tillgodo')).toBeInTheDocument();
-        expect(screen.getByText('Purchases')).toBeInTheDocument();
+        expect(screen.getByText('Transactions')).toBeInTheDocument();
     });
 
     test('toggles navigation menu when button is clicked', () => {
