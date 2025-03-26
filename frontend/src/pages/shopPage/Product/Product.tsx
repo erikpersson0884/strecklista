@@ -47,7 +47,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
 
                 <div className='product-stats'>
                     <p>{product.amountInStock} i lager</p>
-                    <p>{product.price.toFixed(0)}:-</p>
+                    <p>{product.price % 1 === 0 ? product.price.toFixed(0) : product.price.toFixed(2)}:-</p>
                 </div>
             </div>
         </div>

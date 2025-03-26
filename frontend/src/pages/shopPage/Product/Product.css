@@ -22,7 +22,11 @@
 }
 
 .product:active {
-    transform: scale(1.05);
+    transform: scale(1.1);
+}
+
+.product:hover img {
+    transform: scale(0.95);
 }
 
 .product .product-image {
