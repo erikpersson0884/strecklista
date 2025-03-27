@@ -12,7 +12,7 @@ interface CartContextType {
     increaseProductQuantity: (Product: ProductInCart) => void;
     removeProductFromCart: (product: Product) => void;
     clearOrder: () => void;
-    buyProducts: (payingUser: string) => Promise<boolean>;
+    buyProducts: (payingUserId: string) => Promise<boolean>;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -60,12 +60,12 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     };
 
     useEffect(() => {
-        const newTotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+        const newTotal = items.reduce((sum, item) => sum + item.internalPrice * item.quantity, 0);
         setTotal(newTotal);
     }, [items]);
 
-    const buyProducts = async (userid: number): Promise<boolean> => { //TODO implement comment
-        const success = await makePurchase(userid, items);
+    const buyProducts = async (payingUserid: string): Promise<boolean> => { //TODO implement comment
+        const success = await makePurchase(payingUserid, items);
         if (success) {
             clearOrder();
             return true; 

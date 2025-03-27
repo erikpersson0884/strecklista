@@ -15,14 +15,10 @@ describe('Product Component', () => {
     const mockProduct: ProductT = {
         id: 1,
         name: 'Test Product',
-        price: 99.99,
+        internalPrice: 99.99,
         amountInStock: 10,
         favorite: false,
         icon: 'test-image-url',
-        prices: [{
-            displayName: 'Test Product',
-            price: 99.99,
-        }],
         available: true,
         addedTime: new Date().getTime(),
         timesPurchased: 0,

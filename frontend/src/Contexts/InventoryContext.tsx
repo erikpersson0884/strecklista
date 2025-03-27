@@ -3,13 +3,13 @@ import { getInventory as getInventoryApiCall,
         addProduct as addProductApiCall,
         updateProduct as updateProductApiCall, 
         deleteProduct as deleteProductApiCall } from '../api/inventoryApi';
-import { Product, Price, IApiItem } from '../Types';
+import { Product, IApiItem } from '../Types';
 import { useEffect } from 'react';
 
 
 interface InventoryContextProps {
     products: Product[];
-    addProduct: (displayName: string, prices: Price[], icon?: string) => Promise<boolean>;
+    addProduct: (displayName: string, internalPrice: number, icon?: string) => Promise<boolean>;
     updateProduct: (updatedProduct: Product) => void;
     deleteProduct: (id: number) => Promise<boolean>;
     changeProductAmount: (id: number, amount: number) => void;
@@ -34,7 +34,12 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
     }, []);
 
 
-    const addProduct = async (displayName: string, prices: Price[], icon?: string): Promise<boolean> => {
+    const addProduct = async (displayName: string, internalPrice: number, icon?: string): Promise<boolean> => {
+        const prices = [{
+            displayName: "Internt",
+            price: internalPrice
+        }];
+        
         const success = await addProductApiCall(displayName, prices, icon);
         fetchInventory();
         return success;
@@ -47,11 +52,19 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
         const updatedFields: Partial<IApiItem> = {};
 
         if (product.name !== updatedProduct.name) updatedFields.displayName = updatedProduct.name;
-        if (product.prices !== updatedProduct.prices) updatedFields.prices = updatedProduct.prices;
         if (product.available !== updatedProduct.available) updatedFields.visible = updatedProduct.available;
         if (product.favorite !== updatedProduct.favorite) updatedFields.favorite = updatedProduct.favorite;
         if (product.icon !== updatedProduct.icon) updatedFields.icon = updatedProduct.icon;
-        
+
+        if (product.internalPrice !== updatedProduct.internalPrice) {
+            updatedFields.prices = [
+                {
+                    price: updatedProduct.internalPrice,
+                    displayName: 'Internt'
+                }
+            ]
+        }
+
         if (Object.keys(updatedFields).length > 0) {
             const success = await updateProductApiCall(updatedProduct.id, updatedFields);
             fetchInventory();

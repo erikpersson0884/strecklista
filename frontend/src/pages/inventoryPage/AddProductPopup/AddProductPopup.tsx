@@ -3,6 +3,7 @@ import PopupDiv from "../../../components/PopupDiv/PopupDiv";
 import "./AddProductPopup.css";
 
 import { useInventory } from "../../../contexts/InventoryContext";
+import { Price } from "../../../Types";
 
 interface AddProductPopupProps {
     closePopup?: () => void;
@@ -14,13 +15,18 @@ const AddProductPopup: React.FC<AddProductPopupProps> = ({ closePopup = () => {}
     const { addProduct } = useInventory();
 
     const [ name, setName ] = React.useState<string>("");
-    const [ price, setPrice ] = React.useState<number>(0);
+    const [ internalPrice, setInternalPrice ] = React.useState<number>(0);
     const [ amountInStock, setAmountInStock ] = React.useState<number>(0);
     const [ icon, seticon ] = React.useState<string>("");
     const [ available, setAvailable ] = React.useState<boolean>(true);
 
     const handleAddProduct = async () => {
-        await addProduct(name, [{ displayName: "P.R.I.T.", price: price }], icon);
+        await addProduct(name, internalPrice, icon);
+        setName("");
+        setInternalPrice(0);
+        setAmountInStock(0);
+        seticon("");
+        setAvailable(true);
         setShowPopupDiv(false);
     };
 
@@ -39,8 +45,8 @@ const AddProductPopup: React.FC<AddProductPopupProps> = ({ closePopup = () => {}
             </div>
 
             <div className="inputdiv">
-                <label>Pris</label>
-                <input type="number" name="price" value={price} onChange={(e) => setPrice(Number(e.target.value))} />
+                <label>Pris (Internt)</label>
+                <input type="number" name="price" value={internalPrice} onChange={(e) => setInternalPrice(Number(e.target.value))} />
             </div>
 
             <div className="inputdiv">

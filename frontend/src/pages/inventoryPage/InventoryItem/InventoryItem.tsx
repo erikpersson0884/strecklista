@@ -14,12 +14,12 @@ interface InventoryItemProps {
 
 const InventoryItem: React.FC<InventoryItemProps> = ({ product, openRefill }) => {
     const { updateProduct, deleteProduct } = useInventory();
-    const [updatedProduct, setUpdatedProduct] = useState(product);
-    const [isChanged, setIsChanged] = useState(false);
+    const [ updatedProduct, setUpdatedProduct ] = useState(product);
+    const [ isChanged, setIsChanged ] = useState(false);
 
     useEffect(() => {
         product.name !== updatedProduct.name ||
-        product.price !== updatedProduct.price ||
+        product.internalPrice !== updatedProduct.internalPrice ||
         product.icon !== updatedProduct.icon ||
         product.available !== updatedProduct.available
             ? setIsChanged(true)
@@ -28,6 +28,7 @@ const InventoryItem: React.FC<InventoryItemProps> = ({ product, openRefill }) =>
     }, [updatedProduct, product]);
 
     const handleUpdate = async () => {
+        console.log('Updated product:', updatedProduct);
         await updateProduct(updatedProduct);
         setExpanded(false);
     };
@@ -72,9 +73,9 @@ const InventoryItem: React.FC<InventoryItemProps> = ({ product, openRefill }) =>
                         <label htmlFor="price">Pris: </label>
                         <input
                             type="number"
-                            name="price"
+                            name="internalPrice"
                             placeholder='Pris'
-                            value={updatedProduct.price}
+                            value={updatedProduct.internalPrice}
                             onChange={handleChange}
                         />
                     </div>

@@ -7,9 +7,7 @@ interface CartItemProps {
 }
 
 const CartItem: React.FC<CartItemProps> = ({ product }) => {
-    const { removeItem, setProductQuantity, increaseProductQuantity, decreaseProductQuantity } = useCart();
-
-    
+    const { removeProductFromCart, setProductQuantity, increaseProductQuantity, decreaseProductQuantity } = useCart();
 
     return( 
         <li key={product.id}>
@@ -28,8 +26,8 @@ const CartItem: React.FC<CartItemProps> = ({ product }) => {
                 <button className='' onClick={() => decreaseProductQuantity(product)}>-</button>
             </div>
 
-            <span className='item-price'>{product.quantity * product.price}kr</span>
-            <button className='delete-button' onClick={() => removeItem(product)}>
+            <span className='item-price'>{product.quantity * product.internalPrice}kr</span>
+            <button className='delete-button' onClick={() => removeProductFromCart(product)}>
                 <img src={deleteIcon} alt="delete" height={10}/>
             </button>
         </li>

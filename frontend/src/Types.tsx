@@ -72,8 +72,9 @@ export interface Product {
     name: string;
     icon: string;
 
-    prices: Price[];
-    price: number;
+    internalPrice: number;
+    patetPrice?: number;
+    externalPrice?: number;
 
     amountInStock: number;
 

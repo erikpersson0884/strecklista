@@ -35,7 +35,7 @@ export const getUsers = async (): Promise<User[]> => {
 };
 
 
-export const makeDeposit = async (userId: number, amount: number): Promise<number> => {
+export const makeDeposit = async (userId: string, amount: number): Promise<number> => {
     console.log('IN API THING:', userId, amount);
 
     try {
@@ -48,7 +48,7 @@ export const makeDeposit = async (userId: number, amount: number): Promise<numbe
     }
 }
 
-export const makePurchase = async (userId: number, products: ProductInCart[]): Promise<number> => {
+export const makePurchase = async (userId: string, products: ProductInCart[]): Promise<number> => {
     try {
         const apiItems = products.map(productToApiItem);
         const response = await api.post("/api/group/purchase", { userId, items: apiItems });
@@ -70,6 +70,9 @@ const productToApiItem = (product: ProductInCart): ApiPurchaseItem => { // TODO 
     return {
         id: product.id,
         quantity: product.quantity,
-        purchasePrice: product.prices[0],
+        purchasePrice: {
+            displayName: "Internt",
+            price: product.internalPrice,
+        }
     };
 };

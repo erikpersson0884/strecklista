@@ -19,6 +19,8 @@ const Product: React.FC<ProductProps> = ({ product }) => {
         // This is a placeholder implementation
     }
 
+    const internalPrice: string = product.internalPrice % 1 === 0 ? product.internalPrice.toFixed(0) : product.internalPrice.toFixed(2)
+
     return (
         <div className="product" onClick={() => addProductToCart(product)}>
             <button className='favourite-button' onClick={(e) => {e.stopPropagation(); toggleFavourite(product)}}>
@@ -47,7 +49,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
 
                 <div className='product-stats'>
                     <p>{product.amountInStock} i lager</p>
-                    <p>{product.price % 1 === 0 ? product.price.toFixed(0) : product.price.toFixed(2)}:-</p>
+                    <p>{internalPrice}:-</p>
                 </div>
             </div>
         </div>

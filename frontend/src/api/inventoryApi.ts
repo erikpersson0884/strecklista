@@ -4,19 +4,26 @@ import { Product, Price, IApiItem } from "../Types";
 
 
 
-const transformApiItemToProduct = (apiItem: IApiItem): Product => ({
-    id: apiItem.id,
-    name: apiItem.displayName,
-    icon: apiItem.icon || "",
-    available: apiItem.visible,
-    favorite: apiItem.favorite,
-    prices: apiItem.prices,
-    price: apiItem.prices[0].price,
-    addedTime: apiItem.addedTime,
-    timesPurchased: apiItem.timesPurchased,
+const transformApiItemToProduct = (apiItem: IApiItem): Product => {
+    const internalPrice: Price | undefined = apiItem.prices.find((price: Price) => price.displayName === "Internt");
+    if (!internalPrice) {
+        alert(`Internal price for an item was not found:\ndisplayName: ${apiItem.displayName}\nid: ${apiItem.id}`);
+        throw new Error(`Internal price for item ${apiItem.displayName}, ${apiItem.id} not found`);
+    }
+    
+    return {
+        id: apiItem.id,
+        name: apiItem.displayName,
+        icon: apiItem.icon || "",
+        available: apiItem.visible,
+        favorite: apiItem.favorite,
+        internalPrice: internalPrice.price,
+        addedTime: apiItem.addedTime,
+        timesPurchased: apiItem.timesPurchased,
 
-    amountInStock: 0, //TODO: set to actual value when api implementes stock tracking
-});
+        amountInStock: 0, //TODO: set to actual value when api implementes stock tracking
+    };
+};
 
 
 export const getInventory = async (): Promise<Product[]> => {
