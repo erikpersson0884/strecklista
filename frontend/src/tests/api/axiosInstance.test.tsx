@@ -1,4 +1,4 @@
-import { api, setAuthToken } from "../api/axiosInstance";
+import { api, setAuthToken } from "../../api/axiosInstance";
 import axios from "axios";
 
 
@@ -35,7 +35,7 @@ jest.mock("axios", () => ({
 
     // Re-import the module to trigger initial token setup
     jest.resetModules();
-    const { api: newApi } = await import("../api/axiosInstance");
+    const { api: newApi } = await import("../../api/axiosInstance");
 
     expect(newApi.defaults.headers.common["Authorization"]).toBe("Bearer storedToken");
   });

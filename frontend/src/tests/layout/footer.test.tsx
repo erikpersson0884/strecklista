@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom'; // Ensure jest-dom matchers are available
-import Footer from '../layouts/footer/Footer'; // Adjust path as needed
+import Footer from '../../layouts/footer/Footer'; // Adjust path as needed
 
 describe('Footer Component', () => {
     test('renders footer text', () => {

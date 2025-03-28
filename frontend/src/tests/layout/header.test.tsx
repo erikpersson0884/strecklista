@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { BrowserRouter } from 'react-router-dom';
-import Header from '../layouts/header/Header';
+import Header from '../../layouts/header/Header';
 
 
 describe('Header Component', () => {

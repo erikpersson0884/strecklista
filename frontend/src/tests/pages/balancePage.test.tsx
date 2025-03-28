@@ -1,20 +1,20 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { useUsersContext } from '../contexts/UsersContext';
-import { useAuth } from '../contexts/AuthContext';
-import BalancePage from '../pages/balancePage/BalancePage';
-import RefillPopup from '../pages/balancePage/RefillPopup';
+import { useUsersContext } from '../../contexts/UsersContext';
+import { useAuth } from '../../contexts/AuthContext';
+import BalancePage from '../../pages/balancePage/BalancePage';
+import RefillPopup from '../../pages/balancePage/RefillPopup';
 
-jest.mock('../contexts/UsersContext', () => ({
+jest.mock('../../contexts/UsersContext', () => ({
     useUsersContext: jest.fn(),
 }));
 
-jest.mock('../contexts/AuthContext', () => ({
+jest.mock('../../contexts/AuthContext', () => ({
     useAuth: jest.fn(),
 }));
 
-jest.mock('../pages/balancePage/RefillPopup', () => () => <div data-testid="refill-popup" />);
+jest.mock('../../pages/balancePage/RefillPopup', () => () => <div data-testid="refill-popup" />);
 
 describe('BalancePage Component', () => {
     beforeEach(() => {

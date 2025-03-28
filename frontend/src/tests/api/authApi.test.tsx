@@ -1,7 +1,7 @@
-import { authenticate, login } from "../api/authApi";
-import api from "../api/axiosInstance";  // Mock this
+import { authenticate, login } from "../../api/authApi";
+import api from "../../api/axiosInstance";  // Mock this
 
-jest.mock("../api/axiosInstance"); // Mock Axios instance
+jest.mock("../../api/axiosInstance"); // Mock Axios instance
 
 describe("Auth API", () => {
   afterEach(() => {

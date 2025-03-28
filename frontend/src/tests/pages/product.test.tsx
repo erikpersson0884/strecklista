@@ -5,7 +5,7 @@ import Product from '../../pages/shopPage/product/Product';
 import { useCart } from '../../contexts/CartContext';
 
 // Mock the useCart context
-jest.mock('../contexts/CartContext', () => ({
+jest.mock('../../contexts/CartContext', () => ({
     useCart: jest.fn(),
 }));
 
