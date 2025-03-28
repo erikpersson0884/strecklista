@@ -13,6 +13,8 @@ import TransactionsPage from './pages/transactionsPage/TransactionsPage';
 import NotFound from './pages/notFoundPage/NotFoundPage';
 import LoginPage from './pages/loginPage/LoginPage';
 
+import ProfilePage from './pages/profilePage/profilePage';
+
 import AuthCallback from './pages/loginPage/AuthCallback';
 
 import { useAuth } from './contexts/AuthContext';
@@ -27,6 +29,7 @@ const App: React.FC = () => {
         { url: '/inventory', component: <InventoryPage /> },
         { url: '/balance', component: <BalancePage /> },
         { url: '/transactions', component: <TransactionsPage /> },
+        { url: '/profile', component: <ProfilePage /> },
     ]
     
 
