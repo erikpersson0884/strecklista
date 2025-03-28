@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Product } from '../../Types';
 import PopupDiv from '../../components/PopupDiv/PopupDiv';
 import { useInventory } from '../../contexts/InventoryContext';
 

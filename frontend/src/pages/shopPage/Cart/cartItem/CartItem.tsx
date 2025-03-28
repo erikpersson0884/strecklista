@@ -1,5 +1,4 @@
 import deleteIcon from '../../../../assets/images/delete-white.svg';
-import { ProductInCart } from '../../../../Types';
 import { useCart } from '../../../../contexts/CartContext';
 import './CartItem.css';
 

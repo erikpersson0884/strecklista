@@ -1,5 +1,5 @@
 import api from "./axiosInstance";
-import { Product, Price, IApiItem } from "../Types";
+import { Product, Price, IApiItem } from "../types/Types";
 
 
 

@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 
 import PopupDiv from '../../components/PopupDiv/PopupDiv';
-
-import { User } from '../../Types';
-
 import { useUsersContext } from '../../contexts/UsersContext';
 
 interface RefillPopupProps {

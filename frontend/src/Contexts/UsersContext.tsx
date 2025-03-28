@@ -1,5 +1,4 @@
 import { createContext, useState, useContext, ReactNode, useEffect } from 'react';
-import { User } from '../Types';
 import { getUsers, makeDeposit } from '../api/usersApi';
 
 
@@ -34,15 +33,15 @@ export const UsersProvider = ({ children }: { children: ReactNode }) => {
         setUserBalance(id, newBalance);
     };
 
-    const setUserBalance = (id: number, newBalance: number) => {
+    const setUserBalance = (userId: string, newBalance: number) => {
         setUsers((prevUsers) =>
             prevUsers.map((user) =>
-                user.id === id ? { ...user, balance: newBalance } : user
+                user.id === userId ? { ...user, balance: newBalance } : user
             )
         );
     };
 
-    const getUserFromUserId = (userId: number): User => {
+    const getUserFromUserId = (userId: string): User => {
         const user = users.find((user) => user.id === userId);
         if (!user) throw new Error(`User with id ${userId} not found`);
         return user;

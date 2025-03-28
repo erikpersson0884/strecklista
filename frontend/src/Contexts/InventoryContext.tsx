@@ -3,7 +3,6 @@ import { getInventory as getInventoryApiCall,
         addProduct as addProductApiCall,
         updateProduct as updateProductApiCall, 
         deleteProduct as deleteProductApiCall } from '../api/inventoryApi';
-import { Product, IApiItem } from '../Types';
 import { useEffect } from 'react';
 
 

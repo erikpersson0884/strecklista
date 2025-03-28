@@ -1,9 +1,8 @@
 import React from 'react';
 import '@testing-library/jest-dom';
 import { render, screen, fireEvent } from '@testing-library/react';
-import Product from '../pages/shopPage/product/Product';
-import { useCart } from '../contexts/CartContext';
-import { Product as ProductT } from '../Types';
+import Product from '../../pages/shopPage/product/Product';
+import { useCart } from '../../contexts/CartContext';
 
 // Mock the useCart context
 jest.mock('../contexts/CartContext', () => ({

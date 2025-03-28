@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import editIcon from '../../../assets/images/edit.svg';
 import deleteIcon from '../../../assets/images/delete.svg';
 
-import { Product } from '../../../Types';
 import './InventoryItem.css';
 import { useInventory } from '../../../contexts/InventoryContext';
 

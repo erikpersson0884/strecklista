@@ -1,5 +1,4 @@
 import React from 'react';
-import { Transaction, Purchase, Deposit } from '../../../Types';
 import PurchaseItem from './PurchaseItem';
 import DepositItem from './DepositItem';
 import './TransactionItem.css';

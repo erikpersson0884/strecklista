@@ -1,5 +1,4 @@
 import React from 'react';
-import { Transaction } from '../../Types';
 import TransactionsItem from './TransactionItem/TransactionItem';
 import { useTransactionsContext } from '../../contexts/TransactionsContext';
 import './TransactionsPage.css';

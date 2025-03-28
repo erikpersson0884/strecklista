@@ -1,5 +1,4 @@
 import React from 'react';
-import { Product as ProductT } from '../../../Types';
 import './Product.css';
 
 import favouriteIcon from '../../../assets/images/favourite.svg';

@@ -4,7 +4,6 @@ import './InventoryPage.css';
 import addIcon from '../../assets/images/add.svg';
 
 
-import { Product } from '../../Types';
 import InventoryItem from './InventoryItem/InventoryItem';
 import { useInventory } from '../../contexts/InventoryContext';
 import AddProductPopup from './AddProductPopup/AddProductPopup';

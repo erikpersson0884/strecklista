@@ -1,16 +1,15 @@
 import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
-import { Product, ProductInCart } from '../Types';
 import { makePurchase } from '../api/usersApi';
 
 
 interface CartContextType {
     items: ProductInCart[];
     total: number;
-    addProductToCart: (item: Product) => void;
+    addProductToCart: (item: ProductT) => void;
     setProductQuantity: (productId: number, quantity: number) => void;
-    decreaseProductQuantity: (Product: ProductInCart) => void;
-    increaseProductQuantity: (Product: ProductInCart) => void;
-    removeProductFromCart: (product: Product) => void;
+    decreaseProductQuantity: (ProductT: ProductInCart) => void;
+    increaseProductQuantity: (ProductT: ProductInCart) => void;
+    removeProductFromCart: (product: ProductT) => void;
     clearOrder: () => void;
     buyProducts: (payingUserId: string) => Promise<boolean>;
 }
@@ -21,7 +20,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const [ items, setItems ] = useState<ProductInCart[]>([]);
     const [ total, setTotal ] = useState<number>(0);
 
-    const addProductToCart = (item: Product) => {
+    const addProductToCart = (item: ProductT) => {
         setItems((prevItems) => {
             const existingItem = prevItems.find(i => i.id === item.id);
             if (existingItem) {
@@ -42,16 +41,16 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         });
     }
 
-    const decreaseProductQuantity = (Product: ProductInCart) => {
-        setProductQuantity(Product.id, Product.quantity - 1);
+    const decreaseProductQuantity = (ProductT: ProductInCart) => {
+        setProductQuantity(ProductT.id, ProductT.quantity - 1);
     }
 
-    const increaseProductQuantity = (Product: ProductInCart) => {
-        setProductQuantity(Product.id, Product.quantity + 1);
+    const increaseProductQuantity = (ProductT: ProductInCart) => {
+        setProductQuantity(ProductT.id, ProductT.quantity + 1);
     }
 
 
-    const removeProductFromCart = (product: Product) => {
+    const removeProductFromCart = (product: ProductT) => {
         setItems((prevItems) => prevItems.filter(item => item.id !== product.id));
     };
 

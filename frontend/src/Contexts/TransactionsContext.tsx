@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, ReactNode } from 'react';
-import { Transaction } from '../Types';
+import { Transaction } from '../types/Types';
 import { fetchTransactions } from '../api/transactionsApi';
 import { useUsersContext } from './UsersContext';
 

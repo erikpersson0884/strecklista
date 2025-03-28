@@ -2,7 +2,6 @@ import React from 'react';
 import './Cart.css';
 import { useCart } from '../../../contexts/CartContext';
 import { useUsersContext } from '../../../contexts/UsersContext';
-import { User } from '../../../Types';
 import { useAuth } from '../../../contexts/AuthContext';
 import CartItem from './cartItem/CartItem';
 import closeImage from '../../../assets/images/close.svg';

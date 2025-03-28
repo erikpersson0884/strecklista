@@ -2,11 +2,8 @@ import React from 'react';
 import Product from './product/Product';
 import './shopPage.css';
 import { useInventory } from '../../contexts/InventoryContext';
-import { useAuth } from '../../contexts/AuthContext';
 import Cart from './cart/Cart';
 import Shadowbox from '../../components/Shadowbox/Shadowbox';
-import { Product as ProductT } from '../../Types';
-
 import shoppingCartIcon from '../../assets/images/shoppingcart.svg';
 
 

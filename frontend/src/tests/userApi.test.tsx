@@ -1,6 +1,6 @@
 import api from "../api/axiosInstance";
 import { getCurrentUser, getUsers, makeDeposit, makePurchase } from "../api/usersApi"; // Replace with actual file name
-import { IApiUser, ProductInCart } from "../Types";
+import { IApiUser, ProductInCart } from "../types/Types";
 
 jest.mock("../api/axiosInstance", () => ({
     get: jest.fn(),

@@ -1,5 +1,5 @@
 import api from "./axiosInstance";
-import { User, Price, IApiUser, ProductInCart } from "../Types";
+import { User, Price, IApiUser, ProductInCart } from "../types/Types";
 
 const userApiToUser = (apiUser: IApiUser): User => {
     return {

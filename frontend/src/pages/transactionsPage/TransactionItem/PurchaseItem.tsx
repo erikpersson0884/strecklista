@@ -1,5 +1,4 @@
 import React from 'react';
-import { Purchase } from '../../../Types';
 import deleteIcon from '../../../assets/images/delete-white.svg';
 import DeleteTransactionPopup from '../DeleteTransactionPopup';
 

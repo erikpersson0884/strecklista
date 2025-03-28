@@ -5,7 +5,6 @@ import addIcon from '../../assets/images/add.svg';
 
 import { useUsersContext } from '../../contexts/UsersContext';
 import { useAuth } from '../../contexts/AuthContext';
-import { User } from '../../Types';
 
 import RefillPopup from './RefillPopup';
 

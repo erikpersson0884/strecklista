@@ -1,5 +1,4 @@
 import React from 'react';
-import { Transaction } from '../../Types';
 import PopupDiv from '../../components/PopupDiv/PopupDiv';
 import { useTransactionsContext } from '../../contexts/TransactionsContext';
 
