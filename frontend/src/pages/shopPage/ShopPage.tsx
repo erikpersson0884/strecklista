@@ -16,12 +16,10 @@ const ShopPage: React.FC = () => {
 
     return (
         <>
-            {displayCart ? 
+            {displayCart &&
                 <Shadowbox onClick={() => setDisplayCart(false)} >
                     <Cart closeCart={() => setDisplayCart(false)}/> 
                 </Shadowbox>
-            : 
-                null
             }
 
             <div className='shopPage'>

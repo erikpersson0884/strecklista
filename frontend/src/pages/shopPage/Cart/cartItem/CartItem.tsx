@@ -1,6 +1,7 @@
-import deleteIcon from '../../../assets/images/delete-white.svg';
-import { ProductInCart } from '../../../Types';
-import { useCart } from '../../../contexts/CartContext';
+import deleteIcon from '../../../../assets/images/delete-white.svg';
+import { ProductInCart } from '../../../../Types';
+import { useCart } from '../../../../contexts/CartContext';
+import './CartItem.css';
 
 interface CartItemProps {
     product: ProductInCart;
@@ -10,7 +11,7 @@ const CartItem: React.FC<CartItemProps> = ({ product }) => {
     const { removeProductFromCart, setProductQuantity, increaseProductQuantity, decreaseProductQuantity } = useCart();
 
     return( 
-        <li key={product.id}>
+        <li className='cart-item' key={product.id}>
             <span className='item-name'>{product.name}</span>
 
             <div className='quantity-container'>

@@ -51,9 +51,8 @@ const App: React.FC = () => {
         :
             <BrowserRouter basename={baseName}>
                 <Routes>
-                    <Route path="/" element={<LoginPage />} />
                     <Route path="/callback" element={<AuthCallback />} />
-                    <Route path="*" element={<NotFound />} />
+                    <Route path="*" element={<LoginPage />} />
                 </Routes>
             </BrowserRouter>
     }

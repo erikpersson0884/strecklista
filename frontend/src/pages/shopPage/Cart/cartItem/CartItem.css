@@ -1,0 +1,43 @@
+.cart-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: .9rem;
+}
+
+.cart-item .item-name {
+    word-break: break-word;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+
+    max-width: 15ch;
+    margin-right: auto;
+}
+
+.cart-item .quantity-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: .5rem;
+
+    width: min-content;
+}
+
+.cart-item .quantity-container input {
+    width: 3ch;
+    text-align: center;
+}
+
+.cart-item .item-price {
+    min-width: 4ch;
+    text-align: center;
+}
+
+.cart-item .delete-button {
+    box-sizing: border-box;
+    padding: .2rem;
+    height: 100%;
+}

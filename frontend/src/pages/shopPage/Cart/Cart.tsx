@@ -4,7 +4,9 @@ import { useCart } from '../../../contexts/CartContext';
 import { useUsersContext } from '../../../contexts/UsersContext';
 import { User } from '../../../Types';
 import { useAuth } from '../../../contexts/AuthContext';
-import CartItem from './CartItem';
+import CartItem from './cartItem/CartItem';
+import closeImage from '../../../assets/images/close.svg';
+
 
 interface CartProps {
     closeCart: () => void;       
@@ -44,18 +46,22 @@ const Cart: React.FC<CartProps> = ({ closeCart }) => {
         <div className='cart' onClick={(e) => e.stopPropagation()}>
             <h2>Varukorg:</h2>
 
+            <button className='close-button' onClick={closeCart}>
+                <img src={closeImage} alt="close" height={20}/>
+            </button>
+
             <hr />
 
             {items.length === 0 ? 
                 <p>Varukorgen är tom</p> 
             : 
             <>
-                <ul className='cartList'>
+                <ul className='cart-list'>
                     {items.map((item) => (
                         <CartItem key={item.id} product={item} />
                     ))}
 
-                    <li className='total'>
+                    <li className='total cart-item'>
                        <span>Totalt</span> 
                        <span>{total} kr</span>
                     </li>
@@ -66,9 +72,19 @@ const Cart: React.FC<CartProps> = ({ closeCart }) => {
                 <div className='cart-footer'>
                     <div className='select-paying-user'>
                         <p>Sträcka åt</p>
-                        <select name="users" id="users" value={selectedUser?.id || ''} onChange={handleSelectChange}>
+                        <select 
+                            name="users" 
+                            id="users" 
+                            value={selectedUser?.id || ''} 
+                            onChange={handleSelectChange}
+                        >
                             {users.map((user: User) => (
-                                <option key={user.id} value={user.id}>{user.nick}</option>
+                                <option 
+                                    key={user.id} 
+                                    value={user.id}
+                                >
+                                    {user.nick}
+                                </option>
                             ))}
                         </select>
 
