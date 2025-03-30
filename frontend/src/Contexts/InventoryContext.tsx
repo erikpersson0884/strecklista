@@ -17,12 +17,35 @@ interface InventoryContextProps {
 const InventoryContext = createContext<InventoryContextProps | undefined>(undefined);
 
 export const InventoryProvider = ({ children }: { children: ReactNode }) => {
-    const [products, setProducts] = useState<Product[]>([]);
+    const [products, setProducts] = useState<ProductT[]>([]);
+
+
+    const transformApiItemToProduct = (apiItem: IApiItem): ProductT => {
+        const internalPrice: Price | undefined = apiItem.prices.find((price: Price) => price.displayName === "Internt");
+        if (!internalPrice) {
+            alert(`Internal price for an item was not found:\ndisplayName: ${apiItem.displayName}\nid: ${apiItem.id}`);
+            throw new Error(`Internal price for item ${apiItem.displayName}, ${apiItem.id} not found`);
+        }
+        
+        return {
+            id: apiItem.id,
+            name: apiItem.displayName,
+            icon: apiItem.icon || "",
+            available: apiItem.visible,
+            favorite: apiItem.favorite,
+            internalPrice: internalPrice.price,
+            addedTime: apiItem.addedTime,
+            timesPurchased: apiItem.timesPurchased,
+    
+            amountInStock: 0, //TODO: set to actual value when api implementes stock tracking
+        };
+    };
 
     const fetchInventory = async () => {
         try {
-            const inventory: ProductT[] = await getInventoryApiCall();
-            setProducts(inventory);
+            const inventory: IApiItem[] = await getInventoryApiCall();
+            const transformedInventory = inventory.map(transformApiItemToProduct);
+            setProducts(transformedInventory);
         } catch (error) {
             console.error('Failed to fetch inventory', error);
         }

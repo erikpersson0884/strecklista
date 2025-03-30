@@ -105,4 +105,5 @@ declare global {
 
     type UserId = string;
     type GroupId = string;
+    type productId = number;
 }
