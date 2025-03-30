@@ -7,17 +7,26 @@ import Filter from './Filter/Filter';
 
 const TransactionsPage: React.FC = () => {
     const { filteredTransactions, getNextTransactions, getPrevTransactions } = useTransactionsContext();
+    const [ page, setPage ] = React.useState<number>(1);
 
     return (
         <div className='transactions-page'>
             <Filter />
 
             {filteredTransactions.length > 0 ?
-                <ul className='transactions-list'>
-                    {filteredTransactions.map((transaction: Transaction) => 
-                        <TransactionsItem key={transaction.id} transaction={transaction} />
-                    )}
-                </ul>
+                <>
+                    <ul className='transactions-list'>
+                        {filteredTransactions.map((transaction: Transaction) => 
+                            <TransactionsItem key={transaction.id} transaction={transaction} />
+                        )}
+                    </ul>
+
+                    <footer className='pagination'>
+                        <button className='prev-button' onClick={getPrevTransactions}>&lt;</button>
+                        <span className='page-number'>{page}</span>
+                        <button className='next-button' onClick={getNextTransactions}>&gt;</button>
+                    </footer>
+                </>
             :
                 <p>No transactions to show</p>
             }

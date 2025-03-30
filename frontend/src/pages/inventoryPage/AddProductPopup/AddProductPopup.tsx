@@ -3,7 +3,6 @@ import PopupDiv from "../../../components/PopupDiv/PopupDiv";
 import "./AddProductPopup.css";
 
 import { useInventory } from "../../../contexts/InventoryContext";
-import { Price } from "../../../types/Types";
 
 interface AddProductPopupProps {
     closePopup?: () => void;

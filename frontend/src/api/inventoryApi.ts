@@ -1,10 +1,9 @@
 import api from "./axiosInstance";
-import { Product, Price, IApiItem } from "../types/Types";
 
 
 
 
-const transformApiItemToProduct = (apiItem: IApiItem): Product => {
+const transformApiItemToProduct = (apiItem: IApiItem): ProductT => {
     const internalPrice: Price | undefined = apiItem.prices.find((price: Price) => price.displayName === "Internt");
     if (!internalPrice) {
         alert(`Internal price for an item was not found:\ndisplayName: ${apiItem.displayName}\nid: ${apiItem.id}`);

@@ -63,17 +63,16 @@ const Filter: React.FC = () => {
 
     const [ showFilter, setShowFilter ] = useState<boolean>(false);
 
-    return (
-        <div>
-            {showFilter ? (
-                <div className='filter-div'>
+
+    return showFilter ? (
+        <div className='filter-div'>
                     <div>
                         <label htmlFor='user-filter'>Filter by user:</label>
                         <select
                             id='user-filter' 
                             onChange={onUserChange}
                         >
-                            <option value={'all'}>All</option>
+                            <option value={'all'}>Alla</option>
                             {users.map((user) => (
                                 <option key={user.id} value={user.id}>
                                     {user.nick}
@@ -101,13 +100,11 @@ const Filter: React.FC = () => {
                         </button>
                     </div>
                 </div>
-            ) : (
-                <button className='show-filter-button' onClick={() => setShowFilter(true)}>
-                    <p>Visa filter</p>
-                    <img src={filterImage} alt='filter' />
-                </button>
-            )}
-        </div>
+    ) : (
+        <button className='show-filter-button' onClick={() => setShowFilter(true)}>
+            <p>Visa filter</p>
+            <img src={filterImage} alt='filter' />
+        </button>
     );
 };
 

@@ -4,8 +4,8 @@ import { getUsers, makeDeposit } from '../api/usersApi';
 
 interface UsersContextType {
     users: User[];
-    addUserBalance: (id: string, amount: number) => Promise<void>;
-    getUserFromUserId: (userId: string) => User;
+    addUserBalance: (userId: UserId, amount: number) => Promise<void>;
+    getUserFromUserId: (userId: UserId) => User;
 }
 
 const UsersContext = createContext<UsersContextType | undefined>(undefined);
@@ -27,13 +27,13 @@ export const UsersProvider = ({ children }: { children: ReactNode }) => {
     }, []);
 
 
-    const addUserBalance = async (id: number, amount: number) => {
-        console.log('IN USERCONTEXT:', id, amount);
-        const newBalance = await makeDeposit(id, amount)
-        setUserBalance(id, newBalance);
+    const addUserBalance = async (userId: UserId, amount: number) => {
+        console.log('IN USERCONTEXT:', userId, amount);
+        const newBalance = await makeDeposit(userId, amount)
+        setUserBalance(userId, newBalance);
     };
 
-    const setUserBalance = (userId: string, newBalance: number) => {
+    const setUserBalance = (userId: UserId, newBalance: number) => {
         setUsers((prevUsers) =>
             prevUsers.map((user) =>
                 user.id === userId ? { ...user, balance: newBalance } : user
@@ -41,8 +41,10 @@ export const UsersProvider = ({ children }: { children: ReactNode }) => {
         );
     };
 
-    const getUserFromUserId = (userId: string): User => {
+    const getUserFromUserId = (userId: UserId): User => {
         const user = users.find((user) => user.id === userId);
+        console.log("ANTAL ANVÄNDARE", users.length)
+
         if (!user) throw new Error(`User with id ${userId} not found`);
         return user;
     }

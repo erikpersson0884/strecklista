@@ -89,7 +89,7 @@ declare global {
         id: string;
         name: string;
         users: string[];
-        products: Product[];
+        products: ProductT[];
         icon: string;
     }
 
@@ -102,4 +102,7 @@ declare global {
         icon: string;
         balance: number;
     }
+
+    type UserId = string;
+    type GroupId = string;
 }

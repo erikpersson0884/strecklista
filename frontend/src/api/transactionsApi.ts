@@ -1,5 +1,4 @@
 import api from "./axiosInstance";
-import { Transaction } from "../types/Types";
 
 
 interface FetchTransactionsResult {

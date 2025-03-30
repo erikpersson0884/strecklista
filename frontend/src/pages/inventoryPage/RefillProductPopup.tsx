@@ -3,7 +3,7 @@ import PopupDiv from '../../components/PopupDiv/PopupDiv';
 import { useInventory } from '../../contexts/InventoryContext';
 
 interface RefillProductPopupProps {
-    product: Product;
+    product: ProductT;
     showPopupDiv: boolean;
     setShowPopupDiv: React.Dispatch<React.SetStateAction<boolean>>;
 }

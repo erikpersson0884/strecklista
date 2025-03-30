@@ -7,7 +7,7 @@ import './InventoryItem.css';
 import { useInventory } from '../../../contexts/InventoryContext';
 
 interface InventoryItemProps {
-    product: Product;
+    product: ProductT;
     openRefill: () => void;
 }
 

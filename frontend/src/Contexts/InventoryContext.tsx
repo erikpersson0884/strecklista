@@ -7,9 +7,9 @@ import { useEffect } from 'react';
 
 
 interface InventoryContextProps {
-    products: Product[];
+    products: ProductT[];
     addProduct: (displayName: string, internalPrice: number, icon?: string) => Promise<boolean>;
-    updateProduct: (updatedProduct: Product) => void;
+    updateProduct: (updatedProduct: ProductT) => void;
     deleteProduct: (id: number) => Promise<boolean>;
     changeProductAmount: (id: number, amount: number) => void;
 }
@@ -21,7 +21,7 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
 
     const fetchInventory = async () => {
         try {
-            const inventory: Product[] = await getInventoryApiCall();
+            const inventory: ProductT[] = await getInventoryApiCall();
             setProducts(inventory);
         } catch (error) {
             console.error('Failed to fetch inventory', error);
@@ -44,7 +44,7 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
         return success;
     };
 
-    const updateProduct = async (updatedProduct: Product): Promise<boolean> => {
+    const updateProduct = async (updatedProduct: ProductT): Promise<boolean> => {
         const product = products.find(product => product.id === updatedProduct.id);
         if (!product) throw new Error('Product not found');
 

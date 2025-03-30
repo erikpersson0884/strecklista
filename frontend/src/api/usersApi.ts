@@ -1,5 +1,4 @@
 import api from "./axiosInstance";
-import { User, Price, IApiUser, ProductInCart } from "../types/Types";
 
 const userApiToUser = (apiUser: IApiUser): User => {
     return {
@@ -35,9 +34,7 @@ export const getUsers = async (): Promise<User[]> => {
 };
 
 
-export const makeDeposit = async (userId: string, amount: number): Promise<number> => {
-    console.log('IN API THING:', userId, amount);
-
+export const makeDeposit = async (userId: UserId, amount: number): Promise<number> => {
     try {
         const response = await api.post("/api/group/deposit", { userId, total: amount });
         const newBalance: number = response.data.data.balance;
@@ -48,7 +45,7 @@ export const makeDeposit = async (userId: string, amount: number): Promise<numbe
     }
 }
 
-export const makePurchase = async (userId: string, products: ProductInCart[]): Promise<number> => {
+export const makePurchase = async (userId: UserId, products: ProductInCart[]): Promise<number> => {
     try {
         const apiItems = products.map(productToApiItem);
         const response = await api.post("/api/group/purchase", { userId, items: apiItems });

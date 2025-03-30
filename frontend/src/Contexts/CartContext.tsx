@@ -11,7 +11,7 @@ interface CartContextType {
     increaseProductQuantity: (ProductT: ProductInCart) => void;
     removeProductFromCart: (product: ProductT) => void;
     clearOrder: () => void;
-    buyProducts: (payingUserId: string) => Promise<boolean>;
+    buyProducts: (payinguserId: UserId) => Promise<boolean>;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -63,7 +63,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         setTotal(newTotal);
     }, [items]);
 
-    const buyProducts = async (payingUserid: string): Promise<boolean> => { //TODO implement comment
+    const buyProducts = async (payingUserid: UserId): Promise<boolean> => { //TODO implement comment
         const success = await makePurchase(payingUserid, items);
         if (success) {
             clearOrder();
