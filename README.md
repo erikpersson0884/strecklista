@@ -29,6 +29,9 @@ cd strecklista
 # Install dependencies
 npm install
 
+# Create a `.env` file
+Create a `.env` file in the root of the project and add the necessary environment variables. You may use copy the .env.example file
+
 ```
 
 # Usage
