@@ -19,7 +19,7 @@ import { useAuth } from './contexts/AuthContext';
 
 
 const App: React.FC = () => {
-    const { isAuthenticated } = useAuth();
+    const { isAuthenticated, isLoading } = useAuth();
     const baseName = '/strecklista/';
 
     const pages = [
@@ -29,35 +29,34 @@ const App: React.FC = () => {
         { url: '/transactions', component: <TransactionsPage /> },
     ]
     
-
-    return ( 
-        <>
-        {isAuthenticated ?
-                
-            <Providers >
+    if (isLoading) {
+        return <p>Loading...</p>;
+    } 
+    else if (!isAuthenticated) {
+        return(
+            <Providers>
                 <BrowserRouter basename={baseName}>
                     <Header />
                     
                     <Routes>
-                        {pages.map((page) =>
+                        {pages.map((page) => (
                             <Route key={page.url} path={page.url} element={page.component} />
-                        )}
+                        ))}
                         <Route path="*" element={<NotFound />} />
                     </Routes>
                 </BrowserRouter>
 
                 <Footer />
             </Providers>
-        :
-            <BrowserRouter basename={baseName}>
-                <Routes>
-                    <Route path="/callback" element={<AuthCallback />} />
-                    <Route path="*" element={<LoginPage />} />
-                </Routes>
-            </BrowserRouter>
-    }
-        </>
-
+        )
+    } 
+    else return (
+        <BrowserRouter basename={baseName}>
+            <Routes>
+                <Route path="/callback" element={<AuthCallback />} />
+                <Route path="*" element={<LoginPage />} />
+            </Routes>
+        </BrowserRouter>
     )
 }
 

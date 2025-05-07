@@ -4,6 +4,7 @@ import usersApi from "../api/usersApi";
 import authApi from "../api/authApi";
 
 interface AuthContextType {
+    isLoading: boolean;
     isAuthenticated: boolean;
     authenticate: () => void;
     logout: () => void;
@@ -14,6 +15,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+    const [ isLoading , setIsLoading ] = useState<boolean>(true);
     const [token, setToken] = useState<string | null>(() => localStorage.getItem("authToken"));
     const [currentUser, setCurrentUser] = useState<User | null>(null);
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -33,6 +35,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 setCurrentUser(user);
                 setIsAuthenticated(true);
                 localStorage.setItem("authToken", token); // Store token persistently
+                setIsLoading(false);
             } catch (error) {
                 console.error("Error fetching user:", error);
                 setCurrentUser(null);
@@ -44,7 +47,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         fetchUser();
     }, [token]); // Ensure it refetches user when token changes
 
-    const authenticate = async () => {
+    const authenticate = async (): Promise<void> => {
         const authenticationUrl = (__API_BASE__ + "/authorize");
         window.location.href = authenticationUrl;
     };
@@ -61,7 +64,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
     };
 
-    const logout = () => {
+    const logout = (): void => {
         setToken(null);
         setCurrentUser(null);
         setIsAuthenticated(false);
@@ -70,7 +73,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated, authenticate, logout, currentUser, exchangeCodeForToken }}>
+        <AuthContext.Provider value={{ isLoading, isAuthenticated, authenticate, logout, currentUser, exchangeCodeForToken }}>
             {children}
         </AuthContext.Provider>
     );

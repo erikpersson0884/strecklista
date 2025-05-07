@@ -1,5 +1,5 @@
 import { createContext, useState, useContext, ReactNode, useEffect } from 'react';
-import { getUsers, makeDeposit } from '../api/usersApi';
+import userApi from '../api/usersApi';
 
 
 interface UsersContextType {
@@ -15,7 +15,7 @@ export const UsersProvider = ({ children }: { children: ReactNode }) => {
     
     const fetchUsers = async () => {
         try {
-            const fetchedUsers = await getUsers();
+            const fetchedUsers = await userApi.getUsers();
             setUsers(fetchedUsers);
         } catch (error) {
             console.error('Failed to fetch users:', error);
@@ -29,7 +29,7 @@ export const UsersProvider = ({ children }: { children: ReactNode }) => {
 
     const addUserBalance = async (userId: UserId, amount: number) => {
         console.log('IN USERCONTEXT:', userId, amount);
-        const newBalance = await makeDeposit(userId, amount)
+        const newBalance = await userApi.makeDeposit(userId, amount)
         setUserBalance(userId, newBalance);
     };
 
