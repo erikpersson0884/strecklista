@@ -10,7 +10,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "deploy": "gh-pages -d dist",
-    "test": "jest"
+    "test": "jest --config jest/jest.config.js"
   },
   "dependencies": {
     "@vitejs/plugin-react": "^4.3.4",
