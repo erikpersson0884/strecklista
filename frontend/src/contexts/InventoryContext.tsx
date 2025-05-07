@@ -1,8 +1,5 @@
 import { createContext, useState, useContext, ReactNode } from 'react';
-import { getInventory as getInventoryApiCall, 
-        addProduct as addProductApiCall,
-        updateProduct as updateProductApiCall, 
-        deleteProduct as deleteProductApiCall } from '../api/inventoryApi';
+import inventoryApi from '../api/inventoryApi';
 import { useEffect } from 'react';
 
 
@@ -44,7 +41,7 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
 
     const fetchInventory = async () => {
         try {
-            const inventory: IApiItem[] = await getInventoryApiCall();
+            const inventory: IApiItem[] = await inventoryApi.getInventory();
             const transformedInventory = inventory.map(transformApiItemToProduct);
             setProducts(transformedInventory);
         } catch (error) {
@@ -63,7 +60,7 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
             price: internalPrice
         }];
         
-        const success = await addProductApiCall(displayName, prices, icon);
+        const success = await inventoryApi.addProduct(displayName, prices, icon);
         fetchInventory();
         return success;
     };
@@ -89,7 +86,7 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
         }
 
         if (Object.keys(updatedFields).length > 0) {
-            const success = await updateProductApiCall(updatedProduct.id, updatedFields);
+            const success = await inventoryApi.updateProduct(updatedProduct.id, updatedFields);
             fetchInventory();
             return success;
         }
@@ -109,7 +106,7 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
 
     const deleteProduct = async (id: number): Promise<boolean>  => {
         if (!products.some(product => product.id === id)) throw new Error('Product not found');
-        const success = await deleteProductApiCall(id);
+        const success = await inventoryApi.deleteProduct(id);
         fetchInventory();
         return success;
     }

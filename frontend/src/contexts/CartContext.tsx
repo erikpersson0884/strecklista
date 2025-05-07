@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
-import { makePurchase } from '../api/usersApi';
+import usersApi from '../api/usersApi';
 
 
 interface CartContextType {
@@ -64,7 +64,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }, [items]);
 
     const buyProducts = async (payingUserid: UserId): Promise<boolean> => { //TODO implement comment
-        const success = await makePurchase(payingUserid, items);
+        const success = await usersApi.makePurchase(payingUserid, items);
         if (success) {
             clearOrder();
             return true; 

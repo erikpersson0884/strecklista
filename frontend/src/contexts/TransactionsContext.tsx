@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, ReactNode } from 'react';
-import { fetchTransactions, deleteTransaction as deleteTransactionApiCall } from '../api/transactionsApi';
+import transactionsApi from '../api/transactionsApi';
 import { useUsersContext } from './UsersContext';
 
 interface TransactionsContextProps {
@@ -29,7 +29,7 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
 
     const getTransactions = async (url?: string | null) => {
         try {
-            const response = await fetchTransactions(url);
+            const response = await transactionsApi.fetchTransactions(url);
             setNextUrl(response.nextUrl);
             setPrevUrl(response.prevUrl);
             const allTransactions = response.transactions
@@ -55,7 +55,7 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
 
 
     const deleteTransaction = async (id: number) => {
-        const success = await deleteTransactionApiCall(id);
+        const success = await transactionsApi.deleteTransaction(id);
         if (success) {
             setTransactions((prevTransactions) => prevTransactions.filter((transaction) => transaction.id !== id));
             setFilteredTransactions((prevFilteredTransactions) => prevFilteredTransactions.filter((transaction) => transaction.id !== id));

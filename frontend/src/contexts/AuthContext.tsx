@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { setAuthToken as setAuthTokenInAxios } from "../api/axiosInstance";
-import { getCurrentUser } from "../api/usersApi";
+import usersApi from "../api/usersApi";
 import authApi from "../api/authApi";
 
 interface AuthContextType {
@@ -29,7 +29,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
             try {
                 await setAuthTokenInAxios(token); // Ensure Axios has the token
-                const user: User = await getCurrentUser();
+                const user: User = await usersApi.getCurrentUser();
                 setCurrentUser(user);
                 setIsAuthenticated(true);
                 localStorage.setItem("authToken", token); // Store token persistently

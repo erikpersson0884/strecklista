@@ -3,24 +3,31 @@ import '@testing-library/jest-dom';
 import { render, screen, fireEvent } from '@testing-library/react';
 import Product from '../../pages/shopPage/product/Product';
 import { useCart } from '../../contexts/CartContext';
+import { useInventory } from '../../contexts/InventoryContext';
 
-// Mock the useCart context
+// Mock the useCart and useInventory contexts
 jest.mock('../../contexts/CartContext', () => ({
     useCart: jest.fn(),
 }));
 
+jest.mock('../../contexts/InventoryContext', () => ({
+    useInventory: jest.fn(),
+}));
+
 describe('Product Component', () => {
-    const mockAddProductToCart = jest.fn();
-    const mockProduct: ProductT = {
+    const mockAddProductToCart  = jest.fn();
+    const mockToggleFavourite = jest.fn();
+
+    const mockProduct = {
         id: 1,
         name: 'Test Product',
         internalPrice: 99.99,
         amountInStock: 10,
         favorite: false,
-        icon: 'test-image-url',
         available: true,
         addedTime: new Date().getTime(),
-        timesPurchased: 0,
+        timesPurchased: 54,
+        icon: 'test-image-url.svg',
     };
 
     beforeEach(() => {
@@ -29,20 +36,23 @@ describe('Product Component', () => {
         (useCart as jest.Mock).mockReturnValue({
             addProductToCart: mockAddProductToCart,
         });
+        (useInventory as jest.Mock).mockReturnValue({
+            toggleFavourite: mockToggleFavourite,
+        });
     });
 
     test('renders product details correctly', () => {
         render(<Product product={mockProduct} />);
 
-        expect(screen.getByText('Test Product')).toBeInTheDocument();
-        expect(screen.getByText('10 i lager')).toBeInTheDocument();
-        expect(screen.getByText('99.99:-')).toBeInTheDocument();
-        expect(screen.getByAltText('Test Product')).toHaveAttribute('src', 'test-image-url');
+        expect(screen.getByText(mockProduct.name)).toBeInTheDocument();
+        expect(screen.getByText(`${mockProduct.amountInStock} i lager`)).toBeInTheDocument();
+        expect(screen.getByText(`${mockProduct.internalPrice}:-`)).toBeInTheDocument();
+        expect(screen.getByAltText(mockProduct.name)).toHaveAttribute('src', mockProduct.icon);
     });
 
     test('calls addProductToCart when product is clicked', () => {
         render(<Product product={mockProduct} />);
-        const productElement = screen.getByText('Test Product');
+        const productElement = screen.getByText(mockProduct.name);
 
         fireEvent.click(productElement);
 
@@ -55,14 +65,7 @@ describe('Product Component', () => {
 
         fireEvent.click(favButton);
 
-        // Since toggleFavourite is not implemented, we just ensure no error occurs
-        expect(favButton).toBeInTheDocument(); 
-    });
-
-    test('renders the favorite button', () => {
-        render(<Product product={mockProduct} />);
-        const favButton = screen.getByRole('button');
-
-        expect(favButton).toBeInTheDocument();
+        // Check if toggleFavourite is called with the correct product ID
+        expect(mockToggleFavourite).toHaveBeenCalledWith(mockProduct.id); 
     });
 });

@@ -20,20 +20,11 @@ const Product: React.FC<ProductProps> = ({ product }) => {
     return (
         <div className="product" onClick={() => addProductToCart(product)}>
             <button className='favourite-button' onClick={(e) => {e.stopPropagation(); toggleFavourite(product.id)}}>
-
-                {product.favorite ? 
-                    <img 
-                        src={favouriteIconFilled}
-                        alt="heart" 
-                        height={20}
-                    />
-                    :
-                    <img 
-                        src={favouriteIcon}
-                        alt="heart" 
-                        height={20}
-                    />
-                }
+                <img 
+                    src={product.favorite ? favouriteIconFilled : favouriteIcon}
+                    alt="heart" 
+                    height={20}
+                />
             </button>
 
             <div className='product-image'>

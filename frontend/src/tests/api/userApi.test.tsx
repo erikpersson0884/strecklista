@@ -1,7 +1,7 @@
-import api from "../api/axiosInstance";
-import { getCurrentUser, getUsers, makeDeposit, makePurchase } from "../api/usersApi"; // Replace with actual file name
+import api from "../../api/axiosInstance";
+import userApi from "../../api/usersApi";
 
-jest.mock("../api/axiosInstance", () => ({
+jest.mock("../../api/axiosInstance", () => ({
     get: jest.fn(),
     post: jest.fn(),
 }));
@@ -23,7 +23,7 @@ describe("API functions", () => {
 
         (api.get as jest.Mock).mockResolvedValue({ data: { data: { user: mockApiUser } } });
         
-        const user = await getCurrentUser();
+        const user = await userApi.getCurrentUser();
         
         expect(api.get).toHaveBeenCalledWith("/api/user");
         expect(user).toEqual({
@@ -45,7 +45,7 @@ describe("API functions", () => {
 
         (api.get as jest.Mock).mockResolvedValue({ data: { data: { members: mockApiUsers } } });
         
-        const users = await getUsers();
+        const users = await userApi.getUsers();
         
         expect(api.get).toHaveBeenCalledWith("api/group");
         expect(users).toEqual([
@@ -57,7 +57,7 @@ describe("API functions", () => {
     test("makeDeposit should post data and return new balance", async () => {
         (api.post as jest.Mock).mockResolvedValue({ data: { data: { balance: 250 } } });
 
-        const newBalance = await makeDeposit("1", 50);
+        const newBalance = await userApi.makeDeposit("1", 50);
         
         expect(api.post).toHaveBeenCalledWith("/api/group/deposit", { userId: "1", total: 50 });
         expect(newBalance).toBe(250);
@@ -71,7 +71,7 @@ describe("API functions", () => {
 
         (api.post as jest.Mock).mockResolvedValue({ data: { data: { balance: 180 } } });
 
-        const newBalance = await makePurchase("1", mockProducts);
+        const newBalance = await userApi.makePurchase("1", mockProducts);
         
         expect(api.post).toHaveBeenCalledWith("/api/group/purchase", {
             userId: "1",

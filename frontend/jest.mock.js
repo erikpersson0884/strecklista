@@ -1,1 +1,5 @@
-module.exports = 'test-file-stub';
+module.exports = {
+    process(src) {
+        return src;
+    },
+};

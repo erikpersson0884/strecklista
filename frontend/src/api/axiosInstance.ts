@@ -1,5 +1,5 @@
 import axios from 'axios';
-console.log('API_BASE:', __API_BASE__); // Check the value of __API_BASE__  
+
 export const api = axios.create({
     baseURL: `${__API_BASE__}/`,
 });

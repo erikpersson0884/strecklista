@@ -1,10 +1,4 @@
 const { TextEncoder, TextDecoder } = require('util');
 global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;
-global.import = {
-    meta: {
-      env: {
-        VITE_AUTH_URL: "http://mock-auth-url.com",
-      },
-    },
-  };
+globalThis.__API_BASE__= 'http://localhost:3000/api/v1';
