@@ -10,6 +10,7 @@
     "dev": "cd frontend && npm run dev",
     "build-frontend": "cd frontend && npm run build",
     "build": "npm run build-frontend",
+    "preview": "cd frontend && npm run preview",
     "deploy": "npm run build && gh-pages -d frontend/dist",
     "build-and-deploy": "npm run build && npm run deploy"
   },

@@ -14,7 +14,7 @@ const InventoryPage: React.FC = () => {
     const [showAddProductPopup, setShowAddProductPopup] = React.useState(false);
 
     const [showrefillPopup, setShowRefillPopup] = React.useState<boolean>(false);
-    const [productToRefill, setProductToRefill] = React.useState<Product | null>(null);
+    const [productToRefill, setProductToRefill] = React.useState<ProductT | null>(null);
     
 
     return (

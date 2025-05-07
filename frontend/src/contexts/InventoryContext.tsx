@@ -12,6 +12,7 @@ interface InventoryContextProps {
     updateProduct: (updatedProduct: ProductT) => void;
     deleteProduct: (id: number) => Promise<boolean>;
     changeProductAmount: (id: number, amount: number) => void;
+    toggleFavourite: (id: number) => Promise<boolean>;
 }
 
 const InventoryContext = createContext<InventoryContextProps | undefined>(undefined);
@@ -95,6 +96,17 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
         return false;
     };
 
+    const toggleFavourite = async (id: number): Promise<boolean> => {
+        const product = products.find(product => product.id === id);
+        if (!product) throw new Error('Product not found');
+        product.favorite = !product.favorite;
+        const success = await updateProduct(product);
+        if (success) {
+            fetchInventory();
+        }
+        return success;
+    }
+
     const deleteProduct = async (id: number): Promise<boolean>  => {
         if (!products.some(product => product.id === id)) throw new Error('Product not found');
         const success = await deleteProductApiCall(id);
@@ -113,7 +125,7 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
     };
 
     return (
-        <InventoryContext.Provider value={{ products, addProduct, updateProduct, deleteProduct, changeProductAmount }}>
+        <InventoryContext.Provider value={{ products, addProduct, updateProduct, deleteProduct, changeProductAmount, toggleFavourite }}>
             {children}
         </InventoryContext.Provider>
     );

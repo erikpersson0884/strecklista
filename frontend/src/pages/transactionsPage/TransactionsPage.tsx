@@ -7,7 +7,7 @@ import Filter from './Filter/Filter';
 
 const TransactionsPage: React.FC = () => {
     const { filteredTransactions, getNextTransactions, getPrevTransactions } = useTransactionsContext();
-    const [ page, setPage ] = React.useState<number>(1);
+    const [ page ] = React.useState<number>(1);
 
     return (
         <div className='transactions-page'>

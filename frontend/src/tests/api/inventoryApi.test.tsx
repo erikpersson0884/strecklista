@@ -1,6 +1,7 @@
 import api from "../../api/axiosInstance";
 import { getInventory, addProduct, updateProduct, deleteProduct } from "../../api/inventoryApi";
 
+
 jest.mock("../../api/axiosInstance");
 
 describe("Inventory API functions", () => {

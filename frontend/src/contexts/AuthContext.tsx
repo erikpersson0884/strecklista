@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { setAuthToken as setAuthTokenInAxios } from "../api/axiosInstance";
 import { getCurrentUser } from "../api/usersApi";
-import { login } from "../api/authApi";
+import authApi from "../api/authApi";
 
 interface AuthContextType {
     isAuthenticated: boolean;
@@ -16,29 +16,23 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [token, setToken] = useState<string | null>(() => localStorage.getItem("authToken"));
     const [currentUser, setCurrentUser] = useState<User | null>(null);
-    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(!!token);
-
-    useEffect(() => {
-        if (token) {
-            setAuthTokenInAxios(token); // Ensure Axios has the token
-            localStorage.setItem("authToken", token); // Store token persistently
-        } else {
-            // localStorage.removeItem("authToken");
-        }
-    }, [token]);
+    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
     useEffect(() => {
         const fetchUser = async () => {
             if (!token) {
                 setCurrentUser(null);
                 setIsAuthenticated(false);
+                localStorage.removeItem("authToken");
                 return;
             }
 
             try {
+                await setAuthTokenInAxios(token); // Ensure Axios has the token
                 const user: User = await getCurrentUser();
                 setCurrentUser(user);
                 setIsAuthenticated(true);
+                localStorage.setItem("authToken", token); // Store token persistently
             } catch (error) {
                 console.error("Error fetching user:", error);
                 setCurrentUser(null);
@@ -51,13 +45,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }, [token]); // Ensure it refetches user when token changes
 
     const authenticate = async () => {
-        const authenticationUrl = (import.meta.env.VITE_AUTH_URL || process.env.VITE_AUTH_URL) as string;
+        const authenticationUrl = (__API_BASE__ + "/authorize");
         window.location.href = authenticationUrl;
     };
 
     const exchangeCodeForToken = async (code: string): Promise<void> => {
         try {
-            const { token, user } = await login(code);
+            const { token, user } = await authApi.login(code);
 
             setToken(token);
             setCurrentUser(user);

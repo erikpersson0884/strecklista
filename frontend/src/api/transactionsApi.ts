@@ -27,3 +27,11 @@ export const fetchTransactions = async (url?: string | null, limit: number = 5, 
     }
 };
 
+export const deleteTransaction = async (id: number): Promise<boolean> => {
+    try {
+        const success = await api.delete(`api/group/transaction/${id}`);
+        return success.status === 204;
+    } catch (error: any) {
+        throw new Error(error.response?.data?.message || "Failed to delete transaction");
+    }
+}
