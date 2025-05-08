@@ -32,7 +32,7 @@ const App: React.FC = () => {
     if (isLoading) {
         return <p>Loading...</p>;
     } 
-    else if (!isAuthenticated) {
+    else if (isAuthenticated) {
         return(
             <Providers>
                 <BrowserRouter basename={baseName}>

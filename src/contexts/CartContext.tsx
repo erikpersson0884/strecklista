@@ -4,6 +4,7 @@ import usersApi from '../api/usersApi';
 
 interface CartContextType {
     items: ProductInCart[];
+    numberOfProductsInCart: number;
     total: number;
     addProductToCart: (item: ProductT) => void;
     setProductQuantity: (productId: number, quantity: number) => void;
@@ -18,6 +19,7 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [ items, setItems ] = useState<ProductInCart[]>([]);
+    const [ numberOfProductsInCart, setNumberOfProductsInCart ] = useState<number>(0);
     const [ total, setTotal ] = useState<number>(0);
 
     const addProductToCart = (item: ProductT) => {
@@ -33,7 +35,14 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         });
     };
 
+    React.useEffect(() => {
+        const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
+        setNumberOfProductsInCart(totalItems);
+    }
+    , [items]);
+
     const setProductQuantity = (productId: number, quantity: number) => {
+        if (quantity < 0) throw new Error("Quantity cannot be negative");
         setItems((prevItems) => {
             return prevItems.map(i => 
                 i.id === productId ? { ...i, quantity } : i
@@ -42,6 +51,10 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
 
     const decreaseProductQuantity = (ProductT: ProductInCart) => {
+        if (ProductT.quantity <= 1) {
+            removeProductFromCart(ProductT);
+            return;
+        }
         setProductQuantity(ProductT.id, ProductT.quantity - 1);
     }
 
@@ -75,7 +88,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
 
     return (
-        <CartContext.Provider value={{ items, addProductToCart, removeProductFromCart, setProductQuantity, decreaseProductQuantity, increaseProductQuantity, clearOrder, buyProducts, total }}>
+        <CartContext.Provider value={{ numberOfProductsInCart, items, addProductToCart, removeProductFromCart, setProductQuantity, decreaseProductQuantity, increaseProductQuantity, clearOrder, buyProducts, total }}>
             {children}
         </CartContext.Provider>
     );

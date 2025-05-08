@@ -28,3 +28,16 @@
     height: 100%;
     aspect-ratio: 1/1;
 }
+
+.showCartButton .items-indicator {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: red;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: .2rem .5rem;
+    border-radius: 50%;
+    transform: translate(50%, -50%);
+}

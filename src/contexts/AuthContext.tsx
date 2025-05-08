@@ -35,7 +35,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 setCurrentUser(user);
                 setIsAuthenticated(true);
                 localStorage.setItem("authToken", token); // Store token persistently
-                setIsLoading(false);
             } catch (error) {
                 console.error("Error fetching user:", error);
                 setCurrentUser(null);
@@ -45,6 +44,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         };
 
         fetchUser();
+        console.log("Token:", "test");
+        setIsLoading(false);
     }, [token]); // Ensure it refetches user when token changes
 
     const authenticate = async (): Promise<void> => {

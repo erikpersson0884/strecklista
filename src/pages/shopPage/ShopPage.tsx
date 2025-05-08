@@ -2,6 +2,7 @@ import React from 'react';
 import Product from './product/Product';
 import './shopPage.css';
 import { useInventory } from '../../contexts/InventoryContext';
+import { useCart } from '../../contexts/CartContext';
 import Cart from './cart/Cart';
 import Shadowbox from '../../components/Shadowbox/Shadowbox';
 import shoppingCartIcon from '../../assets/images/shoppingcart.svg';
@@ -9,6 +10,7 @@ import shoppingCartIcon from '../../assets/images/shoppingcart.svg';
 
 const ShopPage: React.FC = () => {
     const { products } = useInventory();
+    const { numberOfProductsInCart } = useCart();
     const [displayCart, setDisplayCart] = React.useState<boolean>(false);
 
     return (
@@ -35,7 +37,11 @@ const ShopPage: React.FC = () => {
                 )}
             </div>
 
-            <button className='showCartButton no-button-formatting' onClick={() => setDisplayCart(!displayCart)}>
+            <button 
+                className='showCartButton no-button-formatting' 
+                onClick={() => setDisplayCart(!displayCart)}
+            >
+                <div className='items-indicator'>{numberOfProductsInCart}</div>
                 <img src={shoppingCartIcon} alt="shopping cart" height={20}/>
             </button>
         </>
