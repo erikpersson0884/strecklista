@@ -12,27 +12,31 @@ interface RefillPopupProps {
 const RefillPopup: React.FC<RefillPopupProps> = ({ user, isOpen, onClose }) => {
     const { addUserBalance } = useUsersContext();
 
-    const [ errorText, setErrorText ] = useState<string | null>(null);
-    const [amountToDeposit, setAmountToDeposit] = useState<number>(0);
+    const [errorText, setErrorText] = useState<string | null>(null);
+    const [amountToDeposit, setAmountToDeposit] = useState<string>(''); // Use string
 
     const handleRefill = async () => {
-        const wasSuccessFull: boolean = await addUserBalance(user.id, amountToDeposit);
+        const parsedAmount = parseFloat(amountToDeposit);
+
+        if (isNaN(parsedAmount)) {
+            setErrorText('Ange ett giltigt belopp.');
+            return;
+        }
+
+        const wasSuccessFull: boolean = await addUserBalance(user.id, parsedAmount);
         
         if (wasSuccessFull) handleClose();
         else setErrorText('Något gick fel, försök igen senare.');
     };
 
     const handleClose = () => {
-        setAmountToDeposit(0);
+        setAmountToDeposit('');
         setErrorText(null);
         onClose();
     }
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        console.log( typeof e.target.value);
-        const amount = parseFloat(e.target.value);
-        if (isNaN(amount)) return;
-        else setAmountToDeposit(amount);
+        setAmountToDeposit(e.target.value);
     }
 
     const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -49,16 +53,20 @@ const RefillPopup: React.FC<RefillPopupProps> = ({ user, isOpen, onClose }) => {
             onClose={handleClose}
         >
             <p>Nuvarande saldo: {user.balance}kr</p>
-            <label htmlFor="amount">Fyll på med: </label>
-            <input 
-                id="amount" 
-                type="number" 
-                value={amountToDeposit} 
-                step="100"
-                onChange={(e) => handleInputChange(e)} 
-                onKeyDown={handleKeyPress}
-            />  
-            <p>Nytt saldo: {user.balance + (amountToDeposit)}kr</p>
+
+            <div className='inputdiv'>
+                <label htmlFor="amount">Fyll på med: </label>
+                <input 
+                    id="amount" 
+                    type="number" 
+                    value={amountToDeposit} 
+                    step="100"
+                    onChange={handleInputChange} 
+                    onKeyDown={handleKeyPress}
+                />  
+            </div>
+            
+            <p>Nytt saldo: {user.balance + (parseFloat(amountToDeposit) || 0)}kr</p>
 
             {errorText && <p className="error-message">{errorText}</p>}
         </PopupDiv>

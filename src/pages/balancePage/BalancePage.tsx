@@ -77,7 +77,9 @@ const UserDiv: React.FC<UserDivProps> = ({ user, onOpenPopup }) => {
                 <h2>{user.nick}</h2>
                 <h3>{user.name}</h3>
             </div>
-            <p>{user.balance} kr</p>
+            <p className={user.balance < 0 ? 'negative-balance' : 'positive-balance'}>
+                {user.balance} kr
+            </p>
             
             <button 
                 className='add-button no-button-formatting' 
