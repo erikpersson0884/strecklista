@@ -1,7 +1,7 @@
 import React from "react";
-import PopupDiv from "../../../components/PopupDiv/PopupDiv";
+import PopupDiv from "../../components/PopupDiv/PopupDiv";
 
-import { useInventory } from "../../../contexts/InventoryContext";
+import { useInventory } from "../../contexts/InventoryContext";
 
 interface AddProductPopupProps {
     isOpen: boolean;
@@ -18,6 +18,12 @@ const AddProductPopup: React.FC<AddProductPopupProps> = ({ isOpen, closePopup })
     const [ icon, seticon ] = React.useState<string>("");
     const [ available, setAvailable ] = React.useState<boolean>(true);
 
+    const handleAddProduct = async () => {
+        const wasSuccessfull = await addProduct(name, internalPrice, icon);
+        console.log("wasSuccessfull", wasSuccessfull);
+        if (wasSuccessfull) handleClose();
+        else setErrorText("Det gick inte att lägga till varan. Kontrollera att alla fält är ifyllda korrekt.");
+    };
 
     const handleClose = () => {
         setName("");
@@ -32,7 +38,7 @@ const AddProductPopup: React.FC<AddProductPopupProps> = ({ isOpen, closePopup })
     return (
         <PopupDiv 
             title="Lägg till vara" 
-            onAccept={() => addProduct(name, internalPrice, icon)} 
+            onAccept={handleAddProduct} 
             isOpen={isOpen} 
             onClose={handleClose}
             className="add-product-popup"

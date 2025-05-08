@@ -9,9 +9,16 @@ interface RefillProductPopupProps {
 }
 
 const RefillProductPopup: React.FC<RefillProductPopupProps> = ({ product, isOpen, onClose }) => {
-    const [amount, setAmount] = useState<number>(0);
     const { changeProductAmount } = useInventory();
+
+    const [ amount, setAmount ] = useState<number>(0);
     const [ errorText, setErrorText ] = useState<string | null>('');
+
+    const handleRefillProduct = async () => {
+        const wasSuccessfull = await changeProductAmount(product.id, amount);
+        if (wasSuccessfull) handleClose();
+        else setErrorText("Det gick inte att fylla på varan. Kontrollera att alla fält är ifyllda korrekt.");
+    };
 
     const handleClose = () => {
         setAmount(0);
@@ -24,7 +31,7 @@ const RefillProductPopup: React.FC<RefillProductPopupProps> = ({ product, isOpen
             title='Fyll på produkt'
             isOpen={isOpen}
             onClose={handleClose}
-            onAccept={() => changeProductAmount(product.id, amount)}
+            onAccept={handleRefillProduct}
             acceptButtonText='Fyll på'
             errorText={'Något gick fel, försök igen senare.'}
         >

@@ -6,7 +6,7 @@ import addIcon from '../../assets/images/add.svg';
 
 import InventoryItem from './InventoryItem/InventoryItem';
 import { useInventory } from '../../contexts/InventoryContext';
-import AddProductPopup from './AddProductPopup/AddProductPopup';
+import AddProductPopup from './AddProductPopup';
 import RefillProductPopup from './RefillProductPopup';
 
 const InventoryPage: React.FC = () => {

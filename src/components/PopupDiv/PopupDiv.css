@@ -4,7 +4,9 @@
 
     position: absolute;
     
-    width: max-content;
+    box-sizing: border-box;
+    width: 25rem;
+    max-width: 90%;
     padding: 1rem;
     padding-top: 3rem;
     border-radius: .5rem;
@@ -24,4 +26,11 @@
     gap: 1rem;
     justify-content: space-between;
     align-items: center;
+}
+
+@media screen and (max-width: 25rem) {
+    .popup-window {
+        width: 90%;
+    }
+    
 }

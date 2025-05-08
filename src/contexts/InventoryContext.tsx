@@ -59,10 +59,14 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
             displayName: "Internt",
             price: internalPrice
         }];
-        
-        const success = await inventoryApi.addProduct(displayName, prices, icon);
-        fetchInventory();
-        return success;
+        try {
+            const success = await inventoryApi.addProduct(displayName, prices, icon);
+            fetchInventory();
+            return success;
+        } catch (error) {
+            console.error('Failed to add product', error);
+            return false;
+        }
     };
 
     const updateProduct = async (updatedProduct: ProductT): Promise<boolean> => {
