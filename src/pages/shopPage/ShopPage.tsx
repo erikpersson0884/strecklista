@@ -12,6 +12,7 @@ const ShopPage: React.FC = () => {
     const { products } = useInventory();
     const { numberOfProductsInCart } = useCart();
     const [displayCart, setDisplayCart] = React.useState<boolean>(false);
+    const [searchTerm, setSearchTerm] = React.useState<string>('');
 
     return (
         <>
@@ -20,18 +21,30 @@ const ShopPage: React.FC = () => {
                     <Cart closeCart={() => setDisplayCart(false)}/> 
                 </Shadowbox>
             }
+            
+            <input
+                type="text" 
+                className='search-bar' 
+                placeholder='Sök efter produkter...'
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+            />
 
-            <div className='shopPage'>
+            <div className='shop-page'>
+
+
                 {products.filter((product: ProductT) => 
                     product.favorite == true && 
-                    product.available
+                    product.available &&
+                    product.name.toLowerCase().includes(searchTerm.toLowerCase())
                 ).map((product: ProductT) => 
                     <Product key={product.id} product={product} />
                 )}
                 
                 {products.filter((product: ProductT) => 
                     product.favorite == false && 
-                    product.available
+                    product.available && 
+                    product.name.toLowerCase().includes(searchTerm.toLowerCase())
                 ).map((product: ProductT) => 
                     <Product key={product.id} product={product} />
                 )}

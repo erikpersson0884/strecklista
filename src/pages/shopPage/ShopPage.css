@@ -1,5 +1,5 @@
 
-.shopPage {
+.shop-page {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -8,6 +8,11 @@
     gap: 1rem;
 
     position: relative;
+}
+
+.search-bar {
+    width: 90%;
+    margin-inline: auto;
 }
 
 #root .showCartButton {

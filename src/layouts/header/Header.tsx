@@ -13,9 +13,9 @@ const Header: React.FC = () => {
 
     const pages = [
         { url: '/', linkText: 'Strecka'},
-        { url: '/inventory', linkText: 'Inventory'},
+        { url: '/inventory', linkText: 'Utbud'},
         { url: '/balance', linkText: 'Tillgodo' },
-        { url: '/transactions', linkText: 'Transactions'},
+        { url: '/transactions', linkText: 'Transaktioner'},
     ]
     
 
