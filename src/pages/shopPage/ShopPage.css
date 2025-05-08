@@ -10,10 +10,34 @@
     position: relative;
 }
 
-.search-bar {
+/* .search-bar {
     width: 90%;
     margin-inline: auto;
+} */
+
+.search-bar-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+
+    width: 100%;
+    max-width: 30rem;
+    margin-inline: auto;
 }
+
+.search-bar {
+    width: 90%;
+}
+
+.clear-button {
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
 
 #root .showCartButton {
     background-color: var(--green-color);

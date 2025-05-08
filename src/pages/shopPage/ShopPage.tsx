@@ -6,6 +6,7 @@ import { useCart } from '../../contexts/CartContext';
 import Cart from './cart/Cart';
 import Shadowbox from '../../components/Shadowbox/Shadowbox';
 import shoppingCartIcon from '../../assets/images/shoppingcart.svg';
+import closeIcon from '../../assets/images/close.svg';
 
 
 const ShopPage: React.FC = () => {
@@ -22,13 +23,21 @@ const ShopPage: React.FC = () => {
                 </Shadowbox>
             }
             
-            <input
-                type="text" 
-                className='search-bar' 
-                placeholder='Sök efter produkter...'
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-            />
+            <div className='search-bar-container'>
+                <input
+                    type="text" 
+                    className='search-bar' 
+                    placeholder='Sök efter produkter...'
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <button 
+                    className='clear-button no-button-formatting' 
+                    onClick={() => setSearchTerm('')}
+                >
+                    <img src={closeIcon} alt="clear search" height={20}/>
+                </button>
+            </div>
 
             <div className='shop-page'>
 
