@@ -23,16 +23,14 @@ describe('Header Component', () => {
     test('renders navigation links', () => {
         renderWithBrowser(<Header />);
 
-
         expect(screen.getByText('Strecka')).toBeInTheDocument();
-        expect(screen.getByText('Inventory')).toBeInTheDocument();
+        expect(screen.getByText('Utbud')).toBeInTheDocument();
         expect(screen.getByText('Tillgodo')).toBeInTheDocument();
-        expect(screen.getByText('Transactions')).toBeInTheDocument();
+        expect(screen.getByText('Transaktioner')).toBeInTheDocument();
     });
 
     test('toggles navigation menu when button is clicked', () => {
         renderWithBrowser(<Header />);
-
 
         const menuButton = screen.getByRole('button', { name: /toggle navigation/i });
         expect(menuButton).toHaveAttribute('aria-expanded', 'false');
@@ -47,12 +45,11 @@ describe('Header Component', () => {
     test('closes navigation when a link is clicked', () => {
         renderWithBrowser(<Header />);
 
-
         const menuButton = screen.getByRole('button', { name: /toggle navigation/i });
         fireEvent.click(menuButton);
         expect(menuButton).toHaveAttribute('aria-expanded', 'true');
 
-        fireEvent.click(screen.getByText('Inventory'));
+        fireEvent.click(screen.getByText('Utbud'));
         expect(menuButton).toHaveAttribute('aria-expanded', 'false');
     });
 });
