@@ -1,39 +1,27 @@
 
+.popup-window {
+    background-color: var(--main-background-color);
 
-.popup-div {
-    background-color: var(--secondary-color);
-
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-
-    position: fixed;
-
-    box-sizing: border-box;
-    min-width: 20rem;
-    max-width: 100%;
+    position: absolute;
+    
     width: max-content;
-    padding: 1rem 2rem;
-    border: #fff .1rem solid;
-    border-radius: 1rem;
-    margin-inline: auto;
+    padding: 1rem;
+    padding-top: 3rem;
+    border-radius: .5rem;
 
     overflow: hidden;
 }
 
-.popup-div h1 {
-    max-width: calc(100% - 2rem);
-}
-
-.popup-content {
+.popup-content, .popup-body {
     display: flex;
     flex-direction: column;
-    gap: .6rem;
-
-    padding: 1rem;
+    gap: 1rem;
 }
 
-.popup-div .popup-actions {
+.popup-footer {
     display: flex;
+    flex-direction: row;
+    gap: 1rem;
     justify-content: space-between;
+    align-items: center;
 }

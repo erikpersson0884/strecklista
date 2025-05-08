@@ -14,6 +14,8 @@ interface PopupDivProps {
     acceptButtonText?: string;
     cancelButtonText?: string;
 
+    errorText?: string | null;
+
     className?: string;
 }
 
@@ -34,6 +36,7 @@ interface PopupDivProps {
  * @returns {JSX.Element | null} The renderedPopupDiv component, or `null` if `isOpen` is false.
  */
 const PopupDiv: React.FC<PopupDivProps> = ({ 
+    children,
     isOpen, 
     onClose, 
     onAccept = onClose, 
@@ -41,8 +44,8 @@ const PopupDiv: React.FC<PopupDivProps> = ({
     title, 
     acceptButtonText = "Acceptera",
     cancelButtonText = "Avbryt", 
-    children, 
-    className }) => {
+    className,
+}) => {
     if (!isOpen) return null;
 
     return (
@@ -50,6 +53,8 @@ const PopupDiv: React.FC<PopupDivProps> = ({
             <div className={`popup-window `} onClick={onClose}>
                 <div className="popup-content" onClick={(e) => e.stopPropagation()}>
                     {title && <h2 className="popup-title">{title}</h2>}
+                    
+                    <hr />
 
                     <button className="close-button" onClick={onClose}>
                         <img src={closeIcon} alt="Close" className="close-icon" />

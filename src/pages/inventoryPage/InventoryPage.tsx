@@ -42,8 +42,8 @@ const InventoryPage: React.FC = () => {
         {productToRefill && (
             <RefillProductPopup 
                 product={productToRefill} 
-                showPopupDiv={showrefillPopup} 
-                setShowPopupDiv={setShowRefillPopup} 
+                isOpen={showrefillPopup} 
+                onClose={() => setShowRefillPopup(false)} 
             />
         )}
         </>

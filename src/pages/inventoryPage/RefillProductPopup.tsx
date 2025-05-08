@@ -4,40 +4,29 @@ import { useInventory } from '../../contexts/InventoryContext';
 
 interface RefillProductPopupProps {
     product: ProductT;
-    showPopupDiv: boolean;
-    setShowPopupDiv: React.Dispatch<React.SetStateAction<boolean>>;
+    isOpen: boolean;
+    onClose: () => void;
 }
 
-const RefillProductPopup: React.FC<RefillProductPopupProps> = ({ product, showPopupDiv, setShowPopupDiv }) => {
+const RefillProductPopup: React.FC<RefillProductPopupProps> = ({ product, isOpen, onClose }) => {
     const [amount, setAmount] = useState<number>(0);
     const { changeProductAmount } = useInventory();
     const [ errorText, setErrorText ] = useState<string | null>('');
 
-    const handleRefill = async () => {
-        const wasSuccesfull: boolean = await changeProductAmount(product.id, amount);
-        
-        if (!wasSuccesfull) setErrorText('Något gick fel, försök igen senare.');
-        else {
-            // Reset and close popup
-            setAmount(0);
-            setShowPopupDiv(false);
-            setErrorText(null);
-        }
-    };
-
     const handleClose = () => {
         setAmount(0);
+        setErrorText(null);
+        onClose();
     }
 
     return (
         <PopupDiv 
             title='Fyll på produkt'
-            isOpen={showPopupDiv}
+            isOpen={isOpen}
             onClose={handleClose}
-            onAccept={handleRefill}
-            onCancel={handleClose}
+            onAccept={() => changeProductAmount(product.id, amount)}
             acceptButtonText='Fyll på'
-
+            errorText={'Något gick fel, försök igen senare.'}
         >
             <p>Nuvarande antal: {product.amountInStock} st</p>
             <label htmlFor="amount">Fyll på med: </label>

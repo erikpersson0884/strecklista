@@ -54,19 +54,15 @@
 }
 
 .close-button {
-    background-color: grey;
-
-    cursor: pointer;
+    background-color: var(--secondary-background-color);
 
     position: absolute;
     top: 0;
     right: 0;
 
-    padding: 1rem;
-    border-radius: 0 0 0 1rem;
-    border-bottom: 1px solid #ffffff;
-    border-left: 1px solid #ffffff;
-
+    aspect-ratio: 1/1;
+    border: none;
+    border-radius: 0;
 }
 
 .inputdiv {
@@ -83,4 +79,9 @@
     justify-content: center;
 
     min-height: 100vh;
+}
+
+.error-message {
+    color: red;
+    font-size: 0.8rem;
 }
