@@ -35,3 +35,8 @@
     justify-content: space-between;
     gap: .5rem;
 }
+
+.profile-page .logout-button {
+    
+    width: 50%;
+}
