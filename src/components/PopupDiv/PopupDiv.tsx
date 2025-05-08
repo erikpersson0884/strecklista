@@ -1,99 +1,71 @@
-import React, { useEffect } from "react";
+import React from 'react';
 import './PopupDiv.css';
-import Shadowbox from "../Shadowbox/Shadowbox";
+import Modal from '../modal/Modal';
+import closeIcon from '../../assets/images/close.svg';
 
 interface PopupDivProps {
     children: React.ReactNode;
-    title: string;
+    isOpen: boolean;
+    onAccept?: () => any;
+    onCancel?: () => any;
+    onClose: () => any;
 
-    showPopupDiv: boolean;
-    setShowPopupDiv: React.Dispatch<React.SetStateAction<boolean>>;
-
-    doAction: () => void;
-    cancelAction?: () => void;
-
+    title?: string;
     acceptButtonText?: string;
     cancelButtonText?: string;
+
     className?: string;
 }
 
 /**
- * PopupDiv component.
- * 
- * This component renders a popup with a title, content, and action buttons.
- * It also handles closing the popup when the Escape key is pressed.
- * @param {string} title - The title of the popup.
- * @param {boolean} showPopupDiv - A boolean indicating whether the popup should be shown.
- * @param {React.Dispatch<React.SetStateAction<boolean>>} setShowPopupDiv - The function to set the visibility of the popup.
-
- * @param {string} [acceptButtonText="Acceptera"] - The text for the accept button.
- * @param {string} [cancelButtonText="Avbryt"] - The text for the cancel button.
- * 
- * @param {() => void} doAction - The function to be called when the accept button is clicked.
- * @param {() => void} [cancelAction] - The function to be called when the cancel button is clicked.
- * 
- * @param {string} [className] - Additional class names for the popup.
- * @returns {JSX.Element | null} The rendered PopupDiv component or null if not visible.
+ *PopupDiv component renders a modal popup window with customizable content and actions.
+ *
+ * @component
+ * @param {PopupWindowProps} props - The properties for thePopupDiv component.
+ * @param {boolean} props.isOpen - Determines whether the popup window is open or not.
+ * @param {() => void} props.onClose - Callback function triggered when the popup is closed.
+ * @param {() => void} [props.onAccept=onClose] - Callback function triggered when the accept button is clicked. Defaults to `onClose`.
+ * @param {() => void} [props.onCancel=onClose] - Callback function triggered when the cancel button is clicked. Defaults to `onClose`.
+ * @param {string} [props.title] - The title of the popup window. If not provided, no title is displayed.
+ * @param {string} [props.buttonText] - The text displayed on the accept button. Defaults to "Skapa".
+ * @param {React.ReactNode} props.children - The content to be displayed inside the popup window.
+ * @param {string} [props.className] - Additional CSS class names to apply to the popup body.
+ *
+ * @returns {JSX.Element | null} The renderedPopupDiv component, or `null` if `isOpen` is false.
  */
 const PopupDiv: React.FC<PopupDivProps> = ({ 
-    children, 
+    isOpen, 
+    onClose, 
+    onAccept = onClose, 
+    onCancel = onClose, 
     title, 
-    acceptButtonText = "Acceptera", 
+    acceptButtonText = "Acceptera",
     cancelButtonText = "Avbryt", 
-    doAction,
-    cancelAction = () => {},
-    showPopupDiv, 
-    setShowPopupDiv,
-    className = ""
-}) => {
-
-    useEffect(() => {
-        const handleEscape = (e: KeyboardEvent) => {
-            if (e.key === 'Escape') setShowPopupDiv(false);
-        };
-
-        if (showPopupDiv) {
-            document.addEventListener('keydown', handleEscape);
-        }
-
-        return () => {
-            document.removeEventListener('keydown', handleEscape);
-        };
-    }, [showPopupDiv, setShowPopupDiv]);
-
-    const handleClose = () => {
-        setShowPopupDiv(false);
-        cancelAction();
-    };
-
-
-    if (!showPopupDiv) return null;
+    children, 
+    className }) => {
+    if (!isOpen) return null;
 
     return (
-        <Shadowbox onClick={handleClose}>
-            <aside className={"popup-div" + " " + className} onClick={(e) => e.stopPropagation()}>
-                <button onClick={handleClose} className="close-button">
-                    ×
-                </button>
+        <Modal isOpen={isOpen} onClose={onClose}>
+            <div className={`popup-window `} onClick={onClose}>
+                <div className="popup-content" onClick={(e) => e.stopPropagation()}>
+                    {title && <h2 className="popup-title">{title}</h2>}
 
-                <h1>{title}</h1>
-                <hr />
-                
-                <div className="popup-content">
-                    {children}
-                </div>
-
-                <div className="popup-actions">
-                    <button className="doButton" onClick={doAction}>
-                        {acceptButtonText}
+                    <button className="close-button" onClick={onClose}>
+                        <img src={closeIcon} alt="Close" className="close-icon" />
                     </button>
+                    
+                    <div className={`popup-body ${className || ''}`}>
+                        {children}
+                    </div>
 
-                    <button className="cancel-button" onClick={handleClose}>
-                        {cancelButtonText}
-                    </button>
+                    <div className='popup-footer'>
+                        <button className="popup-button" onClick={onAccept}>{acceptButtonText}</button>
+                        <button className="popup-button" onClick={onCancel}>{cancelButtonText}</button>
+                    </div>
                 </div>
-            </aside>
-        </Shadowbox>
+            </div>
+        </Modal>
     );
 };
 

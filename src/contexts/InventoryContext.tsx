@@ -8,7 +8,7 @@ interface InventoryContextProps {
     addProduct: (displayName: string, internalPrice: number, icon?: string) => Promise<boolean>;
     updateProduct: (updatedProduct: ProductT) => void;
     deleteProduct: (id: number) => Promise<boolean>;
-    changeProductAmount: (id: number, amount: number) => void;
+    changeProductAmount: (id: number, amount: number) => Promise<boolean>;
     toggleFavourite: (id: number) => Promise<boolean>;
 }
 

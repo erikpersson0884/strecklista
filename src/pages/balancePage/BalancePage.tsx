@@ -57,8 +57,8 @@ const BalancePage: React.FC = () => {
             {selectedUser && (
                 <RefillPopup 
                     user={selectedUser} 
-                    showPopupDiv={showPopup} 
-                    setShowPopupDiv={setShowPopup} 
+                    isOpen={showPopup}
+                    onClose={() => setShowPopup(false)}
                 />
             )}
         </>

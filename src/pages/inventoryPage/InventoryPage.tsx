@@ -34,7 +34,10 @@ const InventoryPage: React.FC = () => {
             </button>
         </ul>
 
-        <AddProductPopup showPopupDiv={showAddProductPopup} setShowPopupDiv={setShowAddProductPopup} />
+        <AddProductPopup 
+            isOpen={showAddProductPopup} 
+            closePopup={() => setShowAddProductPopup(false)}
+        />
 
         {productToRefill && (
             <RefillProductPopup 

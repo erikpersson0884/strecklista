@@ -4,7 +4,7 @@ import './shopPage.css';
 import { useInventory } from '../../contexts/InventoryContext';
 import { useCart } from '../../contexts/CartContext';
 import Cart from './cart/Cart';
-import Shadowbox from '../../components/Shadowbox/Shadowbox';
+import Modal from '../../components/modal/Modal';
 import shoppingCartIcon from '../../assets/images/shoppingcart.svg';
 import closeIcon from '../../assets/images/close.svg';
 
@@ -18,9 +18,9 @@ const ShopPage: React.FC = () => {
     return (
         <>
             {displayCart &&
-                <Shadowbox onClick={() => setDisplayCart(false)} >
+                <Modal onClose={() => setDisplayCart(false)}>
                     <Cart closeCart={() => setDisplayCart(false)}/> 
-                </Shadowbox>
+                </Modal>
             }
             
             <div className='search-bar-container'>

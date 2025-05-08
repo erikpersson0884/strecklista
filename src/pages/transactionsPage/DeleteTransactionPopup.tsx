@@ -4,11 +4,11 @@ import { useTransactionsContext } from '../../contexts/TransactionsContext';
 
 interface DeleteTransactionPopupProps {
     transaction: Transaction;
-    showPopupDiv: boolean;
-    setShowPopupDiv: React.Dispatch<React.SetStateAction<boolean>>;
+    isOpen: boolean;
+    onClose: () => void;
 }
 
-const DeleteTransactionPopup: React.FC<DeleteTransactionPopupProps> = ({transaction, showPopupDiv, setShowPopupDiv}) => {
+const DeleteTransactionPopup: React.FC<DeleteTransactionPopupProps> = ({transaction, isOpen, onClose}) => {
     const { deleteTransaction } = useTransactionsContext();
 
     const handleDelete = () => {
@@ -19,9 +19,9 @@ const DeleteTransactionPopup: React.FC<DeleteTransactionPopupProps> = ({transact
         <PopupDiv
             title="Stryk Transaktion"
             acceptButtonText="Stryk Transaktion"
-            doAction={handleDelete}
-            showPopupDiv={showPopupDiv}
-            setShowPopupDiv={setShowPopupDiv}
+            onAccept={handleDelete}
+            isOpen={isOpen}
+            onClose={onClose}
             className="delete-purchase-popup"
         >
             <p>Är du säker på att du vill stryka denna transaktion?</p>

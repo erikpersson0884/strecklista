@@ -4,7 +4,7 @@ import userApi from '../api/usersApi';
 
 interface UsersContextType {
     users: User[];
-    addUserBalance: (userId: UserId, amount: number) => Promise<void>;
+    addUserBalance: (userId: UserId, amount: number) => Promise<boolean>;
     getUserFromUserId: (userId: UserId) => User;
 }
 
@@ -27,10 +27,11 @@ export const UsersProvider = ({ children }: { children: ReactNode }) => {
     }, []);
 
 
-    const addUserBalance = async (userId: UserId, amount: number) => {
+    const addUserBalance = async (userId: UserId, amount: number): Promise<boolean> => {
         console.log('IN USERCONTEXT:', userId, amount);
         const newBalance = await userApi.makeDeposit(userId, amount)
         setUserBalance(userId, newBalance);
+        return true;
     };
 
     const setUserBalance = (userId: UserId, newBalance: number) => {

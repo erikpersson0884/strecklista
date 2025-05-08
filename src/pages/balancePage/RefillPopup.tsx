@@ -5,24 +5,27 @@ import { useUsersContext } from '../../contexts/UsersContext';
 
 interface RefillPopupProps {
     user: User;
-    showPopupDiv: boolean;
-    setShowPopupDiv: React.Dispatch<React.SetStateAction<boolean>>;
+    isOpen: boolean;
+    onClose: () => void;
 }
 
-const RefillPopup: React.FC<RefillPopupProps> = ({ user, showPopupDiv, setShowPopupDiv }) => {
-    const [amountToDeposit, setAmountToDeposit] = useState<number>(0);
+const RefillPopup: React.FC<RefillPopupProps> = ({ user, isOpen, onClose }) => {
     const { addUserBalance } = useUsersContext();
 
-    const handleRefill = () => {
-        addUserBalance(user.id, amountToDeposit);
+    const [ errorText, setErrorText ] = useState<string | null>(null);
+    const [amountToDeposit, setAmountToDeposit] = useState<number>(0);
+
+    const handleRefill = async () => {
+        const wasSuccessFull: boolean = await addUserBalance(user.id, amountToDeposit);
         
-        // Reset and close popup
-        setShowPopupDiv(false);
-        handleClose();
+        if (wasSuccessFull) handleClose();
+        else setErrorText('Något gick fel, försök igen senare.');
     };
 
     const handleClose = () => {
         setAmountToDeposit(0);
+        setErrorText(null);
+        onClose();
     }
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,10 +44,9 @@ const RefillPopup: React.FC<RefillPopupProps> = ({ user, showPopupDiv, setShowPo
     return (
         <PopupDiv 
             title={`Fyll på ${user.nick}`} 
-            doAction={handleRefill}
-            showPopupDiv={showPopupDiv}
-            setShowPopupDiv={setShowPopupDiv}
-            cancelAction={handleClose}
+            onAccept={handleRefill}
+            isOpen={isOpen}
+            onClose={handleClose}
         >
             <p>Nuvarande saldo: {user.balance}kr</p>
             <label htmlFor="amount">Fyll på med: </label>
@@ -57,6 +59,8 @@ const RefillPopup: React.FC<RefillPopupProps> = ({ user, showPopupDiv, setShowPo
                 onKeyDown={handleKeyPress}
             />  
             <p>Nytt saldo: {user.balance + (amountToDeposit)}kr</p>
+
+            {errorText && <p className="error-message">{errorText}</p>}
         </PopupDiv>
     );
 }

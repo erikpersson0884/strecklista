@@ -29,8 +29,8 @@ const DepositItem: React.FC<DepositItemProps> = ({ deposit, closeDetails }) => {
             </li>
             <DeleteTransactionPopup
                 transaction={deposit}
-                showPopupDiv={showPopupDiv}
-                setShowPopupDiv={setShowPopupDiv}
+                isOpen={showPopupDiv}
+                onClose={() => setShowPopupDiv(false)}
             />
         </>
     );

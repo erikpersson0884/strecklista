@@ -5,14 +5,14 @@ import "./AddProductPopup.css";
 import { useInventory } from "../../../contexts/InventoryContext";
 
 interface AddProductPopupProps {
-    closePopup?: () => void;
-    setShowPopupDiv: React.Dispatch<React.SetStateAction<boolean>>;
-    showPopupDiv: boolean;
+    isOpen: boolean;
+    closePopup: () => void;
 }
 
-const AddProductPopup: React.FC<AddProductPopupProps> = ({ closePopup = () => {}, setShowPopupDiv, showPopupDiv }) => {
+const AddProductPopup: React.FC<AddProductPopupProps> = ({ isOpen, closePopup }) => {
     const { addProduct } = useInventory();
 
+    const [ errorText, setErrorText ] = React.useState<string | null>(null);
     const [ name, setName ] = React.useState<string>("");
     const [ internalPrice, setInternalPrice ] = React.useState<number>(0);
     const [ amountInStock, setAmountInStock ] = React.useState<number>(0);
@@ -20,22 +20,27 @@ const AddProductPopup: React.FC<AddProductPopupProps> = ({ closePopup = () => {}
     const [ available, setAvailable ] = React.useState<boolean>(true);
 
     const handleAddProduct = async () => {
-        await addProduct(name, internalPrice, icon);
+        const wasSuccessfull = await addProduct(name, internalPrice, icon);
+        if (wasSuccessfull) handleClose();
+        else setErrorText("Något gick fel, försök igen senare.");
+    };
+
+    const handleClose = () => {
         setName("");
         setInternalPrice(0);
         setAmountInStock(0);
         seticon("");
         setAvailable(true);
-        setShowPopupDiv(false);
+        setErrorText(null);
+        closePopup();
     };
 
     return (
         <PopupDiv 
             title="Lägg till vara" 
-            doAction={handleAddProduct} 
-            showPopupDiv={showPopupDiv} 
-            setShowPopupDiv={setShowPopupDiv}
-            cancelAction={closePopup}
+            onAccept={handleAddProduct} 
+            isOpen={isOpen} 
+            onClose={handleClose}
             className="add-product-popup"
         >
             <div className="inputdiv">
@@ -62,6 +67,8 @@ const AddProductPopup: React.FC<AddProductPopupProps> = ({ closePopup = () => {}
                 <label>Finns i lager</label>
                 <input type="checkbox" name="available" checked={available} onChange={(e) => setAvailable(e.target.checked)} />
             </div>
+
+            {errorText && <p className="error-message">{errorText}</p>}
         </PopupDiv>
     );
 }

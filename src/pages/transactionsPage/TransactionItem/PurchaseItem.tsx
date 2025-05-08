@@ -32,8 +32,8 @@ const PurchaseItem: React.FC<PurchaseItemProps> = ({ purchase, closeDetails }) =
             
             <DeleteTransactionPopup
                 transaction={purchase}
-                showPopupDiv={showPopupDiv}
-                setShowPopupDiv={setShowPopupDiv}
+                isOpen={showPopupDiv}
+                onClose={() => setShowPopupDiv(false)}
             />
         </>
     );

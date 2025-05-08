@@ -11,14 +11,18 @@ interface RefillProductPopupProps {
 const RefillProductPopup: React.FC<RefillProductPopupProps> = ({ product, showPopupDiv, setShowPopupDiv }) => {
     const [amount, setAmount] = useState<number>(0);
     const { changeProductAmount } = useInventory();
+    const [ errorText, setErrorText ] = useState<string | null>('');
 
-    const handleRefill = () => {
-
-        changeProductAmount(product.id, amount);
+    const handleRefill = async () => {
+        const wasSuccesfull: boolean = await changeProductAmount(product.id, amount);
         
-        // Reset and close popup
-        setAmount(0);
-        setShowPopupDiv(false);
+        if (!wasSuccesfull) setErrorText('Något gick fel, försök igen senare.');
+        else {
+            // Reset and close popup
+            setAmount(0);
+            setShowPopupDiv(false);
+            setErrorText(null);
+        }
     };
 
     const handleClose = () => {
@@ -27,12 +31,13 @@ const RefillProductPopup: React.FC<RefillProductPopupProps> = ({ product, showPo
 
     return (
         <PopupDiv 
-            title={`Fyll på ${product.name}`} 
-            acceptButtonText="Fyll på"
-            doAction={handleRefill}
-            showPopupDiv={showPopupDiv}
-            setShowPopupDiv={setShowPopupDiv}
-            cancelAction={handleClose}
+            title='Fyll på produkt'
+            isOpen={showPopupDiv}
+            onClose={handleClose}
+            onAccept={handleRefill}
+            onCancel={handleClose}
+            acceptButtonText='Fyll på'
+
         >
             <p>Nuvarande antal: {product.amountInStock} st</p>
             <label htmlFor="amount">Fyll på med: </label>
@@ -43,6 +48,7 @@ const RefillProductPopup: React.FC<RefillProductPopupProps> = ({ product, showPo
                 onChange={(e) => setAmount(Number(e.target.value))} 
             />
             <p>Nytt antal: {product.amountInStock + amount} st</p>
+            {errorText && <p className="error-message">{errorText}</p>}
         </PopupDiv>
     );
 }
