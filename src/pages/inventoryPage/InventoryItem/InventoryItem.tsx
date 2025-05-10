@@ -5,6 +5,7 @@ import deleteIcon from '../../../assets/images/delete.svg';
 
 import './InventoryItem.css';
 import { useInventory } from '../../../contexts/InventoryContext';
+import DeleteProductPopup from './DeleteProductPopup';
 
 interface InventoryItemProps {
     product: ProductT;
@@ -12,9 +13,13 @@ interface InventoryItemProps {
 }
 
 const InventoryItem: React.FC<InventoryItemProps> = ({ product, openRefill }) => {
-    const { updateProduct, deleteProduct } = useInventory();
+    const { updateProduct } = useInventory();
+
+    const [ expanded, setExpanded ] = useState(false);
     const [ updatedProduct, setUpdatedProduct ] = useState(product);
     const [ isChanged, setIsChanged ] = useState(false);
+    const [ deletePopupOpen, setDeletePopupOpen ] = useState(false);
+
 
     useEffect(() => {
         product.name !== updatedProduct.name ||
@@ -27,9 +32,13 @@ const InventoryItem: React.FC<InventoryItemProps> = ({ product, openRefill }) =>
     }, [updatedProduct, product]);
 
     const handleUpdate = async () => {
-        console.log('Updated product:', updatedProduct);
-        await updateProduct(updatedProduct);
-        setExpanded(false);
+        const successfull: boolean = await updateProduct(updatedProduct);
+        if (successfull) {
+            setUpdatedProduct(updatedProduct);
+            setExpanded(false);
+        } else {
+            console.error("Failed to update product");
+        }
     };
 
     const handleCancel = () => {
@@ -45,97 +54,95 @@ const InventoryItem: React.FC<InventoryItemProps> = ({ product, openRefill }) =>
         }));
     };
 
-    const handleDelete = () => {
-        window.confirm('Är du säker på att du vill ta bort produkten?') && deleteProduct(product.id);
-    };
 
-    const [ expanded, setExpanded ] = useState(false);
-
-    return (
-        expanded ? 
-            <li className="inventory-item inventory-item-expanded">
-                {/* <button className='close-button' onClick={() => setExpanded(false)}>X</button> */}
-
-                <div className='inputs-container'>
-                    <div className='inputdiv'>
-                        <label htmlFor="name">Namn: </label>
-                        <input
-                            type="text"
-                            name="name"
-                            placeholder='Produktnamn'
-                            value={updatedProduct.name}
-                            onChange={handleChange}
-                        />
-                    </div>
-                    
-                    <div className='inputdiv'>
-                        <label htmlFor="price">Pris: </label>
-                        <input
-                            type="number"
-                            name="internalPrice"
-                            placeholder='Pris'
-                            value={updatedProduct.internalPrice}
-                            onChange={handleChange}
-                        />
-                    </div>
-                    <div className='inputdiv'>
-                        <label htmlFor="icon">Bildlänk: </label>
-                        <input
-                            type="text"
-                            name="icon"
-                            placeholder='Bildlänk'
-                            value={updatedProduct.icon}
-                            onChange={handleChange}
-                        />
-                    </div>
-
-                    <div className='amount-container'>
-                        <p>Antal i lager: {product.amountInStock} st</p>
-                        <button onClick={openRefill}>
-                            Fyll på
-                        </button>
-                    </div>
-
-                    <div>
-                        <label htmlFor="available">Tillgänglig: </label>
-                        <input
-                                type="checkbox"
-                                name="available"
-                                checked={updatedProduct.available}
-                                onChange={handleChange}
-                            />
-                    </div>
+    if (expanded) return (
+        <li className="inventory-item inventory-item-expanded">
+            <div className='inputs-container'>
+                <div className='inputdiv'>
+                    <label htmlFor="name">Namn: </label>
+                    <input
+                        type="text"
+                        name="name"
+                        placeholder='Produktnamn'
+                        value={updatedProduct.name}
+                        onChange={handleChange}
+                    />
+                </div>
+                
+                <div className='inputdiv'>
+                    <label htmlFor="price">Pris: </label>
+                    <input
+                        type="number"
+                        name="internalPrice"
+                        placeholder='Pris'
+                        value={updatedProduct.internalPrice}
+                        onChange={handleChange}
+                    />
+                </div>
+                <div className='inputdiv'>
+                    <label htmlFor="icon">Bildlänk: </label>
+                    <input
+                        type="text"
+                        name="icon"
+                        placeholder='Bildlänk'
+                        value={updatedProduct.icon}
+                        onChange={handleChange}
+                    />
                 </div>
 
-                <hr />
-
-                <div className='action-buttons'>
-                    <button 
-                        className={isChanged ? "do-button" : "disabled-button"}  
-                        onClick={handleUpdate}
-                        disabled={!isChanged}
-                    > 
-                        Uppdatera
-                    </button>
-                    <button className='cancel-button' onClick={handleCancel}> Avbryt
+                <div className='amount-container'>
+                    <p>Antal i lager: {product.amountInStock} st</p>
+                    <button onClick={openRefill}>
+                        Fyll på
                     </button>
                 </div>
-            </li>
-        :
+
+                <div>
+                    <label htmlFor="available">Tillgänglig: </label>
+                    <input
+                            type="checkbox"
+                            name="available"
+                            checked={updatedProduct.available}
+                            onChange={handleChange}
+                        />
+                </div>
+            </div>
+
+            <hr />
+
+            <div className='action-buttons'>
+                <button 
+                    className={isChanged ? "do-button" : "disabled-button"}  
+                    onClick={handleUpdate}
+                    disabled={!isChanged}
+                > 
+                    Uppdatera
+                </button>
+                <button className='cancel-button' onClick={handleCancel}> 
+                    Avbryt
+                </button>
+            </div>
+        </li>
+    ) 
+    return ( // return product preview if not expanded
+        <>
             <li className='inventory-item inventory-item-preview'>
                 <p className='product-name'>{product.name}</p>
-{/* 
-                <p>{product.amountInStock} st</p>
-                <p>{product.price} kr</p> */}
-
 
                 <button onClick={() => setExpanded(true)}>
                     <img src={editIcon} alt='Redigera' height={10}/>
                 </button>
-                <button className='delete-button' onClick={handleDelete}>
+                <button className='delete-button' onClick={() => setDeletePopupOpen(true)}>
                     <img src={deleteIcon} alt='Delete' height={10}/>
                 </button>
             </li>
+
+            <DeleteProductPopup
+                isOpen={deletePopupOpen}
+                onClose={() => setDeletePopupOpen(false)}
+                product={product}
+            ></DeleteProductPopup>
+        </>
     );
 };
 

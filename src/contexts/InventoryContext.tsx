@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 interface InventoryContextProps {
     products: ProductT[];
     addProduct: (displayName: string, internalPrice: number, icon?: string) => Promise<boolean>;
-    updateProduct: (updatedProduct: ProductT) => void;
+    updateProduct: (updatedProduct: ProductT) => Promise<boolean>;
     deleteProduct: (id: number) => Promise<boolean>;
     changeProductAmount: (id: number, amount: number) => Promise<boolean>;
     toggleFavourite: (id: number) => Promise<boolean>;
