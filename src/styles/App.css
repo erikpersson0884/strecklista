@@ -85,3 +85,8 @@
     color: red;
     font-size: 0.8rem;
 }
+
+.red-text {
+    color: var(--red-color);
+    color: red;
+}

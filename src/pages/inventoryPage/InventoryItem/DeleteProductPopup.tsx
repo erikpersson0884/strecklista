@@ -16,21 +16,27 @@ const DeleteProductPopup: React.FC<DeleteProductPopupProps> = ({product, isOpen,
     const handleDelete = async () => {
         try {
             await deleteProduct(product.id);
-            onClose();
+            handleClose();
         } catch (error) {
             setErrorText("Något gick fel, försök igen senare.");
         }
     }
 
+    const handleClose = () => {
+        setErrorText("");
+        onClose();
+    }
+
     return (
         <PopupDiv 
             isOpen={isOpen} 
-            onClose={onClose}
+            onClose={handleClose}
             title="Radera Product"
             acceptButtonText="Radera"
             onAccept={handleDelete}
         >
             <p>Är du säker på att du vill radera produkten?</p>
+            <p>Produkt: <span className="red-text">{product.name}</span></p>
             {errorText && <div className="error-message">{errorText}</div>}
         </PopupDiv>
     )
