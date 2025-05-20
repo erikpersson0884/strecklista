@@ -12,7 +12,7 @@ interface ProductProps {
 }
 
 const Product: React.FC<ProductProps> = ({ product }) => {
-    const { addProductToCart } = useCart(); 
+    const { addProductToCart, items } = useCart(); 
     const { toggleFavourite } = useInventory();
 
     const internalPrice: string = product.internalPrice % 1 === 0 ? product.internalPrice.toFixed(0) : product.internalPrice.toFixed(2)
@@ -26,6 +26,12 @@ const Product: React.FC<ProductProps> = ({ product }) => {
                     height={20}
                 />
             </button>
+
+            {items.find(i => i.id === product.id) && (
+                <div className='items-indicator'>
+                    <p>{items.find(i => i.id === product.id)?.quantity}</p>
+                </div>
+            )}
 
             <div className='product-image'>
                 <img src={product.icon} alt={product.name} />

@@ -1,6 +1,5 @@
 import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
-import usersApi from '../api/usersApi';
-
+import transactionsApi from '../api/transactionsApi';
 
 interface CartContextType {
     items: ProductInCart[];
@@ -11,8 +10,9 @@ interface CartContextType {
     decreaseProductQuantity: (ProductT: ProductInCart) => void;
     increaseProductQuantity: (ProductT: ProductInCart) => void;
     removeProductFromCart: (product: ProductT) => void;
+    getProductQuantity: (productId: number) => number;
     clearOrder: () => void;
-    buyProducts: (payinguserId: UserId) => Promise<boolean>;
+    buyProducts: (payinguserId: UserId, comment?: string) => Promise<boolean>;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -62,6 +62,11 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         setProductQuantity(ProductT.id, ProductT.quantity + 1);
     }
 
+    const getProductQuantity = (productId: number) => {
+        const product = items.find(item => item.id === productId);
+        return product ? product.quantity : 0;
+    }
+
 
     const removeProductFromCart = (product: ProductT) => {
         setItems((prevItems) => prevItems.filter(item => item.id !== product.id));
@@ -76,8 +81,8 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         setTotal(newTotal);
     }, [items]);
 
-    const buyProducts = async (payingUserid: UserId): Promise<boolean> => { //TODO implement comment
-        const success = await usersApi.makePurchase(payingUserid, items);
+    const buyProducts = async (payingUserid: UserId, comment?: string): Promise<boolean> => { //TODO implement comment
+        const success = await transactionsApi.makePurchase(payingUserid, items, comment);
         if (success) {
             clearOrder();
             return true; 
@@ -88,7 +93,19 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
 
     return (
-        <CartContext.Provider value={{ numberOfProductsInCart, items, addProductToCart, removeProductFromCart, setProductQuantity, decreaseProductQuantity, increaseProductQuantity, clearOrder, buyProducts, total }}>
+        <CartContext.Provider value={{ 
+            numberOfProductsInCart, 
+            items, 
+            addProductToCart, 
+            removeProductFromCart, 
+            setProductQuantity, 
+            decreaseProductQuantity, 
+            increaseProductQuantity, 
+            clearOrder, 
+            buyProducts, 
+            getProductQuantity,
+            total 
+        }}>
             {children}
         </CartContext.Provider>
     );

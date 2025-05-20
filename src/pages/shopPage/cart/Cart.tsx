@@ -18,8 +18,8 @@ const Cart: React.FC<CartProps> = ({ closeCart }) => {
     const { currentUser } = useAuth();
 
     const [ selectedUser, setSelectedUser ] = React.useState<User | null>(currentUser);
-    const [showCommentInput, setShowCommentInput] = React.useState(false);
-    const [ comment, setComment ] = React.useState('');
+    const [ showCommentInput, setShowCommentInput ] = React.useState(false);
+    const [ comment, setComment ] = React.useState<string>('');
     
     const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
         const selectedUserId = e.target.value;
@@ -31,7 +31,7 @@ const Cart: React.FC<CartProps> = ({ closeCart }) => {
     const handleBuyProducts = async () => {
         if (!selectedUser) throw new Error('No user selected');
         else {
-            const successfullBuy: boolean = await buyProducts(selectedUser.id);
+            const successfullBuy: boolean = await buyProducts(selectedUser.id, comment);
 
             if (successfullBuy) {
                 closeCart();

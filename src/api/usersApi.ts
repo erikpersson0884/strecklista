@@ -1,23 +1,5 @@
 import api from "./axiosInstance";
 
-
-interface ApiPurchaseItem {
-    id: number;
-    quantity: number;
-    purchasePrice: Price;
-}
-
-const productToApiItem = (product: ProductInCart): ApiPurchaseItem => { // TODO count quantity correctly
-    return {
-        id: product.id,
-        quantity: product.quantity,
-        purchasePrice: {
-            displayName: "Internt",
-            price: product.internalPrice,
-        }
-    };
-};
-
 const userApiToUser = (apiUser: IApiUser): User => {
     return {
         id: apiUser.id,
@@ -51,29 +33,6 @@ export const usersApi = {
         const users = apiUsers.map(userApiToUser);
         return users;
     },
-
-    makeDeposit: async (userId: UserId, amount: number): Promise<number> => {
-        try {
-            const response = await api.post("/api/group/deposit", { userId, total: amount });
-            const newBalance: number = response.data.data.balance;
-            return newBalance; // Return true if the request succeeds
-        } catch (error) {
-            console.error("Failed to make deposit:", error);
-            throw error; // Re-throw the error to ensure the function does not return undefined
-        }
-    },
-
-    makePurchase: async (userId: UserId, products: ProductInCart[]): Promise<number> => {
-        try {
-            const apiItems = products.map(productToApiItem);
-            const response = await api.post("/api/group/purchase", { userId, items: apiItems });
-            const newBalance: number = response.data.data.balance;
-            return newBalance; // Return true if the request succeeds
-        } catch (error) {
-            console.error("Failed to make purchase:", error);
-            throw error; // Re-throw the error to ensure the function does not return undefined
-        }
-    }
 }
 
 export default usersApi;
