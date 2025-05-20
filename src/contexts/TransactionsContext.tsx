@@ -18,7 +18,7 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [transactions, setTransactions] = useState<Transaction[]>([]);
     const [filteredTransactions, setFilteredTransactions] = React.useState<Transaction[]>([]);
-    const { getUserFromUserId, users } = useUsersContext();
+    const { getUserFromUserId, users, isLoading: loadingusers } = useUsersContext();
     const [nextUrl, setNextUrl] = useState<string | null>(null);
     const [prevUrl, setPrevUrl] = useState<string | null>(null);
 
@@ -52,6 +52,7 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
 
 
     React.useEffect(() => {
+        if (loadingusers) return;
         getTransactions();
         setIsLoading(false);
     }, [users]);

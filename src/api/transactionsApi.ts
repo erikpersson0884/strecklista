@@ -45,9 +45,13 @@ const transactionsApi = {
         }
     },
 
-    makeDeposit: async (userId: UserId, amount: number): Promise<number> => {
+    makeDeposit: async (userId: UserId, amount: number, comment?: string): Promise<number> => {
         try {
-            const response = await api.post("/api/group/deposit", { userId, total: amount });
+            const response = await api.post("/api/group/deposit", { 
+                userId, 
+                total: amount,
+                comment,
+            });
             const newBalance: number = response.data.data.balance;
             return newBalance; // Return true if the request succeeds
         } catch (error) {

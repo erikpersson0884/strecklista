@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import './BalancePage.css';
 
-import addIcon from '../../assets/images/add.svg';
-
+import UserDiv from './UserDiv';
 import { useUsersContext } from '../../contexts/UsersContext';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -10,7 +9,7 @@ import RefillPopup from './RefillPopup';
 
 const BalancePage: React.FC = () => {
     const { currentUser } = useAuth();
-    const { users } = useUsersContext();
+    const { users, isLoading: loadingUsers } = useUsersContext();
     const [selectedUser, setSelectedUser] = useState<User | null>(null);
     const [showPopup, setShowPopup] = useState(false);
 
@@ -19,40 +18,34 @@ const BalancePage: React.FC = () => {
         setShowPopup(true);
     };
 
-    // const handleClosePopup = () => {
-    //     setShowPopup(false);
-    //     setSelectedUser(null);
-    // };
+    if (loadingUsers) return (
+        <p>Laddar användare...</p>
+    )
 
-    return (
+    if (users.length > 0) return (
         <>
-            {users.length > 0 ? (
-                <div className='balancepage'>
+            <div className='balancepage'>
 
-                    {currentUser && (
-                        <>
-                            <UserDiv 
-                                user={users.find((user) => user.id === currentUser.id) as User} 
-                                key={currentUser.id}
-                                onOpenPopup={handleOpenPopup}
-                            />
-
-                            <hr />
-                        </>
-                    )}
-    
-                    {users.filter((user) => user.id !== currentUser?.id).map(user => (
+            {currentUser && (
+                    <>
                         <UserDiv 
-                            user={user} 
-                            key={user.id}
+                            user={users.find((user) => user.id === currentUser.id) as User} 
+                            key={currentUser.id}
                             onOpenPopup={handleOpenPopup}
                         />
-                    ))}
 
-                </div>
-            ) : (
-                <p>No users found :(</p>
-            )}
+                        <hr />
+                    </>
+                )}
+
+                {users.filter((user) => user.id !== currentUser?.id).map(user => (
+                    <UserDiv 
+                        user={user} 
+                        key={user.id}
+                        onOpenPopup={handleOpenPopup}
+                    />
+                ))}
+            </div>
 
             {selectedUser && (
                 <RefillPopup 
@@ -63,32 +56,8 @@ const BalancePage: React.FC = () => {
             )}
         </>
     );
+
+    return (<p>Hittade inga användare</p>);
 };
-
-interface UserDivProps {
-    user: User;
-    onOpenPopup: (user: User) => void;
-}
-
-const UserDiv: React.FC<UserDivProps> = ({ user, onOpenPopup }) => {
-    return (
-        <div className='user-div'>
-            <div className='name-div'>
-                <h2>{user.nick}</h2>
-                <h3>{user.name}</h3>
-            </div>
-            <p className={user.balance < 0 ? 'negative-balance' : 'positive-balance'}>
-                {user.balance} kr
-            </p>
-            
-            <button 
-                className='add-button no-button-formatting' 
-                onClick={() => onOpenPopup(user)}
-            >
-                <img src={addIcon} alt='add' height={10} />
-            </button>
-        </div>
-    );
-}
 
 export default BalancePage;

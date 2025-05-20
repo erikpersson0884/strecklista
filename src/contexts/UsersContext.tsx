@@ -1,11 +1,12 @@
 import { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 import userApi from '../api/usersApi';
+import transactionsApi from '../api/transactionsApi';
 
 
 interface UsersContextType {
     isLoading: boolean;
     users: User[];
-    addUserBalance: (userId: UserId, amount: number) => Promise<boolean>;
+    addUserBalance: (userId: UserId, amount: number, comment?: string) => Promise<boolean>;
     getUserFromUserId: (userId: UserId) => User;
 }
 
@@ -25,13 +26,15 @@ export const UsersProvider = ({ children }: { children: ReactNode }) => {
     };
 
     useEffect(() => {
-        fetchUsers();
-        setIsLoading(false);
+        const fetchData = async () => {
+            await fetchUsers();
+            setIsLoading(false);
+        };
+        fetchData();
     }, []);
 
-    const addUserBalance = async (userId: UserId, amount: number): Promise<boolean> => {
-        console.log('IN USERCONTEXT:', userId, amount);
-        const newBalance = await userApi.makeDeposit(userId, amount)
+    const addUserBalance = async (userId: UserId, amount: number, comment?: string): Promise<boolean> => {
+        const newBalance = await transactionsApi.makeDeposit(userId, amount, comment)
         setUserBalance(userId, newBalance);
         return true;
     };

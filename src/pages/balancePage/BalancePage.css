@@ -54,3 +54,10 @@
 .balancepage .positive-balance {
     color: var(--green-color);
 }
+
+.deposit-comment-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}

@@ -12,31 +12,49 @@ interface RefillPopupProps {
 const RefillPopup: React.FC<RefillPopupProps> = ({ user, isOpen, onClose }) => {
     const { addUserBalance } = useUsersContext();
 
+    const MAX_COMMENT_LENGTH = 1000;
+
     const [errorText, setErrorText] = useState<string | null>(null);
-    const [amountToDeposit, setAmountToDeposit] = useState<string>(''); // Use string
+    const [amountToDeposit, setAmountToDeposit] = useState<number>(0); // Use string
+    const [comment, setComment] = useState<string>('');
+    const [ includeComment, setIncludeComment ] = useState<boolean>(false);
 
     const handleRefill = async () => {
-        const parsedAmount = parseFloat(amountToDeposit);
+        // const parsedAmount = parseFloat(amountToDeposit);
+        const parsedAmount = amountToDeposit;
 
         if (isNaN(parsedAmount)) {
             setErrorText('Ange ett giltigt belopp.');
             return;
         }
 
-        const wasSuccessFull: boolean = await addUserBalance(user.id, parsedAmount);
+        if (includeComment && !validateComment(comment)) return;
+
+        const wasSuccessFull: boolean = await addUserBalance(
+            user.id,
+            parsedAmount,
+            includeComment ? comment : undefined
+        );
         
         if (wasSuccessFull) handleClose();
         else setErrorText('Något gick fel, försök igen senare.');
     };
 
     const handleClose = () => {
-        setAmountToDeposit('');
+        setAmountToDeposit(0);
         setErrorText(null);
         onClose();
     }
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setAmountToDeposit(e.target.value);
+        const newValueAsString: string = e.target.value;
+        const newValueAsNumber: number = parseFloat(newValueAsString);
+        if (newValueAsString.trim() === '' || isNaN(newValueAsNumber)) {
+            setAmountToDeposit(0);
+            return;
+        } else {
+            setAmountToDeposit(newValueAsNumber);
+        }
     }
 
     const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -44,6 +62,21 @@ const RefillPopup: React.FC<RefillPopupProps> = ({ user, isOpen, onClose }) => {
             handleRefill();
         }
     }
+
+    const handleCommentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newComment: string = e.target.value;
+        if (!validateComment(newComment)) return;
+        setComment(newComment);
+        setErrorText(null);
+    }
+
+    const validateComment = (comment: string) => {
+        if (comment.length > MAX_COMMENT_LENGTH) {
+            setErrorText(`Kommentaren får max vara ${MAX_COMMENT_LENGTH} tecken lång`);
+            return false;
+        }
+        return true;
+    };
 
     return (
         <PopupDiv 
@@ -58,15 +91,38 @@ const RefillPopup: React.FC<RefillPopupProps> = ({ user, isOpen, onClose }) => {
                 <label htmlFor="amount">Fyll på med: </label>
                 <input 
                     id="amount" 
-                    type="number" 
+                    type="string" 
                     value={amountToDeposit} 
-                    step="100"
                     onChange={handleInputChange} 
                     onKeyDown={handleKeyPress}
+                    placeholder="Ange belopp här..."
                 />  
             </div>
             
-            <p>Nytt saldo: {user.balance + (parseFloat(amountToDeposit) || 0)}kr</p>
+            <p>Nytt saldo: <span style={{ color: 'greeen' }}>{user.balance + amountToDeposit}</span>kr</p>
+
+
+            { includeComment ? (
+                <>
+
+                    <hr />
+                    <div className='deposit-comment-header'>
+                        <label htmlFor="comment">Kommentar (valfritt): </label>
+                        <button onClick={() => { setErrorText(null); setIncludeComment(false)}}>Ta bort</button>
+                    </div>
+                    <input
+                        id="comment" 
+                        type="text" 
+                        value={comment} 
+                        onChange={handleCommentChange}
+                        onKeyDown={handleKeyPress}
+                        placeholder="Skriv en kommentar här..."
+                    /> 
+                </>
+            ) : (
+                <button onClick={() => setIncludeComment(true)}>Lägg till kommentar</button>
+            )}
+
 
             {errorText && <p className="error-message">{errorText}</p>}
         </PopupDiv>
