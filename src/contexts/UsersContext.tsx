@@ -3,6 +3,7 @@ import userApi from '../api/usersApi';
 
 
 interface UsersContextType {
+    isLoading: boolean;
     users: User[];
     addUserBalance: (userId: UserId, amount: number) => Promise<boolean>;
     getUserFromUserId: (userId: UserId) => User;
@@ -11,6 +12,7 @@ interface UsersContextType {
 const UsersContext = createContext<UsersContextType | undefined>(undefined);
 
 export const UsersProvider = ({ children }: { children: ReactNode }) => {
+    const [isLoading, setIsLoading] = useState<boolean>(true);
     const [users, setUsers] = useState<User[]>([]);
     
     const fetchUsers = async () => {
@@ -24,8 +26,8 @@ export const UsersProvider = ({ children }: { children: ReactNode }) => {
 
     useEffect(() => {
         fetchUsers();
+        setIsLoading(false);
     }, []);
-
 
     const addUserBalance = async (userId: UserId, amount: number): Promise<boolean> => {
         console.log('IN USERCONTEXT:', userId, amount);
@@ -52,7 +54,12 @@ export const UsersProvider = ({ children }: { children: ReactNode }) => {
 
 
     return (
-        <UsersContext.Provider value={{ users, addUserBalance, getUserFromUserId }}>
+        <UsersContext.Provider value={{ 
+            isLoading, 
+            users, 
+            addUserBalance, 
+            getUserFromUserId 
+        }}>
             {children}
         </UsersContext.Provider>
     );

@@ -27,7 +27,7 @@ const inventoryApi = {
             prices: prices,
             ...(icon && { icon }),
         });
-        return response.status === 200;
+        return response.status === 200 || response.status === 201;
     },
 
     /**

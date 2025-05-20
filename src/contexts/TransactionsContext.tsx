@@ -3,6 +3,7 @@ import transactionsApi from '../api/transactionsApi';
 import { useUsersContext } from './UsersContext';
 
 interface TransactionsContextProps {
+    isLoading: boolean;
     transactions: Transaction[];
     filteredTransactions: Transaction[];
     setFilteredTransactions: React.Dispatch<React.SetStateAction<Transaction[]>>;
@@ -14,6 +15,7 @@ interface TransactionsContextProps {
 const TransactionsContext = createContext<TransactionsContextProps | undefined>(undefined);
 
 export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+    const [isLoading, setIsLoading] = useState<boolean>(true);
     const [transactions, setTransactions] = useState<Transaction[]>([]);
     const [filteredTransactions, setFilteredTransactions] = React.useState<Transaction[]>([]);
     const { getUserFromUserId, users } = useUsersContext();
@@ -51,6 +53,7 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
 
     React.useEffect(() => {
         getTransactions();
+        setIsLoading(false);
     }, [users]);
 
 
@@ -64,7 +67,15 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
     };
 
     return (
-        <TransactionsContext.Provider value={{ transactions, filteredTransactions, setFilteredTransactions, getNextTransactions, getPrevTransactions, deleteTransaction }}>
+        <TransactionsContext.Provider value={{ 
+            isLoading, 
+            transactions, 
+            filteredTransactions, 
+            setFilteredTransactions, 
+            getNextTransactions, 
+            getPrevTransactions, 
+            deleteTransaction 
+        }}>
             {children}
         </TransactionsContext.Provider>
     );

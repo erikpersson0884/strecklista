@@ -6,14 +6,25 @@ import './TransactionsPage.css';
 import Filter from './Filter/Filter';
 
 const TransactionsPage: React.FC = () => {
-    const { filteredTransactions, getNextTransactions, getPrevTransactions } = useTransactionsContext();
+    const { 
+        isLoading,
+        filteredTransactions, 
+        getNextTransactions, 
+        getPrevTransactions 
+    } = useTransactionsContext();
     const [ page ] = React.useState<number>(1);
 
     return (
         <div className='transactions-page'>
             <Filter />
 
-            {filteredTransactions.length > 0 ?
+            {
+                isLoading ? 
+                    <p>Loading...</p>
+                :
+                filteredTransactions.length === 0 ?
+                    <p>No transactions to show</p>
+                :
                 <>
                     <ul className='transactions-list'>
                         {filteredTransactions.map((transaction: Transaction) => 
@@ -27,8 +38,6 @@ const TransactionsPage: React.FC = () => {
                         <button className='next-button' onClick={getNextTransactions}>&gt;</button>
                     </footer>
                 </>
-            :
-                <p>No transactions to show</p>
             }
         </div>
     );

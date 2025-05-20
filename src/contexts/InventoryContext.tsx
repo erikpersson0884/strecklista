@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 
 
 interface InventoryContextProps {
+    isLoading: boolean;
     products: ProductT[];
     addProduct: (displayName: string, internalPrice: number, icon?: string) => Promise<boolean>;
     updateProduct: (updatedProduct: ProductT) => Promise<boolean>;
@@ -15,8 +16,8 @@ interface InventoryContextProps {
 const InventoryContext = createContext<InventoryContextProps | undefined>(undefined);
 
 export const InventoryProvider = ({ children }: { children: ReactNode }) => {
+    const [isLoading, setIsLoading] = useState<boolean>(true);
     const [products, setProducts] = useState<ProductT[]>([]);
-
 
     const transformApiItemToProduct = (apiItem: IApiItem): ProductT => {
         const internalPrice: Price | undefined = apiItem.prices.find((price: Price) => price.displayName === "Internt");
@@ -51,16 +52,22 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
 
     useEffect(() => {
         fetchInventory();
+        setIsLoading(false);
     }, []);
 
 
-    const addProduct = async (displayName: string, internalPrice: number, icon?: string): Promise<boolean> => {
+    const addProduct = async (
+        displayName: string, 
+        internalPrice: number, 
+        icon?: string
+    ): Promise<boolean> => {
+        
         const prices = [{
             displayName: "Internt",
             price: internalPrice
         }];
         try {
-            const success = await inventoryApi.addProduct(displayName, prices, icon);
+            const success: boolean = await inventoryApi.addProduct(displayName, prices, icon);
             fetchInventory();
             return success;
         } catch (error) {
@@ -126,7 +133,7 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
     };
 
     return (
-        <InventoryContext.Provider value={{ products, addProduct, updateProduct, deleteProduct, changeProductAmount, toggleFavourite }}>
+        <InventoryContext.Provider value={{ isLoading, products, addProduct, updateProduct, deleteProduct, changeProductAmount, toggleFavourite }}>
             {children}
         </InventoryContext.Provider>
     );

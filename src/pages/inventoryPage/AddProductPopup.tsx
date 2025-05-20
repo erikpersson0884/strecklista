@@ -19,7 +19,7 @@ const AddProductPopup: React.FC<AddProductPopupProps> = ({ isOpen, closePopup })
     const [ available, setAvailable ] = React.useState<boolean>(true);
 
     const handleAddProduct = async () => {
-        const wasSuccessfull = await addProduct(name, internalPrice, icon);
+        const wasSuccessfull: boolean = await addProduct(name, internalPrice, icon);
         console.log("wasSuccessfull", wasSuccessfull);
         if (wasSuccessfull) handleClose();
         else setErrorText("Det gick inte att lägga till varan. Kontrollera att alla fält är ifyllda korrekt.");
