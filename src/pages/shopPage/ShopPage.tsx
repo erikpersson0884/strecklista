@@ -59,16 +59,20 @@ const ShopPage: React.FC = () => {
                 )}
             </div>
 
-            <button 
-                className='showCartButton no-button-formatting' 
-                onClick={() => setDisplayCart(!displayCart)}
-            >
-                <div className='items-indicator'>{numberOfProductsInCart}</div>
-                <img src={shoppingCartIcon} alt="shopping cart" height={20}/>
-            </button>
+            {numberOfProductsInCart  !== 0 && <OpenCartButton onClick={() => setDisplayCart(true)}/>}
         </>
 
     );
 };
+
+const OpenCartButton: React.FC<{ onClick: () => void }> = ({ onClick }) => {
+    const { numberOfProductsInCart } = useCart();
+    return (
+        <button className='showCartButton no-button-formatting' onClick={onClick}>
+            <div className='items-indicator'>{numberOfProductsInCart}</div>
+            <img src={shoppingCartIcon} alt="shopping cart" height={20}/>
+        </button>
+    );
+}
 
 export default ShopPage;

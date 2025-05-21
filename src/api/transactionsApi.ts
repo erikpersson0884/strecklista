@@ -25,7 +25,7 @@ const productToApiItem = (product: ProductInCart): ApiPurchaseItem => { // TODO 
 };
 
 const transactionsApi = {
-    fetchTransactions: async (url?: string | null, limit: number = 5, offset: number = 0): Promise<FetchTransactionsResult> => {
+    fetchTransactions: async (url?: string | null, limit: number = 40, offset: number = 0): Promise<FetchTransactionsResult> => {
         try {
             let response;
             if (url) {

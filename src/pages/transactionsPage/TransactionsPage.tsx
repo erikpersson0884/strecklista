@@ -12,33 +12,40 @@ const TransactionsPage: React.FC = () => {
         getNextTransactions, 
         getPrevTransactions 
     } = useTransactionsContext();
-    const [ page ] = React.useState<number>(1);
+
+    const [pageNumber, setPageNumber] = React.useState<number>(1);
+
+    const nextPage = () => {
+        setPageNumber((prevPage) => prevPage + 1);
+        getNextTransactions();
+    }
+
+    const prevPage = () => {
+        setPageNumber((prevPage) => prevPage - 1);
+        getPrevTransactions();
+    }
+
+    if (isLoading) return <p>Loading...</p>;
+
+
+    // <p>No transactions to show</p>;
 
     return (
         <div className='transactions-page'>
             <Filter />
 
-            {
-                isLoading ? 
-                    <p>Loading...</p>
-                :
-                filteredTransactions.length === 0 ?
-                    <p>No transactions to show</p>
-                :
-                <>
-                    <ul className='transactions-list'>
-                        {filteredTransactions.map((transaction: Transaction) => 
-                            <TransactionsItem key={transaction.id} transaction={transaction} />
-                        )}
-                    </ul>
+            <ul className='transactions-list'>
+                {filteredTransactions.map((transaction: Transaction) => 
+                    <TransactionsItem key={transaction.id} transaction={transaction} />
+                )}
+            </ul>
 
-                    <footer className='pagination'>
-                        <button className='prev-button' onClick={getPrevTransactions}>&lt;</button>
-                        <span className='page-number'>{page}</span>
-                        <button className='next-button' onClick={getNextTransactions}>&gt;</button>
-                    </footer>
-                </>
-            }
+            <footer className='pagination'>
+                <button className='prev-button' onClick={prevPage}>&lt;</button>
+                <span className='page-number'>{pageNumber}</span>
+                <button className='next-button' onClick={nextPage}>&gt;</button>
+            </footer>
+
         </div>
     );
 };

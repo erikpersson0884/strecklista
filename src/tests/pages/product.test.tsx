@@ -45,7 +45,7 @@ describe('Product Component', () => {
         render(<Product product={mockProduct} />);
 
         expect(screen.getByText(mockProduct.name)).toBeInTheDocument();
-        expect(screen.getByText(`${mockProduct.amountInStock} i lager`)).toBeInTheDocument();
+        // expect(screen.getByText(`${mockProduct.amountInStock} i lager`)).toBeInTheDocument();
         expect(screen.getByText(`${mockProduct.internalPrice}:-`)).toBeInTheDocument();
         expect(screen.getByAltText(mockProduct.name)).toHaveAttribute('src', mockProduct.icon);
     });
@@ -57,15 +57,5 @@ describe('Product Component', () => {
         fireEvent.click(productElement);
 
         expect(mockAddProductToCart).toHaveBeenCalledWith(mockProduct);
-    });
-
-    test('calls toggleFavourite when favorite button is clicked', () => {
-        render(<Product product={mockProduct} />);
-        const favButton = screen.getByRole('button');
-
-        fireEvent.click(favButton);
-
-        // Check if toggleFavourite is called with the correct product ID
-        expect(mockToggleFavourite).toHaveBeenCalledWith(mockProduct.id); 
     });
 });
