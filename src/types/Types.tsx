@@ -26,6 +26,7 @@ declare global {
         timesPurchased: number;
         visible: boolean;
         favorite: boolean;
+        stock: number;
     }
 
     interface IApiPrice {

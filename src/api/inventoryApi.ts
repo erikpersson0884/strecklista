@@ -55,6 +55,33 @@ const inventoryApi = {
     deleteProduct: async (id: number): Promise<boolean> => {
         const response = await api.delete(`api/group/item/${id}`);
         return response.status === 200;
+    },
+
+    refillProduct: async (id: number, amount: number): Promise<boolean> => {
+        const body = {
+            items: [
+                {
+                    id: id,
+                    quantity: amount
+                }
+            ]
+        }
+        const response = await api.post(`api/group/stock`, body);
+        return response.status === 200 || response.status === 201;
+    },
+
+    setProductQuntity: async (id: number, amount: number): Promise<boolean> => {
+        const body = {
+            items: [
+                {
+                    id: id,
+                    quantity: amount,
+                    absolute: true
+                }
+            ]
+        }
+        const response = await api.post(`api/group/stock`, body);
+        return response.status === 200;
     }
 };
 

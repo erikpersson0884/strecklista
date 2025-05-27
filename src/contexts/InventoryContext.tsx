@@ -9,8 +9,8 @@ interface InventoryContextProps {
     addProduct: (displayName: string, internalPrice: number, icon?: string) => Promise<boolean>;
     updateProduct: (updatedProduct: ProductT) => Promise<boolean>;
     deleteProduct: (id: number) => Promise<boolean>;
-    changeProductAmount: (id: number, amount: number) => Promise<boolean>;
     toggleFavourite: (id: number) => Promise<boolean>;
+    refillProduct: (id: number, amount: number) => Promise<boolean>;
 }
 
 const InventoryContext = createContext<InventoryContextProps | undefined>(undefined);
@@ -35,8 +35,7 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
             internalPrice: internalPrice.price,
             addedTime: apiItem.addedTime,
             timesPurchased: apiItem.timesPurchased,
-    
-            amountInStock: 0, //TODO: set to actual value when api implementes stock tracking
+            amountInStock: apiItem.stock,
         };
     };
 
@@ -95,7 +94,6 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
                 }
             ]
         }
-
         if (Object.keys(updatedFields).length > 0) {
             const success = await inventoryApi.updateProduct(updatedProduct.id, updatedFields);
             fetchInventory();
@@ -104,11 +102,24 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
         return false;
     };
 
+    const refillProduct = async (id: number, amount: number): Promise<boolean> => {
+        const product = products.find(product => product.id === id);
+        if (!product) throw new Error('Product not found');
+
+        const success = await inventoryApi.refillProduct(id, amount);
+        if (success) {
+            fetchInventory();
+        }
+        return success;
+    }
+
     const toggleFavourite = async (id: number): Promise<boolean> => {
         const product = products.find(product => product.id === id);
         if (!product) throw new Error('Product not found');
-        product.favorite = !product.favorite;
-        const success = await updateProduct(product);
+
+        const updatedProduct: ProductT = { ...product, favorite: !product.favorite };
+
+        const success = await updateProduct(updatedProduct);
         if (success) {
             fetchInventory();
         }
@@ -121,19 +132,17 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
         fetchInventory();
         return success;
     }
-        
-
-    const changeProductAmount = async (id: number, amount: number): Promise<boolean> => {
-        const newProduct = products.find(product => product.id === id);
-        if (!newProduct) throw new Error('Product not found');
-        newProduct.amountInStock += amount;
-        
-        const success = await updateProduct(newProduct);
-        return success;
-    };
 
     return (
-        <InventoryContext.Provider value={{ isLoading, products, addProduct, updateProduct, deleteProduct, changeProductAmount, toggleFavourite }}>
+        <InventoryContext.Provider value={{ 
+            isLoading, 
+            products, 
+            addProduct, 
+            updateProduct, 
+            deleteProduct, 
+            toggleFavourite,
+            refillProduct
+        }}>
             {children}
         </InventoryContext.Provider>
     );
