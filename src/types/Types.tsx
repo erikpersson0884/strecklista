@@ -2,8 +2,11 @@ export {}; // Ensures the file is treated as a module and avoids conflicts.
 
 declare global {
     // API Types
-    interface IApiUser {
-        id: string;
+
+    type ApiId = number;
+
+    interface ApiUser {
+        id: ApiId;
         firstName: string;
         lastName: string;
         nick: string;
@@ -11,14 +14,14 @@ declare global {
         balance: number;
     }
 
-    interface IApiGroup {
-        id: string;
+    interface ApiGroup {
+        id: ApiId;
         prettyName: string;
         avatarUrl: string;
     }
 
-    interface IApiItem {
-        id: number;
+    interface ApiItem {
+        id: ApiId;
         addedTime: number;
         icon: string;
         displayName: string;
@@ -29,38 +32,99 @@ declare global {
         stock: number;
     }
 
-    interface IApiPrice {
+    interface ApiPrice {
         price: number;
         displayName: string;
     }
 
-    // Frontend Types
-    interface Transaction {
-        id: number;
-        type: "purchase" | "deposit";
-        createdBy: User;
-        createdFor: User;
+    interface ApiTransaction {
+        id: ApiId;
+        type: "purchase" | "deposit" | "stockUpdate";
+        createdBy: ApiId;
         createdTime: number;
     }
 
-    interface Purchase extends Transaction {
+    interface ApiPurchase extends ApiTransaction {
         type: "purchase";
-        items: PurchaseItem[];
+        createdFor: ApiId;
+        items: ApiPurchaseItem[];
     }
 
-    interface PurchaseItem {
+    interface ApiPurchaseItem {
+        item: {
+            id: ApiId;
+            displayName: string;
+            icon?: string;
+        };
+        quantity: number;
+        purchasePrice: ApiPrice;
+    }
+
+    interface ApiDeposit extends ApiTransaction {
+        type: "deposit";
+        createdFor: ApiId;
+        total: number;
+    }
+
+    interface ApiStockUpdate extends ApiTransaction {
+        type: "stockUpdate";
+        items: ApiTransactionItem[];
+    }
+
+    interface ApiTransactionItem {
+        id: ApiId;
+        before: number;
+        after: number;
+    }
+
+    interface ApiPurchaseRequestItem {
+        id: number;
+        quantity: number;
+        purchasePrice: ApiPrice;
+    }
+
+
+    // Frontend Types
+    interface Transaction {
+        id: number;
+        type: "purchase" | "deposit" | "stockUpdate";
+        createdBy: User;
+        createdTime: number;
+    }
+
+    interface FinancialTransaction  extends Transaction {
+        createdFor: User;
+    }
+
+    interface Purchase extends FinancialTransaction {
+        type: "purchase";
+        items: PurchasedItem[];
+    }
+
+    interface PurchasedItem {
         item: {
             id: number;
             displayName: string;
             icon: string;
         };
         quantity: number;
-        purchasePrice: IApiPrice;
+        purchasePrice: ApiPrice;
     }
 
-    interface Deposit extends Transaction {
+    interface Deposit extends FinancialTransaction {
         type: "deposit";
         total: number;
+        createdFor: User;
+    }
+
+    interface StockUpdate extends Transaction {
+        type: "stockUpdate";
+        items: StockUpdateItem[];
+    }
+
+    interface StockUpdateItem extends ProductT {
+        before: number;
+        after: number;
     }
 
     interface Price {

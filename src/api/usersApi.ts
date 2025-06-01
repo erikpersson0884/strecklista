@@ -1,8 +1,8 @@
 import api from "./axiosInstance";
 
-const userApiToUser = (apiUser: IApiUser): User => {
+const userApiToUser = (apiUser: ApiUser): User => {
     return {
-        id: apiUser.id,
+        id: apiUser.id.toString(),
         firstName: apiUser.firstName,
         lastName: apiUser.lastName,
         name: apiUser.firstName + " " + apiUser.lastName,

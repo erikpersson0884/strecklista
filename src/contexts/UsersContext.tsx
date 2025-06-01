@@ -49,7 +49,7 @@ export const UsersProvider = ({ children }: { children: ReactNode }) => {
 
     const getUserFromUserId = (userId: UserId): User => {
         const user = users.find((user) => user.id === userId);
-
+        if (!user) console.log(users);
         if (!user) throw new Error(`User with id ${userId} not found`);
         return user;
     }

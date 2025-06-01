@@ -44,7 +44,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         };
 
         fetchUser();
-        console.log("Token:", "test");
         setIsLoading(false);
     }, [token]); // Ensure it refetches user when token changes
 

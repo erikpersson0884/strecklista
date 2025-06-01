@@ -25,9 +25,9 @@ const DeleteTransactionPopup: React.FC<DeleteTransactionPopupProps> = ({transact
             className="delete-purchase-popup"
         >
             <p>Är du säker på att du vill stryka denna transaktion?</p>
-            <p>{new Date(transaction.createdTime).toLocaleString('sv-SE', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })}</p>
+            <p>Datum: {new Date(transaction.createdTime).toLocaleString('sv-SE', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })}</p>
             <p>Av: {transaction.createdBy.nick}</p>
-            <p>För: {transaction.createdFor.nick}</p>
+            <p>Typ: {transaction.type}</p>
         </PopupDiv>
     );
 };

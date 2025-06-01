@@ -1,6 +1,8 @@
 import React, { createContext, useState, useContext, ReactNode } from 'react';
 import transactionsApi from '../api/transactionsApi';
 import { useUsersContext } from './UsersContext';
+import { useInventory } from './InventoryContext';
+import { adaptTransaction } from '../adapters/transactionAdapter';
 
 interface TransactionsContextProps {
     isLoading: boolean;
@@ -15,28 +17,24 @@ interface TransactionsContextProps {
 const TransactionsContext = createContext<TransactionsContextProps | undefined>(undefined);
 
 export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const { isLoading: loadingusers, getUserFromUserId } = useUsersContext();
+    const { getProductById } = useInventory();
+
+    const [filteredTransactions, setFilteredTransactions] = useState<Transaction[]>([]);
     const [transactions, setTransactions] = useState<Transaction[]>([]);
-    const [filteredTransactions, setFilteredTransactions] = React.useState<Transaction[]>([]);
-    const { getUserFromUserId, users, isLoading: loadingusers } = useUsersContext();
     const [nextUrl, setNextUrl] = useState<string | null>(null);
     const [prevUrl, setPrevUrl] = useState<string | null>(null);
-
-    const apiTransactionToTransaction = (apiTransaction: any): Transaction => {
-        const newTransaction: Transaction = apiTransaction;
-        apiTransaction.createdBy = getUserFromUserId(apiTransaction.createdBy);
-        apiTransaction.createdFor = getUserFromUserId(apiTransaction.createdFor);
-        return newTransaction;
-    };
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const getTransactions = async (url?: string | null) => {
         try {
             const response = await transactionsApi.fetchTransactions(url);
             setNextUrl(response.nextUrl);
             setPrevUrl(response.prevUrl);
-            const allTransactions = response.transactions
-            allTransactions.forEach(apiTransactionToTransaction);
-            setTransactions(allTransactions);
+            const adaptedTransactions = response.apiTransactions.map(
+                apiTransaction => adaptTransaction(apiTransaction, getUserFromUserId, getProductById)
+            );
+            setTransactions(adaptedTransactions);
         } catch (error) {
             console.error(error);
         }
@@ -55,7 +53,7 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
         if (loadingusers) return;
         getTransactions();
         setIsLoading(false);
-    }, [users]);
+    }, [loadingusers]);
 
 
     const deleteTransaction = async (id: number) => {

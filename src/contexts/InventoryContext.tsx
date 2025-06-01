@@ -11,6 +11,7 @@ interface InventoryContextProps {
     deleteProduct: (id: number) => Promise<boolean>;
     toggleFavourite: (id: number) => Promise<boolean>;
     refillProduct: (id: number, amount: number) => Promise<boolean>;
+    getProductById: (id: number) => ProductT;
 }
 
 const InventoryContext = createContext<InventoryContextProps | undefined>(undefined);
@@ -19,7 +20,7 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [products, setProducts] = useState<ProductT[]>([]);
 
-    const transformApiItemToProduct = (apiItem: IApiItem): ProductT => {
+    const transformApiItemToProduct = (apiItem: ApiItem): ProductT => {
         const internalPrice: Price | undefined = apiItem.prices.find((price: Price) => price.displayName === "Internt");
         if (!internalPrice) {
             alert(`Internal price for an item was not found:\ndisplayName: ${apiItem.displayName}\nid: ${apiItem.id}`);
@@ -41,7 +42,7 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
 
     const fetchInventory = async () => {
         try {
-            const inventory: IApiItem[] = await inventoryApi.getInventory();
+            const inventory: ApiItem[] = await inventoryApi.getInventory();
             const transformedInventory = inventory.map(transformApiItemToProduct);
             setProducts(transformedInventory);
         } catch (error) {
@@ -54,6 +55,11 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
         setIsLoading(false);
     }, []);
 
+    const getProductById = (id: number): ProductT => {
+        const product = products.find(product => product.id === id);
+        if (!product) throw new Error(`Product with id ${id} not found`);
+        return product;
+    };
 
     const addProduct = async (
         displayName: string, 
@@ -79,7 +85,7 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
         const product = products.find(product => product.id === updatedProduct.id);
         if (!product) throw new Error('Product not found');
 
-        const updatedFields: Partial<IApiItem> = {};
+        const updatedFields: Partial<ApiItem> = {};
 
         if (product.name !== updatedProduct.name) updatedFields.displayName = updatedProduct.name;
         if (product.available !== updatedProduct.available) updatedFields.visible = updatedProduct.available;
@@ -141,7 +147,8 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
             updateProduct, 
             deleteProduct, 
             toggleFavourite,
-            refillProduct
+            refillProduct,
+            getProductById
         }}>
             {children}
         </InventoryContext.Provider>
