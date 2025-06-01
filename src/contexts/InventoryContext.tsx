@@ -9,10 +9,10 @@ interface InventoryContextProps {
     products: ProductT[];
     addProduct: (displayName: string, internalPrice: number, icon?: string) => Promise<boolean>;
     updateProduct: (updatedProduct: ProductT) => Promise<boolean>;
-    deleteProduct: (id: number) => Promise<boolean>;
-    toggleFavourite: (id: number) => Promise<boolean>;
-    refillProduct: (id: number, amount: number) => Promise<boolean>;
-    getProductById: (id: number) => ProductT;
+    deleteProduct: (id: Id) => Promise<boolean>;
+    toggleFavourite: (id: Id) => Promise<boolean>;
+    refillProduct: (id: Id, amount: number) => Promise<boolean>;
+    getProductById: (id: Id) => ProductT;
 }
 
 const InventoryContext = createContext<InventoryContextProps | undefined>(undefined);
@@ -36,7 +36,7 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
         setIsLoading(false);
     }, []);
 
-    const getProductById = (id: number): ProductT => {
+    const getProductById = (id: Id): ProductT => {
         const product = products.find(product => product.id === id);
         if (!product) throw new Error(`Product with id ${id} not found`);
         return product;
@@ -89,7 +89,7 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
         return false;
     };
 
-    const refillProduct = async (id: number, amount: number): Promise<boolean> => {
+    const refillProduct = async (id: Id, amount: number): Promise<boolean> => {
         const product = products.find(product => product.id === id);
         if (!product) throw new Error('Product not found');
 
@@ -100,7 +100,7 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
         return success;
     }
 
-    const toggleFavourite = async (id: number): Promise<boolean> => {
+    const toggleFavourite = async (id: Id): Promise<boolean> => {
         const product = products.find(product => product.id === id);
         if (!product) throw new Error('Product not found');
 
@@ -113,7 +113,7 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
         return success;
     }
 
-    const deleteProduct = async (id: number): Promise<boolean>  => {
+    const deleteProduct = async (id: Id): Promise<boolean>  => {
         if (!products.some(product => product.id === id)) throw new Error('Product not found');
         const success = await inventoryApi.deleteProduct(id);
         fetchInventory();

@@ -12,6 +12,7 @@ interface TransactionsContextProps {
     getNextTransactions: () => void;
     getPrevTransactions: () => void
     deleteTransaction: (id: Id) => void;
+    transactionsPageNumber: number;
 }
 
 const TransactionsContext = createContext<TransactionsContextProps | undefined>(undefined);
@@ -25,10 +26,11 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
     const [nextUrl, setNextUrl] = useState<string | null>(null);
     const [prevUrl, setPrevUrl] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [transactionsPageNumber, settransactionsPageNumber] = useState<number>(1);
 
     const getTransactions = async (url?: string | null) => {
         try {
-            const response = await transactionsApi.fetchTransactions(url);
+            const response = await transactionsApi.fetchTransactions(url, 30);
             setNextUrl(response.nextUrl);
             setPrevUrl(response.prevUrl);
             const adaptedTransactions = response.apiTransactions.map(
@@ -41,22 +43,29 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
     };
 
     const getNextTransactions = async () => {
+        if (!nextUrl) throw new Error('No next URL available');
         getTransactions(nextUrl);
+        settransactionsPageNumber(prevPage => prevPage + 1);
     }
 
     const getPrevTransactions = async () => {
+        if (!prevUrl) throw new Error('No previous URL available');
         getTransactions(prevUrl);
+        settransactionsPageNumber(prevPage => Math.max(prevPage - 1, 1));
     }
 
 
     React.useEffect(() => {
         if (loadingusers) return;
-        getTransactions();
-        setIsLoading(false);
+        const fetchTransactions = async () => {
+            await getTransactions();
+            setIsLoading(false);
+        };
+        fetchTransactions();
     }, [loadingusers]);
 
 
-    const deleteTransaction = async (id: number) => {
+    const deleteTransaction = async (id: Id) => {
         const success = await transactionsApi.deleteTransaction(id);
         if (success) {
             setTransactions((prevTransactions) => prevTransactions.filter((transaction) => transaction.id !== id));
@@ -73,7 +82,8 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
             setFilteredTransactions, 
             getNextTransactions, 
             getPrevTransactions, 
-            deleteTransaction 
+            deleteTransaction ,
+            transactionsPageNumber,
         }}>
             {children}
         </TransactionsContext.Provider>

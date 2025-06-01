@@ -52,12 +52,12 @@ const inventoryApi = {
      *
      * @throws Will throw an error if the API request fails.
      */
-    deleteProduct: async (id: number): Promise<boolean> => {
+    deleteProduct: async (id: Id): Promise<boolean> => {
         const response = await api.delete(`api/group/item/${id}`);
         return response.status === 200;
     },
 
-    refillProduct: async (id: number, amount: number): Promise<boolean> => {
+    refillProduct: async (id: Id, amount: number): Promise<boolean> => {
         const body = {
             items: [
                 {
@@ -70,7 +70,7 @@ const inventoryApi = {
         return response.status === 200 || response.status === 201;
     },
 
-    setProductQuntity: async (id: number, amount: number): Promise<boolean> => {
+    setProductQuntity: async (id: Id, amount: number): Promise<boolean> => {
         const body = {
             items: [
                 {

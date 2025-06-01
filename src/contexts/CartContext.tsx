@@ -6,11 +6,11 @@ interface CartContextType {
     numberOfProductsInCart: number;
     total: number;
     addProductToCart: (item: ProductT) => void;
-    setProductQuantity: (productId: number, quantity: number) => void;
+    setProductQuantity: (productid: Id, quantity: number) => void;
     decreaseProductQuantity: (ProductT: ProductInCart) => void;
     increaseProductQuantity: (ProductT: ProductInCart) => void;
     removeProductFromCart: (product: ProductT) => void;
-    getProductQuantity: (productId: number) => number;
+    getProductQuantity: (productid: Id) => number;
     clearOrder: () => void;
     buyProducts: (payinguserId: UserId, comment?: string) => Promise<boolean>;
 }
@@ -41,7 +41,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
     , [items]);
 
-    const setProductQuantity = (productId: number, quantity: number) => {
+    const setProductQuantity = (productid: Id, quantity: number) => {
         if (quantity < 0) throw new Error("Quantity cannot be negative");
         setItems((prevItems) => {
             return prevItems.map(i => 
@@ -62,7 +62,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         setProductQuantity(ProductT.id, ProductT.quantity + 1);
     }
 
-    const getProductQuantity = (productId: number) => {
+    const getProductQuantity = (productid: Id) => {
         const product = items.find(item => item.id === productId);
         return product ? product.quantity : 0;
     }

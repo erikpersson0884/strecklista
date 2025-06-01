@@ -13,7 +13,7 @@ const productToApiItem = (product: ProductInCart): ApiPurchaseRequestItem => {
 };
 
 const transactionsApi = {
-    fetchTransactions: async (url?: string | null, limit: number = 40, offset: number = 0): Promise<{apiTransactions: ApiTransaction[], nextUrl: string | null, prevUrl: string | null}> => {
+    fetchTransactions: async (url?: string | null, limit: number = 10, offset: number = 0): Promise<{apiTransactions: ApiTransaction[], nextUrl: string | null, prevUrl: string | null}> => {
         try {
             let response;
             if (url) {
@@ -64,7 +64,7 @@ const transactionsApi = {
         }
     },
 
-    deleteTransaction: async (id: number): Promise<boolean> => {
+    deleteTransaction: async (id: Id): Promise<boolean> => {
         try {
             const success = await api.delete(`api/group/transaction/${id}`);
             return success.status === 204;

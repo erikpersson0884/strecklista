@@ -13,20 +13,9 @@ const TransactionsPage: React.FC = () => {
         isLoading,
         filteredTransactions, 
         getNextTransactions, 
-        getPrevTransactions 
+        getPrevTransactions,
+        transactionsPageNumber
     } = useTransactionsContext();
-
-    const [pageNumber, setPageNumber] = React.useState<number>(1);
-
-    const nextPage = () => {
-        setPageNumber((prevPage) => prevPage + 1);
-        getNextTransactions();
-    }
-
-    const prevPage = () => {
-        setPageNumber((prevPage) => prevPage - 1);
-        getPrevTransactions();
-    }
 
     if (isLoading) return <p>Loading...</p>;
 
@@ -41,9 +30,9 @@ const TransactionsPage: React.FC = () => {
             </ul>
 
             <footer className='pagination'>
-                <button className='prev-button' onClick={prevPage}>&lt;</button>
-                <span className='page-number'>{pageNumber}</span>
-                <button className='next-button' onClick={nextPage}>&gt;</button>
+                <button disabled={transactionsPageNumber <= 1} className='prev-button' onClick={getPrevTransactions}>&lt;</button>
+                <span className='page-number'>{transactionsPageNumber}</span>
+                <button className='next-button' onClick={getNextTransactions}>&gt;</button>
             </footer>
 
         </div>
@@ -54,7 +43,6 @@ const TransactionItem: React.FC<{ transaction: Transaction }> = ({ transaction }
     if (transaction.type === 'purchase') return (
         <PurchaseItem purchase={transaction as Purchase}/>
     )
-
     if (transaction.type === 'deposit') return (
         <DepositItem deposit={transaction as Deposit}/>
     )
@@ -66,6 +54,5 @@ const TransactionItem: React.FC<{ transaction: Transaction }> = ({ transaction }
         return <li className="transaction-item">Unknown transaction type</li>;
     }
 }
-
 
 export default TransactionsPage;
