@@ -11,7 +11,7 @@ interface TransactionsContextProps {
     setFilteredTransactions: React.Dispatch<React.SetStateAction<Transaction[]>>;
     getNextTransactions: () => void;
     getPrevTransactions: () => void
-    deleteTransaction: (id: number) => void;
+    deleteTransaction: (id: Id) => void;
 }
 
 const TransactionsContext = createContext<TransactionsContextProps | undefined>(undefined);

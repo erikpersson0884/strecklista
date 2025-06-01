@@ -90,8 +90,8 @@ const CartFooter: React.FC<CartFooterProps> = ({
     const [showCommentInput, setShowCommentInput] = React.useState(false);
 
     const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
-        const selectedUserId = e.target.value;
-        const user = users.find(user => user.id === selectedUserId);
+        const selectedUserId: string = e.target.value;
+        const user = users.find(user => user.id === Number(selectedUserId));
         if (!user) throw new Error('Tried to set user that does not exist in cart list');
         setSelectedUser(user);
     };

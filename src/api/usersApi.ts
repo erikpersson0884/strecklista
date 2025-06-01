@@ -1,20 +1,8 @@
 import api from "./axiosInstance";
-
-const userApiToUser = (apiUser: ApiUser): User => {
-    return {
-        id: apiUser.id.toString(),
-        firstName: apiUser.firstName,
-        lastName: apiUser.lastName,
-        name: apiUser.firstName + " " + apiUser.lastName,
-        nick: apiUser.nick,
-        icon: apiUser.avatarUrl,
-        balance: apiUser.balance,
-    };
-};
+import { userAdapter } from "../adapters/userAdapter";
 
 
 export const usersApi = {
-
     /**
      * Fetches the current user's data from the API.
      *
@@ -23,14 +11,14 @@ export const usersApi = {
      */
     getCurrentUser: async (): Promise<User> => {
         const response = await api.get("/api/user");
-        const user = userApiToUser(response.data.data.user);
+        const user = userAdapter(response.data.data.user);
         return user;
     },  
 
     getUsers: async (): Promise<User[]> => {
         const response = await api.get("api/group");
         const apiUsers = response.data.data.members;
-        const users = apiUsers.map(userApiToUser);
+        const users = apiUsers.map(userAdapter);
         return users;
     },
 }

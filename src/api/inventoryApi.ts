@@ -7,7 +7,7 @@ const inventoryApi = {
      * @returns {Promise<ProductT[]>} A promise that resolves to an array of products.
      * @throws Will throw an error if the API request fails.
      */
-    getInventory: async (): Promise<IApiItem[]> => {
+    getInventory: async (): Promise<ApiItem[]> => {
         const response = await api.get("/api/group/item");
         const items = response.data.data.items;
         return items;
@@ -38,7 +38,7 @@ const inventoryApi = {
      * @returns A promise that resolves to `true` if the update was successful (HTTP status 200),
      *          or `false` otherwise.
      */
-    updateProduct: async (productId: productId, updates: Partial<IApiItem>): Promise<boolean> => {
+    updateProduct: async (productId: ProductId, updates: Partial<ApiItem>): Promise<boolean> => {
         const response = await api.patch(`api/group/item/${productId}`, updates);
         return response.status === 200;
     },

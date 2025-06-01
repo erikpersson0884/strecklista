@@ -1,8 +1,8 @@
 
 export function adaptTransaction(
     apiTransaction: ApiTransaction,
-    getUserFromUserId: (id: string) => User,
-    getProductById: (id: number) => ProductT
+    getUserFromUserId: (id: Id) => User,
+    getProductById: (id: Id) => ProductT
 ): Transaction {
     if (apiTransaction.type === 'purchase') return adaptPurchase(apiTransaction as ApiPurchase, getUserFromUserId, getProductById);
     if (apiTransaction.type === 'deposit') return adaptDeposit(apiTransaction as ApiDeposit, getUserFromUserId);
@@ -12,14 +12,14 @@ export function adaptTransaction(
 
 function adaptPurchase(
     apiPurchase: ApiPurchase,
-    getUserFromUserId: (id: string) => User,
-    getProductById: (id: number) => ProductT
+    getUserFromUserId: (id: Id) => User,
+    getProductById: (id: Id) => ProductT
 ): Purchase {
     return {
         id: apiPurchase.id,
         type: 'purchase',
-        createdBy: getUserFromUserId(apiPurchase.createdBy.toString()),
-        createdFor: getUserFromUserId(apiPurchase.createdFor.toString()),
+        createdBy: getUserFromUserId(apiPurchase.createdBy),
+        createdFor: getUserFromUserId(apiPurchase.createdFor),
         items: apiPurchase.items.map(item => adaptPurchaseItem(item, getProductById)),
         createdTime: apiPurchase.createdTime
     };
@@ -27,13 +27,13 @@ function adaptPurchase(
 
 function adaptDeposit(
     apiDeposit: ApiDeposit,
-    getUserFromUserId: (id: string) => User
+    getUserFromUserId: (id: Id) => User
 ): Deposit {
     return {
         id: apiDeposit.id,
         type: 'deposit',
-        createdBy: getUserFromUserId(apiDeposit.createdBy.toString()),
-        createdFor: getUserFromUserId(apiDeposit.createdFor.toString()),
+        createdBy: getUserFromUserId(apiDeposit.createdBy),
+        createdFor: getUserFromUserId(apiDeposit.createdFor),
         total: apiDeposit.total,
         createdTime: apiDeposit.createdTime,
     };
@@ -41,8 +41,8 @@ function adaptDeposit(
 
 function adaptStockUpdate(
     apiStockUpdate: ApiStockUpdate,
-    getUserFromUserId: (id: string) => User,
-    getProductById: (id: number) => ProductT
+    getUserFromUserId: (id: Id) => User,
+    getProductById: (id: Id) => ProductT
 ): StockUpdate {
     const items = apiStockUpdate.items.map((item: ApiTransactionItem): StockUpdateItem => {
         const product: ProductT | undefined = getProductById(item.id);
@@ -57,7 +57,7 @@ function adaptStockUpdate(
     return {
         id: apiStockUpdate.id,
         type: 'stockUpdate',
-        createdBy: getUserFromUserId(apiStockUpdate.createdBy.toString()),
+        createdBy: getUserFromUserId(apiStockUpdate.createdBy),
         items: items,
         createdTime: apiStockUpdate.createdTime
     };
@@ -65,7 +65,7 @@ function adaptStockUpdate(
 
 function adaptPurchaseItem(
     apiItem: ApiPurchaseItem,
-    getProductById: (id: number) => ProductT
+    getProductById: (id: Id) => ProductT
 ): PurchasedItem {
     const product = getProductById(apiItem.item.id);
     if (!product) throw new Error(`Product with id ${apiItem.item.id} not found`);

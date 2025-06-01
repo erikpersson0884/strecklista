@@ -78,15 +78,20 @@ declare global {
     }
 
     interface ApiPurchaseRequestItem {
-        id: number;
+        id: ApiId;
         quantity: number;
         purchasePrice: ApiPrice;
     }
 
 
     // Frontend Types
+    type Id = ApiId;
+    type UserId = Id;
+    type GroupId = Id;
+    type ProductId = Id;
+
     interface Transaction {
-        id: number;
+        id: Id;
         type: "purchase" | "deposit" | "stockUpdate";
         createdBy: User;
         createdTime: number;
@@ -103,7 +108,7 @@ declare global {
 
     interface PurchasedItem {
         item: {
-            id: number;
+            id: Id;
             displayName: string;
             icon: string;
         };
@@ -133,7 +138,7 @@ declare global {
     }
 
     interface ProductT {
-        id: number;
+        id: Id;
         name: string;
         icon: string;
         internalPrice: number;
@@ -151,7 +156,7 @@ declare global {
     }
 
     interface Group {
-        id: string;
+        id: Id;
         name: string;
         users: string[];
         products: ProductT[];
@@ -159,7 +164,7 @@ declare global {
     }
 
     interface User {
-        id: string;
+        id: Id;
         firstName: string;
         lastName: string;
         name: string;
@@ -167,8 +172,4 @@ declare global {
         icon: string;
         balance: number;
     }
-
-    type UserId = string;
-    type GroupId = string;
-    type productId = number;
 }
