@@ -1,7 +1,10 @@
 import React from 'react';
-import TransactionsItem from './TransactionItem/TransactionItem';
-import { useTransactionsContext } from '../../contexts/TransactionsContext';
 import './TransactionsPage.css';
+import { useTransactionsContext } from '../../contexts/TransactionsContext';
+import PurchaseItem from './TransactionItem/PurchaseItem';
+import DepositItem from './TransactionItem/DepositItem';
+import StockUpdateItem from './TransactionItem/StockUpdateItem';
+
 
 import Filter from './Filter/Filter';
 
@@ -27,16 +30,13 @@ const TransactionsPage: React.FC = () => {
 
     if (isLoading) return <p>Loading...</p>;
 
-
-    // <p>No transactions to show</p>;
-
     return (
         <div className='transactions-page'>
             <Filter />
 
             <ul className='transactions-list'>
                 {filteredTransactions.map((transaction: Transaction) => 
-                    <TransactionsItem key={transaction.id} transaction={transaction} />
+                    <TransactionItem key={transaction.id} transaction={transaction} />
                 )}
             </ul>
 
@@ -49,6 +49,23 @@ const TransactionsPage: React.FC = () => {
         </div>
     );
 };
+
+const TransactionItem: React.FC<{ transaction: Transaction }> = ({ transaction }) => {
+    if (transaction.type === 'purchase') return (
+        <PurchaseItem purchase={transaction as Purchase}/>
+    )
+
+    if (transaction.type === 'deposit') return (
+        <DepositItem deposit={transaction as Deposit}/>
+    )
+    if (transaction.type === 'stockUpdate') return (
+        <StockUpdateItem stockUpdate={transaction as StockUpdate}/>
+    )
+    else {
+        console.error("Unknown transaction type:", transaction.type);
+        return <li className="transaction-item">Unknown transaction type</li>;
+    }
+}
 
 
 export default TransactionsPage;

@@ -21,7 +21,8 @@ function adaptPurchase(
         createdBy: getUserFromUserId(apiPurchase.createdBy),
         createdFor: getUserFromUserId(apiPurchase.createdFor),
         items: apiPurchase.items.map(item => adaptPurchaseItem(item, getProductById)),
-        createdTime: apiPurchase.createdTime
+        createdTime: apiPurchase.createdTime,
+        total: apiPurchase.items.reduce((acc, item) => acc + Number(item.purchasePrice.price) * item.quantity, 0)
     };
 }
 

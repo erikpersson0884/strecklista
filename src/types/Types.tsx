@@ -99,6 +99,7 @@ declare global {
 
     interface FinancialTransaction  extends Transaction {
         createdFor: User;
+        total: number;
     }
 
     interface Purchase extends FinancialTransaction {
@@ -118,7 +119,6 @@ declare global {
 
     interface Deposit extends FinancialTransaction {
         type: "deposit";
-        total: number;
         createdFor: User;
     }
 
