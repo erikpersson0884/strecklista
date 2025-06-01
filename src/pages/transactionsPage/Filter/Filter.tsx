@@ -37,12 +37,22 @@ const Filter: React.FC = () => {
         setFilteredTransactions(transactions);
     };
 
+    function isFinancialTransaction(transaction: Transaction): transaction is FinancialTransaction {
+        return transaction.type === 'purchase' || transaction.type === 'deposit';
+    }
+
     useEffect(() => {
         let filteredTransactions = transactions;
+        if (selectedUserId !== 'all') {
+            const id = Number(selectedUserId);
 
-        if (selectedUserId != 'all') {
-            filteredTransactions = filteredTransactions.filter((transaction) => transaction.createdFor.id === selectedUserId);
-        }
+            filteredTransactions = transactions.filter((transaction) => {
+            if (isFinancialTransaction(transaction)) {
+                return transaction.createdFor.id === id;
+            } else {
+                return transaction.createdBy.id === id;
+            }
+        })};
     
         if (startDate) {
             filteredTransactions = filteredTransactions.filter((transaction) => 
