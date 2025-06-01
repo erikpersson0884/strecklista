@@ -20,6 +20,15 @@ const RefillProductPopup: React.FC<RefillProductPopupProps> = ({ product, isOpen
         else setErrorText("Det gick inte att fylla på varan. Kontrollera att alla fält är ifyllda korrekt.");
     };
 
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        if (!value || isNaN(Number(value)) || Number(value) < 0) return;
+        else {
+            setAmountToRefill(Number(value));
+            setErrorText(null);
+        }
+    };
+
     const handleClose = () => {
         setAmountToRefill(0);
         setErrorText(null);
@@ -39,9 +48,9 @@ const RefillProductPopup: React.FC<RefillProductPopupProps> = ({ product, isOpen
             <label htmlFor="amount">Fyll på med: </label>
             <input 
                 id="amount" 
-                type="number" 
+                type="string" 
                 value={amountToRefill} 
-                onChange={(e) => setAmountToRefill(Number(e.target.value))} 
+                onChange={(e) => handleInputChange(e)} 
             />
             <p>Nytt antal: {product.amountInStock + amountToRefill} st</p>
             {errorText && <p className="error-message">{errorText}</p>}

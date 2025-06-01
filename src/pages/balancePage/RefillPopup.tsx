@@ -47,15 +47,16 @@ const RefillPopup: React.FC<RefillPopupProps> = ({ user, isOpen, onClose }) => {
     }
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const newValueAsString: string = e.target.value;
-        const newValueAsNumber: number = parseFloat(newValueAsString);
-        if (newValueAsString.trim() === '' || isNaN(newValueAsNumber)) {
-            setAmountToDeposit(0);
-            return;
-        } else {
-            setAmountToDeposit(newValueAsNumber);
-        }
+    const value = e.target.value;
+    const parsed = parseFloat(value);
+
+    if (value.trim() === '' || isNaN(parsed)) {
+        setAmountToDeposit(0);
+    } else {
+        setAmountToDeposit(parsed);
     }
+    };
+
 
     const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
@@ -99,7 +100,9 @@ const RefillPopup: React.FC<RefillPopupProps> = ({ user, isOpen, onClose }) => {
                 />  
             </div>
             
-            <p>Nytt saldo: <span style={{ color: 'greeen' }}>{user.balance + amountToDeposit}</span>kr</p>
+            <p>Nytt saldo: <span style={{ color: 'greeen' }}>
+                {(user.balance + amountToDeposit).toLocaleString('sv-SE')}</span>kr
+            </p>
 
 
             { includeComment ? (

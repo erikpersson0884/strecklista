@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import editIcon from '../../../assets/images/edit.svg';
 import deleteIcon from '../../../assets/images/delete.svg';
+import refillIcon from '../../../assets/images/refill.svg';
 
 import './InventoryItem.css';
 import { useInventory } from '../../../contexts/InventoryContext';
@@ -54,8 +55,34 @@ const InventoryItem: React.FC<InventoryItemProps> = ({ product, openRefill }) =>
         }));
     };
 
+    if (!expanded) return ( // return product preview if not expanded
+        <>
+            <li className='inventory-item inventory-item-preview'>
+                <p className='product-name'>{product.name}</p>
 
-    if (expanded) return (
+                <button onClick={() => setExpanded(true)}>
+                    <img src={editIcon} alt='Redigera' height={10}/>
+                </button>
+                {/* <div className='amount-container'>
+                    <p>Antal i lager: {product.amountInStock} st</p> */}
+                    <button onClick={openRefill}>
+                        <img src={refillIcon} alt='Påfyllnad' height={10}/>
+                    </button>
+                {/* </div> */}
+                <button className='delete-button' onClick={() => setDeletePopupOpen(true)}>
+                    <img src={deleteIcon} alt='Delete' height={10}/>
+                </button>
+            </li>
+
+            <DeleteProductPopup
+                isOpen={deletePopupOpen}
+                onClose={() => setDeletePopupOpen(false)}
+                product={product}
+            ></DeleteProductPopup>
+        </>
+    );
+
+    return (
         <li className="inventory-item inventory-item-expanded">
             <div className='inputs-container'>
                 <div className='inputdiv'>
@@ -90,12 +117,7 @@ const InventoryItem: React.FC<InventoryItemProps> = ({ product, openRefill }) =>
                     />
                 </div>
 
-                <div className='amount-container'>
-                    <p>Antal i lager: {product.amountInStock} st</p>
-                    <button onClick={openRefill}>
-                        Fyll på
-                    </button>
-                </div>
+
 
                 <div>
                     <label htmlFor="available">Tillgänglig: </label>
@@ -124,26 +146,7 @@ const InventoryItem: React.FC<InventoryItemProps> = ({ product, openRefill }) =>
             </div>
         </li>
     ) 
-    return ( // return product preview if not expanded
-        <>
-            <li className='inventory-item inventory-item-preview'>
-                <p className='product-name'>{product.name}</p>
 
-                <button onClick={() => setExpanded(true)}>
-                    <img src={editIcon} alt='Redigera' height={10}/>
-                </button>
-                <button className='delete-button' onClick={() => setDeletePopupOpen(true)}>
-                    <img src={deleteIcon} alt='Delete' height={10}/>
-                </button>
-            </li>
-
-            <DeleteProductPopup
-                isOpen={deletePopupOpen}
-                onClose={() => setDeletePopupOpen(false)}
-                product={product}
-            ></DeleteProductPopup>
-        </>
-    );
 };
 
 export default InventoryItem;
