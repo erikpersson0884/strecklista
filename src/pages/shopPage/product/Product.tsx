@@ -27,7 +27,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
                 />
             </button>
 
-            {items.find(i => i.id === product.id) && (
+            {items.find(item => item.id === product.id) && (
                 <div className='items-indicator'>
                     <p>{items.find(i => i.id === product.id)?.quantity}</p>
                 </div>

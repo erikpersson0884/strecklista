@@ -1,3 +1,4 @@
+import React from 'react';
 import addIcon from '../../assets/images/add.svg';
 
 interface UserDivProps {

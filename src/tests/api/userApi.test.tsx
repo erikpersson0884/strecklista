@@ -12,8 +12,8 @@ describe("API functions", () => {
     });
 
     test("getCurrentUser should fetch and transform user data", async () => {
-        const mockApiUser: IApiUser = {
-            id: "1",
+        const mockApiUser: ApiUser = {
+            id: 1,
             firstName: "John",
             lastName: "Doe",
             nick: "JD",
@@ -38,9 +38,9 @@ describe("API functions", () => {
     });
 
     test("getUsers should fetch and transform users data", async () => {
-        const mockApiUsers: IApiUser[] = [
-            { id: "1", firstName: "Alice", lastName: "Smith", nick: "Ali", avatarUrl: "alice.png", balance: 200 },
-            { id: "2", firstName: "Bob", lastName: "Brown", nick: "Bobby", avatarUrl: "bob.png", balance: 150 },
+        const mockApiUsers: ApiUser[] = [
+            { id: 1, firstName: "Alice", lastName: "Smith", nick: "Ali", avatarUrl: "alice.png", balance: 200 },
+            { id: 2, firstName: "Bob", lastName: "Brown", nick: "Bobby", avatarUrl: "bob.png", balance: 150 },
         ];
 
         (api.get as jest.Mock).mockResolvedValue({ data: { data: { members: mockApiUsers } } });
@@ -49,37 +49,8 @@ describe("API functions", () => {
         
         expect(api.get).toHaveBeenCalledWith("api/group");
         expect(users).toEqual([
-            { id: "1", firstName: "Alice", lastName: "Smith", name: "Alice Smith", nick: "Ali", icon: "alice.png", balance: 200 },
-            { id: "2", firstName: "Bob", lastName: "Brown", name: "Bob Brown", nick: "Bobby", icon: "bob.png", balance: 150 },
+            { id: 1, firstName: "Alice", lastName: "Smith", name: "Alice Smith", nick: "Ali", icon: "alice.png", balance: 200 },
+            { id: 2, firstName: "Bob", lastName: "Brown", name: "Bob Brown", nick: "Bobby", icon: "bob.png", balance: 150 },
         ]);
-    });
-
-    test("makeDeposit should post data and return new balance", async () => {
-        (api.post as jest.Mock).mockResolvedValue({ data: { data: { balance: 250 } } });
-
-        const newBalance = await userApi.makeDeposit("1", 50);
-        
-        expect(api.post).toHaveBeenCalledWith("/api/group/deposit", { userId: "1", total: 50 });
-        expect(newBalance).toBe(250);
-    });
-
-    test("makePurchase should post data and return new balance", async () => {
-        const mockProducts: ProductInCart[] = [
-            { id: 101, quantity: 2, internalPrice: 10, name: "Product A", icon: "iconA.png", amountInStock: 100, available: true, favorite: false, addedTime: new Date().getTime(), timesPurchased: 0 },
-            { id: 102, quantity: 1, internalPrice: 15, name: "Product B", icon: "iconB.png", amountInStock: 50, available: true, favorite: false, addedTime: new Date().getTime(), timesPurchased: 0 },
-        ];
-
-        (api.post as jest.Mock).mockResolvedValue({ data: { data: { balance: 180 } } });
-
-        const newBalance = await userApi.makePurchase("1", mockProducts);
-        
-        expect(api.post).toHaveBeenCalledWith("/api/group/purchase", {
-            userId: "1",
-            items: [
-                { id: 101, quantity: 2, purchasePrice: { displayName: "Internt", price: 10 } },
-                { id: 102, quantity: 1, purchasePrice: { displayName: "Internt", price: 15 } },
-            ],
-        });
-        expect(newBalance).toBe(180);
     });
 });

@@ -41,7 +41,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
     , [items]);
 
-    const setProductQuantity = (productid: Id, quantity: number) => {
+    const setProductQuantity = (productId: Id, quantity: number) => {
         if (quantity < 0) throw new Error("Quantity cannot be negative");
         setItems((prevItems) => {
             return prevItems.map(i => 
@@ -62,7 +62,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         setProductQuantity(ProductT.id, ProductT.quantity + 1);
     }
 
-    const getProductQuantity = (productid: Id) => {
+    const getProductQuantity = (productId: Id) => {
         const product = items.find(item => item.id === productId);
         return product ? product.quantity : 0;
     }

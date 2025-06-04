@@ -27,7 +27,7 @@ describe('BalancePage Component', () => {
 
         render(<BalancePage />);
 
-        expect(screen.getByText(/No users found/)).toBeInTheDocument();
+        expect(screen.getByText(/Hittade inga användare/)).toBeInTheDocument();
     });
 
     test('renders users correctly', () => {

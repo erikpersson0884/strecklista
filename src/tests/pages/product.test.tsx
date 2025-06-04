@@ -35,6 +35,7 @@ describe('Product Component', () => {
         jest.clearAllMocks();
         (useCart as jest.Mock).mockReturnValue({
             addProductToCart: mockAddProductToCart,
+            items: [],
         });
         (useInventory as jest.Mock).mockReturnValue({
             toggleFavourite: mockToggleFavourite,
@@ -45,7 +46,7 @@ describe('Product Component', () => {
         render(<Product product={mockProduct} />);
 
         expect(screen.getByText(mockProduct.name)).toBeInTheDocument();
-        // expect(screen.getByText(`${mockProduct.amountInStock} i lager`)).toBeInTheDocument();
+        expect(screen.getByText(`${mockProduct.amountInStock} i lager`)).toBeInTheDocument();
         expect(screen.getByText(`${mockProduct.internalPrice}:-`)).toBeInTheDocument();
         expect(screen.getByAltText(mockProduct.name)).toHaveAttribute('src', mockProduct.icon);
     });

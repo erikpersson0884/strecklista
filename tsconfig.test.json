@@ -1,0 +1,16 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "types": ["jest"],
+    "typeRoots": ["./src/types", "./node_modules/@types"],
+    "lib": ["es2015"]
+  },
+  "include": [
+    "src/types/global.d.ts",
+    "src/tests/*.ts",
+    "src/**/*.test.ts",
+    "src/**/*.test.tsx",
+    "src/**/*.spec.ts",
+    "src/**/*.spec.tsx"
+  ]
+}
