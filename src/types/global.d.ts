@@ -1,9 +1,12 @@
 export {}; // Ensures the file is treated as a module and avoids conflicts.
+declare const __API_BASE__: string;
 
 declare global {
+    const __API_BASE__: string;
+    
     // API Types
-
     type ApiId = number;
+    
 
     interface ApiUser {
         id: ApiId;

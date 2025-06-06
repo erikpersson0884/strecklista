@@ -1,6 +1,7 @@
 import api from "../../api/axiosInstance";
 import userApi from "../../api/usersApi";
 
+
 jest.mock("../../api/axiosInstance", () => ({
     get: jest.fn(),
     post: jest.fn(),
@@ -27,7 +28,7 @@ describe("API functions", () => {
         
         expect(api.get).toHaveBeenCalledWith("/api/user");
         expect(user).toEqual({
-            id: "1",
+            id: 1,
             firstName: "John",
             lastName: "Doe",
             name: "John Doe",
