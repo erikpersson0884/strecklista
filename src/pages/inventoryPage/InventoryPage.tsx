@@ -1,5 +1,4 @@
 import React from 'react';
-import './InventoryPage.css';
 
 import addIcon from '../../assets/images/add.svg';
 
@@ -19,33 +18,33 @@ const InventoryPage: React.FC = () => {
 
     return (
         <>
-        <ul className='inventory-page noUlFormatting'>    
-            {products.map((product) => (
-                <InventoryItem key={product.id} product={product} openRefill={() => {
-                    setShowRefillPopup(true)
-                    setProductToRefill(product)
-                }}
-                />
-            ))}
+            <ul className='inven page noUlFormatting'>    
+                {products.map((product) => (
+                    <InventoryItem key={product.id} product={product} openRefill={() => {
+                        setShowRefillPopup(true)
+                        setProductToRefill(product)
+                    }}
+                    />
+                ))}
 
-            <button className='add-button' onClick={() => setShowAddProductPopup(!showAddProductPopup)}>
-                <img src={addIcon} alt='Add product' />
-                <p>Lägg till vara</p>
-            </button>
-        </ul>
+                <button onClick={() => setShowAddProductPopup(!showAddProductPopup)}>
+                    <img src={addIcon} alt='Add product' />
+                    <p>Lägg till vara</p>
+                </button>
+            </ul>
 
-        <AddProductPopup 
-            isOpen={showAddProductPopup} 
-            closePopup={() => setShowAddProductPopup(false)}
-        />
-
-        {productToRefill && (
-            <RefillProductPopup 
-                product={productToRefill} 
-                isOpen={showrefillPopup} 
-                onClose={() => setShowRefillPopup(false)} 
+            <AddProductPopup 
+                isOpen={showAddProductPopup} 
+                closePopup={() => setShowAddProductPopup(false)}
             />
-        )}
+
+            {productToRefill && (
+                <RefillProductPopup 
+                    product={productToRefill} 
+                    isOpen={showrefillPopup} 
+                    onClose={() => setShowRefillPopup(false)} 
+                />
+            )}
         </>
     );
 };

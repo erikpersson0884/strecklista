@@ -1,11 +1,5 @@
 
 .profile-page {
-    display: flex;
-    flex-direction: column;
-    align-items: left;
-    justify-content: flex-start;
-    gap: 2rem;
-
     padding: .8rem;
 }
 

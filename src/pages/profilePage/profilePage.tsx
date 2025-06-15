@@ -7,7 +7,7 @@ const ProfilePage: React.FC = () => {
     const { currentUser, logout } = useAuth();
 
     return (
-        <div className='profile-page'>
+        <div className='profile-page page'>
             {currentUser ? (
             <>
                 <div>

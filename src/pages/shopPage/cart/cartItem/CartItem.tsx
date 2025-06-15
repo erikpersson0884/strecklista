@@ -26,7 +26,7 @@ const CartItem: React.FC<CartItemProps> = ({ product }) => {
                 <button className='' onClick={() => decreaseProductQuantity(product)}>-</button>
             </div>
 
-            <span className='item-price'>{product.quantity * product.internalPrice}kr</span>
+            <span className='item-price'>{(product.quantity * product.internalPrice).toFixed(1).replace(/\.0$/, '')}kr</span>
             <button className='delete-button' onClick={() => removeProductFromCart(product)}>
                 <img src={deleteIcon} alt="delete" height={10}/>
             </button>

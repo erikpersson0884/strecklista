@@ -4,12 +4,14 @@
 
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     gap: 1rem;
 
     position: absolute;
 
     box-sizing: border-box;
     max-width: 30rem;
+    min-height: 18rem;
     padding: .5rem 1rem;
     border: 1px solid #fff;
 
@@ -43,6 +45,12 @@
 
 .cart .total {
     font-weight: bold;
+
+    justify-content: space-between;
+}
+
+.cart .pay-button {
+    margin-top: auto;
 }
 
 

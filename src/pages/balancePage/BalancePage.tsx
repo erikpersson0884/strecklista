@@ -24,7 +24,7 @@ const BalancePage: React.FC = () => {
 
     if (users.length > 0) return (
         <>
-            <div className='balancepage'>
+            <div className='balancepage page'>
 
             {currentUser && (
                     <>

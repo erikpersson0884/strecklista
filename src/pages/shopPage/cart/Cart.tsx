@@ -40,33 +40,38 @@ const Cart: React.FC<CartProps> = ({ closeCart }) => {
 
             <hr />
 
-            {items.length === 0 ? <p>Varukorgen är tom</p> 
-            : <>
-                <ul className='cart-list'>
-                    {items.map((item) => (
-                        <CartItem key={item.id} product={item} />
-                    ))}
+            {items.length === 0 ? 
+                <p>Varukorgen är tom</p> 
+            : 
+                <>
+                    <ul className='cart-list'>
+                        {items.map((item) => (
+                            <CartItem key={item.id} product={item} />
+                        ))}
 
-                    <li className='total cart-item'>
-                       <span>Totalt</span> 
-                       <span>{total} kr</span>
-                    </li>
-                </ul>
+                        <li className='total cart-item'>
+                        <span>Totalt</span> 
+                        <span>{total} kr</span>
+                        </li>
+                    </ul>
 
-                <hr />
+                    <hr />
 
-                <CartFooter
-                    comment={comment}
-                    setComment={setComment}
-                    closeCart={closeCart}
-                    users={users}
-                    selectedUser={selectedUser}
-                    setSelectedUser={setSelectedUser}
-                />
+                    <CartFooter
+                        comment={comment}
+                        setComment={setComment}
+                        closeCart={closeCart}
+                        users={users}
+                        selectedUser={selectedUser}
+                        setSelectedUser={setSelectedUser}
+                    />
 
-                <button onClick={showOverpayButton ? () => {} : handleBuyProducts}>Strecka</button>
-                {showOverpayButton && <button onClick={handleBuyProducts} className='cancel-button'>Godkänn överbetalning</button>}
-            </>}
+                    <button className='pay-button' onClick={showOverpayButton ? () => {} : handleBuyProducts}>Strecka</button>
+
+                    {showOverpayButton && <button onClick={handleBuyProducts} className='cancel-button'>Godkänn överbetalning</button>}
+
+                </>
+            }
         </div>
     );
 };

@@ -90,3 +90,11 @@
     color: var(--red-color);
     color: red;
 }
+
+.page {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    width: 100%;
+}

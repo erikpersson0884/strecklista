@@ -32,14 +32,14 @@ const ShopPage: React.FC = () => {
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
                 <button 
-                    className='clear-button no-button-formatting' 
+                    className='clear-search-bar-button no-button-formatting' 
                     onClick={() => setSearchTerm('')}
                 >
                     <img src={closeIcon} alt="clear search" height={20}/>
                 </button>
             </div>
 
-            <div className='shop-page'>
+            <div className='shop-page page'>
 
 
                 {products.filter((product: ProductT) => 
