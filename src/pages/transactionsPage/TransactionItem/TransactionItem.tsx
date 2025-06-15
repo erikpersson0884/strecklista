@@ -19,18 +19,17 @@ const TransactionsItem: React.FC<TransactionsItemProps> = ({ transaction, total,
         <li className="transaction-item transaction-item-preview">
             <div>
                 <p>{new Date(transaction.createdTime).toISOString().split('T')[0]}</p>
-                
+                <p>|</p>
+                <p>{previewName}</p>
+            </div>
+            <div>
+                <p>{transactionType}</p>
                 {total && ( 
                     <>
                         <p>|</p>
                         <p>{total}kr</p>
                     </>
                 )} 
-            </div>
-            <div>
-                <p>{previewName}</p>
-                <p>|</p>
-                <p>{transactionType}</p>
 
                 <button className='show-detailed-button' onClick={() => setShowDetails(true)}>Expandera</button>
             </div>
@@ -44,9 +43,7 @@ const TransactionsItem: React.FC<TransactionsItemProps> = ({ transaction, total,
                     <img src={deleteIcon} alt="Delete" />
                 </button>
 
-                <div>
-                    {children}
-                </div>
+                {children}
 
                 <button onClick={() => setShowDetails(false)}>Visa mindre</button>
             </li>

@@ -15,10 +15,12 @@ const DepositItem: React.FC<DepositItemProps> = ({ deposit }) => {
             previewName={deposit.createdFor.nick}
             total={deposit.total}
         >
-            <p>Datum: {new Date(deposit.createdTime).toISOString().split('T')[0]}</p>
-            <br />
-            <p>Fyllts på utav: {deposit.createdBy.nick}</p>
-            <p>Fyllt på konto: {deposit.createdFor.nick}</p>
+            <div>
+                <p>Datum: {new Date(deposit.createdTime).toISOString().split('T')[0]}</p>
+                <p>Fyllts på utav: {deposit.createdBy.nick}</p>
+                <p>Fyllt på konto: {deposit.createdFor.nick}</p>
+            </div>
+
             <p className='total'>Summa: {deposit.total}kr</p>
         </TransactionsItem>
     );

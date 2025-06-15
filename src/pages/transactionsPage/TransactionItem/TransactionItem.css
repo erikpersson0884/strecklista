@@ -45,9 +45,15 @@
 
 .transaction-item-detailed .total {
     font-weight: bold;
-        
+    
     margin-top: 1rem;
 }
+
+/* .transaction-item-detailed-body {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+} */
 
 .receipt-item, .receipt-header {
     display: flex;

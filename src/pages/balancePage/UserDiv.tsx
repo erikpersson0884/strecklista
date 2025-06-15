@@ -13,7 +13,7 @@ const UserDiv: React.FC<UserDivProps> = ({ user, onOpenPopup }) => {
                 <h2>{user.nick}</h2>
                 <h3>{user.name}</h3>
             </div>
-            <p className={user.balance < 0 ? 'negative-balance' : 'positive-balance'}>
+            <p className={`user-balance ${user.balance < 0 ? 'negative-balance' : 'positive-balance'}`}>
                 {user.balance.toLocaleString('sv-SE', { maximumFractionDigits: 0 })} kr
             </p>
             

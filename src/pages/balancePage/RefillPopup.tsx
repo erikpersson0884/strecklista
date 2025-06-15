@@ -107,11 +107,10 @@ const RefillPopup: React.FC<RefillPopupProps> = ({ user, isOpen, onClose }) => {
 
             { includeComment ? (
                 <>
-
                     <hr />
                     <div className='deposit-comment-header'>
                         <label htmlFor="comment">Kommentar (valfritt): </label>
-                        <button onClick={() => { setErrorText(null); setIncludeComment(false)}}>Ta bort</button>
+                        <button onClick={() => { setErrorText(null); setIncludeComment(false)}}>Ingen Kommentar</button>
                     </div>
                     <input
                         id="comment" 
