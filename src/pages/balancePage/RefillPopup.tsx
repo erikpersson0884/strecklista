@@ -47,14 +47,14 @@ const RefillPopup: React.FC<RefillPopupProps> = ({ user, isOpen, onClose }) => {
     }
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    const parsed = parseFloat(value);
+        const value = e.target.value;
+        const parsed = parseFloat(value);
 
-    if (value.trim() === '' || isNaN(parsed)) {
-        setAmountToDeposit(0);
-    } else {
-        setAmountToDeposit(parsed);
-    }
+        if (value.trim() === '' || isNaN(parsed)) {
+            setAmountToDeposit(0);
+        } else {
+            setAmountToDeposit(parsed);
+        }
     };
 
 

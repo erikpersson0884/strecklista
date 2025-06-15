@@ -22,10 +22,12 @@ const RefillProductPopup: React.FC<RefillProductPopupProps> = ({ product, isOpen
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
-        if (!value || isNaN(Number(value)) || Number(value) < 0) return;
-        else {
-            setAmountToRefill(Number(value));
-            setErrorText(null);
+        const parsed = parseFloat(value);
+
+        if (value.trim() === '' || isNaN(parsed)) {
+            setAmountToRefill(0);
+        } else {
+            setAmountToRefill(parsed);
         }
     };
 
