@@ -66,8 +66,8 @@ const transactionsApi = {
 
     deleteTransaction: async (id: Id): Promise<boolean> => {
         try {
-            const success = await api.delete(`api/group/transaction/${id}`);
-            return success.status === 204;
+            const success = await api.patch(`api/group/transaction/${id}`, { removed: true });
+            return success.status === 204 || success.status === 200; // Return true if the request succeeds
         } catch (error: any) {
             throw new Error(error.response?.data?.message || "Failed to delete transaction");
         }

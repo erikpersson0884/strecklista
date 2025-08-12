@@ -18,9 +18,20 @@ const AddProductPopup: React.FC<AddProductPopupProps> = ({ isOpen, closePopup })
     const [ icon, seticon ] = React.useState<string>("");
     const [ available, setAvailable ] = React.useState<boolean>(true);
 
+    const handleNumberInputChange = (e: React.ChangeEvent<HTMLInputElement>, setValue: React.Dispatch<React.SetStateAction<number>>) => {
+        const value = e.target.value;
+        const parsed = parseFloat(value);
+
+        if (value.trim() === '' || isNaN(parsed)) {
+            return;
+        } else {
+            console.log(parsed)
+            setValue(parsed);
+        }
+    }
+
     const handleAddProduct = async () => {
         const wasSuccessfull: boolean = await addProduct(name, internalPrice, icon);
-        console.log("wasSuccessfull", wasSuccessfull);
         if (wasSuccessfull) handleClose();
         else setErrorText("Det gick inte att lägga till varan. Kontrollera att alla fält är ifyllda korrekt.");
     };
@@ -50,12 +61,25 @@ const AddProductPopup: React.FC<AddProductPopupProps> = ({ isOpen, closePopup })
 
             <div className="inputdiv">
                 <label>Pris (Internt)</label>
-                <input type="number" name="price" value={internalPrice} onChange={(e) => setInternalPrice(Number(e.target.value))} />
+                <input 
+                    id="amount" 
+                    type="string" 
+                    value={internalPrice} 
+                    onChange={e => handleNumberInputChange(e, setInternalPrice)} 
+                    placeholder="Ange belopp här..."
+                />  
             </div>
 
             <div className="inputdiv">
                 <label>Antal i lager</label>
-                <input type="number" name="amountInStock" value={amountInStock} onChange={(e) => setAmountInStock(Number(e.target.value))} />
+                <input 
+                    type="string" 
+                    name="amountInStock" 
+                    value={amountInStock} 
+                    onChange={e => handleNumberInputChange(e, setAmountInStock)}
+                    placeholder="Ange antal i lager..." 
+                    min="0"
+                />
             </div>
 
             <div className="inputdiv">

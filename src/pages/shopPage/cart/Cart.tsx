@@ -18,13 +18,8 @@ const Cart: React.FC<CartProps> = ({ closeCart }) => {
 
     const [comment, setComment] = React.useState<string>('');
     const [selectedUser, setSelectedUser] = React.useState<User>(currentUser);
-    const [showOverpayButton, setShowOverpayButton] = React.useState<boolean>(false);
 
     const handleBuyProducts = async () => {
-        if (selectedUser.balance < total && !showOverpayButton) {
-            setShowOverpayButton(true);
-            return;
-        }
         const successfullBuy: boolean = await buyProducts(selectedUser.id, comment);
         if (successfullBuy) closeCart();
         else alert('Det gick inte att sträcka produkterna');
@@ -66,10 +61,7 @@ const Cart: React.FC<CartProps> = ({ closeCart }) => {
                         setSelectedUser={setSelectedUser}
                     />
 
-                    <button className='pay-button' onClick={showOverpayButton ? () => {} : handleBuyProducts}>Strecka</button>
-
-                    {showOverpayButton && <button onClick={handleBuyProducts} className='cancel-button'>Godkänn överbetalning</button>}
-
+                    <button className='pay-button' onClick={handleBuyProducts}>Strecka</button>
                 </>
             }
         </div>
