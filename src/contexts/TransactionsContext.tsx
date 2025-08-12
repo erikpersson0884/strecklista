@@ -36,6 +36,7 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
             const adaptedTransactions = response.apiTransactions.map(
                 apiTransaction => adaptTransaction(apiTransaction, getUserFromUserId, getProductById)
             );
+
             setTransactions(adaptedTransactions);
         } catch (error) {
             console.error(error);

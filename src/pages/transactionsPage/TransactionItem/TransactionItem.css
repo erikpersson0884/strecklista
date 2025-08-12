@@ -7,6 +7,14 @@
     padding: .5rem;
 }
 
+.removed-transaction {
+    opacity: 0.4;
+}
+
+.removed-indication-text {
+    margin-left: auto;
+}
+
 .transaction-item-preview {
     flex-direction: column;
 

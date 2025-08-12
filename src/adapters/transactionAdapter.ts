@@ -22,7 +22,8 @@ function adaptPurchase(
         createdFor: getUserFromUserId(apiPurchase.createdFor),
         items: apiPurchase.items.map(item => adaptPurchaseItem(item, getProductById)),
         createdTime: apiPurchase.createdTime,
-        total: apiPurchase.items.reduce((acc, item) => acc + Number(item.purchasePrice.price) * item.quantity, 0)
+        total: apiPurchase.items.reduce((acc, item) => acc + Number(item.purchasePrice.price) * item.quantity, 0),
+        removed: apiPurchase.removed,
     };
 }
 
@@ -37,6 +38,7 @@ function adaptDeposit(
         createdFor: getUserFromUserId(apiDeposit.createdFor),
         total: apiDeposit.total,
         createdTime: apiDeposit.createdTime,
+        removed: apiDeposit.removed
     };
 }
 
@@ -60,7 +62,8 @@ function adaptStockUpdate(
         type: 'stockUpdate',
         createdBy: getUserFromUserId(apiStockUpdate.createdBy),
         items: items,
-        createdTime: apiStockUpdate.createdTime
+        createdTime: apiStockUpdate.createdTime,
+        removed: apiStockUpdate.removed,
     };
 }
 

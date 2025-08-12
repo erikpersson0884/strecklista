@@ -45,6 +45,7 @@ declare global {
         type: "purchase" | "deposit" | "stockUpdate";
         createdBy: ApiId;
         createdTime: number;
+        removed: boolean;
     }
 
     interface ApiPurchase extends ApiTransaction {
@@ -98,6 +99,7 @@ declare global {
         type: "purchase" | "deposit" | "stockUpdate";
         createdBy: User;
         createdTime: number;
+        removed: boolean;
     }
 
     interface FinancialTransaction  extends Transaction {

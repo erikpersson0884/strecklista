@@ -16,11 +16,13 @@ const TransactionsItem: React.FC<TransactionsItemProps> = ({ transaction, total,
     const [showPopupDiv, setShowPopupDiv] = React.useState(false);
 
     if (!showDetails) return (
-        <li className="transaction-item transaction-item-preview">
+        <li className={`transaction-item transaction-item-preview ${transaction.removed ? 'removed-transaction' : ''}`}>
             <div>
                 <p>{new Date(transaction.createdTime).toISOString().split('T')[0]}</p>
                 <p>|</p>
                 <p>{previewName}</p>
+
+                {transaction.removed && <p className='removed-indication-text'>Struken</p>}
             </div>
             <div>
                 <p>{transactionType}</p>
