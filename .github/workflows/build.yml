@@ -27,6 +27,8 @@ jobs:
                 password: ${{ secrets.GITHUB_TOKEN }}
 
             - name: Build and push combined image
+              env:
+                VITE_API_URL: ${{ secrets.VITE_API_URL }}
               run: |
                 docker build -t ghcr.io/${{ github.repository }}/app:latest .
                 docker push ghcr.io/${{ github.repository }}/app:latest
