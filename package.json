@@ -3,7 +3,6 @@
     "private": true,
     "version": "0.0.0",
     "type": "module",
-    "homepage": "https://erikpersson0884.github.io/strecklista/",
     "scripts": {
         "dev": "vite --host",
         "test": "jest --config jest/jest.config.js",

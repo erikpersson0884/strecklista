@@ -15,7 +15,6 @@ export default defineConfig(({ mode }) => {    // This loads the right file base
             },
             },
         },
-        base: '/strecklista/',
         define: {
             __API_BASE__: JSON.stringify(env.API_URL ? env.API_URL : (() => { 
                 throw new Error('VITE_API_URL is not defined.'); 

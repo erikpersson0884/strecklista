@@ -22,7 +22,6 @@ import { useAuth } from './contexts/AuthContext';
 
 const App: React.FC = () => {
     const { isAuthenticated, isLoading } = useAuth();
-    const baseName = '/strecklista/';
 
     const pages = [
         { url: '/', component: <ShopPage /> },
@@ -38,7 +37,7 @@ const App: React.FC = () => {
     else if (isAuthenticated) {
         return(
             <Providers>
-                <BrowserRouter basename={baseName}>
+                <BrowserRouter>
                     <Header />
                     
                     <Routes>
@@ -54,7 +53,7 @@ const App: React.FC = () => {
         )
     } 
     else return (
-        <BrowserRouter basename={baseName}>
+        <BrowserRouter>
             <Routes>
                 <Route path="/callback" element={<AuthCallback />} />
                 <Route path="*" element={<LoginPage />} />
