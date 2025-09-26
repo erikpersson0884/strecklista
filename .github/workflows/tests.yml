@@ -19,10 +19,10 @@ jobs:
         with:
           node-version: 18 # Adjust if needed
           cache: 'npm'
-          cache-dependency-path: frontend/package-lock.json
+          cache-dependency-path: package-lock.json
 
       - name: Install dependencies
-        run: cd frontend && npm install
+        run: npm install
 
       - name: Run tests
-        run: cd frontend && npm test -- --coverage
+        run: npm test -- --coverage
