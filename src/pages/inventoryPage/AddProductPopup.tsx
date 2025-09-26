@@ -25,7 +25,6 @@ const AddProductPopup: React.FC<AddProductPopupProps> = ({ isOpen, closePopup })
         if (value.trim() === '' || isNaN(parsed)) {
             return;
         } else {
-            console.log(parsed)
             setValue(parsed);
         }
     }
