@@ -4,5 +4,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    environment:
+      - VITE_API_URL=https://prittemp.olillin.com
     ports:
       - "3000:80"
