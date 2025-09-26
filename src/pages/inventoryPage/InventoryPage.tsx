@@ -1,0 +1,54 @@
+import React from 'react';
+
+import addIcon from '../../assets/images/add.svg';
+
+
+import InventoryItem from './InventoryItem/InventoryItem';
+import { useInventory } from '../../contexts/InventoryContext';
+import AddProductPopup from './AddProductPopup';
+import RefillProductPopup from './RefillProductPopup';
+
+const InventoryPage: React.FC = () => {
+    const { products } = useInventory();
+    const [showAddProductPopup, setShowAddProductPopup] = React.useState(false);
+
+    const [showrefillPopup, setShowRefillPopup] = React.useState<boolean>(false);
+    const [productToRefill, setProductToRefill] = React.useState<ProductT | null>(null);
+    
+
+    return (
+        <>
+            <ul className='inven page noUlFormatting'>    
+                {products.map((product) => (
+                    <InventoryItem key={product.id} product={product} openRefill={() => {
+                        setShowRefillPopup(true)
+                        setProductToRefill(product)
+                    }}
+                    />
+                ))}
+
+                <button onClick={() => setShowAddProductPopup(!showAddProductPopup)}>
+                    <img src={addIcon} alt='Add product' />
+                    <p>Lägg till vara</p>
+                </button>
+            </ul>
+
+            <AddProductPopup 
+                isOpen={showAddProductPopup} 
+                closePopup={() => setShowAddProductPopup(false)}
+            />
+
+            {productToRefill && (
+                <RefillProductPopup 
+                    product={productToRefill} 
+                    isOpen={showrefillPopup} 
+                    onClose={() => setShowRefillPopup(false)} 
+                />
+            )}
+        </>
+    );
+};
+
+
+
+export default InventoryPage;

@@ -1,0 +1,36 @@
+
+.profile-page {
+    padding: .8rem;
+}
+
+.profile-page>div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 2rem;
+
+    height: 5rem;
+}
+
+.profile-page .profile-image {
+    background-position: center;
+    background-size: cover;
+
+    height: 100%;
+    aspect-ratio: 1/1;
+    
+    border-radius: 50%;
+    box-shadow: 0 0 .5rem #fff;
+}
+
+.profile-page .profile-name {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: .5rem;
+}
+
+.profile-page .logout-button {
+    
+    width: 50%;
+}

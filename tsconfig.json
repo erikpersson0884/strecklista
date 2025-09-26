@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "typeRoots": ["./src/types", "./node_modules/@types"],
+        "allowImportingTsExtensions": true,
+        "noEmit": true,
+        "jsx": "react-jsx",
+        "module": "es2015",
+        "moduleResolution": "bundler",
+    },
+    "include": [
+        "src",
+        "src/types"
+    ],
+    "exclude": [
+        "node_modules",
+        "dist"
+    ]
+}

@@ -1,0 +1,51 @@
+
+.balancepage .user-div {
+    background-color: var(--secondary-color);
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 2rem;
+
+    box-sizing: border-box;
+    width: 100%;
+    padding: 1rem 2rem;
+}
+
+.balancepage .user-div img {
+    height: 100%;
+}
+
+.balancepage .name-div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: .3rem;
+
+    margin-right: auto;
+}
+
+.balancepage .user-balance {
+  white-space: nowrap;
+}
+
+.balancepage .negative-balance {
+    color: var(--red-color);
+}
+
+.balancepage .positive-balance {
+    color: var(--green-color);
+}
+
+
+.balancepage .user-div .add-button {
+    height: 2rem;
+    border-radius: 100%;
+}
+
+.deposit-comment-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
