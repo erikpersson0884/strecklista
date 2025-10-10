@@ -10,8 +10,8 @@
     position: absolute;
 
     box-sizing: border-box;
+    width: 90%;
     max-width: 30rem;
-    min-height: 18rem;
     padding: .5rem 1rem;
     border: 1px solid #fff;
 

@@ -1,4 +1,4 @@
-import PopupDiv from "../../../components/PopupDiv/PopupDiv";
+import ActionPopupWindow from "../../../components/actionPopupWindow/ActionPopupWindow";
 import React from "react";
 import { useInventory } from "../../../contexts/InventoryContext";
 
@@ -28,7 +28,7 @@ const DeleteProductPopup: React.FC<DeleteProductPopupProps> = ({product, isOpen,
     }
 
     return (
-        <PopupDiv 
+        <ActionPopupWindow 
             isOpen={isOpen} 
             onClose={handleClose}
             title="Radera Product"
@@ -38,7 +38,7 @@ const DeleteProductPopup: React.FC<DeleteProductPopupProps> = ({product, isOpen,
             <p>Är du säker på att du vill radera produkten?</p>
             <p>Produkt: <span className="red-text">{product.name}</span></p>
             {errorText && <div className="error-message">{errorText}</div>}
-        </PopupDiv>
+        </ActionPopupWindow>
     )
 }
 

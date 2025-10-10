@@ -1,5 +1,5 @@
 import React from "react";
-import PopupDiv from "../../components/PopupDiv/PopupDiv";
+import ActionPopupWindow from "../../components/actionPopupWindow/ActionPopupWindow";
 
 import { useInventory } from "../../contexts/InventoryContext";
 
@@ -46,7 +46,7 @@ const AddProductPopup: React.FC<AddProductPopupProps> = ({ isOpen, closePopup })
     };
 
     return (
-        <PopupDiv 
+        <ActionPopupWindow 
             title="Lägg till vara" 
             onAccept={handleAddProduct} 
             isOpen={isOpen} 
@@ -92,7 +92,7 @@ const AddProductPopup: React.FC<AddProductPopupProps> = ({ isOpen, closePopup })
             </div>
 
             {errorText && <p className="error-message">{errorText}</p>}
-        </PopupDiv>
+        </ActionPopupWindow>
     );
 }
 

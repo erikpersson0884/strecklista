@@ -1,5 +1,5 @@
 import React from 'react';
-import PopupDiv from '../../components/PopupDiv/PopupDiv';
+import ActionPopupWindow from '../../components/actionPopupWindow/ActionPopupWindow';
 import { useTransactionsContext } from '../../contexts/TransactionsContext';
 
 interface DeleteTransactionPopupProps {
@@ -16,7 +16,7 @@ const DeleteTransactionPopup: React.FC<DeleteTransactionPopupProps> = ({transact
     };
     
     return (
-        <PopupDiv
+        <ActionPopupWindow
             title="Stryk Transaktion"
             acceptButtonText="Stryk Transaktion"
             onAccept={handleDelete}
@@ -28,7 +28,7 @@ const DeleteTransactionPopup: React.FC<DeleteTransactionPopupProps> = ({transact
             <p>Datum: {new Date(transaction.createdTime).toLocaleString('sv-SE', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })}</p>
             <p>Av: {transaction.createdBy.nick}</p>
             <p>Typ: {transaction.type}</p>
-        </PopupDiv>
+        </ActionPopupWindow>
     );
 };
 

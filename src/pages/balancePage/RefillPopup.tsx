@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import PopupDiv from '../../components/PopupDiv/PopupDiv';
+import ActionPopupWindow from '../../components/actionPopupWindow/ActionPopupWindow';
 import { useUsersContext } from '../../contexts/UsersContext';
 
 interface RefillPopupProps {
@@ -80,7 +80,7 @@ const RefillPopup: React.FC<RefillPopupProps> = ({ user, isOpen, onClose }) => {
     };
 
     return (
-        <PopupDiv 
+        <ActionPopupWindow 
             title={`Fyll på ${user.nick}`} 
             onAccept={handleRefill}
             isOpen={isOpen}
@@ -127,7 +127,7 @@ const RefillPopup: React.FC<RefillPopupProps> = ({ user, isOpen, onClose }) => {
 
 
             {errorText && <p className="error-message">{errorText}</p>}
-        </PopupDiv>
+        </ActionPopupWindow>
     );
 }
 

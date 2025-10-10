@@ -1,0 +1,11 @@
+.close-button {
+    background-color: var(--contrast-color);
+
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    aspect-ratio: 1/1;
+    border: none;
+    border-radius: 0;
+}

@@ -4,7 +4,7 @@ import { useCart } from '../../../contexts/CartContext';
 import { useUsersContext } from '../../../contexts/UsersContext';
 import { useAuth } from '../../../contexts/AuthContext';
 import CartItem from './cartItem/CartItem';
-import closeImage from '../../../assets/images/close.svg';
+import Closebutton from '../../../components/closebutton/Closebutton';
 
 interface CartProps {
     closeCart: () => void;       
@@ -27,11 +27,9 @@ const Cart: React.FC<CartProps> = ({ closeCart }) => {
 
     return (
         <div className='cart' onClick={(e) => e.stopPropagation()}>
+            <Closebutton closeAction={closeCart} />
             <h2>Varukorg:</h2>
 
-            <button className='close-button' onClick={closeCart}>
-                <img src={closeImage} alt="close" height={20}/>
-            </button>
 
             <hr />
 
@@ -132,5 +130,8 @@ const CartFooter: React.FC<CartFooterProps> = ({
         </div>
     );
 };
+
+
+
 
 export default Cart;

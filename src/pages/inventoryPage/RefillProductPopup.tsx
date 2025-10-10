@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import PopupDiv from '../../components/PopupDiv/PopupDiv';
+import ActionPopupWindow from '../../components/actionPopupWindow/ActionPopupWindow';
 import { useInventory } from '../../contexts/InventoryContext';
 
 interface RefillProductPopupProps {
@@ -38,7 +38,7 @@ const RefillProductPopup: React.FC<RefillProductPopupProps> = ({ product, isOpen
     }
 
     return (
-        <PopupDiv 
+        <ActionPopupWindow 
             title='Fyll på produkt'
             isOpen={isOpen}
             onClose={handleClose}
@@ -56,7 +56,7 @@ const RefillProductPopup: React.FC<RefillProductPopupProps> = ({ product, isOpen
             />
             <p>Nytt antal: {product.amountInStock + amountToRefill} st</p>
             {errorText && <p className="error-message">{errorText}</p>}
-        </PopupDiv>
+        </ActionPopupWindow>
     );
 }
 
