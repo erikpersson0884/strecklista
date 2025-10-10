@@ -1,7 +1,7 @@
 
 
 .product {
-    background-color: var(--secondary-color);
+    background-color: var(--contrast-color);
 
     display: flex;
     flex-direction: column;
@@ -30,7 +30,7 @@
 }
 
 .product .product-image {
-    background-color: var(--image-background-color);
+    background-color: var(--secondary-contrast-color);
 
     display: flex;
     flex-direction: column;
@@ -68,7 +68,7 @@
 
 .product .product-stats {
     font-size: 1rem;
-    color: var(--text-color-subtitle);
+    color: var(--secondary-text-color);
 
     display: flex;
     flex-direction: row;

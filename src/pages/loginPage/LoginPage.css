@@ -9,6 +9,10 @@
     min-height: 50vh;
 }
 
+.login-page button {
+    background-color: var(--green-color);
+}
+
 .login-page>* {
     width: max-content !important;
 }

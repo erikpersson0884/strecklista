@@ -24,7 +24,7 @@
 }
 
 .pagination button {
-    background-color: var(--secondary-color);
+    background-color: var(--contrast-color);
 
     padding: .5rem;
 }

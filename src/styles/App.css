@@ -47,14 +47,14 @@
 }
 
 .disabled-button {
-    background-color: var(--input-color);
-    color: var(--text-color-ligth);
+    background-color: var(--contrast-color);
+    color: var(--secondary-text-color);
 
     cursor: auto;
 }
 
 .close-button {
-    background-color: var(--secondary-background-color);
+    background-color: var(--contrast-color);
 
     position: absolute;
     top: 0;

@@ -1,6 +1,6 @@
 
 .cart {
-    background-color: var(--secondary-color);
+    background-color: var(--contrast-color);
 
     display: flex;
     flex-direction: column;
@@ -40,6 +40,7 @@
 }
 
 .cart .open-comment-button {
+    background-color: var(--blue-color);
     margin-left: auto;
 }
 
@@ -50,6 +51,7 @@
 }
 
 .cart .pay-button {
+    background-color: var(--green-color);
     margin-top: auto;
 }
 
