@@ -7,13 +7,6 @@
     height: 100%;
 }
 
-.popup-body>div, .popup-body>form>div {
-    display: flex;
-    flex-direction: column;
-    align-items: left;
-    gap: .3rem;
-}
-
 .popup-window .accept-button{
     background-color: var(--green-color);
     

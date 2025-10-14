@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './RefillUserBalancePopup.css';
 
 import ActionPopupWindow from '../actionPopupWindow/ActionPopupWindow';
 import { useUsersContext } from '../../contexts/UsersContext';
@@ -64,7 +65,7 @@ const RefillUserBalancePopup: React.FC<RefillUserBalancePopupProps> = ({ user, i
         }
     }
 
-    const handleCommentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleCommentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const newComment: string = e.target.value;
         if (!validateComment(newComment)) return;
         setComment(newComment);
@@ -86,10 +87,15 @@ const RefillUserBalancePopup: React.FC<RefillUserBalancePopupProps> = ({ user, i
             isOpen={isOpen}
             onClose={handleClose}
             acceptButtonText="Fyll på"
+            className='refill-user-balance-popup'
         >
-            <p>Nuvarande saldo: {user.balance}kr</p>
+            <p>
+                <span>Nuvarande saldo:</span> 
+                <span>{user.balance}</span>
+                <span>kr</span>
+            </p>
 
-            <div className='inputdiv'>
+            <div>
                 <label htmlFor="amount">Fyll på med: </label>
                 <input 
                     id="amount" 
@@ -98,11 +104,16 @@ const RefillUserBalancePopup: React.FC<RefillUserBalancePopupProps> = ({ user, i
                     onChange={handleInputChange} 
                     onKeyDown={handleKeyPress}
                     placeholder="Ange belopp här..."
-                />  
+                />
+                <p>kr</p>
             </div>
             
-            <p>Nytt saldo: <span style={{ color: 'greeen' }}>
-                {(user.balance + amountToDeposit).toLocaleString('sv-SE')}</span>kr
+            <p>
+                <span>Nytt saldo:</span>
+                <span style={{ color: 'greeen' }}>
+                    {(user.balance + amountToDeposit).toLocaleString('sv-SE')}
+                </span>
+                <span>kr</span>
             </p>
 
 
@@ -113,17 +124,17 @@ const RefillUserBalancePopup: React.FC<RefillUserBalancePopupProps> = ({ user, i
                         <label htmlFor="comment">Kommentar (valfritt): </label>
                         <button onClick={() => { setErrorText(null); setIncludeComment(false)}}>Ingen Kommentar</button>
                     </div>
-                    <input
+                    <textarea
                         id="comment" 
-                        type="text" 
                         value={comment} 
                         onChange={handleCommentChange}
-                        onKeyDown={handleKeyPress}
                         placeholder="Skriv en kommentar här..."
                     /> 
                 </>
             ) : (
-                <button onClick={() => setIncludeComment(true)}>Lägg till kommentar</button>
+                <button onClick={() => setIncludeComment(true)}>
+                    <span>Lägg till kommentar</span>
+                </button>
             )}
 
 

@@ -52,7 +52,9 @@ const ActionPopupWindow: React.FC<ActionPopupWindowProps> = ({
                 {children}
             </div>
 
-            <button className="accept-button" onClick={onAccept} disabled={acceptButtonDisabled} >{acceptButtonText}</button>
+            <button className="accept-button" onClick={onAccept} disabled={acceptButtonDisabled}>
+                <span>{acceptButtonText}</span>
+                </button>
 
             {errorText && <p className='error-message'>{errorText}</p>}
         </PopupWindow>
