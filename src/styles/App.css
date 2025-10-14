@@ -10,10 +10,6 @@
     min-height: 100vh;
 }
 
-#root>div {
-    width: 100%;
-}
-
 .no-button-formatting {
     background: none;
     border: none;
@@ -82,6 +78,7 @@
 .page {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 1rem;
 
     width: 100%;

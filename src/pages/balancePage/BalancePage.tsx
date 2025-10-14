@@ -5,7 +5,7 @@ import UserDiv from './UserDiv';
 import { useUsersContext } from '../../contexts/UsersContext';
 import { useAuth } from '../../contexts/AuthContext';
 
-import RefillPopup from './RefillPopup';
+import RefillPopup from '../../components/refillUserBalancePopup/RefillUserBalancePopup';
 
 const BalancePage: React.FC = () => {
     const { currentUser } = useAuth();
@@ -26,17 +26,11 @@ const BalancePage: React.FC = () => {
         <>
             <div className='balancepage page'>
 
-            {currentUser && (
-                    <>
-                        <UserDiv 
-                            user={users.find((user) => user.id === currentUser.id) as User} 
-                            key={currentUser.id}
-                            onOpenPopup={handleOpenPopup}
-                        />
-
-                        <hr />
-                    </>
-                )}
+                <UserDiv 
+                    user={currentUser} 
+                    key={currentUser.id}
+                    onOpenPopup={handleOpenPopup}
+                />
 
                 {users.filter((user) => user.id !== currentUser?.id).map(user => (
                     <UserDiv 

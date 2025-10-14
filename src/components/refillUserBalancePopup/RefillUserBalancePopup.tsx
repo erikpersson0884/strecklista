@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 
-import ActionPopupWindow from '../../components/actionPopupWindow/ActionPopupWindow';
+import ActionPopupWindow from '../actionPopupWindow/ActionPopupWindow';
 import { useUsersContext } from '../../contexts/UsersContext';
 
-interface RefillPopupProps {
+interface RefillUserBalancePopupProps {
     user: User;
     isOpen: boolean;
     onClose: () => void;
 }
 
-const RefillPopup: React.FC<RefillPopupProps> = ({ user, isOpen, onClose }) => {
+const RefillUserBalancePopup: React.FC<RefillUserBalancePopupProps> = ({ user, isOpen, onClose }) => {
     const { addUserBalance } = useUsersContext();
 
     const MAX_COMMENT_LENGTH = 1000;
@@ -85,6 +85,7 @@ const RefillPopup: React.FC<RefillPopupProps> = ({ user, isOpen, onClose }) => {
             onAccept={handleRefill}
             isOpen={isOpen}
             onClose={handleClose}
+            acceptButtonText="Fyll på"
         >
             <p>Nuvarande saldo: {user.balance}kr</p>
 
@@ -131,4 +132,4 @@ const RefillPopup: React.FC<RefillPopupProps> = ({ user, isOpen, onClose }) => {
     );
 }
 
-export default RefillPopup;
+export default RefillUserBalancePopup;
