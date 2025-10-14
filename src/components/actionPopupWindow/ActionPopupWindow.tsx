@@ -11,7 +11,6 @@ interface ActionPopupWindowProps {
 
     title?: string;
     acceptButtonText?: string;
-    cancelButtonText?: string;
     errorText?: string;
     errortextDisplayTime?: number;
     acceptButtonDisabled?: boolean;

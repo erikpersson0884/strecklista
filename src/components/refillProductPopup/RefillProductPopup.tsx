@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
-import ActionPopupWindow from '../../components/actionPopupWindow/ActionPopupWindow';
+import ActionPopupWindow from '../actionPopupWindow/ActionPopupWindow';
 import { useInventory } from '../../contexts/InventoryContext';
 
 interface RefillProductPopupProps {
-    product: ProductT;
-    isOpen: boolean;
+    product: IProduct | null;
     onClose: () => void;
 }
 
-const RefillProductPopup: React.FC<RefillProductPopupProps> = ({ product, isOpen, onClose }) => {
+const RefillProductPopup: React.FC<RefillProductPopupProps> = ({ product, onClose }) => {
+    if (!product) return null;
+    
     const { refillProduct } = useInventory();
 
     const [ amountToRefill, setAmountToRefill ] = useState<number>(0);
-    const [ errorText, setErrorText ] = useState<string | null>('');
+    const [ errorText, setErrorText ] = useState<string | undefined>(undefined);
 
     const handleRefillProduct = async () => {
         const wasSuccessfull = await refillProduct(product.id, amountToRefill);
@@ -33,18 +34,18 @@ const RefillProductPopup: React.FC<RefillProductPopupProps> = ({ product, isOpen
 
     const handleClose = () => {
         setAmountToRefill(0);
-        setErrorText(null);
+        setErrorText(undefined);
         onClose();
     }
 
     return (
         <ActionPopupWindow 
             title='Fyll på produkt'
-            isOpen={isOpen}
+            isOpen={!!product}
             onClose={handleClose}
             onAccept={handleRefillProduct}
             acceptButtonText='Fyll på'
-            errorText={'Något gick fel, försök igen senare.'}
+            errorText={errorText}
         >
             <p>Nuvarande antal: {product.amountInStock} st</p>
             <label htmlFor="amount">Fyll på med: </label>
@@ -55,7 +56,6 @@ const RefillProductPopup: React.FC<RefillProductPopupProps> = ({ product, isOpen
                 onChange={(e) => handleInputChange(e)} 
             />
             <p>Nytt antal: {product.amountInStock + amountToRefill} st</p>
-            {errorText && <p className="error-message">{errorText}</p>}
         </ActionPopupWindow>
     );
 }

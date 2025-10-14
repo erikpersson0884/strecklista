@@ -7,7 +7,7 @@ interface CartItemProps {
 }
 
 const CartItem: React.FC<CartItemProps> = ({ product }) => {
-    const { removeProductFromCart, setProductQuantity, increaseProductQuantity, decreaseProductQuantity } = useCart();
+    const { removeProductFromCart, increaseProductQuantity, decreaseProductQuantity } = useCart();
 
     return( 
         <li className='cart-item' key={product.id}>

@@ -5,11 +5,11 @@ interface CartContextType {
     items: ProductInCart[];
     numberOfProductsInCart: number;
     total: number;
-    addProductToCart: (item: ProductT) => void;
+    addIProductoCart: (item: IProduct) => void;
     setProductQuantity: (productid: Id, quantity: number) => void;
-    decreaseProductQuantity: (ProductT: ProductInCart) => void;
-    increaseProductQuantity: (ProductT: ProductInCart) => void;
-    removeProductFromCart: (product: ProductT) => void;
+    decreaseProductQuantity: (IProduct: ProductInCart) => void;
+    increaseProductQuantity: (IProduct: ProductInCart) => void;
+    removeProductFromCart: (product: IProduct) => void;
     getProductQuantity: (productid: Id) => number;
     clearOrder: () => void;
     buyProducts: (payinguserId: UserId, comment?: string) => Promise<boolean>;
@@ -22,7 +22,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const [ numberOfProductsInCart, setNumberOfProductsInCart ] = useState<number>(0);
     const [ total, setTotal ] = useState<number>(0);
 
-    const addProductToCart = (item: ProductT) => {
+    const addIProductoCart = (item: IProduct) => {
         setItems((prevItems) => {
             const existingItem = prevItems.find(i => i.id === item.id);
             if (existingItem) {
@@ -50,16 +50,16 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         });
     }
 
-    const decreaseProductQuantity = (ProductT: ProductInCart) => {
-        if (ProductT.quantity <= 1) {
-            removeProductFromCart(ProductT);
+    const decreaseProductQuantity = (IProduct: ProductInCart) => {
+        if (IProduct.quantity <= 1) {
+            removeProductFromCart(IProduct);
             return;
         }
-        setProductQuantity(ProductT.id, ProductT.quantity - 1);
+        setProductQuantity(IProduct.id, IProduct.quantity - 1);
     }
 
-    const increaseProductQuantity = (ProductT: ProductInCart) => {
-        setProductQuantity(ProductT.id, ProductT.quantity + 1);
+    const increaseProductQuantity = (IProduct: ProductInCart) => {
+        setProductQuantity(IProduct.id, IProduct.quantity + 1);
     }
 
     const getProductQuantity = (productId: Id) => {
@@ -68,7 +68,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
 
 
-    const removeProductFromCart = (product: ProductT) => {
+    const removeProductFromCart = (product: IProduct) => {
         setItems((prevItems) => prevItems.filter(item => item.id !== product.id));
     };
 
@@ -96,7 +96,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         <CartContext.Provider value={{ 
             numberOfProductsInCart, 
             items, 
-            addProductToCart, 
+            addIProductoCart, 
             removeProductFromCart, 
             setProductQuantity, 
             decreaseProductQuantity, 

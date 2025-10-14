@@ -15,7 +15,7 @@ jest.mock('../../contexts/InventoryContext', () => ({
 }));
 
 describe('Product Component', () => {
-    const mockAddProductToCart  = jest.fn();
+    const mockAddIProductoCart  = jest.fn();
     const mockToggleFavourite = jest.fn();
 
     const mockProduct = {
@@ -34,7 +34,7 @@ describe('Product Component', () => {
         // Reset mocks before each test
         jest.clearAllMocks();
         (useCart as jest.Mock).mockReturnValue({
-            addProductToCart: mockAddProductToCart,
+            addIProductoCart: mockAddIProductoCart,
             items: [],
         });
         (useInventory as jest.Mock).mockReturnValue({
@@ -51,12 +51,12 @@ describe('Product Component', () => {
         expect(screen.getByAltText(mockProduct.name)).toHaveAttribute('src', mockProduct.icon);
     });
 
-    test('calls addProductToCart when product is clicked', () => {
+    test('calls addIProductoCart when product is clicked', () => {
         render(<Product product={mockProduct} />);
         const productElement = screen.getByText(mockProduct.name);
 
         fireEvent.click(productElement);
 
-        expect(mockAddProductToCart).toHaveBeenCalledWith(mockProduct);
+        expect(mockAddIProductoCart).toHaveBeenCalledWith(mockProduct);
     });
 });

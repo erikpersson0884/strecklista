@@ -8,17 +8,17 @@ import { useCart } from '../../../contexts/CartContext';
 import { useInventory } from '../../../contexts/InventoryContext';
 
 interface ProductProps {
-    product: ProductT;
+    product: IProduct;
 }
 
 const Product: React.FC<ProductProps> = ({ product }) => {
-    const { addProductToCart, items } = useCart(); 
+    const { addIProductoCart, items } = useCart(); 
     const { toggleFavourite } = useInventory();
 
     const internalPrice: string = product.internalPrice % 1 === 0 ? product.internalPrice.toFixed(0) : product.internalPrice.toFixed(2)
 
     return (
-        <div className="product" onClick={() => addProductToCart(product)}>
+        <div className="product" onClick={() => addIProductoCart(product)}>
             <button className='favourite-button' onClick={(e) => {e.stopPropagation(); toggleFavourite(product.id)}}>
                 <img 
                     src={product.favorite ? favouriteIconFilled : favouriteIcon}

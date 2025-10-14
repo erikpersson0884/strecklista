@@ -4,7 +4,7 @@ const inventoryApi = {
     /**
      * Fetches the inventory data from the API.
      *
-     * @returns {Promise<ProductT[]>} A promise that resolves to an array of products.
+     * @returns {Promise<IProduct[]>} A promise that resolves to an array of products.
      * @throws Will throw an error if the API request fails.
      */
     getInventory: async (): Promise<ApiItem[]> => {

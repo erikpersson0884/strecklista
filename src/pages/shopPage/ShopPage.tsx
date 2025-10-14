@@ -42,19 +42,19 @@ const ShopPage: React.FC = () => {
             <div className='shop-page page'>
 
 
-                {products.filter((product: ProductT) => 
+                {products.filter((product: IProduct) => 
                     product.favorite == true && 
                     product.available &&
                     product.name.toLowerCase().includes(searchTerm.toLowerCase())
-                ).map((product: ProductT) => 
+                ).map((product: IProduct) => 
                     <Product key={product.id} product={product} />
                 )}
                 
-                {products.filter((product: ProductT) => 
+                {products.filter((product: IProduct) => 
                     product.favorite == false && 
                     product.available && 
                     product.name.toLowerCase().includes(searchTerm.toLowerCase())
-                ).map((product: ProductT) => 
+                ).map((product: IProduct) => 
                     <Product key={product.id} product={product} />
                 )}
             </div>

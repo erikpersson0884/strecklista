@@ -1,7 +1,7 @@
 import api from "./axiosInstance";
 
 
-const productToApiItem = (product: ProductInCart): ApiPurchaseRequestItem => {
+const IProductoApiItem = (product: ProductInCart): ApiPurchaseRequestItem => {
     return {
         id: product.id,
         quantity: product.quantity,
@@ -50,7 +50,7 @@ const transactionsApi = {
 
     makePurchase: async (userId: UserId, products: ProductInCart[], comment?: string): Promise<number> => {
         try {
-            const apiItems = products.map(productToApiItem);
+            const apiItems = products.map(IProductoApiItem);
             const response = await api.post("/api/group/purchase", { 
                 userId, 
                 items: apiItems,

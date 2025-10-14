@@ -1,34 +1,57 @@
 import React from 'react';
+import './InventoryPage.css';
 
-import addIcon from '../../assets/images/add.svg';
-
-
-import InventoryItem from './InventoryItem/InventoryItem';
 import { useInventory } from '../../contexts/InventoryContext';
-import AddProductPopup from './AddProductPopup';
-import RefillProductPopup from './RefillProductPopup';
+
+import AddProductPopup from '../../components/addProductPopup/AddProductPopup';
+import RefillProductPopup from '../../components/refillProductPopup/RefillProductPopup';
+import UpdateProductPopup from '../../components/updateProductPopup/UpdateProductPopup';
+import DeleteProductPopup from '../../components/deleteProductPopup/DeleteProductPopup';
+
+import editIcon from '../../assets/images/edit.svg';
+import deleteIcon from '../../assets/images/delete-white.svg';
+import refillIcon from '../../assets/images/refill.svg';
+
 
 const InventoryPage: React.FC = () => {
-    const { products } = useInventory();
-    const [showAddProductPopup, setShowAddProductPopup] = React.useState(false);
+    const { products, isLoading } = useInventory();
 
-    const [showrefillPopup, setShowRefillPopup] = React.useState<boolean>(false);
-    const [productToRefill, setProductToRefill] = React.useState<ProductT | null>(null);
-    
+    const [ showAddProductPopup, setShowAddProductPopup ] = React.useState<boolean>(false);
+    const [ productToRefill, setProductToRefill ] = React.useState<IProduct | null>(null);
+    const [ productToDelete, setProductToDelete ] = React.useState<IProduct | null>(null);
+    const [ productToUpdate, setProductToUpdate ] = React.useState<IProduct | null>(null);
+
+
+    const InventoryItem: React.FC<{product: IProduct;}> = ({ product }) => {
+        return (
+                <li className='inventory-item'>
+                    <p>{product.name}</p>
+
+                    <button onClick={() => setProductToUpdate(product)}>
+                        <img src={editIcon} alt='Redigera' height={10}/>
+                    </button>
+
+                    <button onClick={() => setProductToRefill(product)}>
+                        <img src={refillIcon} alt='Påfyllnad' height={10}/>
+                    </button>
+
+                    <button onClick={() => setProductToDelete(product)}>
+                        <img src={deleteIcon} alt='Delete' height={10}/>
+                    </button>
+                </li>
+        );
+    };
+
+    if (isLoading) return <p>Loading...</p>;
 
     return (
         <>
-            <ul className='inven page noUlFormatting'>    
+            <ul className='inventory-page page noUlFormatting'>    
                 {products.map((product) => (
-                    <InventoryItem key={product.id} product={product} openRefill={() => {
-                        setShowRefillPopup(true)
-                        setProductToRefill(product)
-                    }}
-                    />
+                    <InventoryItem key={product.id} product={product} />
                 ))}
 
-                <button onClick={() => setShowAddProductPopup(!showAddProductPopup)}>
-                    <img src={addIcon} alt='Add product' />
+                <button className='add-product-button' onClick={() => setShowAddProductPopup(!showAddProductPopup)}>
                     <p>Lägg till vara</p>
                 </button>
             </ul>
@@ -38,13 +61,20 @@ const InventoryPage: React.FC = () => {
                 closePopup={() => setShowAddProductPopup(false)}
             />
 
-            {productToRefill && (
-                <RefillProductPopup 
-                    product={productToRefill} 
-                    isOpen={showrefillPopup} 
-                    onClose={() => setShowRefillPopup(false)} 
-                />
-            )}
+            <UpdateProductPopup 
+                product={productToUpdate} 
+                onClose={() => setProductToUpdate(null)}
+            />
+
+            <RefillProductPopup 
+                product={productToRefill} 
+                onClose={() => setProductToRefill(null)}
+            />
+
+            <DeleteProductPopup
+                product={productToDelete}
+                onClose={() => setProductToDelete(null)}
+            />
         </>
     );
 };

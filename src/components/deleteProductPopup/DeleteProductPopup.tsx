@@ -1,14 +1,15 @@
-import ActionPopupWindow from "../../../components/actionPopupWindow/ActionPopupWindow";
+import ActionPopupWindow from "../../components/actionPopupWindow/ActionPopupWindow";
 import React from "react";
-import { useInventory } from "../../../contexts/InventoryContext";
+import { useInventory } from "../../contexts/InventoryContext";
 
 interface DeleteProductPopupProps {
-    product: ProductT;
-    isOpen: boolean;
+    product: IProduct | null;
     onClose: () => void;
 }
 
-const DeleteProductPopup: React.FC<DeleteProductPopupProps> = ({product, isOpen, onClose}) => {
+const DeleteProductPopup: React.FC<DeleteProductPopupProps> = ({product, onClose}) => {
+    if (!product) return null;
+    
     const { deleteProduct } = useInventory();
 
     const [ errorText , setErrorText ] = React.useState<string>("");
@@ -29,7 +30,7 @@ const DeleteProductPopup: React.FC<DeleteProductPopupProps> = ({product, isOpen,
 
     return (
         <ActionPopupWindow 
-            isOpen={isOpen} 
+            isOpen={!!product} 
             onClose={handleClose}
             title="Radera Product"
             acceptButtonText="Radera"

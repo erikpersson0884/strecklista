@@ -1,0 +1,34 @@
+
+.inventory-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.inventory-page>* {
+    background-color: var(--contrast-color);
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+
+    box-sizing: content-box;
+    width: 90%;
+    height: 3rem;
+    padding: 1rem;
+    border-radius: .4rem;
+}
+
+.inventory-page .inventory-item>p {
+    flex-grow: 1;
+}
+
+.inventory-page .inventory-item button {
+    background-color: inherit;
+    padding: 0;
+}
+
+.inventory-page .add-product-button {
+    background-color: var(--green-color);
+}

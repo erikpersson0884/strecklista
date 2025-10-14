@@ -6,37 +6,37 @@ import { productAdapter } from '../adapters/productAdapter';
 
 interface InventoryContextProps {
     isLoading: boolean;
-    products: ProductT[];
+    products: IProduct[];
     addProduct: (displayName: string, internalPrice: number, icon?: string) => Promise<boolean>;
-    updateProduct: (updatedProduct: ProductT) => Promise<boolean>;
+    updateProduct: (updatedProduct: IProduct) => Promise<boolean>;
     deleteProduct: (id: Id) => Promise<boolean>;
     toggleFavourite: (id: Id) => Promise<boolean>;
     refillProduct: (id: Id, amount: number) => Promise<boolean>;
-    getProductById: (id: Id) => ProductT;
+    getProductById: (id: Id) => IProduct;
 }
 
 const InventoryContext = createContext<InventoryContextProps | undefined>(undefined);
 
 export const InventoryProvider = ({ children }: { children: ReactNode }) => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [products, setProducts] = useState<ProductT[]>([]);
+    const [products, setProducts] = useState<IProduct[]>([]);
 
     const fetchInventory = async () => {
         try {
             const apiItems: ApiItem[] = await inventoryApi.getInventory();
             const newProducts = apiItems.map(productAdapter);
             setProducts(newProducts);
+            setIsLoading(false);
         } catch (error) {
             console.error('Failed to fetch inventory', error);
         }
     };
 
-    useEffect(() => {
+    useEffect( () => {
         fetchInventory();
-        setIsLoading(false);
     }, []);
 
-    const getProductById = (id: Id): ProductT => {
+    const getProductById = (id: Id): IProduct => {
         const product = products.find(product => product.id === id);
         if (!product) throw new Error(`Product with id ${id} not found`);
         return product;
@@ -62,7 +62,7 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
         }
     };
 
-    const updateProduct = async (updatedProduct: ProductT): Promise<boolean> => {
+    const updateProduct = async (updatedProduct: IProduct): Promise<boolean> => {
         const product = products.find(product => product.id === updatedProduct.id);
         if (!product) throw new Error('Product not found');
 
@@ -104,7 +104,7 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
         const product = products.find(product => product.id === id);
         if (!product) throw new Error('Product not found');
 
-        const updatedProduct: ProductT = { ...product, favorite: !product.favorite };
+        const updatedProduct: IProduct = { ...product, favorite: !product.favorite };
 
         const success = await updateProduct(updatedProduct);
         if (success) {
