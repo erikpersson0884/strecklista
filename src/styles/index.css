@@ -107,5 +107,7 @@ input, textarea {
 }
 
 hr {
+    background-color: #fff;
+    
     width: 100%;
 }

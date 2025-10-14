@@ -94,7 +94,7 @@ declare global {
     type GroupId = Id;
     type ProductId = Id;
 
-    interface Transaction {
+    interface ITransaction {
         id: Id;
         type: "purchase" | "deposit" | "stockUpdate";
         createdBy: User;
@@ -102,7 +102,7 @@ declare global {
         removed: boolean;
     }
 
-    interface FinancialTransaction  extends Transaction {
+    interface FinancialTransaction  extends ITransaction {
         createdFor: User;
         total: number;
     }
@@ -127,7 +127,7 @@ declare global {
         createdFor: User;
     }
 
-    interface StockUpdate extends Transaction {
+    interface StockUpdate extends ITransaction {
         type: "stockUpdate";
         items: StockUpdateItem[];
     }

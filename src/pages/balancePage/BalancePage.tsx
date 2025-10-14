@@ -18,7 +18,7 @@ const BalancePage: React.FC = () => {
         setShowPopup(true);
     };
 
-    if (loadingUsers) return (
+    if (loadingUsers || !currentUser) return ( // should implement a better check for current user
         <p>Laddar användare...</p>
     )
 

@@ -1,0 +1,160 @@
+import { useState, type FC } from "react";
+import './TransactionPopup.css';
+
+import { useTransactionsContext } from "../../contexts/TransactionsContext";
+
+import ActionPopupWindow from "../actionPopupWindow/ActionPopupWindow";
+import PopupWindow from "../popupWindow/PopupWindow";
+
+
+interface TransactionPopupProps {
+    transaction: ITransaction | null;
+    onClose: () => void;
+}
+
+const TransactionPopup: FC<TransactionPopupProps> = ({transaction, onClose}) => {
+    if (!transaction) return null;
+
+    const { deleteTransaction } = useTransactionsContext();
+
+    const Details: FC = () => {
+        if (transaction.type === 'purchase') {
+            const purchase = transaction as Purchase;
+
+            return (
+                <div>
+                    <br />
+                    <p>Detaljer</p>
+                    <hr />
+                    <ul className='receipt-list noUlFormatting'>
+                        {/* <li className='receipt-item'>
+                            <p>Vara</p>
+                            <p>Antal</p>
+                            <p>Pris</p>
+                            <p>Totalt</p>
+                        </li>
+                        <hr /> */}
+                        {purchase.items.map((item,index) => (
+                            <li className='receipt-item' key={index}>
+                                <p>{item.item.displayName}</p>
+                                <p>x{item.quantity}</p>
+                                {/* <p>{item.purchasePrice.price} kr</p> */}
+                                <p>{item.purchasePrice.price * item.quantity} kr</p>
+                            </li>
+                        ))}
+
+                        <hr />
+                        <li className='receipt-item total'>
+                            <p>Totalt</p>
+                            <p>{purchase.total}kr</p>
+                        </li>
+                    </ul>
+            </div>
+            );
+        }
+        else if (transaction.type === 'stockUpdate') {
+            const stockUpdate = transaction as StockUpdate;
+            return (
+                <div>
+                    <br />
+                    <p>Detaljer</p>
+                    <hr />
+                    <ul className='receipt-list'>
+                        {/* <li className='receipt-item'>
+                            <p>Vara</p>
+                            <p>Antal</p>
+                        </li>
+                        <hr /> */}
+                        {stockUpdate.items.map((item,index) => (
+                            <li key={index} className='receipt-item'>
+                                <p>{item.name}</p>
+                                <p>{item.after - item.before} st</p>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            );
+        }
+        else if (transaction.type === 'deposit') {
+            return null; // No additional details for deposits
+        }
+        else {
+            return <p>Unknown transaction type</p>;
+        }
+    };
+
+    const [ errorText , setErrorText ] = useState<string | undefined>("");
+
+    const handleDelete = async () => {
+        try {
+            await deleteTransaction(transaction.id);
+            setErrorText(undefined);
+            onClose();
+        } catch (error) {
+            setErrorText("Något gick fel, försök igen senare.");
+        }
+    }
+
+    const PopupContent: FC = () => {
+        return (
+            <>
+                <div className="transaction-overview">
+                    <p>
+                        <span>Typ av transaktion:</span>
+                        <span>{transaction.type}</span>
+                    </p>
+
+                    <p>
+                        <span>Datum:</span>
+                        <span>{transaction.createdTime}</span>
+                    </p>
+
+                    <p>
+                        <span>Summa:</span>
+                        <span>{'total' in transaction ? transaction.total + ' kr' : 'N/A'}</span>
+                    </p>
+                    
+                    { 'createdFor' in transaction && (
+                        <p>
+                            <span>Berört konto:</span>
+                            <span>{(transaction.createdFor as { nick: string }).nick}</span>
+                        </p>
+                    )}
+
+                    <p>
+                        <span>Utförd av:</span>
+                        <span>{transaction.createdBy ? transaction.createdBy.nick : 'N/A'}</span>
+                    </p>
+                </div>
+
+                <Details />
+            </>
+        )
+    }
+
+    if (transaction.removed) return (
+        <PopupWindow
+            isOpen={!!transaction}
+            onClose={onClose}
+            title="Transaction Popup"
+            className="transaction-popup"
+        >
+            <PopupContent />
+        </PopupWindow>
+    )
+    else return (
+        <ActionPopupWindow
+            isOpen={!!transaction}
+            onClose={onClose}
+            title="Transaction Popup"
+            className="transaction-popup"
+            acceptButtonText="Stryk Transaktion"
+            onAccept={handleDelete}
+            errorText={errorText}
+        >
+           <PopupContent />
+        </ActionPopupWindow>
+    )
+}
+
+export default TransactionPopup;

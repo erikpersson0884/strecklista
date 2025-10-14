@@ -1,14 +1,17 @@
-import React from 'react';
+import type { FC } from 'react';
+import { useState } from 'react';
 import './TransactionsPage.css';
-import { useTransactionsContext } from '../../contexts/TransactionsContext';
-import PurchaseItem from './TransactionItem/PurchaseItem';
-import DepositItem from './TransactionItem/DepositItem';
-import StockUpdateItem from './TransactionItem/StockUpdateItem';
 
+import { useTransactionsContext } from '../../contexts/TransactionsContext';
+
+import TransactionPopup from '../../components/transactionPopup/TransactionPopup';
+import DeleteTransactionPopup from './DeleteTransactionPopup';
 
 import Filter from './Filter/Filter';
 
-const TransactionsPage: React.FC = () => {
+import downIcon from '../../assets/images/down.svg';
+
+const TransactionsPage: FC = () => {
     const { 
         isLoading,
         filteredTransactions, 
@@ -19,40 +22,64 @@ const TransactionsPage: React.FC = () => {
 
     if (isLoading) return <p>Loading...</p>;
 
+    const [ selectedTransaction, setSelectedTransaction ] = useState<ITransaction | null>(null);
+    const [ showDeletePopupDiv, setShowDeletePopupDiv ] = useState<boolean>(false);
+
+
+    interface TransactionPreviewProps {
+        transaction: ITransaction;
+    }
+
+    const TransactionPreview: FC<TransactionPreviewProps> = ({transaction}) => {
+        return (
+            <li className={`transaction-preview ${transaction.removed ? 'removed-transaction' : ''}`}>
+                <div className='transaction-preview-content'>
+                    <div>
+                        <p>{new Date(transaction.createdTime).toISOString().split('T')[0]}</p>
+                        <p>{transaction.createdBy.nick}</p>
+                    </div>
+                    <div>
+                        <p>{transaction.type}</p>
+                        { transaction.type === 'purchase' && ( 
+                            <p>{(transaction as Purchase).total}kr</p>
+                        )} 
+                    </div>
+                </div>
+                <button className='open-popup-button' onClick={() => setSelectedTransaction(transaction)}>
+                    <img src={downIcon} alt='Expandera' height={10}/>
+                </button>
+            </li>
+        );
+    }
+
     return (
-        <div className='transactions-page'>
-            <Filter />
+        <>
+            <div className='transactions-page page'>
+                <Filter />
 
-            <ul className='transactions-list'>
-                {filteredTransactions.map((transaction: Transaction) => 
-                    <TransactionItem key={transaction.id} transaction={transaction} />
-                )}
-            </ul>
+                <ul className='transactions-list noUlFormatting'>
+                    {filteredTransactions.map((transaction: ITransaction) => 
+                        <TransactionPreview key={transaction.id} transaction={transaction} />
+                    )}
+                </ul>
 
-            <footer className='pagination'>
-                <button disabled={transactionsPageNumber <= 1} className='prev-button' onClick={getPrevTransactions}>&lt;</button>
-                <span className='page-number'>{transactionsPageNumber}</span>
-                <button className='next-button' onClick={getNextTransactions}>&gt;</button>
-            </footer>
+                <footer className='pagination'>
+                    <button disabled={transactionsPageNumber <= 1} className='prev-button' onClick={getPrevTransactions}>&lt;</button>
+                    <span className='page-number'>{transactionsPageNumber}</span>
+                    <button className='next-button' onClick={getNextTransactions}>&gt;</button>
+                </footer>
+            </div>
 
-        </div>
+            <TransactionPopup transaction={selectedTransaction} onClose={() => setSelectedTransaction(null)} />
+
+            <DeleteTransactionPopup
+                transaction={selectedTransaction}
+                isOpen={showDeletePopupDiv}
+                onClose={() => setShowDeletePopupDiv(false)}
+            />
+
+        </>
     );
 };
-
-const TransactionItem: React.FC<{ transaction: Transaction }> = ({ transaction }) => {
-    if (transaction.type === 'purchase') return (
-        <PurchaseItem purchase={transaction as Purchase}/>
-    )
-    if (transaction.type === 'deposit') return (
-        <DepositItem deposit={transaction as Deposit}/>
-    )
-    if (transaction.type === 'stockUpdate') return (
-        <StockUpdateItem stockUpdate={transaction as StockUpdate}/>
-    )
-    else {
-        console.error("Unknown transaction type:", transaction.type);
-        return <li className="transaction-item">Unknown transaction type</li>;
-    }
-}
 
 export default TransactionsPage;

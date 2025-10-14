@@ -3,12 +3,14 @@ import ActionPopupWindow from '../../components/actionPopupWindow/ActionPopupWin
 import { useTransactionsContext } from '../../contexts/TransactionsContext';
 
 interface DeleteTransactionPopupProps {
-    transaction: Transaction;
+    transaction: ITransaction | null;
     isOpen: boolean;
     onClose: () => void;
 }
 
 const DeleteTransactionPopup: React.FC<DeleteTransactionPopupProps> = ({transaction, isOpen, onClose}) => {
+    if (!transaction) return null;
+    
     const { deleteTransaction } = useTransactionsContext();
 
     const handleDelete = () => {

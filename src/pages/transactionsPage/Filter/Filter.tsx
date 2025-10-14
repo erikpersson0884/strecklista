@@ -37,7 +37,7 @@ const Filter: React.FC = () => {
         setFilteredTransactions(transactions);
     };
 
-    function isFinancialTransaction(transaction: Transaction): transaction is FinancialTransaction {
+    function isFinancialTransaction(transaction: ITransaction): transaction is FinancialTransaction {
         return transaction.type === 'purchase' || transaction.type === 'deposit';
     }
 
@@ -46,23 +46,23 @@ const Filter: React.FC = () => {
         if (selectedUserId !== 'all') {
             const id = Number(selectedUserId);
 
-            filteredTransactions = transactions.filter((transaction) => {
-            if (isFinancialTransaction(transaction)) {
-                return transaction.createdFor.id === id;
+            filteredTransactions = transactions.filter((ITransaction) => {
+            if (isFinancialTransaction(ITransaction)) {
+                return ITransaction.createdFor.id === id;
             } else {
-                return transaction.createdBy.id === id;
+                return ITransaction.createdBy.id === id;
             }
         })};
     
         if (startDate) {
-            filteredTransactions = filteredTransactions.filter((transaction) => 
-                transaction.createdTime >= new Date(startDate).getTime()
+            filteredTransactions = filteredTransactions.filter((ITransaction) => 
+                ITransaction.createdTime >= new Date(startDate).getTime()
             );
         }
     
         if (endDate) {
-            filteredTransactions = filteredTransactions.filter((transaction) => 
-                transaction.createdTime <= new Date(endDate).getTime()
+            filteredTransactions = filteredTransactions.filter((ITransaction) => 
+                ITransaction.createdTime <= new Date(endDate).getTime()
             );
         }
     

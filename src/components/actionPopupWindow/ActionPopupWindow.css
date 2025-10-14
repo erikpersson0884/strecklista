@@ -7,7 +7,7 @@
     height: 100%;
 }
 
-.popup-window .accept-button{
+.popup-window .accept-button {
     background-color: var(--green-color);
     
     display: flex;

@@ -3,11 +3,11 @@ export function adaptTransaction(
     apiTransaction: ApiTransaction,
     getUserFromUserId: (id: Id) => User,
     getProductById: (id: Id) => IProduct
-): Transaction {
+): ITransaction {
     if (apiTransaction.type === 'purchase') return adaptPurchase(apiTransaction as ApiPurchase, getUserFromUserId, getProductById);
     if (apiTransaction.type === 'deposit') return adaptDeposit(apiTransaction as ApiDeposit, getUserFromUserId);
     if (apiTransaction.type === 'stockUpdate') return adaptStockUpdate(apiTransaction as ApiStockUpdate, getUserFromUserId, getProductById);
-    throw new Error(`Unknown transaction type: ${apiTransaction.type}`);
+    throw new Error(`Unknown ITransaction type: ${apiTransaction.type}`);
 }
 
 function adaptPurchase(
