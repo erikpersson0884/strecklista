@@ -40,7 +40,7 @@ const RefillProductPopup: React.FC<RefillProductPopupProps> = ({ item, onClose }
 
     return (
         <ActionPopupWindow 
-            title='Fyll på produkt'
+            title={`Fyll på ${item.name}`}
             isOpen={!!item}
             onClose={handleClose}
             onAccept={handleRefillProduct}

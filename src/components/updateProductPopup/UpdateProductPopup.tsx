@@ -46,7 +46,7 @@ const UpdateProductPopup: React.FC<UpdateProductPopupProps> = ({item, onClose}) 
 
     return (
         <ActionPopupWindow
-            title="Update Item"
+            title={`Uppdatera`}
             acceptButtonText="Update"
             isOpen={true}
             onClose={handleExit}

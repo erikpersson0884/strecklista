@@ -82,7 +82,7 @@ const RefillUserBalancePopup: React.FC<RefillUserBalancePopupProps> = ({ user, i
 
     return (
         <ActionPopupWindow 
-            title={`Fyll på ${user.nick}`} 
+            title={user.nick}
             onAccept={handleRefill}
             isOpen={isOpen}
             onClose={handleClose}

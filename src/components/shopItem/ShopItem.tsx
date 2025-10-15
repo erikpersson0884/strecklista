@@ -36,7 +36,7 @@ const Item: React.FC<ProductProps> = ({ item }) => {
 
             <div className='item-image'>
                 <img
-                    src={item.icon}
+                    src={item.icon || defaultItemImage}
                     alt={item.name}
                     onError={(e) => {
                         e.currentTarget.onerror = null; // prevent loop
