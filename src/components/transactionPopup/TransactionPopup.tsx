@@ -136,7 +136,7 @@ const TransactionPopup: FC<TransactionPopupProps> = ({transaction, onClose}) => 
         <PopupWindow
             isOpen={!!transaction}
             onClose={onClose}
-            title="Transaction Popup"
+            title="Transaktion"
             className="transaction-popup"
         >
             <PopupContent />
@@ -146,7 +146,7 @@ const TransactionPopup: FC<TransactionPopupProps> = ({transaction, onClose}) => 
         <ActionPopupWindow
             isOpen={!!transaction}
             onClose={onClose}
-            title="Transaction Popup"
+            title="Transaktion"
             className="transaction-popup"
             acceptButtonText="Stryk Transaktion"
             onAccept={handleDelete}

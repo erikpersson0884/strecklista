@@ -14,3 +14,7 @@
 .refill-user-balance-popup>*>*:first-child {
     margin-right: auto;
 }
+
+.refill-user-balance-popup .comment-button {
+    background-color: var(--blue-color);
+}

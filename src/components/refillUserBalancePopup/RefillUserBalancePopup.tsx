@@ -15,7 +15,7 @@ const RefillUserBalancePopup: React.FC<RefillUserBalancePopupProps> = ({ user, i
 
     const MAX_COMMENT_LENGTH = 1000;
 
-    const [errorText, setErrorText] = useState<string | null>(null);
+    const [errorText, setErrorText] = useState<string | undefined>(undefined);
     const [amountToDeposit, setAmountToDeposit] = useState<number>(0); // Use string
     const [comment, setComment] = useState<string>('');
     const [ includeComment, setIncludeComment ] = useState<boolean>(false);
@@ -43,7 +43,7 @@ const RefillUserBalancePopup: React.FC<RefillUserBalancePopupProps> = ({ user, i
 
     const handleClose = () => {
         setAmountToDeposit(0);
-        setErrorText(null);
+        setErrorText(undefined);
         onClose();
     }
 
@@ -69,7 +69,7 @@ const RefillUserBalancePopup: React.FC<RefillUserBalancePopupProps> = ({ user, i
         const newComment: string = e.target.value;
         if (!validateComment(newComment)) return;
         setComment(newComment);
-        setErrorText(null);
+        setErrorText(undefined);
     }
 
     const validateComment = (comment: string) => {
@@ -88,6 +88,7 @@ const RefillUserBalancePopup: React.FC<RefillUserBalancePopupProps> = ({ user, i
             onClose={handleClose}
             acceptButtonText="Fyll på"
             className='refill-user-balance-popup'
+            errorText={errorText}
         >
             <p>
                 <span>Nuvarande saldo:</span> 
@@ -122,7 +123,7 @@ const RefillUserBalancePopup: React.FC<RefillUserBalancePopupProps> = ({ user, i
                     <hr />
                     <div className='deposit-comment-header'>
                         <label htmlFor="comment">Kommentar (valfritt): </label>
-                        <button onClick={() => { setErrorText(null); setIncludeComment(false)}}>Ingen Kommentar</button>
+                        <button onClick={() => { setErrorText(undefined); setIncludeComment(false)}}>Ingen Kommentar</button>
                     </div>
                     <textarea
                         id="comment" 
@@ -132,13 +133,10 @@ const RefillUserBalancePopup: React.FC<RefillUserBalancePopupProps> = ({ user, i
                     /> 
                 </>
             ) : (
-                <button onClick={() => setIncludeComment(true)}>
+                <button className='comment-button' onClick={() => setIncludeComment(true)}>
                     <span>Lägg till kommentar</span>
                 </button>
             )}
-
-
-            {errorText && <p className="error-message">{errorText}</p>}
         </ActionPopupWindow>
     );
 }

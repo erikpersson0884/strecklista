@@ -3,6 +3,7 @@ import './shopItem.css';
 
 import favouriteIcon from '../../assets/images/favourite.svg';
 import favouriteIconFilled from '../../assets/images/favourite-filled.svg';
+import defaultItemImage from '../../assets/images/grocery.svg';
 
 import { useCart } from '../../contexts/CartContext';
 import { useInventory } from '../../contexts/InventoryContext';
@@ -34,7 +35,14 @@ const Item: React.FC<ProductProps> = ({ item }) => {
             )}
 
             <div className='item-image'>
-                <img src={item.icon} alt={item.name} />
+                <img
+                    src={item.icon}
+                    alt={item.name}
+                    onError={(e) => {
+                        e.currentTarget.onerror = null; // prevent loop
+                        e.currentTarget.src = defaultItemImage;
+                    }}
+                />
             </div>
 
             <div className='item-info'>
