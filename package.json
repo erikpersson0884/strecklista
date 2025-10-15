@@ -6,7 +6,7 @@
     "homepage": "https://erikpersson0884.github.io/strecklista",
     "scripts": {
         "dev": "vite --host",
-        "test": "jest --config jest/jest.config.js",
+        "test": "echo \"Error: there are no tests\" && exit 1",
         "build": "tsc -b tsconfig.build.json && vite build",
         "lint": "eslint .",
         "preview": "vite preview",
