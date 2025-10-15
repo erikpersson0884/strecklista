@@ -16,6 +16,11 @@ export default defineConfig(({ mode }) => {    // This loads the right file base
             },
             },
         },
+        test: {
+            globals: true,
+            environment: 'jsdom',
+            setupFiles: './src/setupTests.ts',
+        },
         define: {
             __API_BASE__: JSON.stringify(env.API_URL ? env.API_URL : (() => { 
                 throw new Error('VITE_API_URL is not defined.'); 
