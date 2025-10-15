@@ -21,6 +21,7 @@ const Cart: FC<CartProps> = ({ closeCart }) => {
 
 
     const handleBuyProducts = async () => {
+        if (itemsInCart.length === 0) return;
         const successfullBuy: boolean = await buyProducts(selectedUser.id, comment);
         if (successfullBuy) closeCart();
         else alert('Det gick inte att sträcka produkterna');
@@ -100,9 +101,9 @@ const Cart: FC<CartProps> = ({ closeCart }) => {
             <div>
                 <CommentSection />
 
-                <button className='pay-button' onClick={handleBuyProducts}>
+                <button className='pay-button' onClick={handleBuyProducts} disabled={itemsInCart.length === 0}>
                     Sträcka
-                </button>                
+                </button>
             </div>
 
         </div>

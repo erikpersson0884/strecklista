@@ -34,7 +34,7 @@ body {
     background-color: var(--background-color);
     color: var(--text-color);
 
-    font-family: Montserrat;
+    font-family: Inter;
 
     min-height: 100vh;
 }

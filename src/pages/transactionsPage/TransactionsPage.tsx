@@ -5,7 +5,7 @@ import './TransactionsPage.css';
 import { useTransactionsContext } from '../../contexts/TransactionsContext';
 
 import TransactionPopup from '../../components/transactionPopup/TransactionPopup';
-import DeleteTransactionPopup from './DeleteTransactionPopup';
+import DeleteTransactionPopup from '../../components/deleteTransactionPopup/DeleteTransactionPopup';
 
 import Filter from './Filter/Filter';
 

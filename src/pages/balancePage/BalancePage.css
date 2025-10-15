@@ -1,13 +1,15 @@
 
 .balancepage .user-div {
+    background-color: var(--contrast-color);
+
     display: flex;
     flex-direction: row;
+
     width: 90%;
+    border-radius: .4rem;
 }
 
 .balancepage .user-div-content {
-    background-color: var(--contrast-color);
-
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
@@ -32,7 +34,11 @@
     margin-right: auto;
 }
 
-.balancepage .name-div p:last-child {
+.balancepage .name-div .nick {
+    font-size: 1.5rem;
+}
+
+.balancepage .name-div .name {
     color: var(--secondary-text-color);
 }
 

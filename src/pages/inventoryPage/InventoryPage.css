@@ -13,14 +13,16 @@
     align-items: center;
     gap: 1rem;
 
-    box-sizing: content-box;
+    box-sizing: border-box;
     width: 90%;
-    height: 3rem;
+    height: 5rem;
     padding: 1rem;
     border-radius: .4rem;
 }
 
 .inventory-page .inventory-item>p {
+    text-transform: capitalize;
+    
     flex-grow: 1;
 }
 

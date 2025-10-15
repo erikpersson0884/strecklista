@@ -34,6 +34,8 @@
 .showCartButton {
     background-color: var(--green-color);
 
+    font-size: 2rem;
+
     position: fixed; 
     bottom: 3rem;
     right: 5%;
@@ -52,6 +54,7 @@
     right: 0;
 
     font-weight: bold;
+    font-size: 1rem;
     text-align: center;
 
     min-width: 2ch;
