@@ -6,20 +6,20 @@ import { productAdapter } from '../adapters/productAdapter';
 
 interface InventoryContextProps {
     isLoading: boolean;
-    products: IProduct[];
+    products: IItem[];
     addProduct: (displayName: string, internalPrice: number, icon?: string) => Promise<boolean>;
-    updateProduct: (updatedProduct: IProduct) => Promise<boolean>;
+    updateProduct: (updatedProduct: IItem) => Promise<boolean>;
     deleteProduct: (id: Id) => Promise<boolean>;
     toggleFavourite: (id: Id) => Promise<boolean>;
     refillProduct: (id: Id, amount: number) => Promise<boolean>;
-    getProductById: (id: Id) => IProduct;
+    getProductById: (id: Id) => IItem;
 }
 
 const InventoryContext = createContext<InventoryContextProps | undefined>(undefined);
 
 export const InventoryProvider = ({ children }: { children: ReactNode }) => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [products, setProducts] = useState<IProduct[]>([]);
+    const [products, setProducts] = useState<IItem[]>([]);
 
     const fetchInventory = async () => {
         try {
@@ -36,10 +36,10 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
         fetchInventory();
     }, []);
 
-    const getProductById = (id: Id): IProduct => {
-        const product = products.find(product => product.id === id);
-        if (!product) throw new Error(`Product with id ${id} not found`);
-        return product;
+    const getProductById = (id: Id): IItem => {
+        const item = products.find(item => item.id === id);
+        if (!item) throw new Error(`Item with id ${id} not found`);
+        return item;
     };
 
     const addProduct = async (
@@ -57,23 +57,23 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
             fetchInventory();
             return success;
         } catch (error) {
-            console.error('Failed to add product', error);
+            console.error('Failed to add item', error);
             return false;
         }
     };
 
-    const updateProduct = async (updatedProduct: IProduct): Promise<boolean> => {
-        const product = products.find(product => product.id === updatedProduct.id);
-        if (!product) throw new Error('Product not found');
+    const updateProduct = async (updatedProduct: IItem): Promise<boolean> => {
+        const item = products.find(item => item.id === updatedProduct.id);
+        if (!item) throw new Error('Item not found');
 
         const updatedFields: Partial<ApiItem> = {};
 
-        if (product.name !== updatedProduct.name) updatedFields.displayName = updatedProduct.name;
-        if (product.available !== updatedProduct.available) updatedFields.visible = updatedProduct.available;
-        if (product.favorite !== updatedProduct.favorite) updatedFields.favorite = updatedProduct.favorite;
-        if (product.icon !== updatedProduct.icon) updatedFields.icon = updatedProduct.icon;
+        if (item.name !== updatedProduct.name) updatedFields.displayName = updatedProduct.name;
+        if (item.available !== updatedProduct.available) updatedFields.visible = updatedProduct.available;
+        if (item.favorite !== updatedProduct.favorite) updatedFields.favorite = updatedProduct.favorite;
+        if (item.icon !== updatedProduct.icon) updatedFields.icon = updatedProduct.icon;
 
-        if (product.internalPrice !== updatedProduct.internalPrice) {
+        if (item.internalPrice !== updatedProduct.internalPrice) {
             updatedFields.prices = [
                 {
                     price: updatedProduct.internalPrice,
@@ -90,8 +90,8 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
     };
 
     const refillProduct = async (id: Id, amount: number): Promise<boolean> => {
-        const product = products.find(product => product.id === id);
-        if (!product) throw new Error('Product not found');
+        const item = products.find(item => item.id === id);
+        if (!item) throw new Error('Item not found');
 
         const success = await inventoryApi.refillProduct(id, amount);
         if (success) {
@@ -101,10 +101,10 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
     }
 
     const toggleFavourite = async (id: Id): Promise<boolean> => {
-        const product = products.find(product => product.id === id);
-        if (!product) throw new Error('Product not found');
+        const item = products.find(item => item.id === id);
+        if (!item) throw new Error('Item not found');
 
-        const updatedProduct: IProduct = { ...product, favorite: !product.favorite };
+        const updatedProduct: IItem = { ...item, favorite: !item.favorite };
 
         const success = await updateProduct(updatedProduct);
         if (success) {
@@ -114,7 +114,7 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
     }
 
     const deleteProduct = async (id: Id): Promise<boolean>  => {
-        if (!products.some(product => product.id === id)) throw new Error('Product not found');
+        if (!products.some(item => item.id === id)) throw new Error('Item not found');
         const success = await inventoryApi.deleteProduct(id);
         fetchInventory();
         return success;

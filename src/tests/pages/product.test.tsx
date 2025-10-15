@@ -1,7 +1,7 @@
 import React from 'react';
 import '@testing-library/jest-dom';
 import { render, screen, fireEvent } from '@testing-library/react';
-import Product from '../../pages/shopPage/product/Product';
+import Item from '../../pages/shopPage/item/Item';
 import { useCart } from '../../contexts/CartContext';
 import { useInventory } from '../../contexts/InventoryContext';
 
@@ -14,13 +14,13 @@ jest.mock('../../contexts/InventoryContext', () => ({
     useInventory: jest.fn(),
 }));
 
-describe('Product Component', () => {
+describe('Item Component', () => {
     const mockAddIProductoCart  = jest.fn();
     const mockToggleFavourite = jest.fn();
 
     const mockProduct = {
         id: 1,
-        name: 'Test Product',
+        name: 'Test Item',
         internalPrice: 99.99,
         amountInStock: 10,
         favorite: false,
@@ -42,8 +42,8 @@ describe('Product Component', () => {
         });
     });
 
-    test('renders product details correctly', () => {
-        render(<Product product={mockProduct} />);
+    test('renders item details correctly', () => {
+        render(<Item item={mockProduct} />);
 
         expect(screen.getByText(mockProduct.name)).toBeInTheDocument();
         expect(screen.getByText(`${mockProduct.amountInStock} i lager`)).toBeInTheDocument();
@@ -51,8 +51,8 @@ describe('Product Component', () => {
         expect(screen.getByAltText(mockProduct.name)).toHaveAttribute('src', mockProduct.icon);
     });
 
-    test('calls addIProductoCart when product is clicked', () => {
-        render(<Product product={mockProduct} />);
+    test('calls addIProductoCart when item is clicked', () => {
+        render(<Item item={mockProduct} />);
         const productElement = screen.getByText(mockProduct.name);
 
         fireEvent.click(productElement);

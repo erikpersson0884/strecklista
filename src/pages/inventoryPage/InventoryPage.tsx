@@ -17,25 +17,25 @@ const InventoryPage: React.FC = () => {
     const { products, isLoading } = useInventory();
 
     const [ showAddProductPopup, setShowAddProductPopup ] = React.useState<boolean>(false);
-    const [ productToRefill, setProductToRefill ] = React.useState<IProduct | null>(null);
-    const [ productToDelete, setProductToDelete ] = React.useState<IProduct | null>(null);
-    const [ productToUpdate, setProductToUpdate ] = React.useState<IProduct | null>(null);
+    const [ productToRefill, setProductToRefill ] = React.useState<IItem | null>(null);
+    const [ productToDelete, setProductToDelete ] = React.useState<IItem | null>(null);
+    const [ productToUpdate, setProductToUpdate ] = React.useState<IItem | null>(null);
 
 
-    const InventoryItem: React.FC<{product: IProduct;}> = ({ product }) => {
+    const InventoryItem: React.FC<{item: IItem;}> = ({ item }) => {
         return (
                 <li className='inventory-item'>
-                    <p>{product.name}</p>
+                    <p>{item.name}</p>
 
-                    <button onClick={() => setProductToUpdate(product)}>
+                    <button onClick={() => setProductToUpdate(item)}>
                         <img src={editIcon} alt='Redigera' height={10}/>
                     </button>
 
-                    <button onClick={() => setProductToRefill(product)}>
+                    <button onClick={() => setProductToRefill(item)}>
                         <img src={refillIcon} alt='Påfyllnad' height={10}/>
                     </button>
 
-                    <button onClick={() => setProductToDelete(product)}>
+                    <button onClick={() => setProductToDelete(item)}>
                         <img src={deleteIcon} alt='Delete' height={10}/>
                     </button>
                 </li>
@@ -47,11 +47,11 @@ const InventoryPage: React.FC = () => {
     return (
         <>
             <ul className='inventory-page page noUlFormatting'>    
-                {products.map((product) => (
-                    <InventoryItem key={product.id} product={product} />
+                {products.map((item) => (
+                    <InventoryItem key={item.id} item={item} />
                 ))}
 
-                <button className='add-product-button' onClick={() => setShowAddProductPopup(!showAddProductPopup)}>
+                <button className='add-item-button' onClick={() => setShowAddProductPopup(!showAddProductPopup)}>
                     <p>Lägg till vara</p>
                 </button>
             </ul>
@@ -62,17 +62,17 @@ const InventoryPage: React.FC = () => {
             />
 
             <UpdateProductPopup 
-                product={productToUpdate} 
+                item={productToUpdate} 
                 onClose={() => setProductToUpdate(null)}
             />
 
             <RefillProductPopup 
-                product={productToRefill} 
+                item={productToRefill} 
                 onClose={() => setProductToRefill(null)}
             />
 
             <DeleteProductPopup
-                product={productToDelete}
+                item={productToDelete}
                 onClose={() => setProductToDelete(null)}
             />
         </>

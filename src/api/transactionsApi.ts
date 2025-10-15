@@ -1,13 +1,13 @@
 import api from "./axiosInstance";
 
 
-const IProductoApiItem = (product: ProductInCart): ApiPurchaseRequestItem => {
+const IProductoApiItem = (item: ProductInCart): ApiPurchaseRequestItem => {
     return {
-        id: product.id,
-        quantity: product.quantity,
+        id: item.id,
+        quantity: item.quantity,
         purchasePrice: {
             displayName: "Internt",
-            price: product.internalPrice,
+            price: item.internalPrice,
         }
     };
 };

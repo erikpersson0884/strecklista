@@ -3,35 +3,35 @@ import { useInventory } from "../../contexts/InventoryContext";
 import React, { useEffect, useState } from "react";
 
 interface UpdateProductPopupProps {
-    product: IProduct | null;
+    item: IItem | null;
     onClose: () => void;
 }
 
-const UpdateProductPopup: React.FC<UpdateProductPopupProps> = ({product, onClose}) => {
-    if (!product) return null;
+const UpdateProductPopup: React.FC<UpdateProductPopupProps> = ({item, onClose}) => {
+    if (!item) return null;
     const { updateProduct } = useInventory();
 
 
-    const [updatedProduct, setUpdatedProduct] = useState(product);
+    const [updatedProduct, setUpdatedProduct] = useState(item);
     const [isChanged, setIsChanged] = useState(false);
 
     useEffect(() => {
         setIsChanged(
-        product.name !== updatedProduct.name ||
-        product.internalPrice !== updatedProduct.internalPrice ||
-        product.icon !== updatedProduct.icon ||
-        product.available !== updatedProduct.available
+        item.name !== updatedProduct.name ||
+        item.internalPrice !== updatedProduct.internalPrice ||
+        item.icon !== updatedProduct.icon ||
+        item.available !== updatedProduct.available
         );
-    }, [updatedProduct, product]);
+    }, [updatedProduct, item]);
 
     const handleUpdate = async () => {
         const successful = await updateProduct(updatedProduct);
         if (successful) handleExit();
-        else console.error("Failed to update product");
+        else console.error("Failed to update item");
     };
 
     const handleExit = () => {
-        setUpdatedProduct(product);
+        setUpdatedProduct(item);
         onClose();
     };
 
@@ -46,7 +46,7 @@ const UpdateProductPopup: React.FC<UpdateProductPopupProps> = ({product, onClose
 
     return (
         <ActionPopupWindow
-            title="Update Product"
+            title="Update Item"
             acceptButtonText="Update"
             isOpen={true}
             onClose={handleExit}

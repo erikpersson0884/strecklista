@@ -10,7 +10,7 @@ interface CartProps {
 }
 
 const Cart: FC<CartProps> = ({ closeCart }) => {
-    const { items, buyProducts, total } = useCart();
+    const { itemsInCart, buyProducts, total } = useCart();
     const { users } = useUsersContext();
     const { currentUser } = useAuth();
     if (!currentUser) return null;
@@ -46,14 +46,14 @@ const Cart: FC<CartProps> = ({ closeCart }) => {
                     <div className='select-paying-user'>
                         <p>Sträcka åt</p>
                         <select 
-                            name="users" 
-                            id="users" 
-                            value={selectedUser?.id || ''} 
+                            name="users"
+                            id="users"
+                            value={selectedUser?.id || ''}
                             onChange={handleSelectUserChangeChange}
                         >
                             {users.map((user: User) => (
-                                <option 
-                                    key={user.id} 
+                                <option
+                                    key={user.id}
                                     value={user.id}
                                 >
                                     {user.nick}
@@ -90,8 +90,8 @@ const Cart: FC<CartProps> = ({ closeCart }) => {
     return (
         <div className='cart' onClick={(e) => e.stopPropagation()}>
             <ul className='cart-list'>
-                {items.map((item) => (
-                    <CartItem key={item.id} product={item} />
+                {itemsInCart.map((item) => (
+                    <CartItem key={item.id} item={item} />
                 ))}
             </ul>
 

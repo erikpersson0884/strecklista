@@ -51,7 +51,7 @@ const AddProductPopup: React.FC<AddProductPopupProps> = ({ isOpen, closePopup })
             onAccept={handleAddProduct} 
             isOpen={isOpen} 
             onClose={handleClose}
-            className="add-product-popup"
+            className="add-item-popup"
         >
             <div className="inputdiv">
                 <label>Varunamn</label>

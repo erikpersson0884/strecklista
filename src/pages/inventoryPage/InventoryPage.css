@@ -29,6 +29,6 @@
     padding: 0;
 }
 
-.inventory-page .add-product-button {
+.inventory-page .add-item-button {
     background-color: var(--green-color);
 }

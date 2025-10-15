@@ -39,6 +39,8 @@
 
 .cart .open-comment-button {
     background-color: var(--blue-color);
+
+    width: 100%;
 }
 
 .cart .total {
@@ -48,6 +50,8 @@
 
 .cart .pay-button {
     background-color: var(--green-color);
-    margin-top: auto;
+
     height: 2.5rem;
+    width: 100%;
+    margin-top: 1rem;;
 }

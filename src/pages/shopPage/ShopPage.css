@@ -36,13 +36,11 @@
 
     position: fixed; 
     bottom: 3rem;
-    right: 2rem;
+    right: 5%;
 
-    width: 5rem;
-    aspect-ratio: 1/1;
-    padding: 1rem;
-    border-radius: 1rem;
-    border: .1rem #fff solid;
+    width: 90%;
+    height: 5rem;
+    border-radius: .4rem;
     z-index: 11;
 }
 

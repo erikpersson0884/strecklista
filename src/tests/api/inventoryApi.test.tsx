@@ -20,10 +20,10 @@ describe("Inventory API functions", () => {
 
     test("addProduct should make a POST request and return true on success", async () => {
         (api.post as jest.Mock).mockResolvedValue({ status: 200 });
-        const result = await inventoryApi.addProduct("Test Product", [{ price: 100, displayName: "Default Price" }], "icon.png");
+        const result = await inventoryApi.addProduct("Test Item", [{ price: 100, displayName: "Default Price" }], "icon.png");
 
         expect(api.post).toHaveBeenCalledWith("api/group/item", {
-            displayName: "Test Product",
+            displayName: "Test Item",
             prices: [{ 
                 displayName: "Default Price",
                 price: 100 

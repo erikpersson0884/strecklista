@@ -3,12 +3,12 @@ import ActionPopupWindow from '../actionPopupWindow/ActionPopupWindow';
 import { useInventory } from '../../contexts/InventoryContext';
 
 interface RefillProductPopupProps {
-    product: IProduct | null;
+    item: IItem | null;
     onClose: () => void;
 }
 
-const RefillProductPopup: React.FC<RefillProductPopupProps> = ({ product, onClose }) => {
-    if (!product) return null;
+const RefillProductPopup: React.FC<RefillProductPopupProps> = ({ item, onClose }) => {
+    if (!item) return null;
     
     const { refillProduct } = useInventory();
 
@@ -16,7 +16,7 @@ const RefillProductPopup: React.FC<RefillProductPopupProps> = ({ product, onClos
     const [ errorText, setErrorText ] = useState<string | undefined>(undefined);
 
     const handleRefillProduct = async () => {
-        const wasSuccessfull = await refillProduct(product.id, amountToRefill);
+        const wasSuccessfull = await refillProduct(item.id, amountToRefill);
         if (wasSuccessfull) handleClose();
         else setErrorText("Det gick inte att fylla på varan. Kontrollera att alla fält är ifyllda korrekt.");
     };
@@ -41,13 +41,13 @@ const RefillProductPopup: React.FC<RefillProductPopupProps> = ({ product, onClos
     return (
         <ActionPopupWindow 
             title='Fyll på produkt'
-            isOpen={!!product}
+            isOpen={!!item}
             onClose={handleClose}
             onAccept={handleRefillProduct}
             acceptButtonText='Fyll på'
             errorText={errorText}
         >
-            <p>Nuvarande antal: {product.amountInStock} st</p>
+            <p>Nuvarande antal: {item.amountInStock} st</p>
             <label htmlFor="amount">Fyll på med: </label>
             <input 
                 id="amount" 
@@ -55,7 +55,7 @@ const RefillProductPopup: React.FC<RefillProductPopupProps> = ({ product, onClos
                 value={amountToRefill} 
                 onChange={(e) => handleInputChange(e)} 
             />
-            <p>Nytt antal: {product.amountInStock + amountToRefill} st</p>
+            <p>Nytt antal: {item.amountInStock + amountToRefill} st</p>
         </ActionPopupWindow>
     );
 }

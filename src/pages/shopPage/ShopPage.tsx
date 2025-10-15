@@ -1,11 +1,10 @@
 import React from 'react';
-import Product from './product/Product';
+import ShopItem from '../../components/shopItem/ShopItem';
 import './ShopPage.css';
 import { useInventory } from '../../contexts/InventoryContext';
 import { useCart } from '../../contexts/CartContext';
 import Cart from './cart/Cart';
 import Modal from '../../components/modal/Modal';
-import shoppingCartIcon from '../../assets/images/shoppingcart.svg';
 import closeIcon from '../../assets/images/close.svg';
 
 
@@ -42,20 +41,20 @@ const ShopPage: React.FC = () => {
             <div className='shop-page page'>
 
 
-                {products.filter((product: IProduct) => 
-                    product.favorite == true && 
-                    product.available &&
-                    product.name.toLowerCase().includes(searchTerm.toLowerCase())
-                ).map((product: IProduct) => 
-                    <Product key={product.id} product={product} />
+                {products.filter((item: IItem) => 
+                    item.favorite == true && 
+                    item.available &&
+                    item.name.toLowerCase().includes(searchTerm.toLowerCase())
+                ).map((item: IItem) => 
+                    <ShopItem key={item.id} item={item} />
                 )}
                 
-                {products.filter((product: IProduct) => 
-                    product.favorite == false && 
-                    product.available && 
-                    product.name.toLowerCase().includes(searchTerm.toLowerCase())
-                ).map((product: IProduct) => 
-                    <Product key={product.id} product={product} />
+                {products.filter((item: IItem) => 
+                    item.favorite == false && 
+                    item.available && 
+                    item.name.toLowerCase().includes(searchTerm.toLowerCase())
+                ).map((item: IItem) => 
+                    <ShopItem key={item.id} item={item} />
                 )}
             </div>
 
@@ -70,7 +69,7 @@ const OpenCartButton: React.FC<{ onClick: () => void }> = ({ onClick }) => {
     return (
         <button className='showCartButton no-button-formatting' onClick={onClick}>
             <div className='items-indicator'>{numberOfProductsInCart}</div>
-            <img src={shoppingCartIcon} alt="shopping cart" height={20}/>
+            <p>Betala</p>
         </button>
     );
 }

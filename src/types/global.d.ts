@@ -132,7 +132,7 @@ declare global {
         items: StockUpdateItem[];
     }
 
-    interface StockUpdateItem extends IProduct {
+    interface StockUpdateItem extends IItem {
         before: number;
         after: number;
     }
@@ -142,7 +142,7 @@ declare global {
         displayName: string;
     }
 
-    interface IProduct {
+    interface IItem {
         id: Id;
         name: string;
         icon: string;
@@ -156,7 +156,7 @@ declare global {
         timesPurchased: number;
     }
 
-    interface ProductInCart extends IProduct {
+    interface ProductInCart extends IItem {
         quantity: number;
     }
 
@@ -164,7 +164,7 @@ declare global {
         id: Id;
         name: string;
         users: string[];
-        products: IProduct[];
+        products: IItem[];
         icon: string;
     }
 

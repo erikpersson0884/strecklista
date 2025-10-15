@@ -3,12 +3,12 @@ import React from "react";
 import { useInventory } from "../../contexts/InventoryContext";
 
 interface DeleteProductPopupProps {
-    product: IProduct | null;
+    item: IItem | null;
     onClose: () => void;
 }
 
-const DeleteProductPopup: React.FC<DeleteProductPopupProps> = ({product, onClose}) => {
-    if (!product) return null;
+const DeleteProductPopup: React.FC<DeleteProductPopupProps> = ({item, onClose}) => {
+    if (!item) return null;
     
     const { deleteProduct } = useInventory();
 
@@ -16,7 +16,7 @@ const DeleteProductPopup: React.FC<DeleteProductPopupProps> = ({product, onClose
 
     const handleDelete = async () => {
         try {
-            await deleteProduct(product.id);
+            await deleteProduct(item.id);
             handleClose();
         } catch (error) {
             setErrorText("Något gick fel, försök igen senare.");
@@ -30,14 +30,14 @@ const DeleteProductPopup: React.FC<DeleteProductPopupProps> = ({product, onClose
 
     return (
         <ActionPopupWindow 
-            isOpen={!!product} 
+            isOpen={!!item} 
             onClose={handleClose}
-            title="Radera Product"
+            title="Radera Item"
             acceptButtonText="Radera"
             onAccept={handleDelete}
         >
             <p>Är du säker på att du vill radera produkten?</p>
-            <p>Produkt: <span className="red-text">{product.name}</span></p>
+            <p>Produkt: <span className="red-text">{item.name}</span></p>
             {errorText && <div className="error-message">{errorText}</div>}
         </ActionPopupWindow>
     )

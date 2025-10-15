@@ -1,6 +1,6 @@
 
 
-.product {
+.item {
     background-color: var(--contrast-color);
 
     display: flex;
@@ -17,19 +17,19 @@
     transition: all .1s linear; 
 }
 
-.product:hover {
+.item:hover {
     transform: scale(1.05);
 }
 
-.product:active {
+.item:active {
     transform: scale(1.1);
 }
 
-.product:hover img {
+.item:hover img {
     transform: scale(0.95);
 }
 
-.product .product-image {
+.item .item-image {
     background-color: var(--secondary-contrast-color);
 
     display: flex;
@@ -45,12 +45,12 @@
     padding: .5rem;
 }
 
-.product img {
+.item img {
     max-height: 100%;
     max-width: 100%;
 }
 
-.product .product-info {
+.item .item-info {
     display: flex;
     flex-direction: column;
     gap: .5rem;
@@ -58,7 +58,7 @@
     flex: 1;
 }
 
-.product h2 {
+.item h2 {
     word-break: break-word;
     white-space: nowrap;
     overflow: hidden;
@@ -66,7 +66,7 @@
     font-size: 1.5rem;
 }
 
-.product .product-stats {
+.item .item-stats {
     font-size: 1rem;
     color: var(--secondary-text-color);
 
