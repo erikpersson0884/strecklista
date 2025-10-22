@@ -28,18 +28,6 @@ export default defineConfig(({ mode }) => {    // This loads the right file base
         },
         server: {
             port: 3000,
-            proxy: {
-                '/api': {
-                    target: 'https://prittemp.olillin.com', 
-                    changeOrigin: true, 
-                    secure: true, 
-                },
-                '/login': {
-                    target: 'https://prittemp.olillin.com', 
-                    changeOrigin: true, 
-                    secure: true, 
-                }
-            }
         },
         plugins: [
             react(),
