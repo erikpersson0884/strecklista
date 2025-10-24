@@ -32,6 +32,6 @@ jobs:
                 VITE_API_URL: ${{ secrets.VITE_API_URL }}
               run: |
                 docker build \
-                  --build-arg VITE_API_URL=$VITE_API_URL \
+                  --build-arg VITE_API_URL=${{ secrets.VITE_API_URL }} \
                   -t ghcr.io/${{ github.repository }}/app:latest .
                 docker push ghcr.io/${{ github.repository }}/app:latest

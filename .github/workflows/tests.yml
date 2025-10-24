@@ -27,4 +27,5 @@ jobs:
       - name: Run tests
         env:
           VITE_API_URL: http://localhost:9999 # Mock API URL for tests
+          NODE_ENV: test
         run: npm test -- --coverage
