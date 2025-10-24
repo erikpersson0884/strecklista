@@ -1,6 +1,6 @@
 
 .page-header {
-    background-color: var(--secondary-color);
+    background-color: var(--contrast-color);
 
     display: flex;
     flex-direction: row;

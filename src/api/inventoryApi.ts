@@ -4,7 +4,7 @@ const inventoryApi = {
     /**
      * Fetches the inventory data from the API.
      *
-     * @returns {Promise<ProductT[]>} A promise that resolves to an array of products.
+     * @returns {Promise<IItem[]>} A promise that resolves to an array of products.
      * @throws Will throw an error if the API request fails.
      */
     getInventory: async (): Promise<ApiItem[]> => {
@@ -14,12 +14,12 @@ const inventoryApi = {
     },
 
     /**
-     * Makes an API call to add a new product to the inventory.
+     * Makes an API call to add a new item to the inventory.
      *
-     * @param displayName - The name of the product to be displayed.
-     * @param prices - An array of price objects associated with the product.
-     * @param icon - (Optional) A string representing the icon for the product.
-     * @returns A promise that resolves to a boolean indicating whether the product was successfully added.
+     * @param displayName - The name of the item to be displayed.
+     * @param prices - An array of price objects associated with the item.
+     * @param icon - (Optional) A string representing the icon for the item.
+     * @returns A promise that resolves to a boolean indicating whether the item was successfully added.
      */
     addProduct: async (displayName: string, prices: Price[], icon?: string): Promise<boolean> => {
         const response = await api.post("api/group/item", {
@@ -31,10 +31,10 @@ const inventoryApi = {
     },
 
     /**
-     * Updates a product with the specified updates.
+     * Updates a item with the specified updates.
      *
-     * @param productId - The unique identifier of the product to update.
-     * @param updates - A partial object containing the fields to update in the product.
+     * @param productId - The unique identifier of the item to update.
+     * @param updates - A partial object containing the fields to update in the item.
      * @returns A promise that resolves to `true` if the update was successful (HTTP status 200),
      *          or `false` otherwise.
      */
@@ -44,10 +44,10 @@ const inventoryApi = {
     },
 
     /**
-     * Deletes a product by its ID.
+     * Deletes a item by its ID.
      *
-     * @param id - The unique identifier of the product to be deleted.
-     * @returns A promise that resolves to `true` if the product was successfully deleted (HTTP status 200),
+     * @param id - The unique identifier of the item to be deleted.
+     * @returns A promise that resolves to `true` if the item was successfully deleted (HTTP status 200),
      *          or `false` otherwise.
      *
      * @throws Will throw an error if the API request fails.

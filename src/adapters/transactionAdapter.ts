@@ -2,18 +2,18 @@
 export function adaptTransaction(
     apiTransaction: ApiTransaction,
     getUserFromUserId: (id: Id) => User,
-    getProductById: (id: Id) => ProductT
-): Transaction {
+    getProductById: (id: Id) => IItem
+): ITransaction {
     if (apiTransaction.type === 'purchase') return adaptPurchase(apiTransaction as ApiPurchase, getUserFromUserId, getProductById);
     if (apiTransaction.type === 'deposit') return adaptDeposit(apiTransaction as ApiDeposit, getUserFromUserId);
     if (apiTransaction.type === 'stockUpdate') return adaptStockUpdate(apiTransaction as ApiStockUpdate, getUserFromUserId, getProductById);
-    throw new Error(`Unknown transaction type: ${apiTransaction.type}`);
+    throw new Error(`Unknown ITransaction type: ${apiTransaction.type}`);
 }
 
 function adaptPurchase(
     apiPurchase: ApiPurchase,
     getUserFromUserId: (id: Id) => User,
-    getProductById: (id: Id) => ProductT
+    getProductById: (id: Id) => IItem
 ): Purchase {
     return {
         id: apiPurchase.id,
@@ -45,16 +45,16 @@ function adaptDeposit(
 function adaptStockUpdate(
     apiStockUpdate: ApiStockUpdate,
     getUserFromUserId: (id: Id) => User,
-    getProductById: (id: Id) => ProductT
+    getProductById: (id: Id) => IItem
 ): StockUpdate {
-    const items = apiStockUpdate.items.map((item: ApiTransactionItem): StockUpdateItem => {
-        const product: ProductT | undefined = getProductById(item.id);
-        if (!product) throw new Error(`Product with id ${item.id} not found`);
+    const items = apiStockUpdate.items.map((apiItem: ApiTransactionItem): StockUpdateItem => {
+        const item: IItem | undefined = getProductById(apiItem.id);
+        if (!item) throw new Error(`Item with id ${apiItem.id} not found`);
         return {
-            ...product,
+            ...item,
             id: item.id,
-            before: item.before,
-            after: item.after
+            before: apiItem.before,
+            after: apiItem.after
         };
     });
     return {
@@ -69,16 +69,16 @@ function adaptStockUpdate(
 
 function adaptPurchaseItem(
     apiItem: ApiPurchaseItem,
-    getProductById: (id: Id) => ProductT
+    getProductById: (id: Id) => IItem
 ): PurchasedItem {
-    const product = getProductById(apiItem.item.id);
-    if (!product) throw new Error(`Product with id ${apiItem.item.id} not found`);
+    const item = getProductById(apiItem.item.id);
+    if (!item) throw new Error(`Item with id ${apiItem.item.id} not found`);
     
     return {
         item: {
-            id: product.id,
-            displayName: product.name,
-            icon: product.icon
+            id: item.id,
+            displayName: item.name,
+            icon: item.icon
         },
         quantity: apiItem.quantity,
         purchasePrice: apiItem.purchasePrice

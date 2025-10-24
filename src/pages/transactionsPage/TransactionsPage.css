@@ -10,7 +10,7 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    width: 100%;
+    width: 90%;
 }
 
 .pagination {
@@ -24,7 +24,7 @@
 }
 
 .pagination button {
-    background-color: var(--secondary-color);
+    background-color: var(--contrast-color);
 
     padding: .5rem;
 }
@@ -36,4 +36,48 @@
 
 .delete-transaction-popup p {
     max-width: 30ch;
+}
+
+
+
+/* ---  Transaction Preview --- */
+
+.transaction-preview {
+    background-color: var(--contrast-color);
+
+    display: flex;
+    justify-content: space-between;
+
+    border-radius: .5rem;
+}
+
+.transaction-preview-content {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+
+    flex-grow: 1;
+
+    padding: 1rem;
+}
+
+.transaction-preview-content>div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .5rem;
+}
+
+.transaction-preview-content>div:last-child {
+    color: var(--secondary-text-color);
+}
+
+.transaction-preview .open-popup-button {
+    background-color: var(--blue-color);
+
+    width: 4rem;
+}
+
+.transaction-preview.removed-transaction {
+    opacity: .5;
 }

@@ -1,0 +1,20 @@
+
+.refill-user-balance-popup input{
+    width: 2rem;
+}
+
+.refill-user-balance-popup>* {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.refill-user-balance-popup>*>*:first-child {
+    margin-right: auto;
+}
+
+.refill-user-balance-popup .comment-button {
+    background-color: var(--blue-color);
+}

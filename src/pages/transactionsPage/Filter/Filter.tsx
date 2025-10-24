@@ -16,6 +16,7 @@ const Filter: React.FC = () => {
     const [ selectedUserId, setselectedUserId ] = useState<string>('all');
     const [ startDate, setStartDate ] = useState<string | null>(null);
     const [ endDate, setEndDate ] = useState<string | null>(null);
+    const [ showRemovedTransactions, setShowRemovedTransactions ] = useState<boolean>(false);
 
     const onUserChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setselectedUserId(e.target.value);
@@ -34,10 +35,11 @@ const Filter: React.FC = () => {
         setselectedUserId('all');
         setStartDate(null);
         setEndDate(null);
+        setShowRemovedTransactions(false);
         setFilteredTransactions(transactions);
     };
 
-    function isFinancialTransaction(transaction: Transaction): transaction is FinancialTransaction {
+    function isFinancialTransaction(transaction: ITransaction): transaction is FinancialTransaction {
         return transaction.type === 'purchase' || transaction.type === 'deposit';
     }
 
@@ -65,16 +67,28 @@ const Filter: React.FC = () => {
                 transaction.createdTime <= new Date(endDate).getTime()
             );
         }
+
+        if (!showRemovedTransactions) {
+            filteredTransactions = filteredTransactions.filter((transaction: ITransaction) => 
+                !transaction.removed
+            );
+        }
     
         setFilteredTransactions(filteredTransactions);
-    }, [selectedUserId, startDate, endDate, transactions, setFilteredTransactions]); 
+    }, [selectedUserId, startDate, endDate, showRemovedTransactions, transactions, setFilteredTransactions]); 
     
 
 
     const [ showFilter, setShowFilter ] = useState<boolean>(false);
 
+    if (!showFilter) return (
+        <button className='show-filter-button' onClick={() => setShowFilter(true)}>
+            <p>Visa filter</p>
+            <img src={filterImage} alt='filter' />
+        </button>
+    );
 
-    return showFilter ? (
+    else return (
         <div className='filter-div'>
                     <div>
                         <label htmlFor='user-filter'>Filter by user:</label>
@@ -100,6 +114,16 @@ const Filter: React.FC = () => {
                         <label htmlFor='end-date-filter'>End date:</label>
                         <input type='date' id='end-date-filter' value={endDate !== null ? String(endDate) : ''} onChange={onEndDateChange} />
                     </div>
+
+                    <div>
+                        <label htmlFor='show-deleted-transactions'>Visa strukna transaktioner:</label>
+                        <input 
+                            type='checkbox'
+                            id='show-deleted-transactions'
+                            checked={showRemovedTransactions}
+                            onChange={() => setShowRemovedTransactions(!showRemovedTransactions)}
+                        />
+                    </div>
                             
                     <div>
                         <button onClick={onResetFilters}>
@@ -110,12 +134,7 @@ const Filter: React.FC = () => {
                         </button>
                     </div>
                 </div>
-    ) : (
-        <button className='show-filter-button' onClick={() => setShowFilter(true)}>
-            <p>Visa filter</p>
-            <img src={filterImage} alt='filter' />
-        </button>
-    );
+    )
 };
 
 export default Filter;

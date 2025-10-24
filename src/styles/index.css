@@ -3,27 +3,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
 :root {
-    --main-background-color: #292929;
-    --primary-color: #0e666c;
-    --secondary-color: #1c1c1c;
-
-    --glass-color: #000000c0;
+    --background-color: #444444;
+    --contrast-color: #242424;
+    --secondary-contrast-color: #4f4f4f;
 
     --text-color: #ffffff;
-    --text-color-subtitle: #c2c2c2;
-    --text-color-ligth: var(--text-color-subtitle);
+    --secondary-text-color: #bbbbbb;
+
+    --blue-color: #2583E1;
+    --red-color: #C70303;
+    --green-color: #329C3D;
+
+    
     --link-color: #09cdda;
-
-    --button-color: var(--primary-color);
-    --border-color: #fff;
-    --border-color-ligth: #212121;
-    --input-color: #353535;
-
-    --shadowbox-color: rgba(0, 0, 0, 0.642);
-    --image-background-color: #35353569;
-
-    --green-color: #1cbf0a;
-    --red-color: #ff0000;
 }
 
 
@@ -39,10 +31,10 @@ html {
 }
 
 body {
-    background-color: var(--main-background-color);
+    background-color: var(--background-color);
     color: var(--text-color);
 
-    font-family: Montserrat;
+    font-family: Inter;
 
     min-height: 100vh;
 }
@@ -66,10 +58,11 @@ a {
 }
 
 button {
-    background-color: var(--button-color);
+    background-color: var(--secondary-contrast-color);
     color: var(--text-color);
 
     font-weight: 600;
+    text-align: center;
 
     cursor: pointer;
 
@@ -84,6 +77,10 @@ button {
     border-radius: .2rem;
 }
 
+button>* {
+    flex-grow: 1;
+}
+
 button img {
     height: 100%;
     aspect-ratio: 1/1;
@@ -94,15 +91,15 @@ button img {
 }
 
 select {
-    background-color: var(--secondary-color);
+    background-color: var(--secondary-contrast-color);
     color: var(--text-color);
 
     padding: .5rem;
     border-radius: .5rem;
 }
 
-input {
-    background-color: var(--input-color);
+input, textarea {
+    background-color: var(--contrast-color);
     color: var(--text-color);
 
     padding: .5rem;
@@ -110,5 +107,7 @@ input {
 }
 
 hr {
+    background-color: #fff;
+    
     width: 100%;
 }

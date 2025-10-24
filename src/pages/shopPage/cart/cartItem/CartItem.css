@@ -1,9 +1,13 @@
 .cart-item {
+    background-color: var(--secondary-contrast-color);
+
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: flex-end;
-    gap: .9rem;
+    gap: .5rem;
+
+    padding: .5rem;
 }
 
 .cart-item .item-name {
@@ -13,22 +17,13 @@
     text-overflow: ellipsis;
     flex: 1;
 
-    max-width: 15ch;
+    /* max-width: 15ch; */
     margin-right: auto;
 }
 
-.cart-item .quantity-container {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: .5rem;
-
-    width: min-content;
-}
-
-.cart-item .quantity-container input {
-    width: 3ch;
-    text-align: center;
+.cart-item button {
+    padding: 0;
+    font-size: 2rem;
 }
 
 .cart-item .item-price {

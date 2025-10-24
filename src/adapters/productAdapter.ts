@@ -1,5 +1,5 @@
 
-export function productAdapter(apiItem: ApiItem): ProductT {
+export function productAdapter(apiItem: ApiItem): IItem {
     const internalPrice: Price | undefined = apiItem.prices.find((price: Price) => price.displayName === "Internt");
     if (!internalPrice) {
         alert(`Internal price for an item was not found:\ndisplayName: ${apiItem.displayName}\nid: ${apiItem.id}`);

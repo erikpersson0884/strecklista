@@ -1,0 +1,20 @@
+
+.popup-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    height: 100%;
+}
+
+.popup-window .accept-button {
+    background-color: var(--green-color);
+    
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-top: auto;
+}

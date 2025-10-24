@@ -1,13 +1,13 @@
 import api from "./axiosInstance";
 
 
-const productToApiItem = (product: ProductInCart): ApiPurchaseRequestItem => {
+const IProductoApiItem = (item: ProductInCart): ApiPurchaseRequestItem => {
     return {
-        id: product.id,
-        quantity: product.quantity,
+        id: item.id,
+        quantity: item.quantity,
         purchasePrice: {
             displayName: "Internt",
-            price: product.internalPrice,
+            price: item.internalPrice,
         }
     };
 };
@@ -19,7 +19,7 @@ const transactionsApi = {
             if (url) {
                 response = await api.get(url);
             } else {
-                response = await api.get(`api/group/transaction`, {
+                response = await api.get(`api/group/Transaction`, {
                     params: { limit, offset },
                 });
             }
@@ -50,7 +50,7 @@ const transactionsApi = {
 
     makePurchase: async (userId: UserId, products: ProductInCart[], comment?: string): Promise<number> => {
         try {
-            const apiItems = products.map(productToApiItem);
+            const apiItems = products.map(IProductoApiItem);
             const response = await api.post("/api/group/purchase", { 
                 userId, 
                 items: apiItems,
@@ -66,10 +66,10 @@ const transactionsApi = {
 
     deleteTransaction: async (id: Id): Promise<boolean> => {
         try {
-            const success = await api.patch(`api/group/transaction/${id}`, { removed: true });
+            const success = await api.patch(`api/group/Transaction/${id}`, { removed: true });
             return success.status === 204 || success.status === 200; // Return true if the request succeeds
         } catch (error: any) {
-            throw new Error(error.response?.data?.message || "Failed to delete transaction");
+            throw new Error(error.response?.data?.message || "Failed to delete ITransaction");
         }
     }
 };

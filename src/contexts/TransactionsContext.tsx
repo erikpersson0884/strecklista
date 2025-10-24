@@ -6,9 +6,9 @@ import { adaptTransaction } from '../adapters/transactionAdapter';
 
 interface TransactionsContextProps {
     isLoading: boolean;
-    transactions: Transaction[];
-    filteredTransactions: Transaction[];
-    setFilteredTransactions: React.Dispatch<React.SetStateAction<Transaction[]>>;
+    transactions: ITransaction[];
+    filteredTransactions: ITransaction[];
+    setFilteredTransactions: React.Dispatch<React.SetStateAction<ITransaction[]>>;
     getNextTransactions: () => void;
     getPrevTransactions: () => void
     deleteTransaction: (id: Id) => Promise<boolean>;
@@ -21,8 +21,8 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
     const { isLoading: loadingusers, getUserFromUserId } = useUsersContext();
     const { getProductById } = useInventory();
 
-    const [filteredTransactions, setFilteredTransactions] = useState<Transaction[]>([]);
-    const [transactions, setTransactions] = useState<Transaction[]>([]);
+    const [filteredTransactions, setFilteredTransactions] = useState<ITransaction[]>([]);
+    const [transactions, setTransactions] = useState<ITransaction[]>([]);
     const [nextUrl, setNextUrl] = useState<string | null>(null);
     const [prevUrl, setPrevUrl] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -69,8 +69,8 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
     const deleteTransaction = async (id: Id): Promise<boolean> => {
         const success = await transactionsApi.deleteTransaction(id);
         if (success) {
-            setTransactions((prevTransactions) => prevTransactions.filter((transaction) => transaction.id !== id));
-            setFilteredTransactions((prevFilteredTransactions) => prevFilteredTransactions.filter((transaction) => transaction.id !== id));
+            setTransactions((prevTransactions) => prevTransactions.filter((ITransaction) => ITransaction.id !== id));
+            setFilteredTransactions((prevFilteredTransactions) => prevFilteredTransactions.filter((ITransaction) => ITransaction.id !== id));
         }
         return success;
     };

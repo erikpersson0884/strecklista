@@ -6,6 +6,7 @@
         "jsx": "react-jsx",
         "module": "es2015",
         "moduleResolution": "bundler",
+        "forceConsistentCasingInFileNames": true,
     },
     "include": [
         "src",

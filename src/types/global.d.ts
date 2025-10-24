@@ -94,7 +94,7 @@ declare global {
     type GroupId = Id;
     type ProductId = Id;
 
-    interface Transaction {
+    interface ITransaction {
         id: Id;
         type: "purchase" | "deposit" | "stockUpdate";
         createdBy: User;
@@ -102,7 +102,7 @@ declare global {
         removed: boolean;
     }
 
-    interface FinancialTransaction  extends Transaction {
+    interface FinancialTransaction  extends ITransaction {
         createdFor: User;
         total: number;
     }
@@ -127,12 +127,12 @@ declare global {
         createdFor: User;
     }
 
-    interface StockUpdate extends Transaction {
+    interface StockUpdate extends ITransaction {
         type: "stockUpdate";
         items: StockUpdateItem[];
     }
 
-    interface StockUpdateItem extends ProductT {
+    interface StockUpdateItem extends IItem {
         before: number;
         after: number;
     }
@@ -142,7 +142,7 @@ declare global {
         displayName: string;
     }
 
-    interface ProductT {
+    interface IItem {
         id: Id;
         name: string;
         icon: string;
@@ -156,7 +156,7 @@ declare global {
         timesPurchased: number;
     }
 
-    interface ProductInCart extends ProductT {
+    interface ProductInCart extends IItem {
         quantity: number;
     }
 
@@ -164,7 +164,7 @@ declare global {
         id: Id;
         name: string;
         users: string[];
-        products: ProductT[];
+        products: IItem[];
         icon: string;
     }
 

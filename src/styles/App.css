@@ -10,10 +10,6 @@
     min-height: 100vh;
 }
 
-#root>div {
-    width: 100%;
-}
-
 .no-button-formatting {
     background: none;
     border: none;
@@ -47,22 +43,10 @@
 }
 
 .disabled-button {
-    background-color: var(--input-color);
-    color: var(--text-color-ligth);
+    background-color: var(--contrast-color);
+    color: var(--secondary-text-color);
 
     cursor: auto;
-}
-
-.close-button {
-    background-color: var(--secondary-background-color);
-
-    position: absolute;
-    top: 0;
-    right: 0;
-
-    aspect-ratio: 1/1;
-    border: none;
-    border-radius: 0;
 }
 
 .inputdiv {
@@ -94,6 +78,7 @@
 .page {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 1rem;
 
     width: 100%;

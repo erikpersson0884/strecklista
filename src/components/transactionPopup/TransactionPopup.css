@@ -1,0 +1,40 @@
+
+.transaction-popup {
+    background-color: var(--contrast-color);
+
+}
+
+.transaction-popup .transaction-overview {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+
+}
+
+.transaction-popup .transaction-overview p {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.receipt-list {
+    display: flex;
+    flex-direction: column;
+
+    gap: .5rem;
+}
+
+.receipt-list li {
+    display: flex;
+    justify-content: flex-end;
+    
+    gap: 1rem;
+}
+
+.receipt-list li p:first-child {
+    margin-right: auto;
+}
+
+.receipt-list .total {
+    font-weight: bold;
+}
