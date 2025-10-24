@@ -1,5 +1,5 @@
 import React from 'react';
-import './shopItem.css';
+import './ShopItem.css';
 
 import favouriteIcon from '../../assets/images/favourite.svg';
 import favouriteIconFilled from '../../assets/images/favourite-filled.svg';
