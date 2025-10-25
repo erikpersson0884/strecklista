@@ -1,36 +1,13 @@
 
-.inventory-page {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+.add-item-li {
+    background-color: var(--green-color);
 
-.inventory-page>* {
-    background-color: var(--contrast-color);
-
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 1rem;
-
-    box-sizing: border-box;
-    width: 90%;
-    height: 5rem;
-    padding: 1rem;
-    border-radius: .4rem;
-}
-
-.inventory-page .inventory-item>p {
-    text-transform: capitalize;
-    
-    flex-grow: 1;
-}
-
-.inventory-page .inventory-item button {
-    background-color: inherit;
     padding: 0;
 }
 
-.inventory-page .add-item-button {
-    background-color: var(--green-color);
+.add-item-li>button {
+    font-size: 20px;
+    
+    width: 100%;
+    height: 100%;
 }

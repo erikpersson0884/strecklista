@@ -32,13 +32,13 @@ const TransactionsPage: FC = () => {
 
     const TransactionPreview: FC<TransactionPreviewProps> = ({transaction}) => {
         return (
-            <li className={`transaction-preview ${transaction.removed ? 'removed-transaction' : ''}`}>
+            <li className={`transaction-preview list-item ${transaction.removed ? 'removed-transaction' : ''}`}>
                 <div className='transaction-preview-content'>
-                    <div>
+                    <div className='list-item__primary'>
                         <p>{new Date(transaction.createdTime).toISOString().split('T')[0]}</p>
                         <p>{transaction.createdBy.nick}</p>
                     </div>
-                    <div>
+                    <div className='list-item__secondary'>
                         <p>{transaction.type}</p>
                         { transaction.type === 'purchase' && ( 
                             <p>{(transaction as Purchase).total}kr</p>

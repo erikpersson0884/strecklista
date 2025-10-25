@@ -1,12 +1,5 @@
-
 .balancepage .user-div {
-    background-color: var(--contrast-color);
-
-    display: flex;
-    flex-direction: row;
-
-    width: 90%;
-    border-radius: .4rem;
+    padding: 0;
 }
 
 .balancepage .user-div-content {
@@ -32,30 +25,4 @@
     gap: .3rem;
 
     margin-right: auto;
-}
-
-.balancepage .name-div .nick {
-    font-size: 1.5rem;
-}
-
-.balancepage .name-div .name {
-    color: var(--secondary-text-color);
-}
-
-
-.balancepage .open-refill-popup-button {
-    background-color: var(--green-color);
-    
-    box-sizing: border-box;
-    width: 4rem;
-    padding: 1rem;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-}
-
-.deposit-comment-header {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
 }

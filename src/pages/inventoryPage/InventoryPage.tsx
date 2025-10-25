@@ -24,7 +24,7 @@ const InventoryPage: React.FC = () => {
 
     const InventoryItem: React.FC<{item: IItem;}> = ({ item }) => {
         return (
-                <li className='inventory-item'>
+                <li className='inventory-item list-item'>
                     <p>{item.name}</p>
 
                     <button onClick={() => setProductToUpdate(item)}>
@@ -46,14 +46,16 @@ const InventoryPage: React.FC = () => {
 
     return (
         <>
-            <ul className='inventory-page page noUlFormatting'>    
+            <ul className='page noUlFormatting'>    
                 {products.map((item) => (
                     <InventoryItem key={item.id} item={item} />
                 ))}
 
-                <button className='add-item-button' onClick={() => setShowAddProductPopup(!showAddProductPopup)}>
-                    <p>Lägg till vara</p>
-                </button>
+                <li className='add-item-li list-item'>
+                    <button onClick={() => setShowAddProductPopup(!showAddProductPopup)}>
+                        <p>Lägg till vara</p>
+                    </button>
+                </li>
             </ul>
 
             <AddProductPopup 
