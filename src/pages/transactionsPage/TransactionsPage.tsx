@@ -10,6 +10,7 @@ import DeleteTransactionPopup from '../../components/deleteTransactionPopup/Dele
 import Filter from './Filter/Filter';
 
 import downIcon from '../../assets/images/down.svg';
+import filterIcon from '../../assets/images/filter.svg';
 
 const TransactionsPage: FC = () => {
     const { 
@@ -24,6 +25,7 @@ const TransactionsPage: FC = () => {
 
     const [ selectedTransaction, setSelectedTransaction ] = useState<ITransaction | null>(null);
     const [ showDeletePopupDiv, setShowDeletePopupDiv ] = useState<boolean>(false);
+    const [ showFilters, setShowFilters ] = useState<boolean>(false);
 
 
     interface TransactionPreviewProps {
@@ -52,12 +54,26 @@ const TransactionsPage: FC = () => {
         );
     }
 
+
+
     return (
         <>
             <div className='transactions-page page'>
-                <Filter />
+                <div className='search-and-filter'>
+                    <input type='text' placeholder='Sök transaktioner...' className='search-bar' />
+                    <button 
+                        className='open-filters-button' 
+                        onClick={() => setShowFilters(!showFilters)}
+                    >
+                        <img src={filterIcon} alt='Filter' height={10}/>
+                    </button>
+                </div>
+
+                {showFilters && <Filter />}
+                
 
                 <ul className='transactions-list noUlFormatting'>
+
                     {filteredTransactions.map((transaction: ITransaction) => 
                         <TransactionPreview key={transaction.id} transaction={transaction} />
                     )}

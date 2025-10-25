@@ -1,4 +1,21 @@
 
+.search-and-filter {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+
+    width: 90%;
+}
+
+.open-filters-button {
+    background-color: var(--contrast-color);
+
+    padding: 9px;
+    border-radius: .8rem;
+}
+
 .transactions-list {
     display: flex;
     flex-direction: column;
@@ -14,6 +31,7 @@
 
     width: max-content;
     margin-bottom: 3rem;
+    margin-top: auto;
 }
 
 .pagination button {

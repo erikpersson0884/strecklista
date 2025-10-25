@@ -7,7 +7,7 @@
     flex-wrap: wrap;
 }
 
-.search-bar-container {
+.shop-page .search-bar-container {
     position: relative;
     display: flex;
     justify-content: center;
@@ -18,7 +18,7 @@
     margin-inline: auto;
 }
 
-.search-bar {
+.shop-page .search-bar {
     width: 90%;
 }
 

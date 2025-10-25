@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, ReactNode } from 'react';
+import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 import transactionsApi from '../api/transactionsApi';
 import { useUsersContext } from './UsersContext';
 import { useInventory } from './InventoryContext';
@@ -8,12 +8,21 @@ interface TransactionsContextProps {
     isLoading: boolean;
     transactions: ITransaction[];
     filteredTransactions: ITransaction[];
-    setFilteredTransactions: React.Dispatch<React.SetStateAction<ITransaction[]>>;
+    filters: TransactionFilters;
+    setFilters: React.Dispatch<React.SetStateAction<TransactionFilters>>;
     getNextTransactions: () => void;
-    getPrevTransactions: () => void
+    getPrevTransactions: () => void;
     deleteTransaction: (id: Id) => Promise<boolean>;
     transactionsPageNumber: number;
 }
+
+interface TransactionFilters {
+    userId: string;
+    startDate: string | null;
+    endDate: string | null;
+    showRemoved: boolean;
+}
+
 
 const TransactionsContext = createContext<TransactionsContextProps | undefined>(undefined);
 
@@ -27,6 +36,46 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
     const [prevUrl, setPrevUrl] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [transactionsPageNumber, settransactionsPageNumber] = useState<number>(1);
+    const [filters, setFilters] = useState<TransactionFilters>({
+        userId: 'all',
+        startDate: null,
+        endDate: null,
+        showRemoved: false,
+    });
+
+    useEffect(() => {
+        let filtered: ITransaction[] = transactions;
+
+        if (filters.userId !== 'all') {
+            const id = Number(filters.userId);
+            filtered = filtered.filter((t) => {
+                if (t.type === 'purchase' || t.type === 'deposit')
+                    return (t as FinancialTransaction).createdFor.id === id;
+                else
+                    return t.createdBy.id === id;
+            });
+        }
+
+        if (filters.startDate) {
+            filtered = filtered.filter(
+                (t) => t.createdTime >= new Date(filters.startDate!).getTime()
+            );
+        }
+
+        if (filters.endDate) {
+            filtered = filtered.filter(
+                (t) => t.createdTime <= new Date(filters.endDate!).getTime()
+            );
+        }
+
+        if (!filters.showRemoved) {
+            filtered = filtered.filter((t) => !t.removed);
+        }
+
+        setFilteredTransactions(filtered);
+    }, [transactions, filters]);
+
+
 
     const getTransactions = async (url?: string | null) => {
         try {
@@ -80,11 +129,12 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
             isLoading, 
             transactions, 
             filteredTransactions, 
-            setFilteredTransactions, 
             getNextTransactions, 
             getPrevTransactions, 
             deleteTransaction,
             transactionsPageNumber,
+            filters,
+            setFilters
         }}>
             {children}
         </TransactionsContext.Provider>
