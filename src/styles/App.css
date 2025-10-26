@@ -10,16 +10,6 @@
     min-height: 100vh;
 }
 
-.no-button-formatting {
-    background: none;
-    border: none;
-    color: inherit;
-    font: inherit;
-    cursor: pointer;
-    padding: 0;
-    outline: inherit;
-}
-
 .noUlFormatting {
     list-style-type: none;
     padding: 0;
