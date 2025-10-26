@@ -83,7 +83,7 @@ const TransactionPopup: FC<TransactionPopupProps> = ({transaction, onClose}) => 
         }
     };
 
-    const [ errorText , setErrorText ] = useState<string | undefined>("");
+    const [ errorText, setErrorText ] = useState<string | undefined>("");
 
     const handleDelete = async () => {
         try {
@@ -94,6 +94,32 @@ const TransactionPopup: FC<TransactionPopupProps> = ({transaction, onClose}) => 
             setErrorText("Något gick fel, försök igen senare.");
         }
     }
+    let dateString: string;
+    let timeString: string;
+    const d = new Date(transaction.createdTime);
+    if (isNaN(d.getTime())) {
+        dateString = String(transaction.createdTime);
+        timeString = '';
+    } else {
+        const pad = (n: number) => String(n).padStart(2, '0');
+        dateString = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+        timeString = `${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    }
+
+    let transactionTypeString: string;
+    switch (transaction.type) {
+        case 'purchase': 
+            transactionTypeString = 'Köp';
+            break;
+        case 'deposit':
+            transactionTypeString = 'Insättning';
+            break;
+        case 'stockUpdate':
+            transactionTypeString = 'Lageruppdatering';
+            break;
+        default:
+            transactionTypeString = 'Okänd';
+    }
 
     const PopupContent: FC = () => {
         return (
@@ -101,18 +127,22 @@ const TransactionPopup: FC<TransactionPopupProps> = ({transaction, onClose}) => 
                 <div className="transaction-overview">
                     <p>
                         <span>Typ av transaktion:</span>
-                        <span>{transaction.type}</span>
+                        <span>{transactionTypeString}</span>
                     </p>
+                    <br/>
 
                     <p>
                         <span>Datum:</span>
-                        <span>{transaction.createdTime}</span>
+                        <span>{dateString}</span>
                     </p>
 
                     <p>
-                        <span>Summa:</span>
-                        <span>{'total' in transaction ? transaction.total + ' kr' : 'N/A'}</span>
+                        <span>Klockslag:</span>
+                        <span>{timeString}</span>
                     </p>
+                    <br/>
+
+
                     
                     { 'createdFor' in transaction && (
                         <p>
@@ -124,6 +154,12 @@ const TransactionPopup: FC<TransactionPopupProps> = ({transaction, onClose}) => 
                     <p>
                         <span>Utförd av:</span>
                         <span>{transaction.createdBy ? transaction.createdBy.nick : 'N/A'}</span>
+                    </p>
+                    <br/>
+
+                    <p>
+                        <span>Summa:</span>
+                        <span>{'total' in transaction ? transaction.total + ' kr' : 'N/A'}</span>
                     </p>
                 </div>
 

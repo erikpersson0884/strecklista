@@ -8,16 +8,7 @@ import { useTransactionsContext } from '../../../contexts/TransactionsContext';
 
 const Filter: React.FC = () => {
     const { users } = useUsersContext();
-    const { filters, setFilters } = useTransactionsContext();
-
-    const onResetFilters = () => {
-        setFilters({
-            userId: 'all',
-            startDate: null,
-            endDate: null,
-            showRemoved: false,
-        });
-    };
+    const { filters, setFilters, resetFilters } = useTransactionsContext();
 
     return (
         <div className='filter-div'>
@@ -67,7 +58,7 @@ const Filter: React.FC = () => {
                         />
                     </div>
                             
-                    <button onClick={onResetFilters}>
+                    <button onClick={resetFilters}>
                         Återställ Filters
                     </button>
                 </div>

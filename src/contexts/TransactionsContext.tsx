@@ -10,6 +10,7 @@ interface TransactionsContextProps {
     filteredTransactions: ITransaction[];
     filters: TransactionFilters;
     setFilters: React.Dispatch<React.SetStateAction<TransactionFilters>>;
+    resetFilters: () => void;
     getNextTransactions: () => void;
     getPrevTransactions: () => void;
     deleteTransaction: (id: Id) => Promise<boolean>;
@@ -21,8 +22,8 @@ interface TransactionFilters {
     startDate: string | null;
     endDate: string | null;
     showRemoved: boolean;
+    searchQuery: string; 
 }
-
 
 const TransactionsContext = createContext<TransactionsContextProps | undefined>(undefined);
 
@@ -41,7 +42,17 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
         startDate: null,
         endDate: null,
         showRemoved: false,
+        searchQuery: '',
     });
+    const resetFilters = () => {
+        setFilters({
+            userId: 'all',
+            startDate: null,
+            endDate: null,
+            showRemoved: false,
+            searchQuery: '',
+        });
+    };
 
     useEffect(() => {
         let filtered: ITransaction[] = transactions;
@@ -58,18 +69,40 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
 
         if (filters.startDate) {
             filtered = filtered.filter(
-                (t) => t.createdTime >= new Date(filters.startDate!).getTime()
+                (t) => t.createdTime >= new Date(filters.startDate!)
             );
         }
 
         if (filters.endDate) {
             filtered = filtered.filter(
-                (t) => t.createdTime <= new Date(filters.endDate!).getTime()
+                (t) => t.createdTime <= new Date(filters.endDate!)
             );
         }
 
         if (!filters.showRemoved) {
             filtered = filtered.filter((t) => !t.removed);
+        }
+
+        if (filters.searchQuery.trim()) {
+            const searchString = filters.searchQuery.toLowerCase();
+            filtered = filtered.filter((t: ITransaction) => {
+                // If the createdTime string matches the search, include it
+                if (t.createdTime.toISOString().slice(0, 16).toLowerCase().includes(searchString)) {
+                    console.log(t.createdTime.toISOString().toLowerCase(), searchString);
+                    return true;
+                }
+
+                // If it's a financial transaction, check createdFor.nick
+                if (t.type === 'purchase' || t.type === 'deposit') {
+                    const ft = t as FinancialTransaction;
+                    return ft.createdFor.nick.toLowerCase().includes(searchString) ||
+                        t.createdBy.nick.toLowerCase().includes(searchString) ||
+                        ft.total.toString().includes(searchString);
+                } else {
+                    // For stock updates or other transactions
+                    return t.createdBy.nick.toLowerCase().includes(searchString)
+                }
+            });
         }
 
         setFilteredTransactions(filtered);
@@ -134,7 +167,8 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
             deleteTransaction,
             transactionsPageNumber,
             filters,
-            setFilters
+            setFilters,
+            resetFilters
         }}>
             {children}
         </TransactionsContext.Provider>

@@ -18,8 +18,10 @@ const TransactionsPage: FC = () => {
         filteredTransactions, 
         getNextTransactions, 
         getPrevTransactions,
-        transactionsPageNumber
+        transactionsPageNumber,
+        setFilters
     } = useTransactionsContext();
+    
 
     if (isLoading) return <p>Loading...</p>;
 
@@ -33,6 +35,21 @@ const TransactionsPage: FC = () => {
     }
 
     const TransactionPreview: FC<TransactionPreviewProps> = ({transaction}) => {
+        let transactionTypeString: string;
+        switch (transaction.type) {
+            case 'purchase': 
+                transactionTypeString = 'Köp';
+                break;
+            case 'deposit':
+                transactionTypeString = 'Insättning';
+                break;
+            case 'stockUpdate':
+                transactionTypeString = 'Lageruppdatering';
+                break;
+            default:
+                transactionTypeString = 'Okänd';
+        }
+
         return (
             <li className={`transaction-preview list-item ${transaction.removed ? 'removed-transaction' : ''}`}>
                 <div className='transaction-preview-content'>
@@ -41,7 +58,7 @@ const TransactionsPage: FC = () => {
                         <p>{transaction.createdBy.nick}</p>
                     </div>
                     <div className='list-item__secondary'>
-                        <p>{transaction.type}</p>
+                        <p>{transactionTypeString}</p>
                         { transaction.type === 'purchase' && ( 
                             <p>{(transaction as Purchase).total}kr</p>
                         )} 
@@ -54,13 +71,18 @@ const TransactionsPage: FC = () => {
         );
     }
 
-
-
     return (
         <>
             <div className='transactions-page page'>
                 <div className='search-and-filter'>
-                    <input type='text' placeholder='Sök transaktioner...' className='search-bar' />
+                    <input 
+                        type='text' 
+                        placeholder='Sök transaktioner...' 
+                        className='search-bar' 
+                        onChange={(e) =>
+                            setFilters(f => ({ ...f, searchQuery: e.target.value }))
+                        }
+                    />
                     <button 
                         className='open-filters-button' 
                         onClick={() => setShowFilters(!showFilters)}
