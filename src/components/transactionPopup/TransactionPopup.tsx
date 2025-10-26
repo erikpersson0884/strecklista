@@ -26,19 +26,11 @@ const TransactionPopup: FC<TransactionPopupProps> = ({transaction, onClose}) => 
                     <br />
                     <p>Detaljer</p>
                     <hr />
-                    <ul className='receipt-list noUlFormatting'>
-                        {/* <li className='receipt-item'>
-                            <p>Vara</p>
-                            <p>Antal</p>
-                            <p>Pris</p>
-                            <p>Totalt</p>
-                        </li>
-                        <hr /> */}
+                    <ul className='receipt-list'>
                         {purchase.items.map((item,index) => (
                             <li className='receipt-item' key={index}>
                                 <p>{item.item.displayName}</p>
                                 <p>x{item.quantity}</p>
-                                {/* <p>{item.purchasePrice.price} kr</p> */}
                                 <p>{item.purchasePrice.price * item.quantity} kr</p>
                             </li>
                         ))}

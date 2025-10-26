@@ -94,7 +94,7 @@ const TransactionsPage: FC = () => {
                 {showFilters && <Filter />}
                 
 
-                <ul className='transactions-list noUlFormatting'>
+                <ul className='transactions-list'>
 
                     {filteredTransactions.map((transaction: ITransaction) => 
                         <TransactionPreview key={transaction.id} transaction={transaction} />
