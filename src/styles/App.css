@@ -136,13 +136,13 @@
 /* --- Search Bar --- */
 
 .search-bar {
+    font-size: 1rem;
+
+    box-sizing: border-box;
     width: 100%;
     max-width: 30rem;
     padding: .5rem 1rem;
-
     border: none;
     outline: none;
     border-radius: .8rem;
-
-    font-size: 1rem;
 }
