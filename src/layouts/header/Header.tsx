@@ -20,38 +20,49 @@ const Header: React.FC = () => {
     
 
     return (
-        <header className="page-header">
-            <div>
-                <Link to="/">
-                    <img src={prit25image} alt="logo" height={100} className= "logo"/>
-                </Link>
-
-                <Link to="/">
-                    <h1>Strecklista</h1>
-                </Link>
-
-                <button 
-                    className="open-nav-button" 
-                    onClick={() => setNavOpen(!navOpen)}
-                    aria-label="Toggle navigation"
-                    aria-expanded={navOpen}
-                >
-                    <img src={menuIcon} alt="menu" height={50} />
-                </button>
-            </div>
-
-            <nav className={'header-nav' + (navOpen ? ' open-nav' : '')}> 
-                {pages.map((page) => 
-                    <Link 
-                        to={page.url} 
-                        key={page.url} 
-                        onClick={() => setNavOpen(false)}
-                    >
-                        {page.linkText}
+        <>
+            <header className="page-header">
+                <div>
+                    <Link to="/">
+                        <img src={prit25image} alt="logo" height={100} className= "logo"/>
                     </Link>
-                )}
+                    <Link to="/">
+                        <h1>Strecklista</h1>
+                    </Link>
+                    <button 
+                        className="open-nav-button" 
+                        onClick={() => setNavOpen(!navOpen)}
+                        aria-label="Toggle navigation"
+                        aria-expanded={navOpen}
+                    >
+                        <img src={menuIcon} alt="menu" height={50} />
+                    </button>
+                </div>
+
+                <nav className={'header-nav' + (navOpen ? ' open-nav' : '')}> 
+                    {pages.map((page) => 
+                        <Link 
+                            to={page.url} 
+                            key={page.url} 
+                            onClick={() => setNavOpen(false)}
+                        >
+                            {page.linkText}
+                        </Link>
+                    )}
+                </nav>
+            </header>
+
+            <nav className={'header-nav2' + (navOpen ? ' open-nav' : '')}> 
+                {pages.map((page, index) => (
+                    <React.Fragment key={page.url}>
+                        <Link to={page.url} onClick={() => setNavOpen(false)}>
+                            {page.linkText}
+                        </Link>
+                        {index < pages.length - 1 && <hr />}
+                    </React.Fragment>
+                ))}
             </nav>
-        </header>
+        </>
     );
 };
 
