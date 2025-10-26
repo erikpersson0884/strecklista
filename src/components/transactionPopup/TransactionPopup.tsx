@@ -22,7 +22,7 @@ const TransactionPopup: FC<TransactionPopupProps> = ({transaction, onClose}) => 
             const purchase = transaction as Purchase;
 
             return (
-                <div>
+                <div className="receipt-details">
                     <br />
                     <p>Detaljer</p>
                     <hr />
@@ -31,7 +31,7 @@ const TransactionPopup: FC<TransactionPopupProps> = ({transaction, onClose}) => 
                             <li className='receipt-item' key={index}>
                                 <p>{item.item.displayName}</p>
                                 <p>x{item.quantity}</p>
-                                <p>{item.purchasePrice.price * item.quantity} kr</p>
+                                <p className="item-total">{item.purchasePrice.price * item.quantity} kr</p>
                             </li>
                         ))}
 
