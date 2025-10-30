@@ -50,12 +50,16 @@ const TransactionsPage: FC = () => {
                 transactionTypeString = 'Okänd';
         }
 
+        let username: string;
+        if (transaction.type === 'purchase'  ||  transaction.type === 'deposit') username = (transaction as Purchase | Deposit).createdFor.nick;
+        else username = transaction.createdBy.nick;
+
         return (
             <li className={`transaction-preview list-item ${transaction.removed ? 'removed-transaction' : ''}`}>
                 <div className='transaction-preview-content'>
                     <div className='list-item__primary'>
                         <p>{new Date(transaction.createdTime).toISOString().split('T')[0]}</p>
-                        <p>{transaction.createdBy.nick}</p>
+                        <p>{username}</p>
                     </div>
                     <div className='list-item__secondary'>
                         <p>{transactionTypeString}</p>

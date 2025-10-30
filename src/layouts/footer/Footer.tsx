@@ -6,7 +6,7 @@ const Footer: React.FC = () => {
     return (
         <footer className='page-footer'>
             <p>
-                Built by <a href="https://github.com/erikpersson0884/">Göken</a> and <a href="https://github.com/olillin/">Cal</a> in 2025 
+                Skapad av <a href="https://github.com/erikpersson0884/">Göken</a> och <a href="https://github.com/olillin/">Cal</a> 2025 
             </p>
         </footer>
     );

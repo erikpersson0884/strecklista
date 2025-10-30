@@ -59,7 +59,7 @@ const Filter: React.FC = () => {
                     </div>
                             
                     <button onClick={resetFilters}>
-                        Återställ Filters
+                        Återställ filter
                     </button>
                 </div>
     )
