@@ -59,6 +59,12 @@
     color: red;
 }
 
+.comment-button {
+    background-color: var(--blue-color);
+
+    width: 100%;
+}
+
 .page {
     display: flex;
     flex-direction: column;
@@ -130,3 +136,5 @@
     outline: none;
     border-radius: .8rem;
 }
+
+

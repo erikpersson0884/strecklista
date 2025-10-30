@@ -18,7 +18,7 @@ const RefillUserBalancePopup: React.FC<RefillUserBalancePopupProps> = ({ user, i
     const [errorText, setErrorText] = useState<string | undefined>(undefined);
     const [amountToDeposit, setAmountToDeposit] = useState<number>(0); // Use string
     const [comment, setComment] = useState<string>('');
-    const [ includeComment, setIncludeComment ] = useState<boolean>(false);
+    const [includeComment, setIncludeComment] = useState<boolean>(false);
 
     const handleRefill = async () => {
         // const parsedAmount = parseFloat(amountToDeposit);
@@ -121,7 +121,7 @@ const RefillUserBalancePopup: React.FC<RefillUserBalancePopupProps> = ({ user, i
             { includeComment ? (
                 <>
                     <hr />
-                    <div className='deposit-comment-header'>
+                    <div>
                         <label htmlFor="comment">Kommentar (valfritt): </label>
                         <button onClick={() => { setErrorText(undefined); setIncludeComment(false)}}>Ingen Kommentar</button>
                     </div>
