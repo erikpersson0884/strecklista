@@ -1,8 +1,10 @@
 import { FC, useState, ChangeEvent } from 'react';
 import './Cart.css';
-import { useCart } from '../../../contexts/CartContext';
-import { useUsersContext } from '../../../contexts/UsersContext';
-import { useAuth } from '../../../contexts/AuthContext';
+
+import { useCart } from '../../contexts/CartContext';
+import { useUsersContext } from '../../contexts/UsersContext';
+import { useAuth } from '../../contexts/AuthContext';
+
 import CartItem from './cartItem/CartItem';
 
 interface CartProps {
@@ -31,7 +33,7 @@ const Cart: FC<CartProps> = ({ closeCart }) => {
 
         const handleSelectUserChangeChange = (e: ChangeEvent<HTMLSelectElement>): void => {
             const selectedUserId: string = e.target.value;
-            const user = users.find(user => user.id === Number(selectedUserId));
+            const user: User | undefined = users.find(user => user.id === Number(selectedUserId));
             if (!user) throw new Error('Tried to set user that does not exist in cart list');
             setSelectedUser(user);
         };

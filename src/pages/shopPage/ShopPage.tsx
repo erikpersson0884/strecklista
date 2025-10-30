@@ -4,7 +4,7 @@ import './ShopPage.css';
 import ShopItem from '../../components/shopItem/ShopItem';
 import { useInventory } from '../../contexts/InventoryContext';
 import { useCart } from '../../contexts/CartContext';
-import Cart from './cart/Cart';
+import Cart from '../../components/cart/Cart';
 import Modal from '../../components/modal/Modal';
 import backspaceIcon from '../../assets/images/backspace.svg';
 
