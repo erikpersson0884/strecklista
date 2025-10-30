@@ -19,9 +19,9 @@ const LoginPage = () => {
                 style={numberOfClicks > 10 ? { color: "#09cdda" } : undefined}
                 onClick={() => setNumberOfClicks(numberOfClicks + 1)}
             >
-                Login
+                Strecklista
             </h1>
-            <button onClick={authenticate}>Login with Gamma</button>
+            <button onClick={authenticate}>Logga in med Gamma</button>
         </div>
     );
 };

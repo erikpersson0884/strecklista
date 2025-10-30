@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './BalancePage.css';
 
-import UserDiv from './UserDiv';
+import UserBalance from './UserBalance';
 import { useUsersContext } from '../../contexts/UsersContext';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -10,8 +10,8 @@ import RefillPopup from '../../components/refillUserBalancePopup/RefillUserBalan
 const BalancePage: React.FC = () => {
     const { currentUser } = useAuth();
     const { users, isLoading: loadingUsers } = useUsersContext();
-    const [selectedUser, setSelectedUser] = useState<User | null>(null);
-    const [showPopup, setShowPopup] = useState(false);
+    const [ selectedUser, setSelectedUser ] = useState<User | null>(null);
+    const [ showPopup, setShowPopup ] = useState(false);
 
     const handleOpenPopup = (user: User) => {
         setSelectedUser(user);
@@ -22,18 +22,20 @@ const BalancePage: React.FC = () => {
         <p>Laddar användare...</p>
     )
 
-    if (users.length > 0) return (
-        <>
-            <div className='balancepage page'>
+    else if (users.length === 0) return <p>Hittade inga användare</p>
 
-                <UserDiv 
+    else return (
+        <>
+            <div className='balancepage list-page page'>
+
+                <UserBalance 
                     user={currentUser} 
                     key={currentUser.id}
                     onOpenPopup={handleOpenPopup}
                 />
 
                 {users.filter((user) => user.id !== currentUser?.id).map(user => (
-                    <UserDiv 
+                    <UserBalance 
                         user={user} 
                         key={user.id}
                         onOpenPopup={handleOpenPopup}
@@ -50,8 +52,6 @@ const BalancePage: React.FC = () => {
             )}
         </>
     );
-
-    return (<p>Hittade inga användare</p>);
 };
 
 export default BalancePage;

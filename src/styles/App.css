@@ -10,22 +10,6 @@
     min-height: 100vh;
 }
 
-.no-button-formatting {
-    background: none;
-    border: none;
-    color: inherit;
-    font: inherit;
-    cursor: pointer;
-    padding: 0;
-    outline: inherit;
-}
-
-.noUlFormatting {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-}
-
 .action-buttons {
     display: flex;
     align-items: center;
@@ -81,5 +65,68 @@
     align-items: center;
     gap: 1rem;
 
+    flex-grow: 1;
+
     width: 100%;
+}
+
+
+.list-item {
+    background-color: var(--contrast-color);
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+
+    box-sizing: border-box;
+    width: 90%;
+    height: 5rem;
+    padding: 1rem;
+    border-radius: .4rem;
+}
+
+.list-item>p {
+    text-transform: capitalize;
+    
+    flex-grow: 1;
+}
+
+.list-item>button {
+    background-color: inherit;
+
+    padding: 0;
+}
+
+.list-item .open-popup-button {
+    background-color: var(--green-color);
+    
+    box-sizing: border-box;
+    width: 4rem;
+    height: 100%;
+    padding: 1rem;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.list-item .list-item__primary {
+    font-size: 1.35rem;
+}
+
+.list-item .list-item__secondary {
+    color: var(--secondary-text-color);
+}
+
+/* --- Search Bar --- */
+
+.search-bar {
+    font-size: 1rem;
+
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 30rem;
+    padding: .5rem 1rem;
+    border: none;
+    outline: none;
+    border-radius: .8rem;
 }

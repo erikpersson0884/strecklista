@@ -10,6 +10,7 @@ import DeleteTransactionPopup from '../../components/deleteTransactionPopup/Dele
 import Filter from './Filter/Filter';
 
 import downIcon from '../../assets/images/down.svg';
+import filterIcon from '../../assets/images/filter.svg';
 
 const TransactionsPage: FC = () => {
     const { 
@@ -17,13 +18,16 @@ const TransactionsPage: FC = () => {
         filteredTransactions, 
         getNextTransactions, 
         getPrevTransactions,
-        transactionsPageNumber
+        transactionsPageNumber,
+        setFilters
     } = useTransactionsContext();
+    
 
     if (isLoading) return <p>Loading...</p>;
 
     const [ selectedTransaction, setSelectedTransaction ] = useState<ITransaction | null>(null);
     const [ showDeletePopupDiv, setShowDeletePopupDiv ] = useState<boolean>(false);
+    const [ showFilters, setShowFilters ] = useState<boolean>(false);
 
 
     interface TransactionPreviewProps {
@@ -31,15 +35,30 @@ const TransactionsPage: FC = () => {
     }
 
     const TransactionPreview: FC<TransactionPreviewProps> = ({transaction}) => {
+        let transactionTypeString: string;
+        switch (transaction.type) {
+            case 'purchase': 
+                transactionTypeString = 'Köp';
+                break;
+            case 'deposit':
+                transactionTypeString = 'Insättning';
+                break;
+            case 'stockUpdate':
+                transactionTypeString = 'Lageruppdatering';
+                break;
+            default:
+                transactionTypeString = 'Okänd';
+        }
+
         return (
-            <li className={`transaction-preview ${transaction.removed ? 'removed-transaction' : ''}`}>
+            <li className={`transaction-preview list-item ${transaction.removed ? 'removed-transaction' : ''}`}>
                 <div className='transaction-preview-content'>
-                    <div>
+                    <div className='list-item__primary'>
                         <p>{new Date(transaction.createdTime).toISOString().split('T')[0]}</p>
                         <p>{transaction.createdBy.nick}</p>
                     </div>
-                    <div>
-                        <p>{transaction.type}</p>
+                    <div className='list-item__secondary'>
+                        <p>{transactionTypeString}</p>
                         { transaction.type === 'purchase' && ( 
                             <p>{(transaction as Purchase).total}kr</p>
                         )} 
@@ -55,9 +74,28 @@ const TransactionsPage: FC = () => {
     return (
         <>
             <div className='transactions-page page'>
-                <Filter />
+                <div className='search-and-filter'>
+                    <input 
+                        type='text' 
+                        placeholder='Sök transaktioner...' 
+                        className='search-bar' 
+                        onChange={(e) =>
+                            setFilters(f => ({ ...f, searchQuery: e.target.value }))
+                        }
+                    />
+                    <button 
+                        className='open-filters-button' 
+                        onClick={() => setShowFilters(!showFilters)}
+                    >
+                        <img src={filterIcon} alt='Filter' height={10}/>
+                    </button>
+                </div>
 
-                <ul className='transactions-list noUlFormatting'>
+                {showFilters && <Filter />}
+                
+
+                <ul className='transactions-list'>
+
                     {filteredTransactions.map((transaction: ITransaction) => 
                         <TransactionPreview key={transaction.id} transaction={transaction} />
                     )}

@@ -61,7 +61,7 @@ button {
     background-color: var(--secondary-contrast-color);
     color: var(--text-color);
 
-    font-weight: 600;
+    font-weight: normal;
     text-align: center;
 
     cursor: pointer;

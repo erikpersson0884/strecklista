@@ -9,6 +9,8 @@
     flex-wrap: wrap;
     gap: .8rem;
 
+    box-sizing: border-box;
+    width: 90%;
     padding: 1rem;
     border-radius: .4rem;
     margin-inline: auto;

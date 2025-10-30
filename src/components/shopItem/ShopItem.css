@@ -10,8 +10,8 @@
     position: relative;
 
     box-sizing: border-box;
-    width: 10rem;
-    padding: 1rem;
+    width: 175px;
+    padding: 10px;
     border-radius: 7px;
 
     transition: all .1s linear; 

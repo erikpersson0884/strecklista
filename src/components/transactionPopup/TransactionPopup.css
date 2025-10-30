@@ -17,22 +17,33 @@
     gap: 1rem;
 }
 
+
+/* --- RECEIPT DETAILS --- */
+
+.receipt-details>hr {
+    margin: .5rem 0;
+}
+
 .receipt-list {
     display: flex;
     flex-direction: column;
-
+    justify-content: flex-end;
     gap: .5rem;
 }
 
 .receipt-list li {
     display: flex;
     justify-content: flex-end;
-    
-    gap: 1rem;
+    gap: .5rem;
 }
 
 .receipt-list li p:first-child {
     margin-right: auto;
+}
+
+.receipt-list .item-total {
+    min-width: 5ch;
+    text-align: right;
 }
 
 .receipt-list .total {

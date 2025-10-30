@@ -34,12 +34,14 @@ export const UsersProvider = ({ children }: { children: ReactNode }) => {
     }, []);
 
     const addUserBalance = async (userId: UserId, amount: number, comment?: string): Promise<boolean> => {
+        checkThatUserExists(userId);
         const newBalance = await transactionsApi.makeDeposit(userId, amount, comment)
         setUserBalance(userId, newBalance);
         return true;
     };
 
     const setUserBalance = (userId: UserId, newBalance: number) => {
+        checkThatUserExists(userId);
         setUsers((prevUsers) =>
             prevUsers.map((user) =>
                 user.id === userId ? { ...user, balance: newBalance } : user
@@ -49,10 +51,17 @@ export const UsersProvider = ({ children }: { children: ReactNode }) => {
 
     const getUserFromUserId = (userId: UserId): User => {
         const user = users.find((user) => user.id === userId);
-        if (!user) console.log(users);
         if (!user) throw new Error(`User with id ${userId} not found`);
         return user;
     }
+
+    const checkThatUserExists = (userId: UserId): void => {
+        if (!userExists(userId)) throw new Error(`User with id ${userId} not found`);
+    }
+
+    const userExists = (userId: UserId): boolean => {
+        return users.some((user) => user.id === userId);
+    };
 
 
     return (

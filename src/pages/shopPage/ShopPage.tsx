@@ -1,11 +1,12 @@
 import React from 'react';
-import ShopItem from '../../components/shopItem/ShopItem';
 import './ShopPage.css';
+
+import ShopItem from '../../components/shopItem/ShopItem';
 import { useInventory } from '../../contexts/InventoryContext';
 import { useCart } from '../../contexts/CartContext';
 import Cart from './cart/Cart';
 import Modal from '../../components/modal/Modal';
-import closeIcon from '../../assets/images/close.svg';
+import backspaceIcon from '../../assets/images/backspace.svg';
 
 
 const ShopPage: React.FC = () => {
@@ -15,7 +16,7 @@ const ShopPage: React.FC = () => {
     const [searchTerm, setSearchTerm] = React.useState<string>('');
 
     return (
-        <>
+        <div className='page'>
             {displayCart &&
                 <Modal onClose={() => setDisplayCart(false)}>
                     <Cart closeCart={() => setDisplayCart(false)}/> 
@@ -31,16 +32,14 @@ const ShopPage: React.FC = () => {
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
                 <button 
-                    className='clear-search-bar-button no-button-formatting' 
+                    className='clear-search-bar-button' 
                     onClick={() => setSearchTerm('')}
                 >
-                    <img src={closeIcon} alt="clear search" height={20}/>
+                    <img src={backspaceIcon} alt="clear search" height={20}/>
                 </button>
             </div>
 
-            <div className='shop-page page'>
-
-
+            <div className='shop-items'>
                 {products.filter((item: IItem) => 
                     item.favorite == true && 
                     item.available &&
@@ -59,7 +58,7 @@ const ShopPage: React.FC = () => {
             </div>
 
             {numberOfProductsInCart  !== 0 && <OpenCartButton onClick={() => setDisplayCart(true)}/>}
-        </>
+        </div>
 
     );
 };
@@ -67,7 +66,7 @@ const ShopPage: React.FC = () => {
 const OpenCartButton: React.FC<{ onClick: () => void }> = ({ onClick }) => {
     const { numberOfProductsInCart } = useCart();
     return (
-        <button className='showCartButton no-button-formatting' onClick={onClick}>
+        <button className='showCartButton' onClick={onClick}>
             <div className='items-indicator'>{numberOfProductsInCart}</div>
             <p>Betala</p>
         </button>

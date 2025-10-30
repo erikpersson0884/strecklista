@@ -10,6 +10,11 @@ export function adaptTransaction(
     throw new Error(`Unknown ITransaction type: ${apiTransaction.type}`);
 }
 
+function adaptTime(apiTime: number): Date {
+    return new Date(apiTime);
+}
+
+
 function adaptPurchase(
     apiPurchase: ApiPurchase,
     getUserFromUserId: (id: Id) => User,
@@ -21,7 +26,7 @@ function adaptPurchase(
         createdBy: getUserFromUserId(apiPurchase.createdBy),
         createdFor: getUserFromUserId(apiPurchase.createdFor),
         items: apiPurchase.items.map(item => adaptPurchaseItem(item, getProductById)),
-        createdTime: apiPurchase.createdTime,
+        createdTime: adaptTime(apiPurchase.createdTime),
         total: apiPurchase.items.reduce((acc, item) => acc + Number(item.purchasePrice.price) * item.quantity, 0),
         removed: apiPurchase.removed,
     };
@@ -37,7 +42,7 @@ function adaptDeposit(
         createdBy: getUserFromUserId(apiDeposit.createdBy),
         createdFor: getUserFromUserId(apiDeposit.createdFor),
         total: apiDeposit.total,
-        createdTime: apiDeposit.createdTime,
+        createdTime: adaptTime(apiDeposit.createdTime),
         removed: apiDeposit.removed
     };
 }
@@ -62,7 +67,7 @@ function adaptStockUpdate(
         type: 'stockUpdate',
         createdBy: getUserFromUserId(apiStockUpdate.createdBy),
         items: items,
-        createdTime: apiStockUpdate.createdTime,
+        createdTime: adaptTime(apiStockUpdate.createdTime),
         removed: apiStockUpdate.removed,
     };
 }

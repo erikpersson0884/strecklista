@@ -98,7 +98,7 @@ declare global {
         id: Id;
         type: "purchase" | "deposit" | "stockUpdate";
         createdBy: User;
-        createdTime: number;
+        createdTime: Date;
         removed: boolean;
     }
 
