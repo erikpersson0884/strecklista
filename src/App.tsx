@@ -56,7 +56,12 @@ const App: React.FC = () => {
         <BrowserRouter basename='/strecklista/'>
             <Routes>
                 <Route path="/callback" element={<AuthCallback />} />
-                <Route path="*" element={<LoginPage />} />
+                <Route path="*" element={
+                    <>
+                        <LoginPage />
+                        <Footer />
+                    </>
+                } />
             </Routes>
         </BrowserRouter>
     )
