@@ -21,6 +21,9 @@
     gap: .7rem;
 
     width: 100%;
+
+    max-height: 21rem;
+    overflow-y: auto;
 }
 
 .cart .cart-footer {
