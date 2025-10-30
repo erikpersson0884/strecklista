@@ -13,7 +13,27 @@ const IProductoApiItem = (item: ProductInCart): ApiPurchaseRequestItem => {
 };
 
 const transactionsApi = {
-    fetchTransactions: async (url?: string | null, limit: number = 10, offset: number = 0): Promise<{apiTransactions: ApiTransaction[], nextUrl: string | null, prevUrl: string | null}> => {
+    /**
+     * Fetch transactions from the API.
+     *
+     * @param {string | null} [url] - The URL to fetch transactions from. If not provided, the default endpoint will be used.   
+     * @param {number} [limit=10] - The maximum number of transactions to fetch.
+     * @param {number} [offset=0] - The number of transactions to skip before starting to collect the result set.
+     * 
+     * @returns {Promise<{
+     *   apiTransactions: ApiTransaction[], 
+     *   nextUrl: string | null, 
+     *   prevUrl: string | null
+     * }>} A promise that resolves to an object containing the fetched transactions and pagination URLs.
+     * 
+     * @throws Will throw an error if the request fails.
+     */
+    fetchTransactions: async (url?: string | null, limit: number = 10, offset: number = 0)
+    : Promise<{
+        apiTransactions: ApiTransaction[], 
+        nextUrl: string | null, 
+        prevUrl: string | null
+    }> => {
         try {
             let response;
             if (url) {
@@ -33,6 +53,16 @@ const transactionsApi = {
         }
     },
 
+    
+    /**
+     * Make a deposit to a user's balance.
+     *
+     * @param {UserId} userId - The ID of the user making the deposit.
+     * @param {number} amount - The amount to deposit.
+     *
+     * @returns {Promise<number>} A promise that resolves to the users new balance.
+     * @throws Will throw an error if the request fails.
+     */
     makeDeposit: async (userId: UserId, amount: number, comment?: string): Promise<number> => {
         try {
             const response = await api.post("/api/group/deposit", { 
@@ -41,13 +71,22 @@ const transactionsApi = {
                 comment,
             });
             const newBalance: number = response.data.data.balance;
-            return newBalance; // Return true if the request succeeds
+            return newBalance;
         } catch (error) {
             console.error("Failed to make deposit:", error);
             throw error; // Re-throw the error to ensure the function does not return undefined
         }
     },
 
+    /**
+     * Makes a purchase for a user.
+     * @param {UserId} userId - The ID of the user making the purchase.
+     * @param {ProductInCart[]} products - The products to be purchased.
+     * @param {string} [comment] - An optional comment for the purchase.
+     *
+     * @returns {Promise<number>} A promise that resolves to the user's new balance.
+     * @throws Will throw an error if the request fails.
+     */
     makePurchase: async (userId: UserId, products: ProductInCart[], comment?: string): Promise<number> => {
         try {
             const apiItems = products.map(IProductoApiItem);
@@ -64,12 +103,18 @@ const transactionsApi = {
         }
     },
 
-    deleteTransaction: async (id: Id): Promise<boolean> => {
+    /**
+     * Remove a transaction by marking it as removed.
+     * @param {Id} id - The ID of the transaction to be removed.
+     * 
+     * @returns {Promise<boolean>} A promise that resolves to true if the transaction was successfully marked as removed.
+     */
+    removeTransaction: async (id: Id): Promise<boolean> => {
         try {
             const success = await api.patch(`api/group/Transaction/${id}`, { removed: true });
             return success.status === 204 || success.status === 200; // Return true if the request succeeds
         } catch (error: any) {
-            throw new Error(error.response?.data?.message || "Failed to delete ITransaction");
+            return false;
         }
     }
 };

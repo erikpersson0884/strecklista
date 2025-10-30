@@ -149,7 +149,7 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
 
 
     const deleteTransaction = async (id: Id): Promise<boolean> => {
-        const success = await transactionsApi.deleteTransaction(id);
+        const success = await transactionsApi.removeTransaction(id);
         if (success) {
             setTransactions((prevTransactions) => prevTransactions.filter((ITransaction) => ITransaction.id !== id));
             setFilteredTransactions((prevFilteredTransactions) => prevFilteredTransactions.filter((ITransaction) => ITransaction.id !== id));
