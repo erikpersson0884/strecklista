@@ -14,7 +14,7 @@
     --red-color: #C70303;
     --green-color: #329C3D;
 
-    
+    --border-color: var(--text-color);
     --link-color: #09cdda;
 }
 

@@ -34,13 +34,13 @@ const TransactionPopup: FC<TransactionPopupProps> = ({transaction, onClose}) => 
                                 <p className="item-total">{item.purchasePrice.price * item.quantity} kr</p>
                             </li>
                         ))}
-
-                        <hr />
-                        <li className='receipt-item total'>
-                            <p>Totalt</p>
-                            <p>{purchase.total}kr</p>
-                        </li>
                     </ul>
+
+                    <hr />
+                    <p className='total'>
+                        <span>Totalt</span>
+                        <span>{purchase.total}kr</span>
+                    </p>
             </div>
             );
         }
@@ -52,11 +52,6 @@ const TransactionPopup: FC<TransactionPopupProps> = ({transaction, onClose}) => 
                     <p>Detaljer</p>
                     <hr />
                     <ul className='receipt-list'>
-                        {/* <li className='receipt-item'>
-                            <p>Vara</p>
-                            <p>Antal</p>
-                        </li>
-                        <hr /> */}
                         {stockUpdate.items.map((item,index) => (
                             <li key={index} className='receipt-item'>
                                 <p>{item.name}</p>
@@ -121,33 +116,32 @@ const TransactionPopup: FC<TransactionPopupProps> = ({transaction, onClose}) => 
                         <span>Typ av transaktion:</span>
                         <span>{transactionTypeString}</span>
                     </p>
-                    <br/>
-
-                    <p>
-                        <span>Datum:</span>
-                        <span>{dateString}</span>
-                    </p>
-
-                    <p>
-                        <span>Klockslag:</span>
-                        <span>{timeString}</span>
-                    </p>
-                    <br/>
-
-
                     
-                    { 'createdFor' in transaction && (
+                    <div>
                         <p>
-                            <span>Berört konto:</span>
-                            <span>{(transaction.createdFor as { nick: string }).nick}</span>
+                            <span>Datum:</span>
+                            <span>{dateString}</span>
                         </p>
-                    )}
 
-                    <p>
-                        <span>Utförd av:</span>
-                        <span>{transaction.createdBy ? transaction.createdBy.nick : 'N/A'}</span>
-                    </p>
-                    <br/>
+                        <p>
+                            <span>Klockslag:</span>
+                            <span>{timeString}</span>
+                        </p>
+                    </div>  
+
+                    <div>
+                        { 'createdFor' in transaction && (
+                            <p>
+                                <span>Berört konto:</span>
+                                <span>{(transaction.createdFor as { nick: string }).nick}</span>
+                            </p>
+                        )}
+
+                        <p>
+                            <span>Utförd av:</span>
+                            <span>{transaction.createdBy ? transaction.createdBy.nick : 'N/A'}</span>
+                        </p>
+                    </div>
 
                     <p>
                         <span>Summa:</span>
