@@ -39,7 +39,7 @@ const Header: React.FC = () => {
                     </button>
                 </div>
 
-                <nav className={'header-nav' + (navOpen ? ' open-nav' : '')}> 
+                <nav className={'header-nav'}>
                     {pages.map((page) => 
                         <Link 
                             to={page.url} 
@@ -55,7 +55,11 @@ const Header: React.FC = () => {
             <nav className={'header-nav2' + (navOpen ? ' open-nav' : '')}> 
                 {pages.map((page, index) => (
                     <React.Fragment key={page.url}>
-                        <Link to={page.url} onClick={() => setNavOpen(false)}>
+                        <Link 
+                            to={page.url}
+                            key={page.url} 
+                            onClick={() => setNavOpen(false)}
+                        >
                             {page.linkText}
                         </Link>
                         {index < pages.length - 1 && <hr />}

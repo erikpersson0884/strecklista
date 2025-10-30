@@ -66,14 +66,7 @@
     }
 
     .page-header .header-nav {
-        text-align: center;
-
-        flex-direction: column;
-
-        height: 0;
-
-        overflow: hidden;
-        transition: all 0.5s linear;
+        display: none;
     }
 
     .open-nav {
@@ -89,7 +82,7 @@
         gap: 1.5rem;
 
         position: absolute;
-        top: 7rem;
+        top: 6rem;
         left: 50%;
         transform: translate(-50%, 0);
 

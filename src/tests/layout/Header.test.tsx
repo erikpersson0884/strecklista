@@ -20,15 +20,15 @@ describe('Header tests', () => {
     });
 
     it('should not have open-nav class by default', () => {
-        renderWithBrowserRouter(<Header />);
-        const nav = screen.getByRole('navigation');
+        const {container} = renderWithBrowserRouter(<Header />);
+        const nav = container.getElementsByClassName('header-nav2')[0];
         expect(nav).not.toHaveClass('open-nav');
     });
 
     it('should open nav when menu button is clicked', async () => {
-        renderWithBrowserRouter(<Header />);
+        const {container} = renderWithBrowserRouter(<Header />);
         const button = screen.getByRole('button', { name: /toggle navigation/i });
-        const nav = screen.getByRole('navigation');
+        const nav = container.getElementsByClassName('header-nav2')[0];
 
         expect(nav).not.toHaveClass('open-nav');
 
@@ -37,9 +37,9 @@ describe('Header tests', () => {
     });
 
     it('should close nav when menu button is clicked and nav is open', async () => {
-        renderWithBrowserRouter(<Header />);
+        const {container} = renderWithBrowserRouter(<Header />);
         const button = screen.getByRole('button', { name: /toggle navigation/i });
-        const nav = screen.getByRole('navigation');
+        const nav = container.getElementsByClassName('header-nav2')[0];
         expect(nav).not.toHaveClass('open-nav');
 
         await userEvent.click(button);
@@ -49,13 +49,13 @@ describe('Header tests', () => {
     });
 
     it('should close nav when a link is clicked', async () => {
-        renderWithBrowserRouter(<Header />);
+        const {container} = renderWithBrowserRouter(<Header />);
         const button = screen.getByRole('button', { name: /toggle navigation/i });
-        const nav = screen.getByRole('navigation');
+        const nav = container.getElementsByClassName('header-nav2')[0];
         expect(nav).not.toHaveClass('open-nav');
         await userEvent.click(button);
         expect(nav).toHaveClass('open-nav');
-        const link = screen.getByRole('link', { name: /Utbud/i });
+        const link: HTMLElement = nav.querySelector('a');
         await userEvent.click(link);
         expect(nav).not.toHaveClass('open-nav');
     });
