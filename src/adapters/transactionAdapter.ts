@@ -29,6 +29,7 @@ function adaptPurchase(
         createdTime: adaptTime(apiPurchase.createdTime),
         total: apiPurchase.items.reduce((acc, item) => acc + Number(item.purchasePrice.price) * item.quantity, 0),
         removed: apiPurchase.removed,
+        comment: apiPurchase.comment || ''
     };
 }
 
@@ -43,7 +44,8 @@ function adaptDeposit(
         createdFor: getUserFromUserId(apiDeposit.createdFor),
         total: apiDeposit.total,
         createdTime: adaptTime(apiDeposit.createdTime),
-        removed: apiDeposit.removed
+        removed: apiDeposit.removed,
+        comment: apiDeposit.comment || ''
     };
 }
 

@@ -47,8 +47,8 @@ const ActionPopupWindow: React.FC<ActionPopupWindowProps> = ({
     }, [errorText, errortextDisplayTime]);
 
     return (
-        <PopupWindow title={title} isOpen={isOpen} onClose={onClose} >
-            <div className={`popup-body ${className || ''}`}>
+        <PopupWindow title={title} isOpen={isOpen} onClose={onClose} className={className}>
+            <div className={`popup-body `}>
                 {children}
             </div>
 

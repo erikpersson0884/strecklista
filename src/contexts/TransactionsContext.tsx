@@ -22,7 +22,8 @@ interface TransactionFilters {
     startDate: string | null;
     endDate: string | null;
     showRemoved: boolean;
-    searchQuery: string; 
+    searchQuery: string;
+    transactionType: TransactionType | 'all';
 }
 
 const TransactionsContext = createContext<TransactionsContextProps | undefined>(undefined);
@@ -43,6 +44,7 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
         endDate: null,
         showRemoved: false,
         searchQuery: '',
+        transactionType: 'all',
     });
     const resetFilters = () => {
         setFilters({
@@ -51,6 +53,7 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
             endDate: null,
             showRemoved: false,
             searchQuery: '',
+            transactionType: 'all',
         });
     };
 
@@ -81,6 +84,10 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
 
         if (!filters.showRemoved) {
             filtered = filtered.filter((t) => !t.removed);
+        }
+
+        if (filters.transactionType !== 'all') {
+            filtered = filtered.filter((t) => t.type === filters.transactionType);
         }
 
         if (filters.searchQuery.trim()) {

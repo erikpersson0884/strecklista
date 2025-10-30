@@ -108,6 +108,9 @@ const TransactionPopup: FC<TransactionPopupProps> = ({transaction, onClose}) => 
             transactionTypeString = 'Okänd';
     }
 
+    let comment: string | null = null;
+    if (transaction.type === 'purchase' || transaction.type === 'deposit') comment = (transaction as Purchase | Deposit).comment;
+
     const PopupContent: FC = () => {
         return (
             <>
@@ -142,6 +145,14 @@ const TransactionPopup: FC<TransactionPopupProps> = ({transaction, onClose}) => 
                             <span>{transaction.createdBy ? transaction.createdBy.nick : 'N/A'}</span>
                         </p>
                     </div>
+                    
+                    { comment && (
+                        <p className="comment-container">
+                            <span>Kommentar:</span>
+                            <span className="comment">{comment}</span>
+                        </p>
+                    )}
+                    
 
                     <p>
                         <span>Summa:</span>

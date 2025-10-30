@@ -52,6 +52,7 @@ declare global {
         type: "purchase";
         createdFor: ApiId;
         items: ApiPurchaseItem[];
+        comment?: string;
     }
 
     interface ApiPurchaseItem {
@@ -68,6 +69,7 @@ declare global {
         type: "deposit";
         createdFor: ApiId;
         total: number;
+        comment?: string;
     }
 
     interface ApiStockUpdate extends ApiTransaction {
@@ -93,10 +95,11 @@ declare global {
     type UserId = Id;
     type GroupId = Id;
     type ProductId = Id;
+    type TransactionType = "purchase" | "deposit" | "stockUpdate";
 
     interface ITransaction {
         id: Id;
-        type: "purchase" | "deposit" | "stockUpdate";
+        type: TransactionType;
         createdBy: User;
         createdTime: Date;
         removed: boolean;
@@ -105,6 +108,7 @@ declare global {
     interface FinancialTransaction  extends ITransaction {
         createdFor: User;
         total: number;
+        comment: string;
     }
 
     interface Purchase extends FinancialTransaction {

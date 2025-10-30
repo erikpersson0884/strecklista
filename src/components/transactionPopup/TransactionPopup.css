@@ -1,7 +1,6 @@
 
 .transaction-popup {
-    background-color: var(--contrast-color);
-
+    max-height: 95%;
 }
 
 .transaction-overview {
@@ -19,6 +18,17 @@
     margin-bottom: .2rem;
 }
 
+.transaction-overview .comment-container {
+    flex-direction: column;
+}
+
+.transaction-overview .comment {
+    font-style: italic;
+
+    max-height: 4.5rem;
+    overflow-y: auto;
+}
+
 
 /* --- RECEIPT DETAILS --- */
 
@@ -32,8 +42,7 @@
     justify-content: flex-start;
     gap: .5rem;
 
-    max-height: 10.7rem;
-
+    max-height: 5.7rem;
     overflow-y: auto;
 }
 
