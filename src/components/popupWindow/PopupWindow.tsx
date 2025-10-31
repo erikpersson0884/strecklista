@@ -25,17 +25,16 @@ const PopupWindow: React.FC<PopupWindowProps> = ({
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
             <div className={`popup-window ${className ? `${className}` : ''}`} onClick={onClose}>
+                {title && 
+                    <header className="popup-header">
+                        <h2>{title}</h2>
+                        <hr />
+                    </header>
+                }
                 <div 
                     className={`popup-content `} 
                     onClick={(e) => e.stopPropagation()}
                 >
-                    {title && 
-                        <>
-                            <h2 className="popup-title">{title}</h2>
-                            <hr />
-                        </>
-                    }
-                    
                     {children}
                 </div>
 

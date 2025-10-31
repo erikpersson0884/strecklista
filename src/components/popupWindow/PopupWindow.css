@@ -13,6 +13,13 @@
     border: .1rem solid #fff;
 }
 
+.popup-window .popup-header {
+    display: flex;
+    flex-direction: column;
+    gap: .8rem;
+    margin-bottom: .8rem;
+}
+
 .popup-window .popup-content {
     display: flex;
     flex-direction: column;
