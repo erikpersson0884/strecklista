@@ -54,7 +54,7 @@ const Header: React.FC = () => {
             </header>
 
             <Modal isOpen={navOpen} onClose={() => setNavOpen(false)}>
-                <nav className={'header-nav2' + (navOpen ? ' open-nav' : '')}> 
+                <nav aria-label="Mobile navigation" className={'mobile-header-nav'}> 
                     {pages.map((page, index) => (
                         <React.Fragment key={page.url}>
                             <Link 
