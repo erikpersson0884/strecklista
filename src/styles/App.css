@@ -17,11 +17,6 @@
     gap: 1rem;
 }
 
-.cancel-button, .delete-button {
-    background-color: brown;
-    color: #ffffff;
-}
-
 .do-button, .add-button {
     background-color: var(--green-color);
 }

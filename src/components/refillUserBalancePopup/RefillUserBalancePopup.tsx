@@ -6,11 +6,9 @@ import { useUsersContext } from '../../contexts/UsersContext';
 
 interface RefillUserBalancePopupProps {
     user: User;
-    isOpen: boolean;
-    onClose: () => void;
 }
 
-const RefillUserBalancePopup: React.FC<RefillUserBalancePopupProps> = ({ user, isOpen, onClose }) => {
+const RefillUserBalancePopup: React.FC<RefillUserBalancePopupProps> = ({ user }) => {
     const { addUserBalance } = useUsersContext();
 
     const MAX_COMMENT_LENGTH = 1000;
@@ -44,7 +42,6 @@ const RefillUserBalancePopup: React.FC<RefillUserBalancePopupProps> = ({ user, i
     const handleClose = () => {
         setAmountToDeposit(0);
         setErrorText(undefined);
-        onClose();
     }
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -84,7 +81,6 @@ const RefillUserBalancePopup: React.FC<RefillUserBalancePopupProps> = ({ user, i
         <ActionPopupWindow 
             title={user.nick}
             onAccept={handleRefill}
-            isOpen={isOpen}
             onClose={handleClose}
             acceptButtonText="Fyll på"
             className='refill-user-balance-popup'

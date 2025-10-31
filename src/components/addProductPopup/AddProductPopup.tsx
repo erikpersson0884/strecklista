@@ -3,12 +3,8 @@ import ActionPopupWindow from "../../components/actionPopupWindow/ActionPopupWin
 
 import { useInventory } from "../../contexts/InventoryContext";
 
-interface AddProductPopupProps {
-    isOpen: boolean;
-    closePopup: () => void;
-}
 
-const AddProductPopup: React.FC<AddProductPopupProps> = ({ isOpen, closePopup }) => {
+const AddProductPopup: React.FC = () => {
     const { addProduct } = useInventory();
 
     const [ errorText, setErrorText ] = React.useState<string | null>(null);
@@ -42,14 +38,12 @@ const AddProductPopup: React.FC<AddProductPopupProps> = ({ isOpen, closePopup })
         seticon("");
         setAvailable(true);
         setErrorText(null);
-        closePopup();
     };
 
     return (
         <ActionPopupWindow 
             title="Lägg till vara" 
             onAccept={handleAddProduct} 
-            isOpen={isOpen} 
             onClose={handleClose}
             className="add-item-popup"
         >

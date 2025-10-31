@@ -4,10 +4,9 @@ import React, { useEffect, useState } from "react";
 
 interface UpdateProductPopupProps {
     item: IItem | null;
-    onClose: () => void;
 }
 
-const UpdateProductPopup: React.FC<UpdateProductPopupProps> = ({item, onClose}) => {
+const UpdateProductPopup: React.FC<UpdateProductPopupProps> = ({item}) => {
     if (!item) return null;
     const { updateProduct } = useInventory();
 
@@ -32,7 +31,6 @@ const UpdateProductPopup: React.FC<UpdateProductPopupProps> = ({item, onClose}) 
 
     const handleExit = () => {
         setUpdatedProduct(item);
-        onClose();
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,7 +46,6 @@ const UpdateProductPopup: React.FC<UpdateProductPopupProps> = ({item, onClose}) 
         <ActionPopupWindow
             title={`Uppdatera`}
             acceptButtonText="Update"
-            isOpen={true}
             onClose={handleExit}
             acceptButtonDisabled={!isChanged}
             onAccept={handleUpdate}

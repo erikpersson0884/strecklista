@@ -3,10 +3,9 @@ import { useState } from 'react';
 import './TransactionsPage.css';
 
 import { useTransactionsContext } from '../../contexts/TransactionsContext';
+import { useModalContext } from '../../contexts/ModalContext';
 
 import TransactionPopup from '../../components/transactionPopup/TransactionPopup';
-import DeleteTransactionPopup from '../../components/deleteTransactionPopup/DeleteTransactionPopup';
-
 import Filter from './Filter/Filter';
 
 import downIcon from '../../assets/images/down.svg';
@@ -21,13 +20,17 @@ const TransactionsPage: FC = () => {
         transactionsPageNumber,
         setFilters
     } = useTransactionsContext();
+    const { openModal } = useModalContext();
     
 
     if (isLoading) return <p>Loading...</p>;
 
-    const [ selectedTransaction, setSelectedTransaction ] = useState<ITransaction | null>(null);
-    const [ showDeletePopupDiv, setShowDeletePopupDiv ] = useState<boolean>(false);
     const [ showFilters, setShowFilters ] = useState<boolean>(false);
+
+    const openTransactionPopup = (transaction: ITransaction) => {
+        openModal(<TransactionPopup transaction={transaction}/>);
+    };
+
 
 
     interface TransactionPreviewProps {
@@ -68,7 +71,7 @@ const TransactionsPage: FC = () => {
                         )} 
                     </div>
                 </div>
-                <button className='open-popup-button' onClick={() => setSelectedTransaction(transaction)}>
+                <button className='open-popup-button' onClick={() => openTransactionPopup(transaction)}>
                     <img src={downIcon} alt='Expandera' height={10}/>
                 </button>
             </li>
@@ -111,14 +114,6 @@ const TransactionsPage: FC = () => {
                     <button className='next-button' onClick={getNextTransactions}>&gt;</button>
                 </footer>
             </div>
-
-            <TransactionPopup transaction={selectedTransaction} onClose={() => setSelectedTransaction(null)} />
-
-            <DeleteTransactionPopup
-                transaction={selectedTransaction}
-                isOpen={showDeletePopupDiv}
-                onClose={() => setShowDeletePopupDiv(false)}
-            />
 
         </>
     );

@@ -66,3 +66,8 @@
 
     justify-content: space-between !important;
 }
+
+
+.transaction-popup .accept-button {
+    background-color: var(--secondary-contrast-color) !important;
+}

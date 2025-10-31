@@ -1,21 +1,39 @@
-import { useState, type FC } from "react";
+import { type FC } from "react";
 import './TransactionPopup.css';
 
 import { useTransactionsContext } from "../../contexts/TransactionsContext";
+import { useModalContext } from "../../contexts/ModalContext";
 
 import ActionPopupWindow from "../actionPopupWindow/ActionPopupWindow";
 import PopupWindow from "../popupWindow/PopupWindow";
+import ConfirmDialog from "../confirmDialog/ConfirmDialog";
 
 
 interface TransactionPopupProps {
     transaction: ITransaction | null;
-    onClose: () => void;
 }
 
-const TransactionPopup: FC<TransactionPopupProps> = ({transaction, onClose}) => {
+const TransactionPopup: FC<TransactionPopupProps> = ({transaction}) => {
     if (!transaction) return null;
 
     const { deleteTransaction } = useTransactionsContext();
+    const { openModal } = useModalContext();
+
+
+    const openConfirmDeleteDialog = () => {
+        openModal(
+            <ConfirmDialog
+                title="Stryk Transaktion"
+                confirmButtonText="Stryk"
+                onConfirm={async () => {
+                    await deleteTransaction(transaction.id);
+                }}
+            >
+                <p>Är du säker på att du vill stryka denna transaktion?</p>
+            </ConfirmDialog>
+        );
+    }
+
 
     const Details: FC = () => {
         if (transaction.type === 'purchase') {
@@ -70,17 +88,6 @@ const TransactionPopup: FC<TransactionPopupProps> = ({transaction, onClose}) => 
         }
     };
 
-    const [ errorText, setErrorText ] = useState<string | undefined>("");
-
-    const handleDelete = async () => {
-        try {
-            await deleteTransaction(transaction.id);
-            setErrorText(undefined);
-            onClose();
-        } catch (error) {
-            setErrorText("Något gick fel, försök igen senare.");
-        }
-    }
     let dateString: string;
     let timeString: string;
     const d = new Date(transaction.createdTime);
@@ -167,8 +174,6 @@ const TransactionPopup: FC<TransactionPopupProps> = ({transaction, onClose}) => 
 
     if (transaction.removed) return (
         <PopupWindow
-            isOpen={!!transaction}
-            onClose={onClose}
             title="Transaktion"
             className="transaction-popup"
         >
@@ -177,13 +182,10 @@ const TransactionPopup: FC<TransactionPopupProps> = ({transaction, onClose}) => 
     )
     else return (
         <ActionPopupWindow
-            isOpen={!!transaction}
-            onClose={onClose}
             title="Transaktion"
             className="transaction-popup"
             acceptButtonText="Stryk Transaktion"
-            onAccept={handleDelete}
-            errorText={errorText}
+            onAccept={() => openConfirmDeleteDialog()}
         >
            <PopupContent />
         </ActionPopupWindow>

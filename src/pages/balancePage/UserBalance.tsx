@@ -1,12 +1,21 @@
 import React from 'react';
+
+import { useModalContext } from '../../contexts/ModalContext';
+
+import RefillUserBalancePopup from '../../components/refillUserBalancePopup/RefillUserBalancePopup';
 import addIcon from '../../assets/images/add.svg';
 
 interface UserBalanceProps {
     user: User;
-    onOpenPopup: (user: User) => void;
 }
 
-const UserBalance: React.FC<UserBalanceProps> = ({ user, onOpenPopup }) => {
+const UserBalance: React.FC<UserBalanceProps> = ({ user }) => {
+    const { openModal } = useModalContext()
+
+    const openRefillPopup = () => {
+        openModal(<RefillUserBalancePopup user={user}/>)
+    }
+
     return (
         <li className='user-div list-item'>
             <div className='user-div-content'>
@@ -21,7 +30,7 @@ const UserBalance: React.FC<UserBalanceProps> = ({ user, onOpenPopup }) => {
             
             <button 
                 className='open-popup-button' 
-                onClick={() => onOpenPopup(user)}
+                onClick={openRefillPopup}
             >
                 <img src={addIcon} alt='add' height={10} />
             </button>
