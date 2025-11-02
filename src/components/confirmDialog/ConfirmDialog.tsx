@@ -7,13 +7,15 @@ interface ConfirmDialogProps {
     confirmButtonText?: string;
     onConfirm: () => void;
     children: React.ReactNode;
+    errorText?: string;
 }
 
 const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
     title,
     confirmButtonText = "Godkänn",
     onConfirm,
-    children
+    children,
+    errorText
 }) => {
     return (
         <ActionPopupWindow
@@ -21,6 +23,7 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
             acceptButtonText={confirmButtonText}
             onAccept={onConfirm}
             className="confirm-popup"
+            errorText={errorText}
         >
             {children}
         </ActionPopupWindow>

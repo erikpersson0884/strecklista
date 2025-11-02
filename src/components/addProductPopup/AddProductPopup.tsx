@@ -46,6 +46,8 @@ const AddProductPopup: React.FC = () => {
             onAccept={handleAddProduct} 
             onClose={handleClose}
             className="add-item-popup"
+            acceptButtonText="Lägg till vara"
+            errorText={errorText || undefined}
         >
             <div className="inputdiv">
                 <label>Varunamn</label>
@@ -84,8 +86,6 @@ const AddProductPopup: React.FC = () => {
                 <label>Finns i lager</label>
                 <input type="checkbox" name="available" checked={available} onChange={(e) => setAvailable(e.target.checked)} />
             </div>
-
-            {errorText && <p className="error-message">{errorText}</p>}
         </ActionPopupWindow>
     );
 }

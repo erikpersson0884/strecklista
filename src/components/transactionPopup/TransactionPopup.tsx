@@ -10,24 +10,21 @@ import ConfirmDialog from "../confirmDialog/ConfirmDialog";
 
 
 interface TransactionPopupProps {
-    transaction: ITransaction | null;
+    transaction: ITransaction;
 }
 
 const TransactionPopup: FC<TransactionPopupProps> = ({transaction}) => {
-    if (!transaction) return null;
-
-    const { deleteTransaction } = useTransactionsContext();
+    const { removeTransaction } = useTransactionsContext();
     const { openModal } = useModalContext();
 
 
     const openConfirmDeleteDialog = () => {
+        
         openModal(
             <ConfirmDialog
                 title="Stryk Transaktion"
                 confirmButtonText="Stryk"
-                onConfirm={async () => {
-                    await deleteTransaction(transaction.id);
-                }}
+                onConfirm={() => removeTransaction(transaction.id)}
             >
                 <p>Är du säker på att du vill stryka denna transaktion?</p>
             </ConfirmDialog>
@@ -185,7 +182,7 @@ const TransactionPopup: FC<TransactionPopupProps> = ({transaction}) => {
             title="Transaktion"
             className="transaction-popup"
             acceptButtonText="Stryk Transaktion"
-            onAccept={() => openConfirmDeleteDialog()}
+            onAccept={() => openModal(<p>test</p>)}
         >
            <PopupContent />
         </ActionPopupWindow>

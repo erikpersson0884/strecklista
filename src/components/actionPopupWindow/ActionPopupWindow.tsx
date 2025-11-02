@@ -31,7 +31,7 @@ const ActionPopupWindow: React.FC<ActionPopupWindowProps> = ({
 }) => {
     const { closeModal } = useModalContext();
 
-    const [ _, setLocalErrorText] = React.useState<string | null>(errorText);
+    const [ localErrorText, setLocalErrorText] = React.useState<string | null>(errorText);
 
     useEffect(() => {
         setLocalErrorText(errorText ?? null);
@@ -45,8 +45,8 @@ const ActionPopupWindow: React.FC<ActionPopupWindowProps> = ({
     }, [errorText, errortextDisplayTime]);
 
     const acceptHandler = async () => {
-        await onAccept();
         closeModal();
+        await onAccept();
     }
 
     return (
@@ -59,7 +59,7 @@ const ActionPopupWindow: React.FC<ActionPopupWindowProps> = ({
                 <span>{acceptButtonText}</span>
                 </button>
 
-            {errorText && <p className='error-message'>{errorText}</p>}
+            {localErrorText && <p className='error-message'>{localErrorText}</p>}
         </PopupWindow>
     );
 };

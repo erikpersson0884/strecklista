@@ -13,7 +13,7 @@ interface TransactionsContextProps {
     resetFilters: () => void;
     getNextTransactions: () => void;
     getPrevTransactions: () => void;
-    deleteTransaction: (id: Id) => Promise<boolean>;
+    removeTransaction: (id: Id) => Promise<boolean>;
     transactionsPageNumber: number;
 }
 
@@ -155,11 +155,10 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
     }, [loadingusers]);
 
 
-    const deleteTransaction = async (id: Id): Promise<boolean> => {
+    const removeTransaction = async (id: Id): Promise<boolean> => {
         const success = await transactionsApi.removeTransaction(id);
         if (success) {
             setTransactions((prevTransactions) => prevTransactions.filter((ITransaction) => ITransaction.id !== id));
-            setFilteredTransactions((prevFilteredTransactions) => prevFilteredTransactions.filter((ITransaction) => ITransaction.id !== id));
         }
         return success;
     };
@@ -171,7 +170,7 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
             filteredTransactions, 
             getNextTransactions, 
             getPrevTransactions, 
-            deleteTransaction,
+            removeTransaction,
             transactionsPageNumber,
             filters,
             setFilters,
