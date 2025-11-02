@@ -66,7 +66,7 @@ const ShopPage: React.FC = () => {
 const OpenCartButton: React.FC<{ onClick: () => void }> = ({ onClick }) => {
     const { numberOfProductsInCart } = useCart();
     return (
-        <button className='showCartButton' onClick={onClick}>
+        <button className='show-cart-button' onClick={onClick}>
             <div className='items-indicator'>{numberOfProductsInCart}</div>
             <p>Betala</p>
         </button>

@@ -133,3 +133,21 @@
 }
 
 
+.items-indicator {
+    background-color: var(--red-color);
+
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    font-weight: bold;
+    font-size: 1rem;
+    text-align: center;
+
+    min-width: 2ch;
+    aspect-ratio: 1/1;
+    padding: .2rem .2rem;
+    border-radius: 100%;
+    /* transform: translate(50%, -50%); */
+    z-index: 10;
+}
