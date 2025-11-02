@@ -46,7 +46,7 @@ const AddProductPopup: React.FC = () => {
             onAccept={handleAddProduct} 
             onClose={handleClose}
             className="add-item-popup"
-            acceptButtonText="Lägg till vara"
+            acceptButtonText="Lägg till"
             errorText={errorText || undefined}
         >
             <div className="inputdiv">
@@ -82,7 +82,7 @@ const AddProductPopup: React.FC = () => {
                 <input type="text" name="icon" value={icon} onChange={(e) => seticon(e.target.value)} />
             </div>
 
-            <div className="availibility-container">
+            <div>
                 <label>Finns i lager</label>
                 <input type="checkbox" name="available" checked={available} onChange={(e) => setAvailable(e.target.checked)} />
             </div>

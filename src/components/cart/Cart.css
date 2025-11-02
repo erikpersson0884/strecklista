@@ -26,6 +26,14 @@
     overflow-y: auto;
 }
 
+.empty-cart-message {
+    text-align: center;
+    font-size: 1.2rem;
+    margin-top: 3rem;
+}
+
+/* Cart footer */
+
 .cart .cart-footer {
     display: flex;
     flex-direction: column;
