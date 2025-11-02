@@ -5,6 +5,7 @@ import prit25image from '../../assets/images/prit25.png';
 import menuIcon from '../../assets/images/menu-icon.svg';
 
 import { Link } from 'react-router-dom';
+import Modal from '../../components/modal/Modal';
 
 
 
@@ -52,20 +53,22 @@ const Header: React.FC = () => {
                 </nav>
             </header>
 
-            <nav className={'header-nav2' + (navOpen ? ' open-nav' : '')}> 
-                {pages.map((page, index) => (
-                    <React.Fragment key={page.url}>
-                        <Link 
-                            to={page.url}
-                            key={page.url} 
-                            onClick={() => setNavOpen(false)}
-                        >
-                            {page.linkText}
-                        </Link>
-                        {index < pages.length - 1 && <hr />}
-                    </React.Fragment>
-                ))}
-            </nav>
+            <Modal isOpen={navOpen} onClose={() => setNavOpen(false)}>
+                <nav aria-label="Mobile navigation" className={'mobile-header-nav'}> 
+                    {pages.map((page, index) => (
+                        <React.Fragment key={page.url}>
+                            <Link 
+                                to={page.url}
+                                key={page.url} 
+                                onClick={() => setNavOpen(false)}
+                            >
+                                {page.linkText}
+                            </Link>
+                            {index < pages.length - 1 && <hr />}
+                        </React.Fragment>
+                    ))}
+                </nav>
+            </Modal>
         </>
     );
 };

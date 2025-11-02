@@ -1,9 +1,13 @@
 import { FC, useState, ChangeEvent } from 'react';
 import './Cart.css';
-import { useCart } from '../../../contexts/CartContext';
-import { useUsersContext } from '../../../contexts/UsersContext';
-import { useAuth } from '../../../contexts/AuthContext';
+
+import { useCart } from '../../contexts/CartContext';
+import { useUsersContext } from '../../contexts/UsersContext';
+import { useAuth } from '../../contexts/AuthContext';
+
 import CartItem from './cartItem/CartItem';
+
+const MAX_COMMENT_LENGTH = 1000;
 
 interface CartProps {
     closeCart: () => void;       
@@ -17,21 +21,32 @@ const Cart: FC<CartProps> = ({ closeCart }) => {
 
     const [comment, setComment] = useState<string>('');
     const [selectedUser, setSelectedUser] = useState<User>(currentUser);
-    const [showCommentInput, setShowCommentInput] = useState(false);
+    const [includeComment, setIncludeComment] = useState<boolean>(false);
 
+    const handleCommentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        const newComment: string = e.target.value;
+        if (!validateComment(newComment)) return;
+        setComment(newComment);
+    }
+
+    const validateComment = (comment: string) => {
+        if (comment.length > MAX_COMMENT_LENGTH) {
+            return false;
+        }
+        return true;
+    };
 
     const handleBuyProducts = async () => {
         if (itemsInCart.length === 0) return;
-        const successfullBuy: boolean = await buyProducts(selectedUser.id, comment);
+        const successfullBuy: boolean = await buyProducts(selectedUser.id, includeComment ? comment : undefined);
         if (successfullBuy) closeCart();
         else alert('Det gick inte att sträcka produkterna');
     };
 
     const CartFooter: FC = () => {
-
         const handleSelectUserChangeChange = (e: ChangeEvent<HTMLSelectElement>): void => {
             const selectedUserId: string = e.target.value;
-            const user = users.find(user => user.id === Number(selectedUserId));
+            const user: User | undefined = users.find(user => user.id === Number(selectedUserId));
             if (!user) throw new Error('Tried to set user that does not exist in cart list');
             setSelectedUser(user);
         };
@@ -43,7 +58,7 @@ const Cart: FC<CartProps> = ({ closeCart }) => {
                     <span>{total} kr</span>
                 </div>
                 <hr />
-                <div className='cart-footer'>
+                <footer className='cart-footer'>
                     <div className='select-paying-user'>
                         <p>Sträcka åt</p>
                         <select 
@@ -62,31 +77,10 @@ const Cart: FC<CartProps> = ({ closeCart }) => {
                             ))}
                         </select>
                     </div>           
-                </div>
+                </footer>
             </div>
         );
     };
-
-    const CommentSection: FC = () => (
-        <>
-            <button
-                onClick={() => setShowCommentInput(!showCommentInput)}
-                className='open-comment-button'
-            >
-                Kommentar
-            </button>
-
-            {showCommentInput && (
-                <input
-                    type='text'
-                    placeholder='Kommentar'
-                    value={comment}
-                    onChange={(e) => setComment(e.target.value)}
-                />
-            )}    
-        </>
-    );
-
 
     return (
         <div className='cart' onClick={(e) => e.stopPropagation()}>
@@ -98,8 +92,30 @@ const Cart: FC<CartProps> = ({ closeCart }) => {
 
             <CartFooter />
 
+            
             <div>
-                <CommentSection />
+                {
+                    includeComment ? (
+                        <>
+                            <hr />
+                            <div className='comment-header'>
+                                <label htmlFor="comment">Kommentar (valfritt): </label>
+                                <button onClick={() => { setIncludeComment(false); }}>Ingen Kommentar</button>
+                            </div>
+                            <textarea
+                                id="comment"
+                                className='comment'
+                                value={comment}
+                                onChange={(e: ChangeEvent<HTMLTextAreaElement>) => handleCommentChange(e)}
+                                placeholder="Skriv en kommentar här..."
+                            />
+                        </>
+                    ) : (
+                        <button className='comment-button' onClick={() => setIncludeComment(true)}>
+                            <span>Lägg till kommentar</span>
+                        </button>
+                    )
+                }
 
                 <button className='pay-button' onClick={handleBuyProducts} disabled={itemsInCart.length === 0}>
                     Sträcka

@@ -6,8 +6,6 @@
     align-items: stretch;
     flex-wrap: wrap;
     gap: 1rem;
-
-    overflow: hidden;
 }
 
 .page .search-bar-container {
@@ -32,7 +30,7 @@
 }
 
 
-.showCartButton {
+.show-cart-button {
     background-color: var(--green-color);
 
     font-size: 2rem;
@@ -47,21 +45,6 @@
     z-index: 11;
 }
 
-.items-indicator {
-    background-color: #ff0000;
-
-    position: absolute;
-    top: 0;
-    right: 0;
-
-    font-weight: bold;
-    font-size: 1rem;
-    text-align: center;
-
-    min-width: 2ch;
-    aspect-ratio: 1/1;
-    padding: .2rem .2rem;
-    border-radius: 100%;
+.show-cart-button .items-indicator {
     transform: translate(50%, -50%);
-    z-index: 10;
 }

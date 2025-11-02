@@ -19,44 +19,48 @@ describe('Header tests', () => {
         expect(screen.getByRole('button')).toBeInTheDocument();
     });
 
-    it('should not have open-nav class by default', () => {
-        const {container} = renderWithBrowserRouter(<Header />);
-        const nav = container.getElementsByClassName('header-nav2')[0];
-        expect(nav).not.toHaveClass('open-nav');
+    it('should not render the mobile nav by default', () => {
+        renderWithBrowserRouter(<Header />);
+        const mobileNav = screen.queryByRole('navigation', { name: /mobile/i });
+        expect(mobileNav).not.toBeInTheDocument();
     });
 
     it('should open nav when menu button is clicked', async () => {
-        const {container} = renderWithBrowserRouter(<Header />);
+        renderWithBrowserRouter(<Header />);
         const button = screen.getByRole('button', { name: /toggle navigation/i });
-        const nav = container.getElementsByClassName('header-nav2')[0];
 
-        expect(nav).not.toHaveClass('open-nav');
+        // 1️⃣ Initially, nav should NOT be in the DOM
+        expect(screen.queryByRole('navigation', { name: /mobile/i })).not.toBeInTheDocument();
 
+        // 2️⃣ Click button to open
         await userEvent.click(button);
-        expect(nav).toHaveClass('open-nav');
+
+        // 3️⃣ Wait for nav to appear
+        const mobileNav = await screen.findByRole('navigation', { name: /mobile/i });
+        expect(mobileNav).toBeInTheDocument();
     });
 
-    it('should close nav when menu button is clicked and nav is open', async () => {
-        const {container} = renderWithBrowserRouter(<Header />);
+    it('should close nav when menu button is clicked again', async () => {
+        renderWithBrowserRouter(<Header />);
         const button = screen.getByRole('button', { name: /toggle navigation/i });
-        const nav = container.getElementsByClassName('header-nav2')[0];
-        expect(nav).not.toHaveClass('open-nav');
 
         await userEvent.click(button);
-        expect(nav).toHaveClass('open-nav');
+        expect(screen.getByRole('navigation', { name: /mobile/i })).toBeInTheDocument();
+
         await userEvent.click(button);
-        expect(nav).not.toHaveClass('open-nav');
+        expect(screen.queryByRole('navigation', { name: /mobile/i })).not.toBeInTheDocument();
     });
 
     it('should close nav when a link is clicked', async () => {
-        const {container} = renderWithBrowserRouter(<Header />);
+        renderWithBrowserRouter(<Header />);
         const button = screen.getByRole('button', { name: /toggle navigation/i });
-        const nav = container.getElementsByClassName('header-nav2')[0];
-        expect(nav).not.toHaveClass('open-nav');
+
         await userEvent.click(button);
-        expect(nav).toHaveClass('open-nav');
-        const link: HTMLElement = nav.querySelector('a');
-        await userEvent.click(link);
-        expect(nav).not.toHaveClass('open-nav');
+        const mobileNav = screen.getByRole('navigation', { name: /mobile/i });
+        const firstLink = mobileNav.querySelector('a');
+        expect(firstLink).toBeInTheDocument();
+
+        await userEvent.click(firstLink!);
+        expect(screen.queryByRole('navigation', { name: /mobile/i })).not.toBeInTheDocument();
     });
 });

@@ -3,7 +3,7 @@
     width: 2rem;
 }
 
-.refill-user-balance-popup>* {
+.refill-user-balance-popup .popup-body>* {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
@@ -11,10 +11,7 @@
     gap: 0.5rem;
 }
 
-.refill-user-balance-popup>*>*:first-child {
+.refill-user-balance-popup .popup-body>*>*:first-child {
     margin-right: auto;
 }
 
-.refill-user-balance-popup .comment-button {
-    background-color: var(--blue-color);
-}

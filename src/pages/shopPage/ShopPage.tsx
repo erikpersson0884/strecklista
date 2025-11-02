@@ -4,9 +4,9 @@ import './ShopPage.css';
 import ShopItem from '../../components/shopItem/ShopItem';
 import { useInventory } from '../../contexts/InventoryContext';
 import { useCart } from '../../contexts/CartContext';
-import Cart from './cart/Cart';
+import Cart from '../../components/cart/Cart';
 import Modal from '../../components/modal/Modal';
-import backspaceIcon from '../../assets/images/backspace.svg';
+import emptySearchIcon from '../../assets/images/close.svg';
 
 
 const ShopPage: React.FC = () => {
@@ -35,7 +35,7 @@ const ShopPage: React.FC = () => {
                     className='clear-search-bar-button' 
                     onClick={() => setSearchTerm('')}
                 >
-                    <img src={backspaceIcon} alt="clear search" height={20}/>
+                    <img src={emptySearchIcon} alt="clear search" height={20}/>
                 </button>
             </div>
 
@@ -66,7 +66,7 @@ const ShopPage: React.FC = () => {
 const OpenCartButton: React.FC<{ onClick: () => void }> = ({ onClick }) => {
     const { numberOfProductsInCart } = useCart();
     return (
-        <button className='showCartButton' onClick={onClick}>
+        <button className='show-cart-button' onClick={onClick}>
             <div className='items-indicator'>{numberOfProductsInCart}</div>
             <p>Betala</p>
         </button>

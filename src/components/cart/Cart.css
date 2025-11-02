@@ -21,6 +21,9 @@
     gap: .7rem;
 
     width: 100%;
+
+    height: 17rem;
+    overflow-y: auto;
 }
 
 .cart .cart-footer {
@@ -37,15 +40,23 @@
     gap: .5rem;
 }
 
-.cart .open-comment-button {
-    background-color: var(--blue-color);
-
-    width: 100%;
-}
-
 .cart .total {
     display: flex;
     justify-content: space-between;
+}
+
+.cart .comment {
+    width: 95%;
+    max-width: 100%;
+    margin-top: 1rem;;
+}
+
+.cart .comment-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: .5rem;
 }
 
 .cart .pay-button {

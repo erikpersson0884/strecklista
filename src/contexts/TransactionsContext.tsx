@@ -13,7 +13,7 @@ interface TransactionsContextProps {
     resetFilters: () => void;
     getNextTransactions: () => void;
     getPrevTransactions: () => void;
-    deleteTransaction: (id: Id) => Promise<boolean>;
+    removeTransaction: (id: Id) => Promise<boolean>;
     transactionsPageNumber: number;
 }
 
@@ -22,7 +22,8 @@ interface TransactionFilters {
     startDate: string | null;
     endDate: string | null;
     showRemoved: boolean;
-    searchQuery: string; 
+    searchQuery: string;
+    transactionType: TransactionType | 'all';
 }
 
 const TransactionsContext = createContext<TransactionsContextProps | undefined>(undefined);
@@ -43,6 +44,7 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
         endDate: null,
         showRemoved: false,
         searchQuery: '',
+        transactionType: 'all',
     });
     const resetFilters = () => {
         setFilters({
@@ -51,6 +53,7 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
             endDate: null,
             showRemoved: false,
             searchQuery: '',
+            transactionType: 'all',
         });
     };
 
@@ -81,6 +84,10 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
 
         if (!filters.showRemoved) {
             filtered = filtered.filter((t) => !t.removed);
+        }
+
+        if (filters.transactionType !== 'all') {
+            filtered = filtered.filter((t) => t.type === filters.transactionType);
         }
 
         if (filters.searchQuery.trim()) {
@@ -148,11 +155,10 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
     }, [loadingusers]);
 
 
-    const deleteTransaction = async (id: Id): Promise<boolean> => {
+    const removeTransaction = async (id: Id): Promise<boolean> => {
         const success = await transactionsApi.removeTransaction(id);
         if (success) {
             setTransactions((prevTransactions) => prevTransactions.filter((ITransaction) => ITransaction.id !== id));
-            setFilteredTransactions((prevFilteredTransactions) => prevFilteredTransactions.filter((ITransaction) => ITransaction.id !== id));
         }
         return success;
     };
@@ -164,7 +170,7 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
             filteredTransactions, 
             getNextTransactions, 
             getPrevTransactions, 
-            deleteTransaction,
+            removeTransaction,
             transactionsPageNumber,
             filters,
             setFilters,

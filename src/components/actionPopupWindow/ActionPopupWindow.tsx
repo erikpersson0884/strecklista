@@ -1,13 +1,12 @@
 import React, {useEffect} from 'react';
 import './ActionPopupWindow.css';
 import PopupWindow from '../popupWindow/PopupWindow';
+import { useModalContext } from '../../contexts/ModalContext';
 
 interface ActionPopupWindowProps {
     children: React.ReactNode;
-    isOpen: boolean;
     onAccept?: () => any;
-    onCancel?: () => any;
-    onClose: () => any;
+    onClose?: () => any;
 
     title?: string;
     acceptButtonText?: string;
@@ -20,20 +19,19 @@ interface ActionPopupWindowProps {
 
 
 const ActionPopupWindow: React.FC<ActionPopupWindowProps> = ({ 
-    isOpen, 
-    onClose, 
-    onAccept = onClose, 
+    onClose = () => {}, 
+    onAccept = onClose,
     title, 
     acceptButtonText = 'Skapa',
     errorText = null,
     errortextDisplayTime = 3000, // Time in milliseconds the error text is displayed
     acceptButtonDisabled = false,
     children, 
-    className 
+    className = '',
 }) => {
-    if (!isOpen) return null;
+    const { closeModal } = useModalContext();
 
-    const [ _, setLocalErrorText] = React.useState<string | null>(errorText);
+    const [ localErrorText, setLocalErrorText] = React.useState<string | null>(errorText);
 
     useEffect(() => {
         setLocalErrorText(errorText ?? null);
@@ -46,17 +44,22 @@ const ActionPopupWindow: React.FC<ActionPopupWindowProps> = ({
         }
     }, [errorText, errortextDisplayTime]);
 
+    const acceptHandler = async () => {
+        closeModal();
+        await onAccept();
+    }
+
     return (
-        <PopupWindow title={title} isOpen={isOpen} onClose={onClose} >
-            <div className={`popup-body ${className || ''}`}>
+        <PopupWindow title={title} className={className}>
+            <div className={`popup-body `}>
                 {children}
             </div>
 
-            <button className="accept-button" onClick={onAccept} disabled={acceptButtonDisabled}>
+            <button className="accept-button" onClick={acceptHandler} disabled={acceptButtonDisabled}>
                 <span>{acceptButtonText}</span>
                 </button>
 
-            {errorText && <p className='error-message'>{errorText}</p>}
+            {localErrorText && <p className='error-message'>{localErrorText}</p>}
         </PopupWindow>
     );
 };

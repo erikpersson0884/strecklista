@@ -1,21 +1,36 @@
-import { useState, type FC } from "react";
+import { type FC } from "react";
 import './TransactionPopup.css';
 
 import { useTransactionsContext } from "../../contexts/TransactionsContext";
+import { useModalContext } from "../../contexts/ModalContext";
 
 import ActionPopupWindow from "../actionPopupWindow/ActionPopupWindow";
 import PopupWindow from "../popupWindow/PopupWindow";
+import ConfirmDialog from "../confirmDialog/ConfirmDialog";
 
 
 interface TransactionPopupProps {
-    transaction: ITransaction | null;
-    onClose: () => void;
+    transaction: ITransaction;
 }
 
-const TransactionPopup: FC<TransactionPopupProps> = ({transaction, onClose}) => {
-    if (!transaction) return null;
+const TransactionPopup: FC<TransactionPopupProps> = ({transaction}) => {
+    const { removeTransaction } = useTransactionsContext();
+    const { openModal } = useModalContext();
 
-    const { deleteTransaction } = useTransactionsContext();
+
+    const openConfirmDeleteDialog = () => {
+        
+        openModal(
+            <ConfirmDialog
+                title="Stryk Transaktion"
+                confirmButtonText="Stryk"
+                onConfirm={() => removeTransaction(transaction.id)}
+            >
+                <p>Är du säker på att du vill stryka denna transaktion?</p>
+            </ConfirmDialog>
+        );
+    }
+
 
     const Details: FC = () => {
         if (transaction.type === 'purchase') {
@@ -34,13 +49,13 @@ const TransactionPopup: FC<TransactionPopupProps> = ({transaction, onClose}) => 
                                 <p className="item-total">{item.purchasePrice.price * item.quantity} kr</p>
                             </li>
                         ))}
-
-                        <hr />
-                        <li className='receipt-item total'>
-                            <p>Totalt</p>
-                            <p>{purchase.total}kr</p>
-                        </li>
                     </ul>
+
+                    <hr />
+                    <p className='total'>
+                        <span>Totalt</span>
+                        <span>{purchase.total}kr</span>
+                    </p>
             </div>
             );
         }
@@ -52,11 +67,6 @@ const TransactionPopup: FC<TransactionPopupProps> = ({transaction, onClose}) => 
                     <p>Detaljer</p>
                     <hr />
                     <ul className='receipt-list'>
-                        {/* <li className='receipt-item'>
-                            <p>Vara</p>
-                            <p>Antal</p>
-                        </li>
-                        <hr /> */}
                         {stockUpdate.items.map((item,index) => (
                             <li key={index} className='receipt-item'>
                                 <p>{item.name}</p>
@@ -75,17 +85,6 @@ const TransactionPopup: FC<TransactionPopupProps> = ({transaction, onClose}) => 
         }
     };
 
-    const [ errorText, setErrorText ] = useState<string | undefined>("");
-
-    const handleDelete = async () => {
-        try {
-            await deleteTransaction(transaction.id);
-            setErrorText(undefined);
-            onClose();
-        } catch (error) {
-            setErrorText("Något gick fel, försök igen senare.");
-        }
-    }
     let dateString: string;
     let timeString: string;
     const d = new Date(transaction.createdTime);
@@ -113,6 +112,9 @@ const TransactionPopup: FC<TransactionPopupProps> = ({transaction, onClose}) => 
             transactionTypeString = 'Okänd';
     }
 
+    let comment: string | null = null;
+    if (transaction.type === 'purchase' || transaction.type === 'deposit') comment = (transaction as Purchase | Deposit).comment;
+
     const PopupContent: FC = () => {
         return (
             <>
@@ -121,33 +123,40 @@ const TransactionPopup: FC<TransactionPopupProps> = ({transaction, onClose}) => 
                         <span>Typ av transaktion:</span>
                         <span>{transactionTypeString}</span>
                     </p>
-                    <br/>
-
-                    <p>
-                        <span>Datum:</span>
-                        <span>{dateString}</span>
-                    </p>
-
-                    <p>
-                        <span>Klockslag:</span>
-                        <span>{timeString}</span>
-                    </p>
-                    <br/>
-
-
                     
-                    { 'createdFor' in transaction && (
+                    <div>
                         <p>
-                            <span>Berört konto:</span>
-                            <span>{(transaction.createdFor as { nick: string }).nick}</span>
+                            <span>Datum:</span>
+                            <span>{dateString}</span>
+                        </p>
+
+                        <p>
+                            <span>Klockslag:</span>
+                            <span>{timeString}</span>
+                        </p>
+                    </div>  
+
+                    <div>
+                        { 'createdFor' in transaction && (
+                            <p>
+                                <span>Berört konto:</span>
+                                <span>{(transaction.createdFor as { nick: string }).nick}</span>
+                            </p>
+                        )}
+
+                        <p>
+                            <span>Utförd av:</span>
+                            <span>{transaction.createdBy ? transaction.createdBy.nick : 'N/A'}</span>
+                        </p>
+                    </div>
+                    
+                    { comment && (
+                        <p className="comment-container">
+                            <span>Kommentar:</span>
+                            <span className="comment">{comment}</span>
                         </p>
                     )}
-
-                    <p>
-                        <span>Utförd av:</span>
-                        <span>{transaction.createdBy ? transaction.createdBy.nick : 'N/A'}</span>
-                    </p>
-                    <br/>
+                    
 
                     <p>
                         <span>Summa:</span>
@@ -162,8 +171,6 @@ const TransactionPopup: FC<TransactionPopupProps> = ({transaction, onClose}) => 
 
     if (transaction.removed) return (
         <PopupWindow
-            isOpen={!!transaction}
-            onClose={onClose}
             title="Transaktion"
             className="transaction-popup"
         >
@@ -172,13 +179,10 @@ const TransactionPopup: FC<TransactionPopupProps> = ({transaction, onClose}) => 
     )
     else return (
         <ActionPopupWindow
-            isOpen={!!transaction}
-            onClose={onClose}
             title="Transaktion"
             className="transaction-popup"
             acceptButtonText="Stryk Transaktion"
-            onAccept={handleDelete}
-            errorText={errorText}
+            onAccept={openConfirmDeleteDialog}
         >
            <PopupContent />
         </ActionPopupWindow>

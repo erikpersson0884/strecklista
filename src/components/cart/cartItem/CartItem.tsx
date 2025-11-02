@@ -1,5 +1,5 @@
-import deleteIcon from '../../../../assets/images/delete-white.svg';
-import { useCart } from '../../../../contexts/CartContext';
+import deleteIcon from '../../../assets/images/delete-white.svg';
+import { useCart } from '../../../contexts/CartContext';
 import './CartItem.css';
 
 interface CartItemProps {

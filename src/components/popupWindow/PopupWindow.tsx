@@ -1,12 +1,11 @@
 import React from 'react';
 import './PopupWindow.css';
-import Modal from '../modal/Modal';
+import { useModalContext } from '../../contexts/ModalContext';
 import Closebutton from '../closebutton/Closebutton';
 
 interface PopupWindowProps {
     children: React.ReactNode;
-    isOpen: boolean;
-    onClose: () => any;
+    onClose?: () => any;
 
     title?: string;
 
@@ -14,34 +13,35 @@ interface PopupWindowProps {
 }
 
 const PopupWindow: React.FC<PopupWindowProps> = ({ 
-    isOpen, 
-    onClose, 
+    onClose = () => {},
     title,
     children, 
     className 
 }) => {
-    if (!isOpen) return null;
+    const { closeModal } = useModalContext();
+
+    const closeAction = () => {
+        onClose();
+        closeModal();
+    }
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose}>
-            <div className={`popup-window `} onClick={onClose}>
-                <div 
-                    className={`popup-content ${className ? `${className}` : ''}`} 
-                    onClick={(e) => e.stopPropagation()}
-                >
-                    {title && 
-                        <>
-                            <h2 className="popup-title">{title}</h2>
-                            <hr />
-                        </>
-                    }
-                    
-                    {children}
-                </div>
-
-                <Closebutton closeAction={onClose} />
+        <div className={`popup-window ${className ? `${className}` : ''}`} onClick={(e) => e.stopPropagation()}>
+            {title && 
+                <header className="popup-header">
+                    <h2>{title}</h2>
+                    <hr />
+                </header>
+            }
+            <div 
+                className={`popup-content `} 
+                onClick={(e) => e.stopPropagation()}
+            >
+                {children}
             </div>
-        </Modal>
+
+            <Closebutton closeAction={closeAction} />
+        </div>
     );
 };
 

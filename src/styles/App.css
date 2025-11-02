@@ -17,11 +17,6 @@
     gap: 1rem;
 }
 
-.cancel-button, .delete-button {
-    background-color: brown;
-    color: #ffffff;
-}
-
 .do-button, .add-button {
     background-color: var(--green-color);
 }
@@ -57,6 +52,12 @@
 .red-text {
     color: var(--red-color);
     color: red;
+}
+
+.comment-button {
+    background-color: var(--blue-color);
+
+    width: 100%;
 }
 
 .page {
@@ -129,4 +130,24 @@
     border: none;
     outline: none;
     border-radius: .8rem;
+}
+
+
+.items-indicator {
+    background-color: var(--red-color);
+
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    font-weight: bold;
+    font-size: 1rem;
+    text-align: center;
+
+    min-width: 2ch;
+    aspect-ratio: 1/1;
+    padding: .2rem .2rem;
+    border-radius: 100%;
+    /* transform: translate(50%, -50%); */
+    z-index: 10;
 }

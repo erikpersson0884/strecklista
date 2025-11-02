@@ -4,10 +4,9 @@ import { useInventory } from '../../contexts/InventoryContext';
 
 interface RefillProductPopupProps {
     item: IItem | null;
-    onClose: () => void;
 }
 
-const RefillProductPopup: React.FC<RefillProductPopupProps> = ({ item, onClose }) => {
+const RefillProductPopup: React.FC<RefillProductPopupProps> = ({ item }) => {
     if (!item) return null;
     
     const { refillProduct } = useInventory();
@@ -35,13 +34,11 @@ const RefillProductPopup: React.FC<RefillProductPopupProps> = ({ item, onClose }
     const handleClose = () => {
         setAmountToRefill(0);
         setErrorText(undefined);
-        onClose();
     }
 
     return (
         <ActionPopupWindow 
             title={`Fyll på ${item.name}`}
-            isOpen={!!item}
             onClose={handleClose}
             onAccept={handleRefillProduct}
             acceptButtonText='Fyll på'

@@ -6,11 +6,9 @@ import { useUsersContext } from '../../contexts/UsersContext';
 
 interface RefillUserBalancePopupProps {
     user: User;
-    isOpen: boolean;
-    onClose: () => void;
 }
 
-const RefillUserBalancePopup: React.FC<RefillUserBalancePopupProps> = ({ user, isOpen, onClose }) => {
+const RefillUserBalancePopup: React.FC<RefillUserBalancePopupProps> = ({ user }) => {
     const { addUserBalance } = useUsersContext();
 
     const MAX_COMMENT_LENGTH = 1000;
@@ -18,7 +16,7 @@ const RefillUserBalancePopup: React.FC<RefillUserBalancePopupProps> = ({ user, i
     const [errorText, setErrorText] = useState<string | undefined>(undefined);
     const [amountToDeposit, setAmountToDeposit] = useState<number>(0); // Use string
     const [comment, setComment] = useState<string>('');
-    const [ includeComment, setIncludeComment ] = useState<boolean>(false);
+    const [includeComment, setIncludeComment] = useState<boolean>(false);
 
     const handleRefill = async () => {
         // const parsedAmount = parseFloat(amountToDeposit);
@@ -44,7 +42,6 @@ const RefillUserBalancePopup: React.FC<RefillUserBalancePopupProps> = ({ user, i
     const handleClose = () => {
         setAmountToDeposit(0);
         setErrorText(undefined);
-        onClose();
     }
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -84,7 +81,6 @@ const RefillUserBalancePopup: React.FC<RefillUserBalancePopupProps> = ({ user, i
         <ActionPopupWindow 
             title={user.nick}
             onAccept={handleRefill}
-            isOpen={isOpen}
             onClose={handleClose}
             acceptButtonText="Fyll på"
             className='refill-user-balance-popup'
@@ -121,7 +117,7 @@ const RefillUserBalancePopup: React.FC<RefillUserBalancePopupProps> = ({ user, i
             { includeComment ? (
                 <>
                     <hr />
-                    <div className='deposit-comment-header'>
+                    <div>
                         <label htmlFor="comment">Kommentar (valfritt): </label>
                         <button onClick={() => { setErrorText(undefined); setIncludeComment(false)}}>Ingen Kommentar</button>
                     </div>

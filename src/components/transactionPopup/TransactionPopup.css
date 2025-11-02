@@ -1,20 +1,32 @@
 
 .transaction-popup {
-    background-color: var(--contrast-color);
-
+    max-height: 95%;
 }
 
-.transaction-popup .transaction-overview {
+.transaction-overview {
     display: flex;
     flex-direction: column;
-    gap: .5rem;
-
+    gap: .8rem;
 }
 
-.transaction-popup .transaction-overview p {
+
+.transaction-overview p {
     display: flex;
     justify-content: space-between;
     gap: 1rem;
+
+    margin-bottom: .2rem;
+}
+
+.transaction-overview .comment-container {
+    flex-direction: column;
+}
+
+.transaction-overview .comment {
+    font-style: italic;
+
+    max-height: 4.5rem;
+    overflow-y: auto;
 }
 
 
@@ -27,25 +39,35 @@
 .receipt-list {
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
+    justify-content: flex-start;
     gap: .5rem;
+
+    max-height: 5.7rem;
+    overflow-y: auto;
 }
 
-.receipt-list li {
+.receipt-item, .total {
     display: flex;
     justify-content: flex-end;
     gap: .5rem;
 }
 
-.receipt-list li p:first-child {
+.receipt-item p:first-child {
     margin-right: auto;
 }
 
-.receipt-list .item-total {
+.receipt-item .item-total {
     min-width: 5ch;
     text-align: right;
 }
 
-.receipt-list .total {
+.receipt-details .total {
     font-weight: bold;
+
+    justify-content: space-between !important;
+}
+
+
+.transaction-popup .accept-button {
+    background-color: var(--secondary-contrast-color) !important;
 }

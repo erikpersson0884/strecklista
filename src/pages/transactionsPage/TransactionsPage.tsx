@@ -3,10 +3,9 @@ import { useState } from 'react';
 import './TransactionsPage.css';
 
 import { useTransactionsContext } from '../../contexts/TransactionsContext';
+import { useModalContext } from '../../contexts/ModalContext';
 
 import TransactionPopup from '../../components/transactionPopup/TransactionPopup';
-import DeleteTransactionPopup from '../../components/deleteTransactionPopup/DeleteTransactionPopup';
-
 import Filter from './Filter/Filter';
 
 import downIcon from '../../assets/images/down.svg';
@@ -21,13 +20,17 @@ const TransactionsPage: FC = () => {
         transactionsPageNumber,
         setFilters
     } = useTransactionsContext();
+    const { openModal } = useModalContext();
     
 
     if (isLoading) return <p>Loading...</p>;
 
-    const [ selectedTransaction, setSelectedTransaction ] = useState<ITransaction | null>(null);
-    const [ showDeletePopupDiv, setShowDeletePopupDiv ] = useState<boolean>(false);
     const [ showFilters, setShowFilters ] = useState<boolean>(false);
+
+    const openTransactionPopup = (transaction: ITransaction) => {
+        openModal(<TransactionPopup transaction={transaction}/>);
+    };
+
 
 
     interface TransactionPreviewProps {
@@ -50,12 +53,16 @@ const TransactionsPage: FC = () => {
                 transactionTypeString = 'Okänd';
         }
 
+        let username: string;
+        if (transaction.type === 'purchase'  ||  transaction.type === 'deposit') username = (transaction as Purchase | Deposit).createdFor.nick;
+        else username = transaction.createdBy.nick;
+
         return (
             <li className={`transaction-preview list-item ${transaction.removed ? 'removed-transaction' : ''}`}>
                 <div className='transaction-preview-content'>
                     <div className='list-item__primary'>
                         <p>{new Date(transaction.createdTime).toISOString().split('T')[0]}</p>
-                        <p>{transaction.createdBy.nick}</p>
+                        <p>{username}</p>
                     </div>
                     <div className='list-item__secondary'>
                         <p>{transactionTypeString}</p>
@@ -64,7 +71,7 @@ const TransactionsPage: FC = () => {
                         )} 
                     </div>
                 </div>
-                <button className='open-popup-button' onClick={() => setSelectedTransaction(transaction)}>
+                <button className='open-popup-button' onClick={() => openTransactionPopup(transaction)}>
                     <img src={downIcon} alt='Expandera' height={10}/>
                 </button>
             </li>
@@ -107,14 +114,6 @@ const TransactionsPage: FC = () => {
                     <button className='next-button' onClick={getNextTransactions}>&gt;</button>
                 </footer>
             </div>
-
-            <TransactionPopup transaction={selectedTransaction} onClose={() => setSelectedTransaction(null)} />
-
-            <DeleteTransactionPopup
-                transaction={selectedTransaction}
-                isOpen={showDeletePopupDiv}
-                onClose={() => setShowDeletePopupDiv(false)}
-            />
 
         </>
     );
