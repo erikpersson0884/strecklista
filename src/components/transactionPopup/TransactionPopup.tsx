@@ -182,7 +182,7 @@ const TransactionPopup: FC<TransactionPopupProps> = ({transaction}) => {
             title="Transaktion"
             className="transaction-popup"
             acceptButtonText="Stryk Transaktion"
-            onAccept={() => openModal(<p>test</p>)}
+            onAccept={openConfirmDeleteDialog}
         >
            <PopupContent />
         </ActionPopupWindow>
