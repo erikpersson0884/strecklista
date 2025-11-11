@@ -1,6 +1,6 @@
 import { createContext, useState, useContext, ReactNode, useEffect } from 'react';
-import userApi from '../usersApi';
-import transactionsApi from '../transactionsApi';
+import userApi from '../api/usersApi';
+import transactionsApi from '../api/transactionsApi';
 
 
 interface UsersContextType {
