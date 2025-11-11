@@ -37,7 +37,7 @@ const App: React.FC = () => {
     else if (isAuthenticated) {
         return(
             <Providers>
-                <BrowserRouter basename='/strecklista/'>
+                <BrowserRouter>
                     <Header />
                     
                     <Routes>
@@ -53,7 +53,7 @@ const App: React.FC = () => {
         )
     } 
     else return (
-        <BrowserRouter basename='/strecklista/'>
+        <BrowserRouter>
             <Routes>
                 <Route path="/callback" element={<AuthCallback />} />
                 <Route path="*" element={

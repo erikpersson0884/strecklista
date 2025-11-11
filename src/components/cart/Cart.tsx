@@ -85,6 +85,9 @@ const Cart: FC<CartProps> = ({ closeCart }) => {
     return (
         <div className='cart' onClick={(e) => e.stopPropagation()}>
             <ul className='cart-list'>
+                { itemsInCart.length === 0 && (
+                    <p className='empty-cart-message'>Din korg är tom</p>
+                )}
                 {itemsInCart.map((item) => (
                     <CartItem key={item.id} item={item} />
                 ))}
@@ -117,7 +120,7 @@ const Cart: FC<CartProps> = ({ closeCart }) => {
                     )
                 }
 
-                <button className='pay-button' onClick={handleBuyProducts} disabled={itemsInCart.length === 0}>
+                <button className='pay-button disabled-button' onClick={handleBuyProducts} disabled={itemsInCart.length === 0}>
                     Sträcka
                 </button>
             </div>

@@ -6,7 +6,6 @@ export default defineConfig(({ mode }) => {    // This loads the right file base
     const env = loadEnv(mode, process.cwd(), '');
 
     return {
-        base: '/strecklista/',
         build: {
             assetsDir: 'assets',  // The folder where static assets will go
             rollupOptions: {
