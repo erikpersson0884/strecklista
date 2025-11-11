@@ -8,7 +8,7 @@ const inventoryApi = {
      * @throws Will throw an error if the API request fails.
      */
     getInventory: async (): Promise<ApiItem[]> => {
-        const response = await api.get("/api/group/item");
+        const response = await api.get("/group/item");
         const items = response.data.data.items;
         return items;
     },
@@ -22,7 +22,7 @@ const inventoryApi = {
      * @returns A promise that resolves to a boolean indicating whether the item was successfully added.
      */
     addProduct: async (displayName: string, prices: Price[], icon?: string): Promise<boolean> => {
-        const response = await api.post("api/group/item", {
+        const response = await api.post("/group/item", {
             displayName: displayName,
             prices: prices,
             ...(icon && { icon }),
