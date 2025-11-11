@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { setAuthToken as setAuthTokenInAxios } from "../axiosInstance";
-import usersApi from "../usersApi";
-import authApi from "../authApi";
+import { setAuthToken as setAuthTokenInAxios } from "../api/axiosInstance";
+import usersApi from "../api/usersApi";
+import authApi from "../api/authApi";
 
 interface AuthContextType {
     isLoading: boolean;
