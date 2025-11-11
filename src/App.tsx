@@ -56,7 +56,7 @@ const App: React.FC = () => {
         <BrowserRouter>
             <Routes>
                 <Route path="/callback" element={<AuthCallback />} />
-                <Route path="*" element={
+                <Route path="/" element={
                     <>
                         <LoginPage />
                         <Footer />
