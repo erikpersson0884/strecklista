@@ -39,7 +39,7 @@ const transactionsApi = {
             if (url) {
                 response = await api.get(url);
             } else {
-                response = await api.get(`api/group/Transaction`, {
+                response = await api.get(`/group/transaction`, {
                     params: { limit, offset },
                 });
             }
@@ -65,7 +65,7 @@ const transactionsApi = {
      */
     makeDeposit: async (userId: UserId, amount: number, comment?: string): Promise<number> => {
         try {
-            const response = await api.post("/api/group/deposit", { 
+            const response = await api.post("/group/deposit", { 
                 userId, 
                 total: amount,
                 comment,
@@ -90,7 +90,7 @@ const transactionsApi = {
     makePurchase: async (userId: UserId, products: ProductInCart[], comment?: string): Promise<number> => {
         try {
             const apiItems = products.map(IProductoApiItem);
-            const response = await api.post("/api/group/purchase", { 
+            const response = await api.post("/group/purchase", { 
                 userId, 
                 items: apiItems,
                 comment,
@@ -111,7 +111,7 @@ const transactionsApi = {
      */
     removeTransaction: async (id: Id): Promise<boolean> => {
         try {
-            const success = await api.patch(`api/group/Transaction/${id}`, { removed: true });
+            const success = await api.patch(`/group/transaction/${id}`, { removed: true });
             return success.status === 204 || success.status === 200; // Return true if the request succeeds
         } catch (error: any) {
             return false;

@@ -1,5 +1,5 @@
 import { createContext, useState, useContext, ReactNode } from 'react';
-import inventoryApi from '../api/inventoryApi';
+import inventoryApi from '../inventoryApi';
 import { useEffect } from 'react';
 import { productAdapter } from '../adapters/productAdapter';
 
