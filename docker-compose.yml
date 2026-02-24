@@ -5,6 +5,6 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        - VITE_API_URL=https://prittemp.olillin.com
+        - VITE_API_URL=http://localhost:3000/api
     ports:
       - "3000:80"

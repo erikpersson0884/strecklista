@@ -1,6 +1,6 @@
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
-import { VitePWA } from 'vite-plugin-pwa';
+// import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig(({ mode }) => {    // This loads the right file based on the mode (e.g., `.env.production`)
     const env = loadEnv(mode, process.cwd(), '');
@@ -36,38 +36,39 @@ export default defineConfig(({ mode }) => {    // This loads the right file base
         },
         plugins: [
             react(),
-            VitePWA({
-            registerType: 'autoUpdate',
-            manifest: {
-                    name: 'Gökens Strecklista',
-                    short_name: 'Strecklista',
-                    description: 'Strecklista för Göken och alla hans vänner',
-                    theme_color: '#0e666c',
-                    background_color: '#292929',
-                    lang: 'sv',
-                    dir: 'ltr',
+        // This is probably not a problem, but removed it to try and fix backend connection issues on chalmers.it
+        // VitePWA({
+        // registerType: 'autoUpdate',
+        // manifest: {
+        //         name: 'Gökens Strecklista',
+        //         short_name: 'Strecklista',
+        //         description: 'Strecklista för Göken och alla hans vänner',
+        //         theme_color: '#0e666c',
+        //         background_color: '#292929',
+        //         lang: 'sv',
+        //         dir: 'ltr',
 
-                    display: 'standalone',
-                    start_url: '/strecklista/',
+        //         display: 'standalone',
+        //         start_url: '/strecklista/',
 
-                    categories: ['entertainment'],
-                    icons: [
-                    {
-                        src: '/strecklista/icons/icon-192x192.png',
-                        sizes: '192x192',
-                        type: 'image/png'
-                    },
-                    {
-                        src: '/strecklista/icons/icon-512x512.png',
-                        sizes: '512x512',
-                        type: 'image/png'
-                    }
-                    ]
-                },
-                workbox: {
-                    globPatterns: ['**/*.{js,css,html,png,svg}'],
-                }
-            })
+        //         categories: ['entertainment'],
+        //         icons: [
+        //         {
+        //             src: '/strecklista/icons/icon-192x192.png',
+        //             sizes: '192x192',
+        //             type: 'image/png'
+        //         },
+        //         {
+        //             src: '/strecklista/icons/icon-512x512.png',
+        //             sizes: '512x512',
+        //             type: 'image/png'
+        //         }
+        //         ]
+        //     },
+        //     workbox: {
+        //         globPatterns: ['**/*.{js,css,html,png,svg}'],
+        //     }
+        // })
         ]
     };
 });
