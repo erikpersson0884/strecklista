@@ -29,6 +29,11 @@
     border-radius: 10px;
 }
 
+.no-products {
+    margin-top: 4rem;
+    font-style: italic;
+}
+
 
 .show-cart-button {
     background-color: var(--green-color);

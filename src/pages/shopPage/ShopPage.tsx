@@ -15,14 +15,9 @@ const ShopPage: React.FC = () => {
     const [displayCart, setDisplayCart] = React.useState<boolean>(false);
     const [searchTerm, setSearchTerm] = React.useState<string>('');
 
-    return (
-        <div className='page'>
-            {displayCart &&
-                <Modal onClose={() => setDisplayCart(false)}>
-                    <Cart closeCart={() => setDisplayCart(false)}/> 
-                </Modal>
-            }
-            
+
+    const SearchBar = () => {
+        return (
             <div className='search-bar-container'>
                 <input
                     type="text" 
@@ -38,7 +33,11 @@ const ShopPage: React.FC = () => {
                     <img src={emptySearchIcon} alt="clear search" height={20}/>
                 </button>
             </div>
+        )
+    };
 
+    const ShopItems = () => {
+        return (
             <div className='shop-items'>
                 {products.filter((item: IItem) => 
                     item.favorite == true && 
@@ -56,21 +55,40 @@ const ShopPage: React.FC = () => {
                     <ShopItem key={item.id} item={item} />
                 )}
             </div>
+        )
+    };
+    
+    const OpenCartButton: React.FC<{ onClick: () => void }> = ({ onClick }) => {
+        const { numberOfProductsInCart } = useCart();
+        return (
+            <button className='show-cart-button' onClick={onClick}>
+                <div className='items-indicator'>{numberOfProductsInCart}</div>
+                <p>Betala</p>
+            </button>
+        );
+    }
 
+    return (
+        <div className='page'>
+            {displayCart &&
+                <Modal onClose={() => setDisplayCart(false)}>
+                    <Cart closeCart={() => setDisplayCart(false)}/> 
+                </Modal>
+            }
+            
+            <SearchBar />
+            {products.length > 0 ?
+                <ShopItems />
+                :
+                <div className='no-products'>
+                    <p>Inga produkter hittades</p>
+                </div>
+            }
+            
             {numberOfProductsInCart  !== 0 && <OpenCartButton onClick={() => setDisplayCart(true)}/>}
         </div>
 
     );
 };
-
-const OpenCartButton: React.FC<{ onClick: () => void }> = ({ onClick }) => {
-    const { numberOfProductsInCart } = useCart();
-    return (
-        <button className='show-cart-button' onClick={onClick}>
-            <div className='items-indicator'>{numberOfProductsInCart}</div>
-            <p>Betala</p>
-        </button>
-    );
-}
 
 export default ShopPage;
