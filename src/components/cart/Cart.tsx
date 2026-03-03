@@ -17,7 +17,7 @@ const Cart: FC<CartProps> = ({ closeCart }) => {
     const { itemsInCart, buyProducts, total } = useCart();
     const { users } = useUsersContext();
     const { currentUser } = useAuth();
-    if (!currentUser) return null;
+    if (!currentUser) return null; // Should never happen, but it can open before currentUser is set, so we need to handle this case
 
     const [comment, setComment] = useState<string>('');
     const [selectedUser, setSelectedUser] = useState<User>(currentUser);
@@ -109,7 +109,7 @@ const Cart: FC<CartProps> = ({ closeCart }) => {
                                 id="comment"
                                 className='comment'
                                 value={comment}
-                                onChange={(e: ChangeEvent<HTMLTextAreaElement>) => handleCommentChange(e)}
+                                onChange={handleCommentChange}
                                 placeholder="Skriv en kommentar här..."
                             />
                         </>

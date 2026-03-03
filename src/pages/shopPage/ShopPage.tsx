@@ -37,7 +37,12 @@ const ShopPage: React.FC = () => {
     };
 
     const ShopItems = () => {
-        return (
+        if (products.length === 0) {
+            <div className='no-products'>
+                    <p>Inga produkter hittades</p>
+                </div>
+        }
+        else return (
             <div className='shop-items'>
                 {products.filter((item: IItem) => 
                     item.favorite == true && 
@@ -58,34 +63,27 @@ const ShopPage: React.FC = () => {
         )
     };
     
-    const OpenCartButton: React.FC<{ onClick: () => void }> = ({ onClick }) => {
+    const OpenCartButton: React.FC<{isVisible: boolean, onClick: () => void }> = ({ isVisible, onClick }) => {
         const { numberOfProductsInCart } = useCart();
-        return (
+        if (!isVisible) return null;
+        else return (
             <button className='show-cart-button' onClick={onClick}>
                 <div className='items-indicator'>{numberOfProductsInCart}</div>
-                <p>Betala</p>
+                <p>Strecka</p>
             </button>
         );
     }
 
     return (
         <div className='page'>
-            {displayCart &&
-                <Modal onClose={() => setDisplayCart(false)}>
-                    <Cart closeCart={() => setDisplayCart(false)}/> 
-                </Modal>
-            }
+            <Modal isOpen={displayCart} onClose={() => setDisplayCart(false)}>
+                <Cart closeCart={() => setDisplayCart(false)}/> 
+            </Modal>
             
             <SearchBar />
-            {products.length > 0 ?
-                <ShopItems />
-                :
-                <div className='no-products'>
-                    <p>Inga produkter hittades</p>
-                </div>
-            }
+            <ShopItems />
             
-            {numberOfProductsInCart  !== 0 && <OpenCartButton onClick={() => setDisplayCart(true)}/>}
+            <OpenCartButton isVisible={numberOfProductsInCart > 0 && !displayCart} onClick={() => setDisplayCart(true)}/>
         </div>
 
     );
