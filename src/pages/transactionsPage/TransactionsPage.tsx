@@ -31,8 +31,6 @@ const TransactionsPage: FC = () => {
         openModal(<TransactionPopup transaction={transaction}/>);
     };
 
-
-
     interface TransactionPreviewProps {
         transaction: ITransaction;
     }
@@ -78,44 +76,59 @@ const TransactionsPage: FC = () => {
         );
     }
 
-    return (
-        <>
-            <div className='transactions-page page'>
-                <div className='search-and-filter'>
-                    <input 
-                        type='text' 
-                        placeholder='Sök transaktioner...' 
-                        className='search-bar' 
-                        onChange={(e) =>
-                            setFilters(f => ({ ...f, searchQuery: e.target.value }))
-                        }
-                    />
-                    <button 
-                        className='open-filters-button' 
-                        onClick={() => setShowFilters(!showFilters)}
-                    >
-                        <img src={filterIcon} alt='Filter' height={10}/>
-                    </button>
-                </div>
+    const TransactionList = () => {
+        if (filteredTransactions.length === 0) return (
+            <p className='no-transactions'>Inga transaktioner hittades.</p>
+        ) 
+        else return (
+            <ul className='transactions-list'>
+                {filteredTransactions.map((transaction: ITransaction) => 
+                    <TransactionPreview key={transaction.id} transaction={transaction} />
+                )}
+            </ul>
+        );
+    };
 
-                {showFilters && <Filter />}
-                
-
-                <ul className='transactions-list'>
-
-                    {filteredTransactions.map((transaction: ITransaction) => 
-                        <TransactionPreview key={transaction.id} transaction={transaction} />
-                    )}
-                </ul>
-
-                <footer className='pagination'>
-                    <button disabled={transactionsPageNumber <= 1} className='prev-button' onClick={getPrevTransactions}>&lt;</button>
-                    <span className='page-number'>{transactionsPageNumber}</span>
-                    <button className='next-button' onClick={getNextTransactions}>&gt;</button>
-                </footer>
+    const SearchbarAndFilters = () => {
+        return (
+            <div className='search-and-filter'>
+                <input 
+                    type='text' 
+                    placeholder='Sök transaktioner...' 
+                    className='search-bar' 
+                    onChange={(e) =>
+                        setFilters(f => ({ ...f, searchQuery: e.target.value }))
+                    }
+                />
+                <button 
+                    className='open-filters-button' 
+                    onClick={() => setShowFilters(!showFilters)}
+                >
+                    <img src={filterIcon} alt='Filter' height={10}/>
+                </button>
             </div>
+        )
+    };
 
-        </>
+    const Pagination = () => {
+        return (
+            <footer className='pagination'>
+                <button disabled={transactionsPageNumber <= 1} className='prev-button' onClick={getPrevTransactions}>&lt;</button>
+                <span className='page-number'>{transactionsPageNumber}</span>
+                <button disabled={filteredTransactions.length == 0} className='next-button' onClick={getNextTransactions}>&gt;</button>
+            </footer>
+        );
+    };
+
+    
+    return (
+        <div className='transactions-page page'>
+            <SearchbarAndFilters />
+
+            {showFilters && <Filter hideFilters={() => setShowFilters(false)}/>}
+            <TransactionList />
+            <Pagination />
+        </div>
     );
 };
 
