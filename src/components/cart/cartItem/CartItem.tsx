@@ -11,10 +11,10 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
 
     return( 
         <li className='cart-item' key={item.id}>
-            <span>{item.quantity}x</span>
             <span className='item-name'>{item.name}</span>
 
             <button onClick={() => increaseProductQuantity(item)}>+</button>
+            <span>{item.quantity}x</span>
 
             <button onClick={() => decreaseProductQuantity(item)}>-</button>
 
