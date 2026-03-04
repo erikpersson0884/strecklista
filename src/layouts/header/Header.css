@@ -64,10 +64,12 @@
     }
 
     .page-header .header-nav {
-        display: none;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height .5s ease;
     }
 
     #root .page-header .nav-open {
-        display: flex;
+        max-height: 10rem;
     }
 }
