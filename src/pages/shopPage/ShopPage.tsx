@@ -45,12 +45,13 @@ const SearchBar: React.FC<SearchBarProps> = ({searchTerm, setSearchTerm}) => {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
             />
-            <button 
+            { (searchTerm.length > 0) && <button 
                 className='clear-search-bar-button' 
                 onClick={() => setSearchTerm('')}
             >
                 <img src={emptySearchIcon} alt="clear search" height={20}/>
             </button>
+            }
         </div>
     )
 };
