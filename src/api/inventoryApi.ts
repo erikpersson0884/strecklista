@@ -39,7 +39,7 @@ const inventoryApi = {
      *          or `false` otherwise.
      */
     updateProduct: async (productId: ProductId, updates: Partial<ApiItem>): Promise<boolean> => {
-        const response = await api.patch(`api/group/item/${productId}`, updates);
+        const response = await api.patch(`group/item/${productId}`, updates);
         return response.status === 200;
     },
 
@@ -53,7 +53,7 @@ const inventoryApi = {
      * @throws Will throw an error if the API request fails.
      */
     deleteProduct: async (id: Id): Promise<boolean> => {
-        const response = await api.delete(`api/group/item/${id}`);
+        const response = await api.delete(`/group/item/${id}`);
         return response.status === 200;
     },
 
@@ -66,7 +66,7 @@ const inventoryApi = {
                 }
             ]
         }
-        const response = await api.post(`api/group/stock`, body);
+        const response = await api.post(`/group/stock`, body);
         return response.status === 200 || response.status === 201;
     },
 
