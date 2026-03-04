@@ -2,10 +2,12 @@ import React from 'react';
 import './Header.css';
 import { Link } from 'react-router-dom';
 import usersApi from '../../api/usersApi';
+import { useAuth } from '../../contexts/AuthContext';
 import fallbackLogo from '../../assets/images/bird.png';
 import menuIcon from '../../assets/images/menu-icon.svg';
 
 const Header: React.FC = () => {
+    const { isAuthenticated } = useAuth();
     const [ navOpen, setNavOpen ] = React.useState(false)
     const [ groupAvatarUrl, setGroupAvatarUrl ] = React.useState<string>(fallbackLogo)
 
@@ -22,7 +24,7 @@ const Header: React.FC = () => {
             const groupInfo = await usersApi.getGroupInfo()
             if (groupInfo.avatarUrl) setGroupAvatarUrl(groupInfo.avatarUrl)
         }
-        getGroupAvatar()
+        if (isAuthenticated) getGroupAvatar() // Helps with for example testing
     }, [])
     
     return (

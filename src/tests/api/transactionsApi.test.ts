@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
-import transactions from "../../api/transactionsApi";
 import api from "../../api/axiosInstance";
+import transactionsApi from "../../api/transactionsApi";
 
 vi.mock("../../api/axiosInstance");
 
@@ -46,7 +46,7 @@ describe("transactions", () => {
             };
             mockedApi.get.mockResolvedValueOnce(mockData as any);
 
-            const result = await transactions.fetchTransactions(null, 5, 0);
+            const result = await transactionsApi.fetchTransactions(null, 5, 0);
 
             expect(mockedApi.get).toHaveBeenCalledWith("/group/transaction", {
                 params: { limit: 5, offset: 0 },
@@ -63,7 +63,7 @@ describe("transactions", () => {
             const mockData = { data: { data: { transactions: [], next: null, previous: null } } };
             mockedApi.get.mockResolvedValueOnce(mockData as any);
 
-            await transactions.fetchTransactions("/custom-url");
+            await transactionsApi.fetchTransactions("/custom-url");
             expect(mockedApi.get).toHaveBeenCalledWith("/custom-url");
         });
 
@@ -72,7 +72,7 @@ describe("transactions", () => {
                 response: { data: { message: "Server error" } },
             });
 
-            await expect(transactions.fetchTransactions()).rejects.toThrow("Server error");
+            await expect(transactionsApi.fetchTransactions()).rejects.toThrow("Server error");
         });
     });
 
@@ -81,7 +81,7 @@ describe("transactions", () => {
             const mockResponse = { data: { data: { balance: 150 } } };
             mockedApi.post.mockResolvedValueOnce(mockResponse as any);
 
-            const result = await transactions.makeDeposit(1111, 50, "Test deposit");
+            const result = await transactionsApi.makeDeposit(1111, 50, "Test deposit");
 
             expect(mockedApi.post).toHaveBeenCalledWith("/group/deposit", {
                 userId: 1111,
@@ -93,7 +93,7 @@ describe("transactions", () => {
 
         it("throws error when deposit fails", async () => {
             mockedApi.post.mockRejectedValueOnce(new Error("Deposit failed"));
-            await expect(transactions.makeDeposit(1111, 50)).rejects.toThrow("Deposit failed");
+            await expect(transactionsApi.makeDeposit(1111, 50)).rejects.toThrow("Deposit failed");
         });
     });
 
@@ -102,7 +102,7 @@ describe("transactions", () => {
             const mockResponse = { data: { data: { balance: 200 } } };
             mockedApi.post.mockResolvedValueOnce(mockResponse as any);
 
-            const result = await transactions.makePurchase(1111, mockProducts, "Test purchase");
+            const result = await transactionsApi.makePurchase(1111, mockProducts, "Test purchase");
 
             expect(mockedApi.post).toHaveBeenCalledWith("/group/purchase", {
                 userId: 1111,
@@ -121,7 +121,7 @@ describe("transactions", () => {
         it("throws error when purchase fails", async () => {
             mockedApi.post.mockRejectedValueOnce(new Error("Purchase failed"));
             await expect(
-                transactions.makePurchase(1111, [mockProduct])
+                transactionsApi.makePurchase(1111, [mockProduct])
             ).rejects.toThrow("Purchase failed");
         });
     });
@@ -129,20 +129,20 @@ describe("transactions", () => {
     describe("removeTransaction", () => {
         it("returns true on success (status 204)", async () => {
             mockedApi.patch.mockResolvedValueOnce({ status: 204 } as any);
-            const result = await transactions.removeTransaction(1);
+            const result = await transactionsApi.removeTransaction(1);
             expect(mockedApi.patch).toHaveBeenCalledWith("/group/transaction/1", { removed: true });
             expect(result).toBe(true);
         });
 
         it("returns true on success (status 200)", async () => {
             mockedApi.patch.mockResolvedValueOnce({ status: 200 } as any);
-            const result = await transactions.removeTransaction(1);
+            const result = await transactionsApi.removeTransaction(1);
             expect(result).toBe(true);
         });
 
         it("returns false on error", async () => {
             mockedApi.patch.mockRejectedValueOnce(new Error("Failed"));
-            const result = await transactions.removeTransaction(1);
+            const result = await transactionsApi.removeTransaction(1);
             expect(result).toBe(false);
         });
     });
