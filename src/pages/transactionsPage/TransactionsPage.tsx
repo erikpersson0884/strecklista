@@ -13,7 +13,7 @@ import filterIcon from '../../assets/images/filter.svg';
 
 const TransactionsPage: FC = () => {
     const { 
-        isLoading,
+        isLoadingTransactions,
         filteredTransactions, 
         getNextTransactions, 
         getPrevTransactions,
@@ -23,7 +23,7 @@ const TransactionsPage: FC = () => {
     const { openModal } = useModalContext();
     
 
-    if (isLoading) return <p>Loading...</p>;
+    if (isLoadingTransactions) return <p>Loading...</p>;
 
     const [ showFilters, setShowFilters ] = useState<boolean>(false);
 

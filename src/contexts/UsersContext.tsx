@@ -1,10 +1,11 @@
 import { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 import userApi from '../api/usersApi';
 import transactionsApi from '../api/transactionsApi';
+import { useAuth } from './AuthContext';
 
 
 interface UsersContextType {
-    isLoading: boolean;
+    isLoadingUsers: boolean;
     users: User[];
     addUserBalance: (userId: UserId, amount: number, comment?: string) => Promise<boolean>;
     getUserFromUserId: (userId: UserId) => User;
@@ -13,8 +14,10 @@ interface UsersContextType {
 const UsersContext = createContext<UsersContextType | undefined>(undefined);
 
 export const UsersProvider = ({ children }: { children: ReactNode }) => {
-    const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [users, setUsers] = useState<User[]>([]);
+    const { isAuthenticated } = useAuth();
+
+    const [ isLoadingUsers, setIsLoadingUsers ] = useState<boolean>(true);
+    const [ users, setUsers ] = useState<User[]>([]);
     
     const fetchUsers = async () => {
         try {
@@ -26,12 +29,16 @@ export const UsersProvider = ({ children }: { children: ReactNode }) => {
     };
 
     useEffect(() => {
+        if (!isAuthenticated) return;
+
         const fetchData = async () => {
+            setIsLoadingUsers(true);
             await fetchUsers();
-            setIsLoading(false);
+            setIsLoadingUsers(false);
         };
+
         fetchData();
-    }, []);
+    }, [isAuthenticated]);
 
     const addUserBalance = async (userId: UserId, amount: number, comment?: string): Promise<boolean> => {
         checkThatUserExists(userId);
@@ -66,7 +73,7 @@ export const UsersProvider = ({ children }: { children: ReactNode }) => {
 
     return (
         <UsersContext.Provider value={{ 
-            isLoading, 
+            isLoadingUsers, 
             users, 
             addUserBalance, 
             getUserFromUserId 

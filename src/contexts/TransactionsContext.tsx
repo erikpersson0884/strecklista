@@ -3,9 +3,10 @@ import transactionsApi from '../api/transactionsApi';
 import { useUsersContext } from './UsersContext';
 import { useInventory } from './InventoryContext';
 import { adaptTransaction } from '../adapters/transactionAdapter';
+import { useAuth } from './AuthContext';
 
 interface TransactionsContextProps {
-    isLoading: boolean;
+    isLoadingTransactions: boolean;
     transactions: ITransaction[];
     filteredTransactions: ITransaction[];
     filters: TransactionFilters;
@@ -29,14 +30,15 @@ interface TransactionFilters {
 const TransactionsContext = createContext<TransactionsContextProps | undefined>(undefined);
 
 export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-    const { isLoading: loadingusers, getUserFromUserId } = useUsersContext();
-    const { getProductById } = useInventory();
+    const { isLoadingUsers, getUserFromUserId } = useUsersContext();
+    const { getProductById, isLoadingInventory } = useInventory();
+    const { isAuthenticated } = useAuth();
 
     const [filteredTransactions, setFilteredTransactions] = useState<ITransaction[]>([]);
     const [transactions, setTransactions] = useState<ITransaction[]>([]);
     const [nextUrl, setNextUrl] = useState<string | null>(null);
     const [prevUrl, setPrevUrl] = useState<string | null>(null);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [isLoadingTransactions, setIsLoadingTransactions] = useState<boolean>(true);
     const [transactionsPageNumber, settransactionsPageNumber] = useState<number>(1);
     const [filters, setFilters] = useState<TransactionFilters>({
         userId: 'all',
@@ -95,7 +97,6 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
             filtered = filtered.filter((t: ITransaction) => {
                 // If the createdTime string matches the search, include it
                 if (t.createdTime.toISOString().slice(0, 16).toLowerCase().includes(searchString)) {
-                    console.log(t.createdTime.toISOString().toLowerCase(), searchString);
                     return true;
                 }
 
@@ -146,13 +147,14 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
 
 
     React.useEffect(() => {
-        if (loadingusers) return;
+        if (!isAuthenticated || isLoadingUsers || isLoadingInventory) return;
+
         const fetchTransactions = async () => {
             await getTransactions();
-            setIsLoading(false);
+            setIsLoadingTransactions(false);
         };
         fetchTransactions();
-    }, [loadingusers]);
+    }, [isLoadingUsers, isAuthenticated, isLoadingInventory]);
 
 
     const removeTransaction = async (id: Id): Promise<boolean> => {
@@ -165,7 +167,7 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
 
     return (
         <TransactionsContext.Provider value={{ 
-            isLoading, 
+            isLoadingTransactions, 
             transactions, 
             filteredTransactions, 
             getNextTransactions, 

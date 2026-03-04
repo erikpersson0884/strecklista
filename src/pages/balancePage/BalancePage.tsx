@@ -8,10 +8,10 @@ import UserBalance from './UserBalance';
 
 const BalancePage: React.FC = () => {
     const { currentUser } = useAuth();
-    const { users, isLoading: loadingUsers } = useUsersContext();
+    const { users, isLoadingUsers } = useUsersContext();
 
 
-    if (loadingUsers || !currentUser) return ( // should implement a better check for current user
+    if (isLoadingUsers || !currentUser) return ( // should implement a better check for current user
         <p>Laddar användare...</p>
     )
 

@@ -21,7 +21,7 @@ import { useAuth } from './contexts/AuthContext';
 
 
 const App: React.FC = () => {
-    const { isAuthenticated, isLoading } = useAuth();
+    const { isAuthenticated, isLoggingIn } = useAuth();
 
     const pages = [
         { url: '/', component: <ShopPage /> },
@@ -31,7 +31,7 @@ const App: React.FC = () => {
         { url: '/profile', component: <ProfilePage /> },
     ]
     
-    if (isLoading) {
+    if (isLoggingIn) {
         return <p>Loading...</p>;
     } 
     else if (isAuthenticated) {

@@ -4,7 +4,7 @@ import usersApi from "../api/usersApi";
 import authApi from "../api/authApi";
 
 interface AuthContextType {
-    isLoading: boolean;
+    isLoggingIn: boolean;
     isAuthenticated: boolean;
     authenticate: () => void;
     logout: () => void;
@@ -16,7 +16,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [ isLoading , setIsLoading ] = useState<boolean>(true);
+    const [ isLoggingIn , setIsLoggingIn ] = useState<boolean>(true);
     const [token, setToken] = useState<string | null>(() => localStorage.getItem("authToken"));
     const [currentUser, setCurrentUser] = useState<User | null>(null);
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -27,25 +27,26 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 setCurrentUser(null);
                 setIsAuthenticated(false);
                 localStorage.removeItem("authToken");
+                setIsLoggingIn(false);
                 return;
             }
-
             try {
-                await setAuthTokenInAxios(token); // Ensure Axios has the token
+                setAuthTokenInAxios(token);
                 const user: User = await usersApi.getCurrentUser();
                 setCurrentUser(user);
                 setIsAuthenticated(true);
-                localStorage.setItem("authToken", token); // Store token persistently
+                localStorage.setItem("authToken", token);
+                setIsLoggingIn(false);
             } catch (error) {
-                console.error("Error fetching user:", error);
+                console.error("Error fetching the current user:", error);
                 setCurrentUser(null);
                 setIsAuthenticated(false);
-                setToken(null); // Clear invalid token
+                setToken(null);
             }
         };
 
+
         fetchUser();
-        setIsLoading(false);
     }, [token]); // Ensure it refetches user when token changes
 
     const authenticate = async (): Promise<void> => {
@@ -55,11 +56,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     const exchangeCodeForToken = async (code: string): Promise<void> => {
         try {
-            const { token, user } = await authApi.login(code);
-
+            const { token } = await authApi.login(code);
             setToken(token);
-            setCurrentUser(user);
-            setIsAuthenticated(true);
         } catch (error) {
             console.error("Error exchanging code for token", error);
         }
@@ -75,7 +73,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     return (
         <AuthContext.Provider value={{ 
-            isLoading, 
+            isLoggingIn, 
             isAuthenticated, 
             authenticate, 
             logout, 

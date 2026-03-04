@@ -2,10 +2,11 @@ import { createContext, useState, useContext, ReactNode } from 'react';
 import inventoryApi from '../api/inventoryApi';
 import { useEffect } from 'react';
 import { productAdapter } from '../adapters/productAdapter';
+import { useAuth } from './AuthContext';
 
 
 interface InventoryContextProps {
-    isLoading: boolean;
+    isLoadingInventory: boolean;
     products: IItem[];
     addProduct: (displayName: string, internalPrice: number, icon?: string) => Promise<boolean>;
     updateProduct: (updatedProduct: IItem) => Promise<boolean>;
@@ -18,7 +19,9 @@ interface InventoryContextProps {
 const InventoryContext = createContext<InventoryContextProps | undefined>(undefined);
 
 export const InventoryProvider = ({ children }: { children: ReactNode }) => {
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const { isAuthenticated } = useAuth();
+
+    const [isLoadingInventory, setIsLoadingInventory] = useState<boolean>(true);
     const [products, setProducts] = useState<IItem[]>([]);
 
     const fetchInventory = async () => {
@@ -26,15 +29,18 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
             const apiItems: ApiItem[] = await inventoryApi.getInventory();
             const newProducts = apiItems.map(productAdapter);
             setProducts(newProducts);
-            setIsLoading(false);
         } catch (error) {
             console.error('Failed to fetch inventory', error);
         }
     };
 
     useEffect( () => {
+        if (!isAuthenticated) return;
+
+        setIsLoadingInventory(true);
         fetchInventory();
-    }, []);
+        setIsLoadingInventory(false);
+    }, [isAuthenticated]);
 
     const getProductById = (id: Id): IItem => {
         const item = products.find(item => item.id === id);
@@ -122,7 +128,7 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
 
     return (
         <InventoryContext.Provider value={{ 
-            isLoading, 
+            isLoadingInventory, 
             products, 
             addProduct, 
             updateProduct, 

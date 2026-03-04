@@ -15,7 +15,7 @@ import refillIcon from '../../assets/images/refill.svg';
 
 
 const InventoryPage: React.FC = () => {
-    const { products, isLoading, deleteProduct } = useInventory();
+    const { products, isLoadingInventory, deleteProduct } = useInventory();
     const { openModal } = useModalContext();
 
     const DeleteConfirmDialog: React.FC<{ item: IItem }> = ({ item }) => {
@@ -60,7 +60,7 @@ const InventoryPage: React.FC = () => {
         )
     };
 
-    if (isLoading) return <p>Loading...</p>;
+    if (isLoadingInventory) return <p>Loading...</p>;
 
     return (
         <>
