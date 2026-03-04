@@ -15,6 +15,7 @@ interface TransactionsContextProps {
     getNextTransactions: () => void;
     getPrevTransactions: () => void;
     removeTransaction: (id: Id) => Promise<boolean>;
+    refreshTransactions: () => void;
     transactionsPageNumber: number;
 }
 
@@ -165,6 +166,12 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
         return success;
     };
 
+    const refreshTransactions = async () => {
+        setIsLoadingTransactions(true);
+        await getTransactions();
+        setIsLoadingTransactions(false);
+    }
+
     return (
         <TransactionsContext.Provider value={{ 
             isLoadingTransactions, 
@@ -176,7 +183,8 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
             transactionsPageNumber,
             filters,
             setFilters,
-            resetFilters
+            resetFilters,
+            refreshTransactions
         }}>
             {children}
         </TransactionsContext.Provider>

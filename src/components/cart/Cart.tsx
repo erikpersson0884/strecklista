@@ -18,9 +18,10 @@ const Cart: FC<CartProps> = ({ closeCart }) => {
     const { currentUser } = useAuth();
     if (!currentUser) return null; // Should never happen, but it can open before currentUser is set, so we need to handle this case
 
-    const [comment, setComment] = useState<string>('');
-    const [selectedUser, setSelectedUser] = useState<User>(currentUser);
-    const [includeComment, setIncludeComment] = useState<boolean>(false);
+    const [ comment, setComment ] = useState<string>('');
+    const [ selectedUser, setSelectedUser ] = useState<User>(currentUser);
+    const [ includeComment, setIncludeComment ] = useState<boolean>(false);
+    const [ errorMessage, setErrorMessage ] = useState<string>('');
 
     const handleBuyProducts = async () => {
         if (itemsInCart.length === 0) return;
@@ -29,8 +30,11 @@ const Cart: FC<CartProps> = ({ closeCart }) => {
             return;
         }
         const successfullBuy: boolean = await buyProducts(selectedUser.id, includeComment ? comment : undefined);
-        if (successfullBuy) closeCart();
-        else alert('Det gick inte att sträcka produkterna');
+        if (successfullBuy) { 
+            closeCart();
+            setErrorMessage('');
+        }
+        else setErrorMessage('Köpet misslyckades, försök igen senare');
     };
 
 
@@ -52,6 +56,7 @@ const Cart: FC<CartProps> = ({ closeCart }) => {
                 </button>
             </div>
 
+            {errorMessage && <p className='error-message'>{errorMessage}</p>}
         </div>
     );
 };

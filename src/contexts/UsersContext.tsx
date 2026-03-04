@@ -8,6 +8,7 @@ interface UsersContextType {
     isLoadingUsers: boolean;
     users: User[];
     addUserBalance: (userId: UserId, amount: number, comment?: string) => Promise<boolean>;
+    setUserBalance: (userId: UserId, newBalance: number) => void;
     getUserFromUserId: (userId: UserId) => User;
 }
 
@@ -75,7 +76,8 @@ export const UsersProvider = ({ children }: { children: ReactNode }) => {
         <UsersContext.Provider value={{ 
             isLoadingUsers, 
             users, 
-            addUserBalance, 
+            addUserBalance,
+            setUserBalance,
             getUserFromUserId 
         }}>
             {children}
