@@ -181,4 +181,11 @@ declare global {
         icon: string;
         balance: number;
     }
+
+    interface GroupInfo {
+        id: Id;
+        gammaId: string;
+        avatarUrl: string;
+        prettyName: string;
+    }
 }

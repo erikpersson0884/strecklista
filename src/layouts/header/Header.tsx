@@ -1,11 +1,13 @@
 import React from 'react';
 import './Header.css';
 import { Link } from 'react-router-dom';
-import prit25image from '../../assets/images/prit25.png';
+import usersApi from '../../api/usersApi';
+import fallbackLogo from '../../assets/images/bird.png';
 import menuIcon from '../../assets/images/menu-icon.svg';
 
 const Header: React.FC = () => {
     const [ navOpen, setNavOpen ] = React.useState(false)
+    const [ groupAvatarUrl, setGroupAvatarUrl ] = React.useState<string>(fallbackLogo)
 
     const pages = [
         { url: '/', linkText: 'Strecka'},
@@ -13,12 +15,21 @@ const Header: React.FC = () => {
         { url: '/balance', linkText: 'Tillgodo' },
         { url: '/transactions', linkText: 'Transaktioner'},
     ]
+
+
+    React.useEffect(() => {
+        const getGroupAvatar = async () => {
+            const groupInfo = await usersApi.getGroupInfo()
+            if (groupInfo.avatarUrl) setGroupAvatarUrl(groupInfo.avatarUrl)
+        }
+        getGroupAvatar()
+    }, [])
     
     return (
         <header className="page-header">
             <div>
                 <Link to="/">
-                    <img src={prit25image} alt="logo" height={100} className= "logo"/>
+                    <img className= "logo" src={groupAvatarUrl} height={100} alt="logo" onError={(e) => e.currentTarget.src = fallbackLogo} />
                 </Link>
 
                 <Link to="/">

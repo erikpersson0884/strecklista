@@ -13,7 +13,7 @@ export const usersApi = {
         const response = await api.get("/user");
         const user = userAdapter(response.data.data.user);
         return user;
-    },  
+    },
 
     getUsers: async (): Promise<User[]> => {
         const response = await api.get("/group");
@@ -21,6 +21,12 @@ export const usersApi = {
         const users = apiUsers.map(userAdapter);
         return users;
     },
+
+    getGroupInfo: async (): Promise<GroupInfo> => {
+        const response = await api.get("/group");
+        const groupInfo = response.data.data.group;
+        return groupInfo;
+    }
 }
 
 export default usersApi;
