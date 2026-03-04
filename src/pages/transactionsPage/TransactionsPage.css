@@ -59,7 +59,7 @@
 
 .transaction-preview-content>div {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     gap: .5rem;
 }

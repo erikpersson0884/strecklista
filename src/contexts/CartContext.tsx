@@ -1,6 +1,7 @@
 import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 import transactionsApi from '../api/transactionsApi';
 
+
 interface CartContextType {
     itemsInCart: ProductInCart[];
     numberOfProductsInCart: number;
@@ -85,9 +86,9 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         const success = await transactionsApi.makePurchase(payingUserid, itemsInCart, comment);
         if (success) {
             clearOrder();
-            return true; 
+            window.location.reload();
         }
-        else return false;
+        return false;
     }
 
 
