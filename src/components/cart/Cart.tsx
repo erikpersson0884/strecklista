@@ -89,7 +89,7 @@ const CartFooter: FC<CartFooterProps> = ({selectedUser, setSelectedUser}) => {
         <div className='cart-footer'>
             <p className='total'>
                 <span>Totalt</span> 
-                <span>{total} kr</span>
+                <span>{total.toLocaleString('sv-SE')} kr</span>
             </p>
             <hr />
             <div className='cart-footer'>
