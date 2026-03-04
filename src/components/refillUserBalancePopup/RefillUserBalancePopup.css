@@ -1,5 +1,7 @@
 
-.refill-user-balance-popup input{
+.refill-user-balance-popup input {
+    text-align: right;
+
     width: 2rem;
 }
 
