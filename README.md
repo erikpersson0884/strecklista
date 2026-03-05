@@ -7,13 +7,22 @@ The frontend for a "strecklista", originally developed for <a href="https://prit
 [![Repo Size][repo-size-shield]][repo-size-url]
 [![Author][author-shield]][author-url]
 
-
 ## Built with
 ![Vite][vite-shield]
 ![React][react-shield]
 ![Vitest][vitest-shield]
 ![Docker][docker-shield]
 ![TypeScript][typescript-shield]
+
+
+# Index
+
+1. [Features](#features)
+1. [Installation](#installation)
+1. [Usage](#usage)
+1. [Contributing](#contributing)
+1. [Authors](#authors)
+1. [Acknowledgments](#acknowledgments)
 
 # Features
 - User-friendly interface
@@ -32,39 +41,19 @@ cd strecklista
 
 # Install dependencies
 npm install
-
-# Create a `.env` file
-Create a `.env` file in the root of the project and add the necessary environment variables. You may use copy the .env.example file
-
 ```
+Create a `.env` file in the root of the project and add the necessary environment variables. You may use copy the .env.example file
 
 # Usage
 
 ```sh
 # Start the application
 npm run dev
-
 ```
 
-# Deployment
-
-## Deployment to github-pages
-
-```sh
-# Build the project
-npm run build
-
-# Deploy the project
-npm run deploy
-```
-
-
-<!-- # Configuration
-Any necessary environment variables or configuration steps. -->
 
 
 ## Contributing
-
 If you want to contribute, follow these steps:
 
 1. Fork the repository
@@ -87,16 +76,20 @@ If you want to contribute, follow these steps:
 
 
 
-
 <!-- Repo info Shields -->
-[last-commit-shield]: https://img.shields.io/github/last-commit/erikpersson0884/strecklista.svg?style=for-the-badge
+[last-commit-shield]: https://img.shields.io/github/last-commit/erikpersson0884/strecklista/main?style=for-the-badge&cacheSeconds=30
+
 [last-commit-url]: https://github.com/erikpersson0884/strecklista/commits/main
-[repo-size-shield]: https://img.shields.io/github/repo-size/erikpersson0884/strecklista?style=for-the-badge
+
+[repo-size-shield]: https://img.shields.io/github/repo-size/erikpersson0884/strecklista?style=for-the-badge&cacheSeconds=60
 [repo-size-url]: https://github.com/erikpersson0884/strecklista
+
 [author-shield]: https://img.shields.io/badge/Author-Erik%20Persson-blue?style=for-the-badge
 [author-url]: https://github.com/erikpersson0884
+
 [stars-shield]: https://img.shields.io/github/stars/erikpersson0884/strecklista?style=for-the-badge
 [stars-url]: https://github.com/erikpersson0884/strecklista/stargazers
+
 [build-shield]: https://img.shields.io/github/actions/workflow/status/erikpersson0884/strecklista/.github/workflows/tests.yml?branch=main&style=for-the-badge
 [build-url]: https://github.com/erikpersson0884/strecklista/actions
 
