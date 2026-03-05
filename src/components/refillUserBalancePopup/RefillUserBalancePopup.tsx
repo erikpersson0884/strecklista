@@ -4,14 +4,14 @@ import './RefillUserBalancePopup.css';
 import ActionPopupWindow from '../actionPopupWindow/ActionPopupWindow';
 import { useUsersContext } from '../../contexts/UsersContext';
 
+const MAX_COMMENT_LENGTH = 1000;
+
+
 interface RefillUserBalancePopupProps {
     user: User;
 }
-
 const RefillUserBalancePopup: React.FC<RefillUserBalancePopupProps> = ({ user }) => {
     const { addUserBalance } = useUsersContext();
-
-    const MAX_COMMENT_LENGTH = 1000;
 
     const [errorText, setErrorText] = useState<string | undefined>(undefined);
     const [amountToDeposit, setAmountToDeposit] = useState<number>(0); // Use string
@@ -19,10 +19,7 @@ const RefillUserBalancePopup: React.FC<RefillUserBalancePopupProps> = ({ user })
     const [includeComment, setIncludeComment] = useState<boolean>(false);
 
     const handleRefill = async () => {
-        // const parsedAmount = parseFloat(amountToDeposit);
-        const parsedAmount = amountToDeposit;
-
-        if (isNaN(parsedAmount)) {
+        if (isNaN(amountToDeposit)) {
             setErrorText('Ange ett giltigt belopp.');
             return;
         }
@@ -31,7 +28,7 @@ const RefillUserBalancePopup: React.FC<RefillUserBalancePopupProps> = ({ user })
 
         const wasSuccessFull: boolean = await addUserBalance(
             user.id,
-            parsedAmount,
+            amountToDeposit,
             includeComment ? comment : undefined
         );
         

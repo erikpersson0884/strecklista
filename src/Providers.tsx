@@ -8,13 +8,13 @@ const Providers: React.FC<{children: React.ReactNode}> = ({ children }) => {
     return (
         <UsersProvider>
             <InventoryProvider>
-                <CartProvider>
-                    <TransactionsProvider>
+                <TransactionsProvider>
+                    <CartProvider>
                         <ModalProvider>
                             {children}
                         </ModalProvider>
-                    </TransactionsProvider>
-                </CartProvider>
+                    </CartProvider>
+                </TransactionsProvider>
             </InventoryProvider>
         </UsersProvider>
     )

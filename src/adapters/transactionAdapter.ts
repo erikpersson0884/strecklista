@@ -79,7 +79,7 @@ function adaptPurchaseItem(
     getProductById: (id: Id) => IItem
 ): PurchasedItem {
     const item = getProductById(apiItem.item.id);
-    if (!item) throw new Error(`Item with id ${apiItem.item.id} not found`);
+    if (!item) throw new Error(`Item with id ${apiItem.item.id} not found (in transaction adapter)`);
     
     return {
         item: {

@@ -1,5 +1,8 @@
 import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 import transactionsApi from '../api/transactionsApi';
+import { useTransactionsContext } from './TransactionsContext';
+import { useUsersContext } from './UsersContext';
+
 
 interface CartContextType {
     itemsInCart: ProductInCart[];
@@ -18,6 +21,9 @@ interface CartContextType {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+    const { refreshTransactions } = useTransactionsContext();
+    const { setUserBalance } = useUsersContext();
+
     const [ itemsInCart, setItemsInCart ] = useState<ProductInCart[]>([]);
     const [ numberOfProductsInCart, setNumberOfProductsInCart ] = useState<number>(0);
     const [ total, setTotal ] = useState<number>(0);
@@ -81,13 +87,18 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         setTotal(newTotal);
     }, [itemsInCart]);
 
-    const buyProducts = async (payingUserid: UserId, comment?: string): Promise<boolean> => { //TODO implement comment
-        const success = await transactionsApi.makePurchase(payingUserid, itemsInCart, comment);
-        if (success) {
+    const buyProducts = async (payingUserid: UserId, comment?: string): Promise<boolean> => {
+        try {
+            const newBalance: number = await transactionsApi.makePurchase(payingUserid, itemsInCart, comment);
             clearOrder();
-            return true; 
+            refreshTransactions();
+            setUserBalance(payingUserid, newBalance)
+            return true;
         }
-        else return false;
+        catch (error: any) {
+            console.error("Failed to buy products:", error);
+            return false
+        }
     }
 
 

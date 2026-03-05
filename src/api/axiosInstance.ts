@@ -4,7 +4,7 @@ export const api = axios.create({
     baseURL: `${__API_BASE__}/`,
 });
 
-export const setAuthToken = async (token: string | null) => {
+export const setAuthToken = async (token: string | null): Promise<void> => {
     if (token) {
         api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     } else {
