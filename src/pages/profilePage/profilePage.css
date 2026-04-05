@@ -4,12 +4,15 @@
 }
 
 .profile-page>div {
+    background-color: var(--contrast-color);
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 2rem;
 
     height: 5rem;
+    padding: 2rem;
+    border-radius: 10px;
 }
 
 .profile-page .profile-image {
@@ -31,6 +34,6 @@
 }
 
 .profile-page .logout-button {
-    
     width: 50%;
+    margin-top: auto;
 }

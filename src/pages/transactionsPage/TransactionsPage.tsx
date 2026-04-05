@@ -21,7 +21,7 @@ const TransactionsPage: FC = () => {
         <div className='transactions-page page'>
             <SearchbarAndFilters showFilters={showFilters} setShowFilters={setShowFilters} />
 
-            {showFilters && <Filter isVisible={showFilters} hideFilters={() => setShowFilters(false)}/>}
+            <Filter isVisible={showFilters} hideFilters={() => setShowFilters(false)}/>
             <TransactionList />
             <Pagination />
         </div>

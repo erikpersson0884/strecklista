@@ -13,9 +13,8 @@ interface FilterProps {
 const Filter: React.FC<FilterProps> = ({ isVisible, hideFilters }) => {
     const { resetFilters } = useTransactionsContext();
 
-    if (!isVisible) return null;
-    else return (
-        <div className='filter-div'>
+    return (
+        <div className={`filter-div ${isVisible ? 'visible' : ''}`}>
             <UserFilter />
             <TypeFilter />
             <StartDateFilter />

@@ -62,6 +62,7 @@ const App: React.FC = () => {
                         <Footer />
                     </>
                 } />
+                <Route path="*" element={<NotFound />} />
             </Routes>
         </BrowserRouter>
     )
