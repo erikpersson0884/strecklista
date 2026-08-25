@@ -50,8 +50,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }, [token]); // Ensure it refetches user when token changes
 
     const authenticate = async (): Promise<void> => {
-        const authenticationUrl = (__API_BASE__ + "/authorize");
-        window.location.href = authenticationUrl;
+        authApi.authenticate();
     };
 
     const exchangeCodeForToken = async (code: string): Promise<void> => {

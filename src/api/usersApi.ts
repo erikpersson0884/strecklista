@@ -11,8 +11,14 @@ export const usersApi = {
      */
     getCurrentUser: async (): Promise<User> => {
         const response = await api.get("/user");
-        const user = userAdapter(response.data.data.user);
-        return user;
+        try {
+            const user: User = userAdapter(response.data.data.user);
+            return user;
+        }
+        catch (error) {
+            console.error("Error adapting user data:", error);
+            throw new Error("Failed to adapt user data");
+        }
     },
 
     getUsers: async (): Promise<User[]> => {
