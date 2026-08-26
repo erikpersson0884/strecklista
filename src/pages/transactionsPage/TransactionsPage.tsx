@@ -3,6 +3,7 @@ import { useState } from 'react';
 import './TransactionsPage.css';
 
 import { useTransactionsContext } from '../../contexts/TransactionsContext';
+import { useUsersContext } from '../../contexts/UsersContext';
 import { useModalContext } from '../../contexts/ModalContext';
 
 import TransactionPopup from '../../components/transactionPopup/TransactionPopup';
@@ -13,10 +14,12 @@ import filterIcon from '../../assets/images/filter.svg';
 
 const TransactionsPage: FC = () => {
     const { isLoadingTransactions } = useTransactionsContext();
+    const { isLoadingUsers } = useUsersContext();
     
     const [ showFilters, setShowFilters ] = useState<boolean>(false);
 
-    if (isLoadingTransactions) return <p>Loading...</p>;
+    if (isLoadingTransactions) return <p>Loading transactions...</p>;
+    else if (isLoadingUsers) return <p>Loading users...</p>;
     else return (
         <div className='transactions-page page'>
             <SearchbarAndFilters showFilters={showFilters} setShowFilters={setShowFilters} />
@@ -91,6 +94,7 @@ interface TransactionPreviewProps {
 }
 const TransactionPreview: FC<TransactionPreviewProps> = ({transaction}) => {
     const { openModal } = useModalContext();
+    const { getUserFromUserId } = useUsersContext();
 
     let transactionTypeString: string;
     switch (transaction.type) {
@@ -107,9 +111,11 @@ const TransactionPreview: FC<TransactionPreviewProps> = ({transaction}) => {
             transactionTypeString = 'Okänd';
     }
 
-    let username: string;
-    if (transaction.type === 'purchase'  ||  transaction.type === 'deposit') username = (transaction as Purchase | Deposit).createdFor.nick;
-    else username = transaction.createdBy.nick;
+    let userId: string;
+    if (transaction.type === 'purchase'  ||  transaction.type === 'deposit') {
+        userId = (transaction as Purchase | Deposit).createdFor;
+    } else userId = transaction.createdBy;
+    const username = getUserFromUserId(userId).nick;
 
     return (
         <li 

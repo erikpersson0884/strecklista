@@ -1,4 +1,7 @@
 import api from "./axiosInstance";
+// import { z } from "zod";
+import { ApiItem } from "../schemas/api";
+import { productAdapter } from "../adapters/productAdapter";
 
 const inventoryApi = {
     /**
@@ -7,10 +10,19 @@ const inventoryApi = {
      * @returns {Promise<IItem[]>} A promise that resolves to an array of products.
      * @throws Will throw an error if the API request fails.
      */
-    getInventory: async (): Promise<ApiItem[]> => {
+    getInventory: async (): Promise<IItem[]> => {
         const response = await api.get("/group/item");
-        const items = response.data.data.items;
-        return items;
+
+        
+        // const parsed = z.array(apiItem).safeParse(response.data.data.items);
+        // if (!parsed.success) {
+        //     console.error("Zod: Unexpected /group/item response shape:", parsed.error.issues);
+        //      throw new Error("Failed to parse inventory data"); 
+        // }
+        //TODO: Uncomment this line to throw an error when parsing fails when backend has fixed the issue sending object instead of date for createdTime in some items. This is a temporary workaround to allow the app to continue functioning while the backend issue is being resolved.
+
+        // return parsed.data.map(productAdapter);
+        return response.data.data.items.map(productAdapter);
     },
 
     /**
@@ -39,7 +51,7 @@ const inventoryApi = {
      *          or `false` otherwise.
      */
     updateProduct: async (productId: ProductId, updates: Partial<ApiItem>): Promise<boolean> => {
-        const response = await api.patch(`group/item/${productId}`, updates);
+        const response = await api.patch(`/group/item/${productId}`, updates);
         return response.status === 200;
     },
 
@@ -61,7 +73,7 @@ const inventoryApi = {
         const body = {
             items: [
                 {
-                    id: id,
+                    id: Number(id),
                     quantity: amount
                 }
             ]
@@ -80,7 +92,7 @@ const inventoryApi = {
                 }
             ]
         }
-        const response = await api.post(`api/group/stock`, body);
+        const response = await api.post(`/group/stock`, body);
         return response.status === 200;
     }
 };

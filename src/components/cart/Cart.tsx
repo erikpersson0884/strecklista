@@ -85,7 +85,7 @@ const CartFooter: FC<CartFooterProps> = ({selectedUser, setSelectedUser}) => {
 
     const handleSelectUserChangeChange = (e: ChangeEvent<HTMLSelectElement>): void => {
         const selectedUserId: string = e.target.value;
-        const user: User | undefined = users.find(user => user.id === Number(selectedUserId));
+        const user: User | undefined = users.find(user => user.id === selectedUserId);
         if (!user) throw new Error('Tried to set a user to pay that does not exist in users list');
         setSelectedUser(user);
     };

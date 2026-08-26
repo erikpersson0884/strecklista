@@ -2,6 +2,7 @@ import { type FC } from "react";
 import './TransactionPopup.css';
 
 import { useTransactionsContext } from "../../contexts/TransactionsContext";
+import { useUsersContext } from "../../contexts/UsersContext";
 import { useModalContext } from "../../contexts/ModalContext";
 
 import ActionPopupWindow from "../actionPopupWindow/ActionPopupWindow";
@@ -15,6 +16,7 @@ interface TransactionPopupProps {
 
 const TransactionPopup: FC<TransactionPopupProps> = ({transaction}) => {
     const { removeTransaction } = useTransactionsContext();
+    const { getUserFromUserId } = useUsersContext();
     const { openModal } = useModalContext();
 
 
@@ -146,7 +148,7 @@ const TransactionPopup: FC<TransactionPopupProps> = ({transaction}) => {
 
                         <p>
                             <span>Utförd av:</span>
-                            <span>{transaction.createdBy ? transaction.createdBy.nick : 'N/A'}</span>
+                            <span>{transaction.createdBy ? getUserFromUserId(transaction.createdBy).nick : 'N/A'}</span>
                         </p>
                     </div>
                     

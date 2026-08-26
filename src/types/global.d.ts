@@ -3,95 +3,9 @@ declare const __API_BASE__: string;
 
 declare global {
     const __API_BASE__: string;
-    
-    // API Types
-    type ApiId = number;
-    
-
-    interface ApiUser {
-        id: ApiId;
-        firstName: string;
-        lastName: string;
-        nick: string;
-        avatarUrl: string;
-        balance: number;
-    }
-
-    interface ApiGroup {
-        id: ApiId;
-        prettyName: string;
-        avatarUrl: string;
-    }
-
-    interface ApiItem {
-        id: ApiId;
-        addedTime: number;
-        icon: string;
-        displayName: string;
-        prices: Price[];
-        timesPurchased: number;
-        visible: boolean;
-        favorite: boolean;
-        stock: number;
-    }
-
-    interface ApiPrice {
-        price: number;
-        displayName: string;
-    }
-
-    interface ApiTransaction {
-        id: ApiId;
-        type: "purchase" | "deposit" | "stockUpdate";
-        createdBy: ApiId;
-        createdTime: number;
-        removed: boolean;
-    }
-
-    interface ApiPurchase extends ApiTransaction {
-        type: "purchase";
-        createdFor: ApiId;
-        items: ApiPurchaseItem[];
-        comment?: string;
-    }
-
-    interface ApiPurchaseItem {
-        item: {
-            id: ApiId;
-            displayName: string;
-            icon?: string;
-        };
-        quantity: number;
-        purchasePrice: ApiPrice;
-    }
-
-    interface ApiDeposit extends ApiTransaction {
-        type: "deposit";
-        createdFor: ApiId;
-        total: number;
-        comment?: string;
-    }
-
-    interface ApiStockUpdate extends ApiTransaction {
-        type: "stockUpdate";
-        items: ApiTransactionItem[];
-    }
-
-    interface ApiTransactionItem {
-        id: ApiId;
-        before: number;
-        after: number;
-    }
-
-    interface ApiPurchaseRequestItem {
-        id: ApiId;
-        quantity: number;
-        purchasePrice: ApiPrice;
-    }
-
 
     // Frontend Types
-    type Id = ApiId;
+    type Id = string;
     type UserId = Id;
     type GroupId = Id;
     type ProductId = Id;
@@ -100,13 +14,13 @@ declare global {
     interface ITransaction {
         id: Id;
         type: TransactionType;
-        createdBy: User;
+        createdBy: Id;
         createdTime: Date;
         removed: boolean;
     }
 
     interface FinancialTransaction  extends ITransaction {
-        createdFor: User;
+        createdFor: Id;
         total: number;
         comment: string;
     }
@@ -123,12 +37,14 @@ declare global {
             icon: string;
         };
         quantity: number;
-        purchasePrice: ApiPrice;
+        purchasePrice: {
+            price: number;
+            displayName: string;
+        };
     }
 
     interface Deposit extends FinancialTransaction {
         type: "deposit";
-        createdFor: User;
     }
 
     interface StockUpdate extends ITransaction {
@@ -136,7 +52,9 @@ declare global {
         items: StockUpdateItem[];
     }
 
-    interface StockUpdateItem extends IItem {
+    interface StockUpdateItem {
+        id: Id;
+        name: string
         before: number;
         after: number;
     }
@@ -156,7 +74,7 @@ declare global {
         amountInStock: number;
         available: boolean;
         favorite: boolean;
-        addedTime: number;
+        addedTime: Date;
         timesPurchased: number;
     }
 

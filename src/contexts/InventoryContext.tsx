@@ -1,8 +1,9 @@
 import { createContext, useState, useContext, ReactNode } from 'react';
 import inventoryApi from '../api/inventoryApi';
 import { useEffect } from 'react';
-import { productAdapter } from '../adapters/productAdapter';
 import { useAuth } from './AuthContext';
+import { ApiItem } from '../schemas/api';
+import { CustomError } from '../errors/CustomErrors';
 
 
 interface InventoryContextProps {
@@ -26,8 +27,7 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
 
     const fetchInventory = async () => {
         try {
-            const apiItems: ApiItem[] = await inventoryApi.getInventory();
-            const newProducts = apiItems.map(productAdapter);
+            const newProducts: IItem[] = await inventoryApi.getInventory();
             setProducts(newProducts);
         } catch (error) {
             console.error('Failed to fetch inventory', error);
@@ -42,9 +42,16 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
         setIsLoadingInventory(false);
     }, [isAuthenticated]);
 
+    class ItemNotFoundError extends CustomError {
+        constructor(message: string) {
+            super(message);
+            this.name = this.constructor.name;
+        }
+    }
+
     const getProductById = (id: Id): IItem => {
         const item = products.find(item => item.id === id);
-        if (!item) throw new Error(`Item with id ${id} not found`);
+        if (!item) throw new ItemNotFoundError(`Item with id ${id} not found (in inventory context)`);
         return item;
     };
 
@@ -82,7 +89,7 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
         if (item.internalPrice !== updatedProduct.internalPrice) {
             updatedFields.prices = [
                 {
-                    price: updatedProduct.internalPrice,
+                    price: updatedProduct.internalPrice.toString(),
                     displayName: 'Internt'
                 }
             ]

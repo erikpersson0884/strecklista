@@ -2,7 +2,6 @@ import React, { createContext, useState, useContext, ReactNode, useEffect } from
 import transactionsApi from '../api/transactionsApi';
 import { useUsersContext } from './UsersContext';
 import { useInventory } from './InventoryContext';
-import { adaptTransaction } from '../adapters/transactionAdapter';
 import { useAuth } from './AuthContext';
 
 interface TransactionsContextProps {
@@ -32,7 +31,7 @@ const TransactionsContext = createContext<TransactionsContextProps | undefined>(
 
 export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const { isLoadingUsers, getUserFromUserId } = useUsersContext();
-    const { getProductById, isLoadingInventory } = useInventory();
+    const { isLoadingInventory } = useInventory();
     const { isAuthenticated } = useAuth();
 
     const [filteredTransactions, setFilteredTransactions] = useState<ITransaction[]>([]);
@@ -64,12 +63,12 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
         let filtered: ITransaction[] = transactions;
 
         if (filters.userId !== 'all') {
-            const id = Number(filters.userId);
+            const id = filters.userId;
             filtered = filtered.filter((t) => {
-                if (t.type === 'purchase' || t.type === 'deposit')
-                    return (t as FinancialTransaction).createdFor.id === id;
-                else
-                    return t.createdBy.id === id;
+                if (t.type === 'purchase' || t.type === 'deposit') {
+                    return (t as FinancialTransaction).createdFor === id;
+                }
+                else return t.createdBy === id;
             });
         }
 
@@ -104,12 +103,12 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
                 // If it's a financial transaction, check createdFor.nick
                 if (t.type === 'purchase' || t.type === 'deposit') {
                     const ft = t as FinancialTransaction;
-                    return ft.createdFor.nick.toLowerCase().includes(searchString) ||
-                        t.createdBy.nick.toLowerCase().includes(searchString) ||
+                    return getUserFromUserId(ft.createdFor).nick.toLowerCase().includes(searchString) ||
+                        getUserFromUserId(t.createdBy).nick.toLowerCase().includes(searchString) ||
                         ft.total.toString().includes(searchString);
                 } else {
                     // For stock updates or other transactions
-                    return t.createdBy.nick.toLowerCase().includes(searchString)
+                    return getUserFromUserId(t.createdBy).nick.toLowerCase().includes(searchString)
                 }
             });
         }
@@ -121,14 +120,11 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
 
     const getTransactions = async (url?: string | null) => {
         try {
-            const response = await transactionsApi.fetchTransactions(url, 30);
+            const response = await transactionsApi.fetchTransactions(url, 30, 0);
             setNextUrl(response.nextUrl);
             setPrevUrl(response.prevUrl);
-            const adaptedTransactions = response.apiTransactions.map(
-                apiTransaction => adaptTransaction(apiTransaction, getUserFromUserId, getProductById)
-            );
 
-            setTransactions(adaptedTransactions);
+            setTransactions(response.transactions);
         } catch (error) {
             console.error(error);
         }
