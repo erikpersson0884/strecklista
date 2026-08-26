@@ -45,8 +45,8 @@ const ActionPopupWindow: React.FC<ActionPopupWindowProps> = ({
     }, [errorText, errortextDisplayTime]);
 
     const acceptHandler = async () => {
-        closeModal();
         await onAccept();
+        closeModal();
     }
 
     return (

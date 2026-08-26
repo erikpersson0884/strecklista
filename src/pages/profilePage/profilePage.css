@@ -3,7 +3,7 @@
     padding: .8rem;
 }
 
-.profile-page>div {
+.profile-page .profile-header {
     background-color: var(--contrast-color);
     display: flex;
     flex-direction: row;

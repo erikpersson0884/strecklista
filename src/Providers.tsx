@@ -3,6 +3,7 @@ import { CartProvider } from './contexts/CartContext';
 import { UsersProvider } from './contexts/UsersContext';
 import { TransactionsProvider } from './contexts/TransactionsContext';
 import { ModalProvider } from './contexts/ModalContext';
+import { ClientProvider } from './contexts/ClientContext';
 
 const Providers: React.FC<{children: React.ReactNode}> = ({ children }) => {
     return (
@@ -10,9 +11,11 @@ const Providers: React.FC<{children: React.ReactNode}> = ({ children }) => {
             <InventoryProvider>
                 <TransactionsProvider>
                     <CartProvider>
-                        <ModalProvider>
-                            {children}
-                        </ModalProvider>
+                        <ClientProvider>
+                            <ModalProvider>
+                                {children}
+                            </ModalProvider>
+                        </ClientProvider>
                     </CartProvider>
                 </TransactionsProvider>
             </InventoryProvider>

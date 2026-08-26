@@ -1,3 +1,5 @@
+import { ApiGroupClient } from "../schemas/api";
+
 export {}; // Ensures the file is treated as a module and avoids conflicts.
 declare const __API_BASE__: string;
 
@@ -9,6 +11,7 @@ declare global {
     type UserId = Id;
     type GroupId = Id;
     type ProductId = Id;
+    type ClientId = Id;
     type TransactionType = "purchase" | "deposit" | "stockUpdate";
 
     interface ITransaction {
@@ -106,4 +109,6 @@ declare global {
         avatarUrl: string;
         prettyName: string;
     }
+
+    type Client = ApiGroupClient
 }

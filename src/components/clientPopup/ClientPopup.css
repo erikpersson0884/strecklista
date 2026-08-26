@@ -1,0 +1,16 @@
+
+.client-popup .scope-options {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+
+    max-height: 7.7rem;
+    overflow-y: auto;
+}
+
+.client-popup .scope-options li {
+    text-transform: capitalize;
+
+    display: flex;
+    gap: 1rem;
+}

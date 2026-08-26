@@ -57,7 +57,7 @@ export const transactionAdapter = {
             type: 'deposit',
             createdBy: this.adaptCretedBy(apiDeposit.createdBy),
             createdFor: apiDeposit.createdFor.toString(),
-            total: apiDeposit.total,
+            total: Number(apiDeposit.total),
             createdTime: apiDeposit.createdTime,
             removed: apiDeposit.removed,
             comment: apiDeposit.comment || ''

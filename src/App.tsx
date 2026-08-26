@@ -12,6 +12,7 @@ import BalancePage from './pages/balancePage/BalancePage';
 import TransactionsPage from './pages/transactionsPage/TransactionsPage';
 import NotFound from './pages/notFoundPage/NotFoundPage';
 import LoginPage from './pages/loginPage/LoginPage';
+import ClientPage from './pages/clientPage/ClientPage';
 
 import ProfilePage from './pages/profilePage/profilePage';
 
@@ -29,6 +30,7 @@ const App: React.FC = () => {
         { url: '/balance', component: <BalancePage /> },
         { url: '/transactions', component: <TransactionsPage /> },
         { url: '/profile', component: <ProfilePage /> },
+        { url: '/clients', component: <ClientPage /> },
     ]
     
     if (isLoggingIn) {

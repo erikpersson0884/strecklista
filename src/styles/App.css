@@ -34,6 +34,12 @@ button:disabled {
     width: 100%;
 }
 
+.no-list-formatting {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
 .page {
     display: flex;
     flex-direction: column;

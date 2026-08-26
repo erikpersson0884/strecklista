@@ -9,7 +9,7 @@ const ProfilePage: React.FC = () => {
     if (!currentUser) return null;
     return (
         <div className='profile-page page'>
-            <div>
+            <div className='profile-header'>
                 <div className='profile-image' style={{backgroundImage: `url(${currentUser?.icon})`}}></div>
                 <div className='profile-name'>
                     <h1>{currentUser?.nick}</h1>
