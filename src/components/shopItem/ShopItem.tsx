@@ -9,7 +9,7 @@ import { useCart } from '../../contexts/CartContext';
 import { useInventory } from '../../contexts/InventoryContext';
 
 interface ProductProps {
-    item: IItem;
+    item: Item;
 }
 
 const Item: React.FC<ProductProps> = ({ item }) => {

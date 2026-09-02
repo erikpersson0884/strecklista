@@ -1,6 +1,6 @@
 import api from "./axiosInstance";
-import { userAdapter, groupMemberAdapter } from "../adapters/userAdapter";
-import { apiGroupUser, apiGroupMember } from '../schemas/api'; 
+import userAdapter from "../adapters/userAdapter";
+import { apiGroupUser, apiGroupMember, apiGroup } from '../schemas/api'; 
 import { z } from "zod";
 
 export const usersApi = {
@@ -18,7 +18,7 @@ export const usersApi = {
                 console.error("Zod: Unexpected /user response shape:", parsed.error.issues);
                 throw new Error("Failed to parse user data");
             }
-            const user: User = userAdapter(parsed.data);            
+            const user: User = userAdapter.apiUserToUser(parsed.data);            
             return user;
         }
         catch (error) {
@@ -36,12 +36,18 @@ export const usersApi = {
             throw new Error("Failed to parse group members");
         }
 
-        return parsed.data.map(groupMemberAdapter);
+        return parsed.data.map(userAdapter.apiGroupMemberToUser);
     },
 
     getGroupInfo: async (): Promise<GroupInfo> => {
         const response = await api.get("/group");
-        const groupInfo = response.data.data.group;
+        const parsed = apiGroup.safeParse(response.data.data.group);
+        if (!parsed.success) {
+            console.error("Zod: Unexpected /group shape:", parsed.error.issues);
+            throw new Error("Failed to parse group info");
+        }
+
+        const groupInfo: GroupInfo = userAdapter.apiGroupToGroupInfo(parsed.data);
         return groupInfo;
     }
 }

@@ -5,14 +5,14 @@ import { useUsersContext } from './UsersContext';
 
 
 interface CartContextType {
-    itemsInCart: ProductInCart[];
+    itemsInCart: ItemInCart[];
     numberOfProductsInCart: number;
     total: number;
-    addIProductoCart: (item: IItem) => void;
+    addIProductoCart: (item: Item) => void;
     setProductQuantity: (productid: Id, quantity: number) => void;
-    decreaseProductQuantity: (IItem: ProductInCart) => void;
-    increaseProductQuantity: (IItem: ProductInCart) => void;
-    removeProductFromCart: (item: IItem) => void;
+    decreaseProductQuantity: (Item: ItemInCart) => void;
+    increaseProductQuantity: (Item: ItemInCart) => void;
+    removeProductFromCart: (item: Item) => void;
     getProductQuantity: (productid: Id) => number;
     clearOrder: () => void;
     buyProducts: (payinguserId: UserId, comment?: string) => Promise<boolean>;
@@ -24,11 +24,11 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const { refreshTransactions } = useTransactionsContext();
     const { setUserBalance } = useUsersContext();
 
-    const [ itemsInCart, setItemsInCart ] = useState<ProductInCart[]>([]);
+    const [ itemsInCart, setItemsInCart ] = useState<ItemInCart[]>([]);
     const [ numberOfProductsInCart, setNumberOfProductsInCart ] = useState<number>(0);
     const [ total, setTotal ] = useState<number>(0);
 
-    const addIProductoCart = (item: IItem) => {
+    const addIProductoCart = (item: Item) => {
         setItemsInCart((prevItems) => {
             const existingItem = prevItems.find(i => i.id === item.id);
             if (existingItem) {
@@ -56,16 +56,16 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         });
     }
 
-    const decreaseProductQuantity = (IItem: ProductInCart) => {
-        if (IItem.quantity <= 1) {
-            removeProductFromCart(IItem);
+    const decreaseProductQuantity = (Item: ItemInCart) => {
+        if (Item.quantity <= 1) {
+            removeProductFromCart(Item);
             return;
         }
-        setProductQuantity(IItem.id, IItem.quantity - 1);
+        setProductQuantity(Item.id, Item.quantity - 1);
     }
 
-    const increaseProductQuantity = (IItem: ProductInCart) => {
-        setProductQuantity(IItem.id, IItem.quantity + 1);
+    const increaseProductQuantity = (Item: ItemInCart) => {
+        setProductQuantity(Item.id, Item.quantity + 1);
     }
 
     const getProductQuantity = (productId: Id) => {
@@ -74,7 +74,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
 
 
-    const removeProductFromCart = (itemToRemove: IItem) => {
+    const removeProductFromCart = (itemToRemove: Item) => {
         setItemsInCart((prevItems) => prevItems.filter(item => item.id !== itemToRemove.id));
     };
 
@@ -96,7 +96,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             return true;
         }
         catch (error: any) {
-            console.error("Failed to buy products:", error);
+            console.error("Failed to buy items:", error);
             return false
         }
     }

@@ -8,13 +8,13 @@ import { CustomError } from '../errors/CustomErrors';
 
 interface InventoryContextProps {
     isLoadingInventory: boolean;
-    products: IItem[];
+    items: Item[];
     addProduct: (displayName: string, internalPrice: number, icon?: string) => Promise<boolean>;
-    updateProduct: (updatedProduct: IItem) => Promise<boolean>;
+    updateProduct: (updatedProduct: Item) => Promise<boolean>;
     deleteProduct: (id: Id) => Promise<boolean>;
     toggleFavourite: (id: Id) => Promise<boolean>;
     refillProduct: (id: Id, amount: number) => Promise<boolean>;
-    getProductById: (id: Id) => IItem;
+    getProductById: (id: Id) => Item;
 }
 
 const InventoryContext = createContext<InventoryContextProps | undefined>(undefined);
@@ -23,11 +23,11 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
     const { isAuthenticated } = useAuth();
 
     const [isLoadingInventory, setIsLoadingInventory] = useState<boolean>(true);
-    const [products, setProducts] = useState<IItem[]>([]);
+    const [items, setProducts] = useState<Item[]>([]);
 
     const fetchInventory = async () => {
         try {
-            const newProducts: IItem[] = await inventoryApi.getInventory();
+            const newProducts: Item[] = await inventoryApi.getInventory();
             setProducts(newProducts);
         } catch (error) {
             console.error('Failed to fetch inventory', error);
@@ -49,8 +49,8 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
         }
     }
 
-    const getProductById = (id: Id): IItem => {
-        const item = products.find(item => item.id === id);
+    const getProductById = (id: Id): Item => {
+        const item = items.find(item => item.id === id);
         if (!item) throw new ItemNotFoundError(`Item with id ${id} not found (in inventory context)`);
         return item;
     };
@@ -75,8 +75,8 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
         }
     };
 
-    const updateProduct = async (updatedProduct: IItem): Promise<boolean> => {
-        const item = products.find(item => item.id === updatedProduct.id);
+    const updateProduct = async (updatedProduct: Item): Promise<boolean> => {
+        const item = items.find(item => item.id === updatedProduct.id);
         if (!item) throw new Error('Item not found');
 
         const updatedFields: Partial<ApiItem> = {};
@@ -103,7 +103,7 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
     };
 
     const refillProduct = async (id: Id, amount: number): Promise<boolean> => {
-        const item = products.find(item => item.id === id);
+        const item = items.find(item => item.id === id);
         if (!item) throw new Error('Item not found');
 
         const success = await inventoryApi.refillProduct(id, amount);
@@ -114,10 +114,10 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
     }
 
     const toggleFavourite = async (id: Id): Promise<boolean> => {
-        const item = products.find(item => item.id === id);
+        const item = items.find(item => item.id === id);
         if (!item) throw new Error('Item not found');
 
-        const updatedProduct: IItem = { ...item, favorite: !item.favorite };
+        const updatedProduct: Item = { ...item, favorite: !item.favorite };
 
         const success = await updateProduct(updatedProduct);
         if (success) {
@@ -127,7 +127,7 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
     }
 
     const deleteProduct = async (id: Id): Promise<boolean>  => {
-        if (!products.some(item => item.id === id)) throw new Error('Item not found');
+        if (!items.some(item => item.id === id)) throw new Error('Item not found');
         const success = await inventoryApi.deleteProduct(id);
         fetchInventory();
         return success;
@@ -136,7 +136,7 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
     return (
         <InventoryContext.Provider value={{ 
             isLoadingInventory, 
-            products, 
+            items, 
             addProduct, 
             updateProduct, 
             deleteProduct, 

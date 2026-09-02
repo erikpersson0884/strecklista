@@ -2,10 +2,7 @@ import { ApiTransaction, ApiPurchase, ApiDeposit, ApiStockUpdate, ApiPurchasedIt
 
 
 export const transactionAdapter = {
-    adaptTransaction(
-        apiTransaction: ApiTransaction,
-    ): ITransaction 
-    {
+    adaptTransaction(apiTransaction: ApiTransaction): ITransaction {
         if (apiTransaction.type === 'purchase'){
             return this.adaptPurchase(apiTransaction as ApiPurchase);
         } 
@@ -23,25 +20,25 @@ export const transactionAdapter = {
         return new Date(apiTime);
     },
 
-    adaptCretedBy(apiCreatedBy: { userId?: number; clientId?: number }): Id {
+    adaptCretedBy(apiCreatedBy: { userId?: number; clientId?: string }): Id {
         if (apiCreatedBy.userId !== undefined) {
             return apiCreatedBy.userId.toString();
         } else if (apiCreatedBy.clientId !== undefined) {
             return apiCreatedBy.clientId.toString();
+        } else {
+            console.error("Unknown createdBy format:", apiCreatedBy);
+            return "unknown..." // TODO: Research what this should do if created by client
         }
-        throw new Error(`Invalid createdBy object: ${JSON.stringify(apiCreatedBy)}`);
     },
 
 
-    adaptPurchase(
-        apiPurchase: ApiPurchase,
-    ): Purchase {
+    adaptPurchase(apiPurchase: ApiPurchase): Purchase {
         return {
             id: apiPurchase.id.toString(),
             type: 'purchase',
             createdBy: this.adaptCretedBy(apiPurchase.createdBy),
             createdFor: apiPurchase.createdFor.toString(),
-            items: apiPurchase.items.map(item => this.adaptPurchasedItem(item)),
+            items: apiPurchase.items.map(item => this.apiPurchasedItemToPurchasedItem(item)),
             createdTime: apiPurchase.createdTime,
             total: apiPurchase.items.reduce((acc, item) => acc + Number(item.purchasePrice.price) * item.quantity, 0),
             removed: apiPurchase.removed,
@@ -49,9 +46,7 @@ export const transactionAdapter = {
         };
     },
 
-    adaptDeposit(
-        apiDeposit: ApiDeposit,
-    ): Deposit {
+    adaptDeposit(apiDeposit: ApiDeposit): Deposit {
         return {
             id: apiDeposit.id.toString(),
             type: 'deposit',
@@ -64,14 +59,12 @@ export const transactionAdapter = {
         };
     },
 
-    adaptStockUpdate(
-        apiStockUpdate: ApiStockUpdate,
-    ): StockUpdate {
+    adaptStockUpdate(apiStockUpdate: ApiStockUpdate): StockUpdate {
         const items = apiStockUpdate.items.map((apiItem): StockUpdateItem => {
             return {
                 before: apiItem.before,
                 after: apiItem.after,
-                name: '', //TODO: Implement logic for this when backend return name of the product
+                name: '', //TODO: Implement logic for this when backend return name of the item
                 id: apiItem.id.toString(),
             };
         });
@@ -85,10 +78,7 @@ export const transactionAdapter = {
         };
     },
 
-    adaptPurchasedItem(
-        apiItem: ApiPurchasedItem,
-    ): PurchasedItem {
-        
+    apiPurchasedItemToPurchasedItem(apiItem: ApiPurchasedItem): PurchasedItem {
         return {
             item: {
                 id: apiItem.item.id != null
@@ -105,16 +95,16 @@ export const transactionAdapter = {
         };
     },
 
-    adaptProductToPurchaseItem(product: ProductInCart) {
+    ItemInCartToApiItems(item: ItemInCart) {
         return {
-            id: Number(product.id),
+            id: Number(item.id),
             purchasePrice: {
-                price: product.internalPrice,
-                displayName: product.name
+                price: item.internalPrice,
+                displayName: item.name
             },
-            quantity: product.quantity,
+            quantity: item.quantity,
         };
-    }
+    },
 }
 
 export default transactionAdapter;

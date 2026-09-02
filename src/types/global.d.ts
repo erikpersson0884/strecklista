@@ -67,7 +67,7 @@ declare global {
         displayName: string;
     }
 
-    interface IItem {
+    interface Item {
         id: Id;
         name: string;
         icon: string;
@@ -79,9 +79,10 @@ declare global {
         favorite: boolean;
         addedTime: Date;
         timesPurchased: number;
+        externalId?: string;
     }
 
-    interface ProductInCart extends IItem {
+    interface ItemInCart extends Item {
         quantity: number;
     }
 
@@ -89,7 +90,7 @@ declare global {
         id: Id;
         name: string;
         users: string[];
-        products: IItem[];
+        items: Item[];
         icon: string;
     }
 
@@ -101,13 +102,14 @@ declare global {
         nick: string;
         icon: string;
         balance: number;
+        externalId?: string;
     }
 
     interface GroupInfo {
         id: Id;
         gammaId: string;
         avatarUrl: string;
-        prettyName: string;
+        name: string;
     }
 
     type Client = ApiGroupClient

@@ -15,10 +15,10 @@ import refillIcon from '../../assets/images/refill.svg';
 
 
 const InventoryPage: React.FC = () => {
-    const { products, isLoadingInventory, deleteProduct } = useInventory();
+    const { items, isLoadingInventory, deleteProduct } = useInventory();
     const { openModal } = useModalContext();
 
-    const DeleteConfirmDialog: React.FC<{ item: IItem }> = ({ item }) => {
+    const DeleteConfirmDialog: React.FC<{ item: Item }> = ({ item }) => {
         return (
             <ConfirmDialog
                 title="Radera produkt"
@@ -32,7 +32,7 @@ const InventoryPage: React.FC = () => {
     };
 
 
-    const InventoryItem: React.FC<{item: IItem;}> = ({ item }) => {
+    const InventoryItem: React.FC<{item: Item;}> = ({ item }) => {
         return (
                 <li className='inventory-item list-item'>
                     <p>{item.name}</p>
@@ -54,7 +54,7 @@ const InventoryPage: React.FC = () => {
 
     const InventoryItems = () => {
         return (
-            products.map((item) => (
+            items.map((item) => (
                     <InventoryItem key={item.id} item={item} />
             ))
         )
@@ -66,8 +66,8 @@ const InventoryPage: React.FC = () => {
         <>
             <ul className='page'>
 
-                {products.length === 0 ? (
-                    <p className='no-products'>Inga produkter i lager</p>
+                {items.length === 0 ? (
+                    <p className='no-items'>Inga produkter i lager</p>
                 ) : (
                     <InventoryItems />
                 )}

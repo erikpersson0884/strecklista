@@ -3,7 +3,7 @@ import ActionPopupWindow from '../actionPopupWindow/ActionPopupWindow';
 import { useInventory } from '../../contexts/InventoryContext';
 
 interface RefillProductPopupProps {
-    item: IItem | null;
+    item: Item | null;
 }
 
 const RefillProductPopup: React.FC<RefillProductPopupProps> = ({ item }) => {

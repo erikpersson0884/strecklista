@@ -24,30 +24,25 @@ const transactionsApi = {
         nextUrl: string | null, 
         prevUrl: string | null
     }> => {
-        try {
-            let response;
-            if (url) {
-                response = await api.get(url);
-            } else {
-                response = await api.get(`/group/transaction`, {
-                    params: { limit, offset },
-                });
-            }
-
-            const parsed = apiTransaction.array().safeParse(response.data.data.transactions);
-            if (!parsed.success) {
-                console.error("Failed to parse transactions:", parsed.error);
-                throw new Error(`Failed to parse transactions: ${parsed.error}`);
-            }
-            const transactions: ITransaction[] = parsed.data.map(transaction => transactionAdapter.adaptTransaction(transaction));
-
-            const nextUrl: string | null = response.data.data.next || null;
-            const prevUrl: string | null = response.data.data.previous || null;
-            return { transactions, nextUrl, prevUrl };
-        } catch (error: any) {
-            console.error(error.response?.data?.message || "Failed to fetch transactions");
-            throw error;
+        let response;
+        if (url) {
+            response = await api.get(url);
+        } else {
+            response = await api.get(`/group/transaction`, {
+                params: { limit, offset },
+            });
         }
+
+        const parsed = apiTransaction.array().safeParse(response.data.data.transactions);
+        if (!parsed.success) {
+            console.error("Failed to parse transactions:", parsed.error);
+            throw new Error(`Failed to parse transactions: ${parsed.error}`);
+        }
+        const transactions: ITransaction[] = parsed.data.map(transaction => transactionAdapter.adaptTransaction(transaction));
+
+        const nextUrl: string | null = response.data.data.next || null;
+        const prevUrl: string | null = response.data.data.previous || null;
+        return { transactions, nextUrl, prevUrl };
     },
 
     
@@ -78,15 +73,15 @@ const transactionsApi = {
     /**
      * Makes a purchase for a user.
      * @param {UserId} userId - The ID of the user making the purchase.
-     * @param {ProductInCart[]} products - The products to be purchased.
+     * @param {ItemInCart[]} Items - The Items to be purchased.
      * @param {string} [comment] - An optional comment for the purchase.
      *
      * @returns {Promise<number>} A promise that resolves to the user's new balance.
      * @throws Will throw an error if the request fails.
      */
-    makePurchase: async (userId: UserId, products: ProductInCart[], comment?: string): Promise<number> => {
+    makePurchase: async (userId: UserId, items: ItemInCart[], comment?: string): Promise<number> => {
         try {
-            const apiItems = products.map(transactionAdapter.adaptProductToPurchaseItem);
+            const apiItems = items.map(transactionAdapter.ItemInCartToApiItems);
             const response = await api.post("/group/purchase", { 
                 userId: Number(userId), 
                 items: apiItems,

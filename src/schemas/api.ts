@@ -30,7 +30,7 @@ export const apiGroupUser = z.object({
   user: apiUser,
   group: apiGroup,
   balance: z.number(),
-  externalId: z.number().int().nullable().optional(),
+  externalId: z.string().nullable().optional(),
 });
 export type ApiGroupUser = z.infer<typeof apiGroupUser>;
 
@@ -43,6 +43,7 @@ export const apiGroupMember = z.object({
   nick: z.string(),
   avatarUrl: z.string(),
   balance: z.number(),
+  externalId: z.string().optional(),
 });
 export type ApiGroupMember = z.infer<typeof apiGroupMember>;
 
@@ -53,7 +54,7 @@ export const apiPrice = z.object({
     message: "Price must be a valid number",
   }),
   displayName: z.string(),
-  externalId: z.number().int().nullable().optional(),
+  externalId: z.string().nullable().optional(),
 });
 export type ApiPrice = z.infer<typeof apiPrice>;
 
@@ -74,7 +75,7 @@ export type ApiItem = z.infer<typeof apiItem>;
 // --- TransactionCreator (discriminated by presence of userId/clientId) ---
 export const apiTransactionCreator = z.union([
   z.object({ userId: z.number().int() }),
-  z.object({ clientId: z.number().int() }),
+  z.object({ clientId: z.string() }),
 ]);
 export type ApiTransactionCreator = z.infer<typeof apiTransactionCreator>;
 
@@ -156,3 +157,25 @@ export const apiGroupClient = z.object({
   description: z.string().nullable().optional(),
 });
 export type ApiGroupClient = z.infer<typeof apiGroupClient>;
+
+// ---Client Response
+export const apiClientLoginResponse = z.object({
+  access_token: z.string(),
+  token_type: z.string(),
+  aud: z.string(),
+  iss: z.string(),
+  iat: z.number().min(0),
+  nbf: z.number(),
+  exp: z.number().min(0),
+  jti: z.string(),
+  scope: z.string(),
+  client: z.object({
+    id: z.string(),
+    displayName: z.string()
+  }),
+  group: z.object({
+    id: z.number(),
+    gammaId: z.string()
+  })
+})
+export type ApiClientLoginReponse = z.infer<typeof apiClientLoginResponse>

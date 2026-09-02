@@ -3,7 +3,7 @@ import { useInventory } from "../../contexts/InventoryContext";
 import React, { useEffect, useState } from "react";
 
 interface UpdateProductPopupProps {
-    item: IItem | null;
+    item: Item | null;
 }
 
 const UpdateProductPopup: React.FC<UpdateProductPopupProps> = ({item}) => {

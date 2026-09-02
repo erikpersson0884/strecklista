@@ -6,7 +6,7 @@ import plusIcon from '../../../assets/images/plus.svg';
 import minusIcon from '../../../assets/images/minus.svg';
 
 interface CartItemProps {
-    item: ProductInCart;
+    item: ItemInCart;
 }
 
 const CartItem: React.FC<CartItemProps> = ({ item }) => {

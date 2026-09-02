@@ -10,7 +10,7 @@ import emptySearchIcon from '../../assets/images/close.svg';
 
 
 const ShopPage: React.FC = () => {
-    const { products } = useInventory();
+    const { items } = useInventory();
     const { numberOfProductsInCart } = useCart();
 
     const [ displayCart, setDisplayCart ] = React.useState<boolean>(false);
@@ -23,7 +23,7 @@ const ShopPage: React.FC = () => {
             </Modal>
 
             <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-            <ShopItems products={products} searchTerm={searchTerm} />
+            <ShopItems items={items} searchTerm={searchTerm} />
             
             <OpenCartButton isVisible={numberOfProductsInCart > 0 && !displayCart} onClick={() => setDisplayCart(true)}/>
         </div>
@@ -57,30 +57,30 @@ const SearchBar: React.FC<SearchBarProps> = ({searchTerm, setSearchTerm}) => {
 };
 
 interface ShopItemsProps {
-    products: IItem[];
+    items: Item[];
     searchTerm: string;
 }
-const ShopItems: React.FC<ShopItemsProps> = ({ products, searchTerm}) => {
-    if (products.length === 0) {
-        <div className='no-products'>
+const ShopItems: React.FC<ShopItemsProps> = ({ items, searchTerm}) => {
+    if (items.length === 0) {
+        <div className='no-items'>
                 <p>Inga produkter hittades</p>
             </div>
     }
     else return (
         <div className='shop-items'>
-            {products.filter((item: IItem) => 
+            {items.filter((item: Item) => 
                 item.favorite == true && 
                 item.available &&
                 item.name.toLowerCase().includes(searchTerm.toLowerCase())
-            ).map((item: IItem) => 
+            ).map((item: Item) => 
                 <ShopItem key={item.id} item={item} />
             )}
             
-            {products.filter((item: IItem) => 
+            {items.filter((item: Item) => 
                 item.favorite == false && 
                 item.available && 
                 item.name.toLowerCase().includes(searchTerm.toLowerCase())
-            ).map((item: IItem) => 
+            ).map((item: Item) => 
                 <ShopItem key={item.id} item={item} />
             )}
         </div>

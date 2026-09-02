@@ -1,16 +1,16 @@
 import api from "./axiosInstance";
 // import { z } from "zod";
 import { ApiItem } from "../schemas/api";
-import { productAdapter } from "../adapters/productAdapter";
+import itemadapter from "../adapters/itemAdapter";
 
 const inventoryApi = {
     /**
      * Fetches the inventory data from the API.
      *
-     * @returns {Promise<IItem[]>} A promise that resolves to an array of products.
+     * @returns {Promise<Item[]>} A promise that resolves to an array of items.
      * @throws Will throw an error if the API request fails.
      */
-    getInventory: async (): Promise<IItem[]> => {
+    getInventory: async (): Promise<Item[]> => {
         const response = await api.get("/group/item");
 
         
@@ -22,7 +22,7 @@ const inventoryApi = {
         //TODO: Uncomment this line to throw an error when parsing fails when backend has fixed the issue sending object instead of date for createdTime in some items. This is a temporary workaround to allow the app to continue functioning while the backend issue is being resolved.
 
         // return parsed.data.map(productAdapter);
-        return response.data.data.items.map(productAdapter);
+        return response.data.data.items.map(itemadapter.apiItemToItem);
     },
 
     /**
