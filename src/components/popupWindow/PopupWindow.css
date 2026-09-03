@@ -1,6 +1,6 @@
 
 .popup-window {
-    background-color: var(--contrast-color);
+    background-color: var(--card-color);
 
     position: absolute;
     

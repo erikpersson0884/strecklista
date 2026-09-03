@@ -69,5 +69,4 @@ const UserBalance: React.FC<UserBalanceProps> = ({ user }) => {
     );
 }
 
-
 export default BalancePage;

@@ -30,7 +30,7 @@ interface TransactionFilters {
 const TransactionsContext = createContext<TransactionsContextProps | undefined>(undefined);
 
 export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-    const { isLoadingUsers, getUserFromUserId } = useUsersContext();
+    const { isLoadingUsers } = useUsersContext();
     const { isLoadingInventory } = useInventory();
     const { isAuthenticated } = useAuth();
 
@@ -68,7 +68,7 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
                 if (t.type === 'purchase' || t.type === 'deposit') {
                     return (t as FinancialTransaction).createdFor === id;
                 }
-                else return t.createdBy === id;
+                else return t.createdBy.id === id;
             });
         }
 
@@ -102,13 +102,15 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
 
                 // If it's a financial transaction, check createdFor.nick
                 if (t.type === 'purchase' || t.type === 'deposit') {
-                    const ft = t as FinancialTransaction;
-                    return getUserFromUserId(ft.createdFor).nick.toLowerCase().includes(searchString) ||
-                        getUserFromUserId(t.createdBy).nick.toLowerCase().includes(searchString) ||
-                        ft.total.toString().includes(searchString);
+                    // const ft = t as FinancialTransaction;
+                    // return getUserFromUserId(ft.createdFor).nick.toLowerCase().includes(searchString) ||
+                    //     getUserFromUserId(t.createdBy).nick.toLowerCase().includes(searchString) ||
+                    //     ft.total.toString().includes(searchString);
+                    return t.createdBy.id; // TODO: Implement a proper search for non-financial transactions
                 } else {
                     // For stock updates or other transactions
-                    return getUserFromUserId(t.createdBy).nick.toLowerCase().includes(searchString)
+                    // return getUserFromUserId(t.createdBy).nick.toLowerCase().includes(searchString)
+                    return t.createdBy.id; // TODO: Implement a proper search for non-financial transactions
                 }
             });
         }

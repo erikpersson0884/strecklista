@@ -111,11 +111,14 @@ const TransactionPreview: FC<TransactionPreviewProps> = ({transaction}) => {
             transactionTypeString = 'Okänd';
     }
 
-    let userId: string;
+    let username;
     if (transaction.type === 'purchase'  ||  transaction.type === 'deposit') {
-        userId = (transaction as Purchase | Deposit).createdFor;
-    } else userId = transaction.createdBy;
-    const username = getUserFromUserId(userId).nick;
+        const userId = (transaction as Purchase | Deposit).createdFor;
+        username = getUserFromUserId(userId).nick;
+    } else if (transaction.createdBy.type === "user") {
+        const userId = transaction.createdBy.id;
+        username = getUserFromUserId(userId).nick;
+    } else username = 'client id:' + transaction.createdBy.id;
 
     return (
         <li 

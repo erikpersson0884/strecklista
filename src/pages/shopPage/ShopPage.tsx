@@ -3,29 +3,23 @@ import './ShopPage.css';
 
 import ShopItem from '../../components/shopItem/ShopItem';
 import { useInventory } from '../../contexts/InventoryContext';
-import { useCart } from '../../contexts/CartContext';
+import { useCartContext } from '../../contexts/CartContext';
 import Cart from '../../components/cart/Cart';
-import Modal from '../../components/modal/Modal';
 import emptySearchIcon from '../../assets/images/close.svg';
+import { useModalContext } from '../../contexts/ModalContext';
 
 
 const ShopPage: React.FC = () => {
     const { items } = useInventory();
-    const { numberOfProductsInCart } = useCart();
 
-    const [ displayCart, setDisplayCart ] = React.useState<boolean>(false);
     const [ searchTerm, setSearchTerm ] = React.useState<string>('');
 
     return (
         <div className='page'>
-            <Modal isOpen={displayCart} onClose={() => setDisplayCart(false)}>
-                <Cart closeCart={() => setDisplayCart(false)}/> 
-            </Modal>
-
             <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
             <ShopItems items={items} searchTerm={searchTerm} />
             
-            <OpenCartButton isVisible={numberOfProductsInCart > 0 && !displayCart} onClick={() => setDisplayCart(true)}/>
+            <OpenCartButton />
         </div>
 
     );
@@ -87,16 +81,15 @@ const ShopItems: React.FC<ShopItemsProps> = ({ items, searchTerm}) => {
     )
 }
 
-interface OpenCartButtonProps {
-    isVisible: boolean;
-    onClick: () => void;
-}
-const OpenCartButton: React.FC<OpenCartButtonProps> = ({ isVisible, onClick }) => {
-    const { numberOfProductsInCart } = useCart();
+const OpenCartButton: React.FC = () => {
+    const { numberOfItemsInCart } = useCartContext();
+    const { openModal } = useModalContext();
+    const isVisible: boolean = numberOfItemsInCart > 0;
+
     if (!isVisible) return null;
     else return (
-        <button className='show-cart-button' onClick={onClick}>
-            <div className='items-indicator'>{numberOfProductsInCart}</div>
+        <button className='show-cart-button' onClick={() => openModal(<Cart />)}>
+            <div className='items-indicator'>{numberOfItemsInCart}</div>
             <p>Strecka</p>
         </button>
     );

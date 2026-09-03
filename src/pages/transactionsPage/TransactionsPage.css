@@ -13,7 +13,7 @@
 }
 
 .open-filters-button {
-    background-color: var(--contrast-color);
+    background-color: var(--card-color);
 
     padding: 9px;
     border-radius: .8rem;
@@ -38,7 +38,7 @@
 }
 
 .pagination button {
-    background-color: var(--contrast-color);
+    background-color: var(--card-color);
 
     padding: .5rem;
 }

@@ -1,34 +1,39 @@
 import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 import transactionsApi from '../api/transactionsApi';
 import { useTransactionsContext } from './TransactionsContext';
-import { useUsersContext } from './UsersContext';
+import { useNotificationContext } from './NotificationContext';
 
+const MAX_COMMENT_LENGTH = 1000;
 
 interface CartContextType {
     itemsInCart: ItemInCart[];
-    numberOfProductsInCart: number;
+    numberOfItemsInCart: number;
     total: number;
-    addIProductoCart: (item: Item) => void;
+    payingUser: User | null;
+    setPayingUser: React.Dispatch<React.SetStateAction<User | null>>;
+
+    addItemToCart: (item: Item) => void;
     setProductQuantity: (productid: Id, quantity: number) => void;
     decreaseProductQuantity: (Item: ItemInCart) => void;
     increaseProductQuantity: (Item: ItemInCart) => void;
     removeProductFromCart: (item: Item) => void;
     getProductQuantity: (productid: Id) => number;
-    clearOrder: () => void;
-    buyProducts: (payinguserId: UserId, comment?: string) => Promise<boolean>;
+    emptyCart: () => void;
+    purchaseCart: (comment?: string) => Promise<boolean>;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const { refreshTransactions } = useTransactionsContext();
-    const { setUserBalance } = useUsersContext();
+    const { notify } = useNotificationContext();
 
     const [ itemsInCart, setItemsInCart ] = useState<ItemInCart[]>([]);
-    const [ numberOfProductsInCart, setNumberOfProductsInCart ] = useState<number>(0);
+    const [ numberOfItemsInCart, setNumberOfItemsInCart ] = useState<number>(0);
     const [ total, setTotal ] = useState<number>(0);
+    const [ payingUser, setPayingUser ] = useState<User | null>(null);
 
-    const addIProductoCart = (item: Item) => {
+    const addItemToCart = (item: Item) => {
         setItemsInCart((prevItems) => {
             const existingItem = prevItems.find(i => i.id === item.id);
             if (existingItem) {
@@ -43,7 +48,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
     React.useEffect(() => {
         const totalItems = itemsInCart.reduce((sum, item) => sum + item.quantity, 0);
-        setNumberOfProductsInCart(totalItems);
+        setNumberOfItemsInCart(totalItems);
     }
     , [itemsInCart]);
 
@@ -78,51 +83,56 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         setItemsInCart((prevItems) => prevItems.filter(item => item.id !== itemToRemove.id));
     };
 
-    const clearOrder = () => {
+    const emptyCart = () => {
         setItemsInCart([]);
+        notify('Korgen tömdes', 'info');
     };
+
+    const purchaseCart = async (comment?: string): Promise<boolean> => {
+        try {
+        if (!payingUser) throw new Error("No paying user set");
+        if (itemsInCart.length === 0) throw new Error("Cart is empty");
+        if (comment && comment.length > MAX_COMMENT_LENGTH) throw new Error(`Kommentaren får inte vara längre än ${MAX_COMMENT_LENGTH} tecken`);
+            transactionsApi.makePurchase(payingUser.id, itemsInCart, comment);
+            emptyCart();
+            refreshTransactions();
+            setPayingUser(null);
+            notify('Köp Genomfört', 'success');
+            return true;
+        }
+        catch (error: any) {
+            notify(error.message, 'error');
+            return false
+        }
+    }
 
     useEffect(() => {
         const newTotal = itemsInCart.reduce((sum, item) => sum + item.internalPrice * item.quantity, 0);
         setTotal(newTotal);
     }, [itemsInCart]);
 
-    const buyProducts = async (payingUserid: UserId, comment?: string): Promise<boolean> => {
-        try {
-            const newBalance: number = await transactionsApi.makePurchase(payingUserid, itemsInCart, comment);
-            clearOrder();
-            refreshTransactions();
-            setUserBalance(payingUserid, newBalance)
-            return true;
-        }
-        catch (error: any) {
-            console.error("Failed to buy items:", error);
-            return false
-        }
-    }
-
-
-
     return (
         <CartContext.Provider value={{ 
-            numberOfProductsInCart, 
+            numberOfItemsInCart, 
             itemsInCart, 
-            addIProductoCart, 
+            payingUser,
+            total,
+            setPayingUser,
+            addItemToCart, 
             removeProductFromCart, 
             setProductQuantity, 
             decreaseProductQuantity, 
             increaseProductQuantity, 
-            clearOrder, 
-            buyProducts, 
+            emptyCart, 
+            purchaseCart, 
             getProductQuantity,
-            total 
         }}>
             {children}
         </CartContext.Provider>
     );
 };
 
-export const useCart = (): CartContextType => {
+export const useCartContext = (): CartContextType => {
     const context = useContext(CartContext);
     if (!context) {
         throw new Error('useCart must be used within a CartProvider');

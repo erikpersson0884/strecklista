@@ -1,6 +1,6 @@
 import './CartItem.css';
 
-import { useCart } from '../../../contexts/CartContext';
+import { useCartContext } from '../../../contexts/CartContext';
 import deleteIcon from '../../../assets/images/delete-white.svg';
 import plusIcon from '../../../assets/images/plus.svg';
 import minusIcon from '../../../assets/images/minus.svg';
@@ -10,7 +10,7 @@ interface CartItemProps {
 }
 
 const CartItem: React.FC<CartItemProps> = ({ item }) => {
-    const { removeProductFromCart, increaseProductQuantity, decreaseProductQuantity, setProductQuantity } = useCart();
+    const { removeProductFromCart, increaseProductQuantity, decreaseProductQuantity, setProductQuantity } = useCartContext();
 
     const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newQuantity = e.target.value === '' ? 0 : Number(e.target.value); // if i just click remove button, i want it to be zero, not NaN

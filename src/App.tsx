@@ -1,28 +1,26 @@
 import './styles/App.css';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
 import Header from './layouts/header/Header';
 import Footer from './layouts/footer/Footer';
 
-import Providers from './Providers';
+import ProtectedRoute from './components/protectedRoute/ProtectedRoute';
+import LoginPage from './pages/loginPage/LoginPage';
+import AuthCallback from './pages/loginPage/AuthCallback';
 
 import ShopPage from './pages/shopPage/ShopPage';
 import InventoryPage from './pages/inventoryPage/InventoryPage';
 import BalancePage from './pages/balancePage/BalancePage';
 import TransactionsPage from './pages/transactionsPage/TransactionsPage';
-import NotFound from './pages/notFoundPage/NotFoundPage';
-import LoginPage from './pages/loginPage/LoginPage';
+
 import ClientPage from './pages/clientPage/ClientPage';
-
 import ProfilePage from './pages/profilePage/profilePage';
-
-import AuthCallback from './pages/loginPage/AuthCallback';
 
 import { useAuth } from './contexts/AuthContext';
 
 
 const App: React.FC = () => {
-    const { isAuthenticated, isLoggingIn } = useAuth();
+    const { isLoggingIn } = useAuth();
 
     const pages = [
         { url: '/', component: <ShopPage /> },
@@ -36,37 +34,22 @@ const App: React.FC = () => {
     if (isLoggingIn) {
         return <p>Loading...</p>;
     } 
-    else if (isAuthenticated) {
-        return(
-            <Providers>
-                <BrowserRouter>
-                    <Header />
-                    
-                    <Routes>
-                        {pages.map((page) => (
-                            <Route key={page.url} path={page.url} element={page.component} />
-                        ))}
-                        <Route path="*" element={<NotFound />} />
-                    </Routes>
-                </BrowserRouter>
 
-                <Footer />
-            </Providers>
-        )
-    } 
     else return (
-        <BrowserRouter>
-            <Routes>
-                <Route path="/callback" element={<AuthCallback />} />
-                <Route path="/" element={
-                    <>
-                        <LoginPage />
-                        <Footer />
-                    </>
-                } />
-                <Route path="*" element={<NotFound />} />
-            </Routes>
-        </BrowserRouter>
+        <>
+            <Header />
+                <Routes>
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/callback" element={<AuthCallback />} />
+                    <Route element={<ProtectedRoute/>}>
+                        {pages.map((page, index) => (
+                            <Route key={index} path={page.url} element={page.component} />
+                        ))}
+                    </Route>
+                    <Route path="*" element={<Navigate to="/" replace />} />
+                </Routes>
+            <Footer />
+        </>
     )
 }
 

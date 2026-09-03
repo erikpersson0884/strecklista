@@ -5,7 +5,7 @@ import favouriteIcon from '../../assets/images/favourite.svg';
 import favouriteIconFilled from '../../assets/images/favourite-filled.svg';
 import defaultItemImage from '../../assets/images/grocery.svg';
 
-import { useCart } from '../../contexts/CartContext';
+import { useCartContext } from '../../contexts/CartContext';
 import { useInventory } from '../../contexts/InventoryContext';
 
 interface ProductProps {
@@ -13,13 +13,13 @@ interface ProductProps {
 }
 
 const Item: React.FC<ProductProps> = ({ item }) => {
-    const { addIProductoCart, itemsInCart } = useCart(); 
+    const { addItemToCart, itemsInCart } = useCartContext(); 
     const { toggleFavourite } = useInventory();
 
     const internalPrice: string = item.internalPrice % 1 === 0 ? item.internalPrice.toFixed(0) : item.internalPrice.toFixed(2)
 
     return (
-        <div className="item" onClick={() => addIProductoCart(item)}>
+        <div className="item" onClick={() => addItemToCart(item)}>
             <button className='favourite-button' onClick={(e) => {e.stopPropagation(); toggleFavourite(item.id)}}>
                 <img 
                     src={item.favorite ? favouriteIconFilled : favouriteIcon}

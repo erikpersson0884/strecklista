@@ -17,7 +17,10 @@ declare global {
     interface ITransaction {
         id: Id;
         type: TransactionType;
-        createdBy: Id;
+        createdBy: {
+            type: "user" | "client";
+            id: Id;
+        }
         createdTime: Date;
         removed: boolean;
     }

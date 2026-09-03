@@ -1,6 +1,6 @@
 
 .client-page {
-    background-color: var(--contrast-color);
+    background-color: var(--card-color);
     display: flex;
     flex-direction: column;
     gap: 2rem;
@@ -11,5 +11,5 @@
 }
 
 .client-page li {
-    /* background-color: var(--secondary-contrast-color); */
+    /* background-color: var(--accent-color); */
 }

@@ -1,6 +1,6 @@
 
 .page-header {
-    background-color: var(--contrast-color);
+    background-color: var(--card-color);
 
     display: flex;
     flex-direction: row;

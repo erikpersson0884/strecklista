@@ -1,4 +1,4 @@
 
 .confirm-popup .accept-button {
-    background-color: var(--red-color) !important;
+    background-color: var(--destructive-color) !important;
 }

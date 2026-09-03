@@ -41,6 +41,11 @@ export default defineConfig(({ mode }) => {    // This loads the right file base
                 },
             },
         },
+        resolve: {
+            alias: {
+                '@': '/src',
+            },
+        },
         plugins: [
             react(),
         // This is probably not a problem, but removed it to try and fix backend connection issues on chalmers.it

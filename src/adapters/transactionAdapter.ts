@@ -20,14 +20,19 @@ export const transactionAdapter = {
         return new Date(apiTime);
     },
 
-    adaptCretedBy(apiCreatedBy: { userId?: number; clientId?: string }): Id {
+    adaptCretedBy(apiCreatedBy: { userId?: number; clientId?: string }): { type: "user" | "client"; id: Id } {
         if (apiCreatedBy.userId !== undefined) {
-            return apiCreatedBy.userId.toString();
+            return {
+                type: "user",
+                id: apiCreatedBy.userId.toString()
+            };
         } else if (apiCreatedBy.clientId !== undefined) {
-            return apiCreatedBy.clientId.toString();
+            return {
+                type: "client",
+                id: apiCreatedBy.clientId
+            };
         } else {
-            console.error("Unknown createdBy format:", apiCreatedBy);
-            return "unknown..." // TODO: Research what this should do if created by client
+            throw new Error("Unknown createdBy format: " + apiCreatedBy);
         }
     },
 
