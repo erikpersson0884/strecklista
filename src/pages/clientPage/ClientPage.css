@@ -1,15 +1,4 @@
 
-.client-page {
-    background-color: var(--card-color);
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-
-    height: 5rem;
-    padding: 2rem;
-    border-radius: 10px;
-}
-
-.client-page li {
-    /* background-color: var(--accent-color); */
+.client-page ul, .client-page li {
+    width: 100%;
 }

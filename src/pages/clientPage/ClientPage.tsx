@@ -43,9 +43,9 @@ const ClientPage: React.FC = () => {
     }
 
     return (
-        <>
+        <div className="client-page page">
             <h2>Client Manager</h2>
-            <ul className="page">
+            <ul >
                 {clients.map((client) => (
                     <li key={client.id} className="list-item" onClick={() => openManageClientModal(client)}>
                         <p>{client.displayName}</p>
@@ -64,7 +64,7 @@ const ClientPage: React.FC = () => {
                     </button>
                 </li>
             </ul>
-        </>
+        </div>
     );
 }
 

@@ -63,8 +63,8 @@ const InventoryPage: React.FC = () => {
     if (isLoadingInventory) return <p>Loading...</p>;
 
     return (
-        <>
-            <ul className='page'>
+        <div className='inventory-page page'>
+            <ul className='page-list'>
 
                 {items.length === 0 ? (
                     <p className='no-items'>Inga produkter i lager</p>
@@ -78,7 +78,7 @@ const InventoryPage: React.FC = () => {
                     </button>
                 </li>
             </ul>
-        </>
+        </div>
     );
 };
 

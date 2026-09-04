@@ -17,9 +17,10 @@ const BalancePage: React.FC = () => {
         <p>Laddar användare...</p>
     )
     else if (users.length === 0) return <p>Hittade inga användare</p>
-    else return (
-            <div className='balancepage list-page page'>
 
+    else return (
+        <div className='balance-page page'>
+            <ul className='page-list'>
                 <UserBalance 
                     user={getUserFromUserId(currentUser.id)} 
                     key={currentUser.id}
@@ -31,7 +32,8 @@ const BalancePage: React.FC = () => {
                         key={user.id}
                     />
                 ))}
-            </div>
+            </ul>
+        </div>
     );
 };
 
@@ -42,9 +44,7 @@ interface UserBalanceProps {
 const UserBalance: React.FC<UserBalanceProps> = ({ user }) => {
     const { openModal } = useModalContext()
 
-    const openRefillPopup = () => {
-        openModal(<RefillUserBalancePopup user={user}/>)
-    }
+    const openRefillPopup = () => openModal(<RefillUserBalancePopup user={user}/>)
 
 
     return (

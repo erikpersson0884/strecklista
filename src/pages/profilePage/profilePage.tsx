@@ -2,9 +2,11 @@ import React from 'react';
 import './profilePage.css';
 
 import { useAuth } from '../../contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const ProfilePage: React.FC = () => {
     const { currentUser, logout } = useAuth();
+    const navigate = useNavigate();
 
     if (!currentUser) return null;
     return (
@@ -19,6 +21,8 @@ const ProfilePage: React.FC = () => {
             </div>
 
             <p>Saldo: {currentUser.balance} kr</p>
+
+            <button onClick={() => navigate("/clients")}>Mina Klienter</button>
 
             <button className='logout-button' onClick={logout}>Logga ut</button>
         </div>

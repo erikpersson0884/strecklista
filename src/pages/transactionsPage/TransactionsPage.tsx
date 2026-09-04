@@ -37,7 +37,7 @@ const TransactionList = () => {
         <p className='no-transactions'>Inga transaktioner hittades.</p>
     ) 
     else return (
-        <ul className='transactions-list'>
+        <ul className='page-list'>
             {filteredTransactions.map((transaction: ITransaction) => 
                 <TransactionPreview key={transaction.id} transaction={transaction} />
             )}
