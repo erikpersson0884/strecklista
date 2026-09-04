@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import ActionPopupWindow from '../actionPopupWindow/ActionPopupWindow';
-import { useInventory } from '../../contexts/InventoryContext';
+import { useInventoryContext } from '../../contexts/InventoryContext';
+
 
 interface RefillProductPopupProps {
     item: Item | null;
@@ -9,7 +10,7 @@ interface RefillProductPopupProps {
 const RefillProductPopup: React.FC<RefillProductPopupProps> = ({ item }) => {
     if (!item) return null;
     
-    const { refillProduct } = useInventory();
+    const { refillProduct } = useInventoryContext();
 
     const [ amountToRefill, setAmountToRefill ] = useState<number>(0);
     const [ errorText, setErrorText ] = useState<string | undefined>(undefined);
@@ -39,7 +40,6 @@ const RefillProductPopup: React.FC<RefillProductPopupProps> = ({ item }) => {
     return (
         <ActionPopupWindow 
             title={`Fyll på ${item.name}`}
-            onClose={handleClose}
             onAccept={handleRefillProduct}
             acceptButtonText='Fyll på'
             errorText={errorText}

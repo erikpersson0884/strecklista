@@ -2,7 +2,7 @@ import React from "react";
 import "./ClientPopup.css";
 import ActionPopupWindow from "../actionPopupWindow/ActionPopupWindow";
 import { useClientContext } from "@/contexts/ClientContext";
-import { useNotificationContext } from "@/contexts/NotificationContext";
+import useNotificationContext from "@/contexts/NotificationContext";
 
 interface ClientPopupProps {
     client?: Client;

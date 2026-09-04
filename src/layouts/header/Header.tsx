@@ -2,13 +2,13 @@ import React from 'react';
 import './Header.css';
 import { Link, useNavigate } from 'react-router-dom';
 import usersApi from '@/api/usersApi';
-import { useAuth } from '@/contexts/AuthContext';
+import useAuthContext from '@/contexts/AuthContext';
 import fallbackLogo from '@/assets/images/bird.png';
 import menuIcon from '@/assets/images/menu-icon.svg';
 import profileIcon from '@/assets/images/profile.svg';
 
 const Header: React.FC = () => {
-    const { isAuthenticated } = useAuth();
+    const { isAuthenticated } = useAuthContext();
     const navigate = useNavigate();
 
     const [ navOpen, setNavOpen ] = React.useState(false)

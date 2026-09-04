@@ -1,11 +1,11 @@
 import React from 'react';
 import './ProfilePage.css';
 
-import { useAuth } from '../../contexts/AuthContext';
+import useAuthContext from '../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 const ProfilePage: React.FC = () => {
-    const { currentUser, logout } = useAuth();
+    const { currentUser, logout } = useAuthContext();
     const navigate = useNavigate();
 
     if (!currentUser) return null;

@@ -1,7 +1,7 @@
 import { createContext, useState, useContext, ReactNode } from 'react';
 import inventoryApi from '../api/inventoryApi';
 import { useEffect } from 'react';
-import { useAuth } from './AuthContext';
+import useAuthContext from './AuthContext';
 import { ApiItem } from '../schemas/api';
 
 
@@ -19,7 +19,7 @@ interface InventoryContextProps {
 const InventoryContext = createContext<InventoryContextProps | undefined>(undefined);
 
 export const InventoryProvider = ({ children }: { children: ReactNode }) => {
-    const { isAuthenticated } = useAuth();
+    const { isAuthenticated } = useAuthContext();
 
     const [isLoadingInventory, setIsLoadingInventory] = useState<boolean>(true);
     const [items, setProducts] = useState<Item[]>([]);
@@ -141,11 +141,12 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
     );
 };
 
-export const useInventory = () => {
+export const useInventoryContext = () => {
     const context = useContext(InventoryContext);
     if (!context) {
-        throw new Error('useInventory must be used within an InventoryProvider');
+        throw new Error('useInventoryContext must be used within an InventoryProvider');
     }
     return context;
 };
 
+export default useInventoryContext;

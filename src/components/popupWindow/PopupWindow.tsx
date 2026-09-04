@@ -1,6 +1,6 @@
 import React from 'react';
 import './PopupWindow.css';
-import { useModalContext } from '../../contexts/ModalContext';
+import useModalContext from '../../contexts/ModalContext';
 import Closebutton from '../closebutton/Closebutton';
 
 interface PopupWindowProps {

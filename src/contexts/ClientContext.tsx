@@ -1,7 +1,7 @@
 import { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 import clientApi from '../api/clientApi';
-import { useAuth } from './AuthContext';
-import { useNotificationContext } from './NotificationContext';
+import useAuthContext from './AuthContext';
+import useNotificationContext from './NotificationContext';
 
 interface ClientContextType {
     isLoadingClients: boolean;
@@ -16,7 +16,7 @@ interface ClientContextType {
 const ClientContext = createContext<ClientContextType | undefined>(undefined);
 
 export const ClientProvider = ({ children }: { children: ReactNode }) => {
-    const { isAuthenticated } = useAuth();
+    const { isAuthenticated } = useAuthContext();
     const { notify } = useNotificationContext();
 
     const [ isLoadingClients, setIsLoadingClient ] = useState<boolean>(true);
@@ -111,3 +111,5 @@ export const useClientContext = (): ClientContextType => {
     }
     return context;
 };
+
+export default useClientContext;

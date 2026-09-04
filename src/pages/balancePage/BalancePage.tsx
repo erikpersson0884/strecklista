@@ -2,15 +2,15 @@ import React from 'react';
 import './BalancePage.css';
 
 import { useUsersContext } from '../../contexts/UsersContext';
-import { useAuth } from '../../contexts/AuthContext';
-import { useModalContext } from '../../contexts/ModalContext';
+import useAuthContext from '../../contexts/AuthContext';
+import useModalContext from '../../contexts/ModalContext';
 
 import RefillUserBalancePopup from '../../components/refillUserBalancePopup/RefillUserBalancePopup';
 import addIcon from '../../assets/images/add.svg';
 
 
 const BalancePage: React.FC = () => {
-    const { currentUser } = useAuth();
+    const { currentUser } = useAuthContext();
     const { users, isLoadingUsers, getUserFromUserId } = useUsersContext();
 
     if (isLoadingUsers || !currentUser) return ( // should implement a better check for current user

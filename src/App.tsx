@@ -16,11 +16,11 @@ import TransactionsPage from './pages/transactionsPage/TransactionsPage';
 import ClientPage from './pages/clientPage/ClientPage';
 import ProfilePage from './pages/profilePage/profilePage';
 
-import { useAuth } from './contexts/AuthContext';
+import useAuthContext from '@/contexts/AuthContext';
 
 
 const App: React.FC = () => {
-    const { isLoggingIn } = useAuth();
+    const { isLoggingIn } = useAuthContext();
 
     const pages = [
         { url: '/', component: <ShopPage /> },

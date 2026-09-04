@@ -3,16 +3,19 @@ import './Cart.css';
 
 import { useCartContext } from '../../contexts/CartContext';
 import { useUsersContext } from '../../contexts/UsersContext';
-import { useAuth } from '../../contexts/AuthContext';
-import { useModalContext } from '../../contexts/ModalContext';
+import useAuthContext from '../../contexts/AuthContext';
+import useModalContext from '../../contexts/ModalContext';
+import useNotificationContext from '../../contexts/NotificationContext';
 
 import CartItem from './cartItem/CartItem';
 
 
 const Cart: FC = () => {
     const { itemsInCart, purchaseCart } = useCartContext();
-    const { currentUser } = useAuth();
+    const { currentUser } = useAuthContext();
     const { closeModal } = useModalContext();
+    const { notify } = useNotificationContext();
+
     if (!currentUser) return null; // Should never happen, but it can open before currentUser is set, so we need to handle this case
 
     const [ comment, setComment ] = useState<string>('');
@@ -21,6 +24,7 @@ const Cart: FC = () => {
     const handleBuyProducts = async () => {
         const successfullBuy: boolean = await purchaseCart(includeComment ? comment : undefined);
         if (successfullBuy) closeModal();
+        else notify('Kunde inte genomföra köpet. Försök igen senare.', 'error');
     };
 
 
@@ -61,7 +65,7 @@ const CartItems: FC = () => {
 
 const CartFooter: FC = () => {
     const { payingUser, setPayingUser } = useCartContext();
-    const { currentUser } = useAuth();
+    const { currentUser } = useAuthContext();
     const { users, getUserFromUserId } = useUsersContext();
     const { total } = useCartContext();
 

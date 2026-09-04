@@ -1,8 +1,8 @@
 import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 import transactionsApi from '../api/transactionsApi';
 import { useUsersContext } from './UsersContext';
-import { useInventory } from './InventoryContext';
-import { useAuth } from './AuthContext';
+import { useInventoryContext } from './InventoryContext';
+import useAuthContext from './AuthContext';
 
 interface TransactionsContextProps {
     isLoadingTransactions: boolean;
@@ -31,8 +31,8 @@ const TransactionsContext = createContext<TransactionsContextProps | undefined>(
 
 export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const { isLoadingUsers } = useUsersContext();
-    const { isLoadingInventory } = useInventory();
-    const { isAuthenticated } = useAuth();
+    const { isLoadingInventory } = useInventoryContext();
+    const { isAuthenticated } = useAuthContext();
 
     const [filteredTransactions, setFilteredTransactions] = useState<ITransaction[]>([]);
     const [transactions, setTransactions] = useState<ITransaction[]>([]);
@@ -196,3 +196,5 @@ export const useTransactionsContext = (): TransactionsContextProps => {
     }
     return context;
 };
+
+export default useTransactionsContext;

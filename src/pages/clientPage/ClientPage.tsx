@@ -2,9 +2,9 @@ import React from "react";
 import "./ClientPage.css";
 
 import { useClientContext } from "@/contexts/ClientContext";
-import { useModalContext } from "@/contexts/ModalContext";
+import useModalContext from "@/contexts/ModalContext";
 
-import ClientPopup from "@/components/ClientPopup/ClientPopup";
+import ClientPopup from "@/components/clientPopup/ClientPopup";
 import DisplayClientPopup from "@/components/displayClientPopup/DisplayClientPopup";
 
 import deleteIcon from "@/assets/images/delete-white.svg";

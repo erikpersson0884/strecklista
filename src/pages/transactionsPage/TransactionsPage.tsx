@@ -4,7 +4,7 @@ import './TransactionsPage.css';
 
 import { useTransactionsContext } from '../../contexts/TransactionsContext';
 import { useUsersContext } from '../../contexts/UsersContext';
-import { useModalContext } from '../../contexts/ModalContext';
+import useModalContext from '../../contexts/ModalContext';
 
 import TransactionPopup from '../../components/transactionPopup/TransactionPopup';
 import Filter from './Filter/Filter';

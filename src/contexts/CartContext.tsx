@@ -1,7 +1,7 @@
 import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 import transactionsApi from '../api/transactionsApi';
 import { useTransactionsContext } from './TransactionsContext';
-import { useNotificationContext } from './NotificationContext';
+import useNotificationContext from './NotificationContext';
 
 const MAX_COMMENT_LENGTH = 1000;
 
@@ -139,3 +139,5 @@ export const useCartContext = (): CartContextType => {
     }
     return context;
 };
+
+export default useCartContext;

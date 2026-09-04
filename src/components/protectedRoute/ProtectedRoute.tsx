@@ -1,9 +1,9 @@
 // ProtectedRoute.tsx
 import { Navigate, Outlet } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
+import useAuthContext from '@/contexts/AuthContext';
 
 const ProtectedRoute: React.FC = () => {
-    const { isAuthenticated, isLoggingIn } = useAuth()
+    const { isAuthenticated, isLoggingIn } = useAuthContext()
 
     if (isLoggingIn) {
         return <div>Loggar in...</div>

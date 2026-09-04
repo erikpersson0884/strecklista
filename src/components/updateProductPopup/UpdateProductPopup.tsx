@@ -1,5 +1,5 @@
 import ActionPopupWindow from "../actionPopupWindow/ActionPopupWindow";
-import { useInventory } from "../../contexts/InventoryContext";
+import { useInventoryContext } from "../../contexts/InventoryContext";
 import React, { useEffect, useState } from "react";
 
 interface UpdateProductPopupProps {
@@ -8,7 +8,7 @@ interface UpdateProductPopupProps {
 
 const UpdateProductPopup: React.FC<UpdateProductPopupProps> = ({item}) => {
     if (!item) return null;
-    const { updateProduct } = useInventory();
+    const { updateProduct } = useInventoryContext();
 
 
     const [updatedProduct, setUpdatedProduct] = useState(item);
