@@ -1,5 +1,5 @@
 import { createContext, useState, useContext, ReactNode, useEffect } from 'react';
-import clientApi from '../api/clientApi';
+import clientApi from '@/api/clientApi';
 import useAuthContext from './AuthContext';
 import useNotificationContext from './NotificationContext';
 

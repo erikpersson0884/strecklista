@@ -1,12 +1,12 @@
 import React from 'react';
 import './ShopItem.css';
 
-import favouriteIcon from '../../assets/images/favourite.svg';
-import favouriteIconFilled from '../../assets/images/favourite-filled.svg';
-import defaultItemImage from '../../assets/images/grocery.svg';
+import favouriteIcon from '@/assets/images/favourite.svg';
+import favouriteIconFilled from '@/assets/images/favourite-filled.svg';
+import defaultItemImage from '@/assets/images/grocery.svg';
 
-import { useCartContext } from '../../contexts/CartContext';
-import { useInventoryContext } from '../../contexts/InventoryContext';
+import { useCartContext } from '@/contexts/CartContext';
+import { useInventoryContext } from '@/contexts/InventoryContext';
 
 interface ProductProps {
     item: Item;

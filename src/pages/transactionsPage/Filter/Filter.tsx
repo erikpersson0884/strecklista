@@ -2,8 +2,8 @@ import React from 'react';
 import './Filter.css';
 
 
-import { useUsersContext } from '../../../contexts/UsersContext';
-import { useTransactionsContext } from '../../../contexts/TransactionsContext';
+import { useUsersContext } from '@/contexts/UsersContext';
+import { useTransactionsContext } from '@/contexts/TransactionsContext';
 
 interface FilterProps {
     isVisible: boolean;

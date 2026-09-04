@@ -1,12 +1,12 @@
 import React from 'react';
 import './BalancePage.css';
 
-import { useUsersContext } from '../../contexts/UsersContext';
-import useAuthContext from '../../contexts/AuthContext';
-import useModalContext from '../../contexts/ModalContext';
+import { useUsersContext } from '@/contexts/UsersContext';
+import useAuthContext from '@/contexts/AuthContext';
+import useModalContext from '@/contexts/ModalContext';
 
-import RefillUserBalancePopup from '../../components/refillUserBalancePopup/RefillUserBalancePopup';
-import addIcon from '../../assets/images/add.svg';
+import RefillUserBalancePopup from '@/components/refillUserBalancePopup/RefillUserBalancePopup';
+import addIcon from '@/assets/images/add.svg';
 
 
 const BalancePage: React.FC = () => {

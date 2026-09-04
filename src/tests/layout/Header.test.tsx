@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
-import Header from '../../layouts/header/Header';
+import Header from '@/layouts/header/Header';
 import { BrowserRouter } from 'react-router-dom';
-import { AuthProvider } from '../../contexts/AuthContext';
+import { AuthProvider } from '@/contexts/AuthContext';
 import userEvent from '@testing-library/user-event';
 
 

@@ -1,4 +1,4 @@
-import { ApiGroupUser, ApiGroupMember, ApiGroup } from '../schemas/api'; 
+import { ApiGroupUser, ApiGroupMember, ApiGroup } from '@/schemas/api'; 
 
 
 const userAdapter = {

@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
-import Modal from '../components/modal/Modal';
+import Modal from '@/components/modal/Modal';
 
 type ModalContextType = {
     openModal: (content: React.ReactNode) => void;

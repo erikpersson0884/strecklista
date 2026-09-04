@@ -1,4 +1,4 @@
-import { ApiItem, ApiPrice } from '../schemas/api';
+import { ApiItem, ApiPrice } from '@/schemas/api';
 
 export const itemAdapter = {
     apiItemToItem(apiItem: ApiItem): Item {

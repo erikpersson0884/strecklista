@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import ActionPopupWindow from '../actionPopupWindow/ActionPopupWindow';
-import { useInventoryContext } from '../../contexts/InventoryContext';
+import ActionPopupWindow from '@/components/actionPopupWindow/ActionPopupWindow';
+import { useInventoryContext } from '@/contexts/InventoryContext';
 
 
 interface RefillProductPopupProps {

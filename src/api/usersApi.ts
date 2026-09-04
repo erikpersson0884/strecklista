@@ -1,6 +1,6 @@
 import api from "./axiosInstance";
 import userAdapter from "../adapters/userAdapter";
-import { apiGroupUser, apiGroupMember, apiGroup } from '../schemas/api'; 
+import { apiGroupUser, apiGroupMember, apiGroup } from '@/schemas/api'; 
 import { z } from "zod";
 
 export const usersApi = {

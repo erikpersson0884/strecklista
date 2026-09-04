@@ -2,15 +2,15 @@ import type { FC } from 'react';
 import { useState } from 'react';
 import './TransactionsPage.css';
 
-import { useTransactionsContext } from '../../contexts/TransactionsContext';
-import { useUsersContext } from '../../contexts/UsersContext';
-import useModalContext from '../../contexts/ModalContext';
+import { useTransactionsContext } from '@/contexts/TransactionsContext';
+import { useUsersContext } from '@/contexts/UsersContext';
+import useModalContext from '@/contexts/ModalContext';
 
-import TransactionPopup from '../../components/transactionPopup/TransactionPopup';
+import TransactionPopup from '@/components/transactionPopup/TransactionPopup';
 import Filter from './Filter/Filter';
 
-import downIcon from '../../assets/images/down.svg';
-import filterIcon from '../../assets/images/filter.svg';
+import downIcon from '@/assets/images/down.svg';
+import filterIcon from '@/assets/images/filter.svg';
 
 const TransactionsPage: FC = () => {
     const { isLoadingTransactions } = useTransactionsContext();

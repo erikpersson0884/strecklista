@@ -1,7 +1,7 @@
 import React from 'react';
 import './ProfilePage.css';
 
-import useAuthContext from '../../contexts/AuthContext';
+import useAuthContext from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 const ProfilePage: React.FC = () => {

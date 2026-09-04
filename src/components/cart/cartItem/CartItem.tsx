@@ -1,9 +1,9 @@
 import './CartItem.css';
 
-import { useCartContext } from '../../../contexts/CartContext';
-import deleteIcon from '../../../assets/images/delete-white.svg';
-import plusIcon from '../../../assets/images/plus.svg';
-import minusIcon from '../../../assets/images/minus.svg';
+import { useCartContext } from '@/contexts/CartContext';
+import deleteIcon from '@/assets/images/delete-white.svg';
+import plusIcon from '@/assets/images/plus.svg';
+import minusIcon from '@/assets/images/minus.svg';
 
 interface CartItemProps {
     item: ItemInCart;

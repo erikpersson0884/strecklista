@@ -1,7 +1,7 @@
 import React from 'react';
 import './PopupWindow.css';
-import useModalContext from '../../contexts/ModalContext';
-import Closebutton from '../closebutton/Closebutton';
+import useModalContext from '@/contexts/ModalContext';
+import Closebutton from '@/components/closebutton/Closebutton';
 
 interface PopupWindowProps {
     children: React.ReactNode;

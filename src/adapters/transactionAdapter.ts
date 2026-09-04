@@ -1,4 +1,4 @@
-import { ApiTransaction, ApiPurchase, ApiDeposit, ApiStockUpdate, ApiPurchasedItem } from '../schemas/api';
+import { ApiTransaction, ApiPurchase, ApiDeposit, ApiStockUpdate, ApiPurchasedItem } from '@/schemas/api';
 
 
 export const transactionAdapter = {

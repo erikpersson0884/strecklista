@@ -1,5 +1,5 @@
 import './Closebutton.css';
-import closeImage from '../../assets/images/close.svg';
+import closeImage from '@/assets/images/close.svg';
 
 
 const Closebutton = ({closeAction}: {closeAction: () => void}) => {

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import './RefillUserBalancePopup.css';
 
-import ActionPopupWindow from '../actionPopupWindow/ActionPopupWindow';
-import { useUsersContext } from '../../contexts/UsersContext';
-import useModalContext from '../../contexts/ModalContext';
-import useNotificationContext from '../../contexts/NotificationContext';
+import ActionPopupWindow from '@/components/actionPopupWindow/ActionPopupWindow';
+import { useUsersContext } from '@/contexts/UsersContext';
+import useModalContext from '@/contexts/ModalContext';
+import useNotificationContext from '@/contexts/NotificationContext';
 const MAX_COMMENT_LENGTH = 1000;
 
 
