@@ -1,12 +1,11 @@
 import React from 'react';
 import './Header.css';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import usersApi from '@/api/usersApi';
 import { useAuth } from '@/contexts/AuthContext';
 import fallbackLogo from '@/assets/images/bird.png';
 import menuIcon from '@/assets/images/menu-icon.svg';
 import profileIcon from '@/assets/images/profile.svg';
-import { useNavigate } from "react-router-dom";
 
 const Header: React.FC = () => {
     const { isAuthenticated } = useAuth();

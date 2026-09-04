@@ -10,12 +10,6 @@
     min-height: 100vh;
 }
 
-button:disabled {
-    background-color: #676767 !important;
-    color: var(--secondary-text-color);
-
-    cursor: auto;
-}
 
 .inputdiv {
     display: flex;
@@ -24,7 +18,7 @@ button:disabled {
 }
 
 .error-message {
-    color: red;
+    color: var(--destructive-color);
     font-size: 0.8rem;
 }
 

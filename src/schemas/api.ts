@@ -147,10 +147,14 @@ export const apiItemStockUpdate = z.object({
 });
 export type ApiItemStockUpdate = z.infer<typeof apiItemStockUpdate>;
 
+// --- Scope ---
+export const apiScope = z.string();
+export type ApiScope = z.infer<typeof apiScope>;
+
 // --- GroupClient ---
 export const apiGroupClient = z.object({
   id: z.string(),
-  scope: z.string(),
+  scope: apiScope,
   group: apiGroup,
   owner: apiUser,
   displayName: z.string(),
@@ -168,7 +172,7 @@ export const apiClientLoginResponse = z.object({
   nbf: z.number(),
   exp: z.number().min(0),
   jti: z.string(),
-  scope: z.string(),
+  scope: apiScope,
   client: z.object({
     id: z.string(),
     displayName: z.string()

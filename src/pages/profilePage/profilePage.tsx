@@ -1,5 +1,5 @@
 import React from 'react';
-import './profilePage.css';
+import './ProfilePage.css';
 
 import { useAuth } from '../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -22,7 +22,7 @@ const ProfilePage: React.FC = () => {
 
             <p>Saldo: {currentUser.balance} kr</p>
 
-            <button onClick={() => navigate("/clients")}>Mina Klienter</button>
+            <button className='client-page-navigation-button' onClick={() => navigate("/clients")}>Mina Klienter</button>
 
             <button className='logout-button' onClick={logout}>Logga ut</button>
         </div>

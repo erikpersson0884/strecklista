@@ -68,7 +68,7 @@
 
 .item .item-stats {
     font-size: 1rem;
-    color: var(--faint-color);
+    color: var(--faint-text-color);
 
     display: flex;
     flex-direction: row;

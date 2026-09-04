@@ -11,14 +11,17 @@
 
     --foreground-color: #fff;
     --card-color: #242424;
-    --accent-color: var(--button-color);
+    --accent-color: #333;
 
     --text-color: #ffffff;
-    --text-faint: #d9d7db;
+    --faint-text-color: #d9d7db;
     --link-color: #09cdda;
 
     --button-color: #4f4f4f;
     --button-hover-color: #393939;
+
+    --input-bg-color: #2a2a2a;
+    --input-bg-hover-color: #333;
 
     --border-color: #d9d7db;
 
@@ -118,7 +121,7 @@ button img {
 }
 
 select, input, textarea {
-    background-color: var(--button-color);
+    background-color: var(--input-bg-color);
     color: var(--text-color);
 
     padding: .5rem 1rem;
