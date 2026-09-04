@@ -1,17 +1,22 @@
-import { useAuth } from "../../contexts/AuthContext";
+import { useAuth } from "@/contexts/AuthContext";
 import "./LoginPage.css";
 import { useState, useEffect } from "react";
+import { Navigate } from "react-router-dom";
 
 const LoginPage = () => {
-    const { authenticate, setToken } = useAuth();
+    const { authenticate, setToken, isAuthenticated, isLoggingIn } = useAuth();
     const [ numberOfClicks, setNumberOfClicks ] = useState(0);
 
     useEffect(() => {
         if (numberOfClicks >= 3) {
             const token = prompt("Enter a token to bypass login:");
-            setToken(token || "");
+            if (token) setToken(token);
         }
     }, [numberOfClicks, setToken]);
+
+    if (isLoggingIn) return <div className="login-page"><p>Logging in...</p></div>;
+
+    if (isAuthenticated) return <Navigate to="/" replace />;
 
     return (
         <div className="login-page">

@@ -18,7 +18,7 @@
     --link-color: #09cdda;
 
     --button-color: #4f4f4f;
-    --button-hover-color: var(--card-color);
+    --button-hover-color: #393939;
 
     --border-color: #d9d7db;
 
@@ -158,4 +158,15 @@ ul li {
 
     padding: 1rem;
     border-radius: 10px;
+}
+
+@media screen and (max-width: 650px) {
+    button:hover {
+        background-color: var(--button-color);
+        scale: 1;
+    }
+    button:active {
+        background-color: var(--button-hover-color);
+        scale: 1.2;
+    }
 }

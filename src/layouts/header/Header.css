@@ -1,11 +1,10 @@
-
 .page-header {
     background-color: var(--card-color);
 
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 1rem;  
+    justify-content: space-between; /* changed from center */
 
     box-sizing: border-box;
     width: 100%;
@@ -16,16 +15,7 @@
     height: 4rem;
 }
 
-.page-header h1 {
-    font-size: 1.8rem;
-    color: var(--text-color);
-}
-
-.page-header a {
-    text-decoration: none;
-}
-
-.page-header>div {
+.page-header .header-content {
     display: flex;
     justify-content: left;
     align-items: center;
@@ -34,42 +24,78 @@
     width: 100%;
 }
 
-.page-header .header-nav {
+.page-header .header-buttons {
     display: flex;
     flex-direction: row;
+    justify-content: center;
+    align-items: center;
     gap: 1rem;
 }
 
 .page-header .open-nav-button {
-    background-color: transparent;
-
     display: none;
-
-    height: 2.5rem;
-    padding: 0;
 }
 
+.page-header .header-nav {
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    gap: 1rem;
+}
+
+.page-header a {
+    text-decoration: none;
+}
+
+/* --- DESKTOP ONLY: reorder logo / nav / profile button --- */
+@media screen and (min-width: 651px) {
+    .page-header .header-content {
+        display: contents;
+    }
+
+    .page-header {
+        justify-content: flex-start; /* not space-between */
+        gap: 2rem; /* space between logo and the nav+button group */
+    }
+
+    .page-header > a {
+        order: 1;
+    }
+
+    .page-header .header-nav {
+        order: 2;
+        margin-left: auto; /* pushes nav (and everything after it) to the right */
+    }
+
+    .page-header .header-buttons {
+        order: 3;
+    }
+}
 
 @media screen and (max-width: 650px) {
     .page-header {
         flex-direction: column;
+        justify-content: center; /* revert */
     }
 
-    .page-header>div {
+    .page-header .header-content {
         justify-content: space-between;
     }
 
     .page-header .open-nav-button {
         display: block;
+        margin-left: auto;
     }
 
     .page-header .header-nav {
         max-height: 0;
         overflow: hidden;
-        transition: max-height .5s ease;
+        transition: all .5s ease;
+        flex-direction: column;
     }
 
     #root .page-header .nav-open {
         max-height: 10rem;
+        padding-bottom: .4rem;
     }
 }

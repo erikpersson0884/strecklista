@@ -1,5 +1,6 @@
 
 .profile-page {
+    box-sizing: border-box;
     padding: .8rem;
 }
 
@@ -34,6 +35,9 @@
 }
 
 .profile-page .logout-button {
-    width: 50%;
+    background-color: var(--destructive-color);
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 320px;
     margin-top: auto;
 }

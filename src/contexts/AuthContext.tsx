@@ -10,7 +10,7 @@ interface AuthContextType {
     logout: () => void;
     currentUser: User | null;
     exchangeCodeForToken: (code: string) => Promise<void>;
-    setToken: (token: string | null) => void;
+    setToken: (token: string) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
