@@ -3,7 +3,6 @@ import inventoryApi from '../api/inventoryApi';
 import { useEffect } from 'react';
 import { useAuth } from './AuthContext';
 import { ApiItem } from '../schemas/api';
-import { CustomError } from '../errors/CustomErrors';
 
 
 interface InventoryContextProps {
@@ -42,16 +41,9 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
         setIsLoadingInventory(false);
     }, [isAuthenticated]);
 
-    class ItemNotFoundError extends CustomError {
-        constructor(message: string) {
-            super(message);
-            this.name = this.constructor.name;
-        }
-    }
-
     const getProductById = (id: Id): Item => {
         const item = items.find(item => item.id === id);
-        if (!item) throw new ItemNotFoundError(`Item with id ${id} not found (in inventory context)`);
+        if (!item) throw new Error(`Item with id ${id} not found (in inventory context)`);
         return item;
     };
 

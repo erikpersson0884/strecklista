@@ -183,3 +183,21 @@ export const apiClientLoginResponse = z.object({
   })
 })
 export type ApiClientLoginReponse = z.infer<typeof apiClientLoginResponse>
+
+// --- User Login Response ---
+export const apiUserLoginResponse = z.object({
+  access_token: z.string(),
+  token_type: z.string(),
+  aud: z.string(),
+  iss: z.string(),
+  iat: z.number().min(0),
+  nbf: z.number(),
+  exp: z.number().min(0),
+  jti: z.string(),
+  scope: apiScope,
+  user: apiUser,
+  group: apiGroup,
+  balance: z.number(),
+  externalId: z.string().nullable().optional(),
+});
+export type ApiUserLoginResponse = z.infer<typeof apiUserLoginResponse>;

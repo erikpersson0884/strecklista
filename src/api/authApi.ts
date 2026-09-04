@@ -1,4 +1,6 @@
 import api from "./axiosInstance";
+import { apiUserLoginResponse } from "../schemas/api";
+import authAdapter from "../adapters/authAdapter";
 
 export const authApi = {
     authenticate: async () => {
@@ -6,19 +8,17 @@ export const authApi = {
         window.location.href = authenticationUrl;
     },
     login: async (code: string): Promise<{ token: string; user: User }> => {
-        try {
-            const body = {
-                "grant_type": "authorization_code",
-                "code": code,
-            }
-            const response = await api.post(`/oauth2/token`, body);
-            return {
-                token: response.data.access_token,
-                user: response.data.user,
-            };
-        } catch (error: any) {
-            throw new Error(error.response?.data?.message || "Login failed");
+        const body = {
+            "grant_type": "authorization_code",
+            "code": code,
         }
+        const response = await api.post(`/oauth2/token`, body);
+        const parsed = apiUserLoginResponse.safeParse(response.data);
+        if (!parsed.success) {
+            throw new Error("Invalid response from server " + parsed.error);
+        } 
+        const {token, user} = authAdapter.adaptLoginResponse(parsed.data);
+        return {token, user}
     }
 };
 
