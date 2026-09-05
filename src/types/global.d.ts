@@ -10,7 +10,7 @@ declare global {
     type Id = string;
     type UserId = Id;
     type GroupId = Id;
-    type ProductId = Id;
+    type ItemId = Id;
     type ClientId = Id;
     type TransactionType = "purchase" | "deposit" | "stockUpdate";
 

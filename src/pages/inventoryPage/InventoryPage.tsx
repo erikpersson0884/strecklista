@@ -16,13 +16,13 @@ import refillIcon from '@/assets/images/refill.svg';
 
 
 const InventoryPage: React.FC = () => {
-    const { items, isLoadingInventory, deleteProduct } = useInventoryContext();
+    const { items, isLoadingInventory, deleteItem } = useInventoryContext();
     const { openModal, closeModal } = useModalContext();
     const { notify } = useNotificationContext();
 
     const DeleteConfirmDialog: React.FC<{ item: Item }> = ({ item }) => {
         const handleDelete = async () => {
-            const success: boolean = await deleteProduct(item.id);
+            const success: boolean = await deleteItem(item.id);
             if (success) closeModal();
             else notify("Det gick inte att radera produkten.");
         }

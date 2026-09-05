@@ -1,7 +1,7 @@
 import api from "./axiosInstance";
 // import { z } from "zod";
 import { ApiItem, apiItem, apiStockUpdate } from "../schemas/api";
-import itemadapter from "../adapters/itemAdapter";
+import itemAdapter from "../adapters/itemAdapter";
 import transactionAdapter from "../adapters/transactionAdapter";
 
 const inventoryApi = {
@@ -14,16 +14,13 @@ const inventoryApi = {
     getInventory: async (): Promise<Item[]> => {
         const response = await api.get("/group/item");
 
-        
-        // const parsed = z.array(apiItem).safeParse(response.data.data.items);
-        // if (!parsed.success) {
-        //     console.error("Zod: Unexpected /group/item response shape:", parsed.error.issues);
-        //      throw new Error("Failed to parse inventory data"); 
-        // }
-        //TODO: Uncomment this line to throw an error when parsing fails when backend has fixed the issue sending object instead of date for createdTime in some items. This is a temporary workaround to allow the app to continue functioning while the backend issue is being resolved.
+        const parsed = apiItem.array().safeParse(response.data.data.items);
+        if (!parsed.success) {
+            console.error("Zod: Unexpected /group/item response shape:", parsed.error.issues);
+             throw new Error("Failed to parse inventory data"); 
+        }
 
-        // return parsed.data.map(productAdapter);
-        return response.data.data.items.map(itemadapter.apiItemToItem);
+        return parsed.data.map(itemAdapter.apiItemToItem);
     },
 
     /**
@@ -34,7 +31,7 @@ const inventoryApi = {
      * @param icon - (Optional) A string representing the icon for the item.
      * @returns A promise that resolves to a boolean indicating whether the item was successfully added.
      */
-    addProduct: async (displayName: string, prices: Price[], icon?: string): Promise<Item> => {
+    addItem: async (displayName: string, prices: Price[], icon?: string): Promise<Item> => {
         const response = await api.post("/group/item", {
             displayName: displayName,
             prices: prices,
@@ -45,25 +42,28 @@ const inventoryApi = {
             console.error("Zod: Unexpected /group/item response shape:", parsed.error.issues);
             throw new Error("Failed to parse added item data");
         }
-        return itemadapter.apiItemToItem(parsed.data);
+        return itemAdapter.apiItemToItem(parsed.data);
     },
 
     /**
      * Updates a item with the specified updates.
      *
-     * @param productId - The unique identifier of the item to update.
+     * @param ItemId - The unique identifier of the item to update.
      * @param updates - A partial object containing the fields to update in the item.
      * @returns A promise that resolves to `true` if the update was successful (HTTP status 200),
      *          or `false` otherwise.
      */
-    updateProduct: async (productId: ProductId, updates: Partial<ApiItem>): Promise<Item> => {
-        const response = await api.patch(`/group/item/${productId}`, updates);
+    updateItem: async (ItemId: ItemId, partialItem: Partial<Item>): Promise<Item> => {
+        const updates: Partial<ApiItem> = itemAdapter.partialItemToPartialApiItem(partialItem);
+        if (Object.keys(updates).length === 0) throw new Error("No updates provided for item update.");
+
+        const response = await api.patch(`/group/item/${ItemId}`, updates);
         const parsed = apiItem.safeParse(response.data.data.item);
         if (!parsed.success) {
             console.error("Zod: Unexpected /group/item response shape:", parsed.error.issues);
             throw new Error("Failed to parse updated item data");
         }
-        return itemadapter.apiItemToItem(parsed.data);
+        return itemAdapter.apiItemToItem(parsed.data);
     },
 
     /**
@@ -75,17 +75,16 @@ const inventoryApi = {
      *
      * @throws Will throw an error if the API request fails.
      */
-    deleteProduct: async (id: Id): Promise<Item> => {
+    deleteItem: async (id: Id): Promise<void> => {
         const response = await api.delete(`/group/item/${id}`);
         const success = apiItem.safeParse(response.data.data.item);
         if (!success.success) {
             console.error("Zod: Unexpected /group/item response shape:", success.error.issues);
             throw new Error("Failed to parse deleted item data");
         }
-        return itemadapter.apiItemToItem(success.data);
     },
 
-    refillProduct: async (id: Id, amount: number): Promise<StockUpdate> => {
+    refillItem: async (id: Id, amount: number): Promise<StockUpdate> => {
         const body = {
             items: [
                 {
@@ -103,7 +102,7 @@ const inventoryApi = {
         return transactionAdapter.adaptStockUpdate(parsed.data);
     },
 
-    setProductQuantity: async (id: Id, amount: number): Promise<StockUpdate> => {
+    setItemQuantity: async (id: Id, amount: number): Promise<StockUpdate> => {
         const body = {
             items: [
                 {

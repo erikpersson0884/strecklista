@@ -6,7 +6,7 @@ import useModalContext from "@/contexts/ModalContext";
 import useNotificationContext from "@/contexts/NotificationContext";
 
 const AddProductPopup: React.FC = () => {
-    const { addProduct } = useInventoryContext();
+    const { addItem } = useInventoryContext();
     const { closeModal } = useModalContext();
     const { notify } = useNotificationContext();
 
@@ -26,8 +26,8 @@ const AddProductPopup: React.FC = () => {
     }
 
     const handleAddProduct = async () => {
-        const wasSuccessfull: boolean = await addProduct(name, internalPrice, icon);
-        if (wasSuccessfull) closeModal();
+        const updatedItem: Item | null = await addItem(name, internalPrice, icon);
+        if (updatedItem) closeModal();
         else notify("Det gick inte att lägga till varan. Kontrollera att alla fält är ifyllda korrekt.");
 
     };

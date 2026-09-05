@@ -48,15 +48,20 @@ export const apiGroupMember = z.object({
 export type ApiGroupMember = z.infer<typeof apiGroupMember>;
 
 // --- Price ---
+// NOTE: the backend is inconsistent about this field's type across endpoints —
+// /group/item sends `price` as a number, /group/transaction sends it as a string.
+// Accept both and normalize to a string so every consumer sees one consistent type.
 export const apiPrice = z.object({
-  // price: z.number(),
-  price: z.string().refine((val) => !isNaN(Number(val)), {
-    message: "Price must be a valid number",
-  }),
+  price: z.union([z.string(), z.number()])
+    .transform((val) => String(val))
+    .refine((val) => !isNaN(Number(val)), {
+      message: "Price must be a valid number",
+    }),
   displayName: z.string(),
   externalId: z.string().nullable().optional(),
 });
 export type ApiPrice = z.infer<typeof apiPrice>;
+ 
 
 // --- Item ---
 export const apiItem = z.object({

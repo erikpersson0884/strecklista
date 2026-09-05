@@ -8,7 +8,7 @@ interface UpdateProductPopupProps {
 
 const UpdateProductPopup: React.FC<UpdateProductPopupProps> = ({item}) => {
     if (!item) return null;
-    const { updateProduct } = useInventoryContext();
+    const { updateItem } = useInventoryContext();
 
 
     const [updatedProduct, setUpdatedProduct] = useState(item);
@@ -24,7 +24,7 @@ const UpdateProductPopup: React.FC<UpdateProductPopupProps> = ({item}) => {
     }, [updatedProduct, item]);
 
     const handleUpdate = async () => {
-        const successful = await updateProduct(updatedProduct);
+        const successful = await updateItem(item.id, updatedProduct);
         if (successful) handleExit();
         else console.error("Failed to update item");
     };
