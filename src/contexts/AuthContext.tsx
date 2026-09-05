@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { setAuthToken as setAuthTokenInAxios } from "../api/axiosInstance";
-import usersApi from "../api/usersApi";
+import usersApi from "../api/userApi";
 import authApi from "../api/authApi";
 
 interface AuthContextType {

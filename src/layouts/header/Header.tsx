@@ -1,7 +1,7 @@
 import React from 'react';
 import './Header.css';
 import { Link, useNavigate } from 'react-router-dom';
-import usersApi from '@/api/usersApi';
+import usersApi from '@/api/userApi';
 import useAuthContext from '@/contexts/AuthContext';
 import fallbackLogo from '@/assets/images/bird.png';
 import menuIcon from '@/assets/images/menu-icon.svg';

@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
 import api from "../../api/axiosInstance";
-import transactionsApi from "../../api/transactionsApi";
+import transactionsApi from "../../api/transactionApi";
 
 vi.mock("../../api/axiosInstance");
 
@@ -53,7 +53,7 @@ describe("transactions", () => {
             });
 
             expect(result).toEqual({
-                apiTransactions: mockData.data.data.transactions,
+                apiTransactions: mockdata.data.data.transactions,
                 nextUrl: "/next",
                 prevUrl: "/prev",
             });

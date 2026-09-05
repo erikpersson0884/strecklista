@@ -12,19 +12,13 @@ export const usersApi = {
      */
     getCurrentUser: async (): Promise<User> => {
         const response = await api.get("/user");
-        try {
-            const parsed = apiGroupUser.safeParse(response.data.data);
-            if (!parsed.success) {
-                console.error("Zod: Unexpected /user response shape:", parsed.error.issues);
-                throw new Error("Failed to parse user data");
-            }
-            const user: User = userAdapter.apiUserToUser(parsed.data);            
-            return user;
+        const parsed = apiGroupUser.safeParse(response.data.data);
+        if (!parsed.success) {
+            console.error("Zod: Unexpected /user response shape:", parsed.error.issues);
+            throw new Error("Failed to parse user data");
         }
-        catch (error) {
-            console.error("Error adapting user data:", error);
-            throw new Error("Failed to adapt user data");
-        }
+        const user: User = userAdapter.apiUserToUser(parsed.data);            
+        return user;
     },
 
     getUsers: async (): Promise<User[]> => {

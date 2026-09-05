@@ -21,7 +21,7 @@ const DisplayClientPopup: FC<DisplayClientPopupProps> = ({ client, secret, title
             console.error("Failed to copy", err);
         }
     };
-    console.log(title)
+
     return (
         <PopupWindow
             title={ title || "Klientinformation" }

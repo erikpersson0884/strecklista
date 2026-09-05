@@ -45,10 +45,10 @@ src/
   types/          # shared TypeScript interfaces/types
 ```
 
-Path alias: `@/*` maps to `./src/*` (configured in both `vite.config.ts` and `tsconfig.json`). Newer files (`Header.tsx`, `App.tsx`, `ProtectedRoute.tsx`) use `@/contexts/...` imports; older files still use relative imports (`../../contexts/...`). **Prefer the `@/` alias for new code** — it's shorter and doesn't break when a file moves — but don't churn-edit existing relative imports just to convert them.
+Path alias: `@/*` maps to `./src/*` (configured in both `vite.config.ts` and `tsconfig.json`).
 
 Naming conventions:
-- API file: `xApi.ts`, exports an object of plain async functions (`usersApi.getCurrentUser`, `usersApi.getUsers`)
+- API file: `xApi.ts`, exports an object of plain async functions (`userApi.getCurrentUser`, `userApi.getUsers`)
 - Context file: `XContext.tsx`. Every context follows the exact same three-export shape:
   ```ts
   export const XProvider: React.FC<{ children: ReactNode }> = ({ children }) => { ... };
@@ -74,14 +74,14 @@ Naming conventions:
 Every API function follows the same pipeline:
 
 ```
-axios response -> unwrap response.data.data -> Zod .safeParse against Api* schema -> adapter transforms to internal type -> return
+axios response -> unwrap response.data -> Zod .safeParse against Api* schema -> adapter transforms to internal type -> return
 ```
 
 - **Axios instance**: `src/api/axiosInstance.ts` — created with `baseURL: __API_BASE__` (a Vite `define` constant, not read directly from `import.meta.env`).
   - No request/response interceptors exist. Auth is attached imperatively via `setAuthToken(token)`, which sets/deletes `api.defaults.headers.common['Authorization'] = 'Bearer <token>'` directly.
   - ⚠️ **No 401/refresh handling** — an expired token isn't detected or refreshed automatically. This is a known gap, not an intentional design choice.
 - **Auth token storage**: the token lives in `localStorage` under the key `authToken`. On module load, `axiosInstance.ts` reads `localStorage.getItem('authToken')` and calls `setAuthToken()` immediately, so the header survives a page refresh without waiting for `AuthContext` to mount.
-- **Response envelope**: the backend wraps all payloads as `{ data: {...} }`. API functions unwrap `response.data.data` before validating — don't validate the raw axios response directly.
+- **Response envelope**: the backend wraps all payloads as `{ data: {...} }`. API functions unwrap `response.data` before validating — don't validate the raw axios response directly.
 - **Validation**: API functions call `.safeParse()` (not `.parse()`) against the matching `Api*` schema from `schemas/api.ts`. On failure, log `parsed.error.issues` via `console.error` with a message identifying which endpoint/shape failed, then **throw** — API functions throw on invalid or failed responses, they do not return an `{ data, error }` shape.
 - **Adapters run only on validated data**: the adapter is called with `parsed.data`, never with the raw response. Adapters can assume their input already matches the `Api*` shape and don't need to defensively re-check it.
 - **Backend error messages**: for non-2xx responses (as opposed to Zod shape failures), the convention is to catch and extract `error.response?.data?.message`, falling back to a generic string, then throw a new `Error` with that message (see `authApi.login`). This is a **separate** error path from Zod validation failure — one surfaces the backend's own error message, the other surfaces a validation failure.
@@ -91,8 +91,8 @@ Example:
 ```ts
 // api/usersApi.ts
 import api from './axiosInstance';
-import userAdapter from '@/adapters/userAdapter';
-import { apiGroup } from '@/schemas/api';
+import userAdapter from '../adapters/userAdapter';
+import { apiGroup } from '../schemas/api';
 
 export const usersApi = {
   getGroupInfo: async (): Promise<GroupInfo> => {
@@ -207,9 +207,15 @@ Three layers, from generic to specific:
 
 ## Environment & tooling
 
-- `__API_BASE__` — a Vite `define` constant (not a plain `import.meta.env` var) resolved in `vite.config.ts` from `env.API_URL` or `process.env.VITE_API_URL`, falling back to `http://localhost:9999` in test mode, or throwing at build time if unset otherwise.
-- Vite dev server proxies `/api` → the backend (`env.API_URL` / `VITE_API_URL`, default `http://localhost:8080`), rewriting away the `/api` prefix.
-- ⚠️ **Env var name mismatch**: `.env.example` documents `VITE_BASE_URL`, but the code actually reads `API_URL` / `VITE_API_URL`. Anyone copying `.env.example` as-is will get an undefined base URL. This should either be fixed in `.env.example` or the code should be updated to match — until then, use `VITE_API_URL`, not `VITE_BASE_URL`.
+- **No build-time API URL.** The frontend always talks to a relative `/api/*` path — there's no env var or build arg for "where is the backend" anymore, and nothing is baked into the JS bundle at build time. This is intentional: it means a single build artifact works in any environment, as long as something in front of it forwards `/api/*` to the actual backend.
+- **`axiosInstance.ts`**: `baseURL: '/api/'`. The OAuth redirect in `authApi.authenticate` also uses a relative path (`/api/oauth2/authorize`) for the same reason — never construct an absolute backend URL in frontend code.
+- **Who forwards `/api/*` to the backend, per environment**:
+  - **Production (Docker)**: `nginx.conf`'s `location /api/` proxies to the backend container, stripping the `/api` prefix before forwarding (`proxy_pass http://strecklista-backend:8080/;` — note the trailing slash, which is what does the stripping).
+  - **Local dev (`npm run dev`)**: Vite's `server.proxy['/api']` in `vite.config.ts` does the same thing, forwarding to a local backend and stripping the `/api` prefix (`rewrite: path => path.replace(/^\/api/, '')`).
+  - Both must strip the prefix identically, since the backend's real routes have no `/api` prefix (e.g. `/group/item`, not `/api/group/item`) — if you ever change one side, change the other to match.
+- **`VITE_API_URL`** (optional, `.env` / `.env.example`) only configures the **local dev proxy target** — i.e. where `npm run dev` should forward `/api/*` requests on your machine. It defaults to `http://localhost:8080` if unset. It has no effect on the production/Docker build.
+- **Docker**: `Dockerfile` and `docker-compose.yml` no longer accept or need a `VITE_API_URL` build arg — the build is identical regardless of where it's eventually deployed.
+- ⚠️ If you're ever debugging a "requests aren't reaching the backend" issue in a new environment, check that whatever's serving the built app in front of it (nginx, or an equivalent reverse proxy) actually has an `/api/*` → backend rule with the prefix stripped — the app itself has no fallback and no way to reach the backend without one.
 
 ## Testing
 
@@ -248,6 +254,7 @@ Use this as the template when adding a new resource end-to-end:
 - ❌ Wrapping the parse+adapt step in a try/catch that re-throws a generic error, masking the original Zod validation error
 - ❌ Passing raw, unwrapped JSX to `openModal()` instead of building on `PopupWindow`/`ActionPopupWindow` (loses click-outside-to-close, header, and close button)
 - ❌ Adding a new context provider to `Providers.tsx` without checking whether it needs to sit inside a provider it depends on
+- ❌ Constructing an absolute backend URL in frontend code (e.g. reintroducing a build-time API base variable) — always use a relative `/api/*` path and let the reverse proxy route it
 - _Add project-specific gotchas here as they come up_
 
 ---

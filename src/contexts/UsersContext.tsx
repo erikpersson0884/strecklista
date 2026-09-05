@@ -1,6 +1,6 @@
 import { createContext, useState, useContext, ReactNode, useEffect } from 'react';
-import userApi from '@/api/usersApi';
-import transactionsApi from '@/api/transactionsApi';
+import userApi from '@/api/userApi';
+import transactionsApi from '@/api/transactionApi';
 import useAuthContext from './AuthContext';
 
 

@@ -17,7 +17,6 @@ const clientApi = {
         const response = await api.get("/group/client");
         const success = apiGroupClient.array().safeParse(response.data.data.clients);
         if (!success.success) {
-            console.log(success.error)
             throw new Error("Failed to parse clients:" + success.error);
         }
         return success.data;

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const api = axios.create({
-    baseURL: `${__API_BASE__}/`,
+    baseURL: `/api`,
 });
 
 export const setAuthToken = async (token: string | null): Promise<void> => {

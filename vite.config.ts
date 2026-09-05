@@ -20,22 +20,11 @@ export default defineConfig(({ mode }) => {    // This loads the right file base
             environment: 'jsdom',
             setupFiles: './src/setupTests.ts',
         },
-        define: {
-            __API_BASE__: JSON.stringify(
-                env.API_URL ??
-                process.env.VITE_API_URL ??
-                (process.env.NODE_ENV === 'test'
-                    ? 'http://localhost:9999'
-                    : (() => {
-                        throw new Error('VITE_API_URL is not defined.');
-                    })()),
-            ),
-        },
         server: {
             port: 3000,
             proxy: {
                 '/api': {
-                    target: env.API_URL ?? process.env.VITE_API_URL ?? 'http://localhost:8080',
+                    target: env.API_URL ?? 'http://localhost:8080',
                     changeOrigin: true,
                     rewrite: (path) => path.replace(/^\/api/, ''),
                 },
