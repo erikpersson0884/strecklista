@@ -14,32 +14,22 @@ const clientApi = {
     },
 
     getClients: async (): Promise<ApiGroupClient[]> => {
-        try {
-            const response = await api.get("/group/client");
-            const success = apiGroupClient.array().safeParse(response.data.data.clients);
-            if (!success.success) {
-                console.log(success.error)
-                throw new Error("Failed to parse clients:" + success.error);
-            }
-            return success.data;
-        } catch (error) {
-            console.error("Error fetching clients:", error);
-            throw error;
+        const response = await api.get("/group/client");
+        const success = apiGroupClient.array().safeParse(response.data.data.clients);
+        if (!success.success) {
+            console.log(success.error)
+            throw new Error("Failed to parse clients:" + success.error);
         }
+        return success.data;
     },
 
     getClient: async (clientId: string): Promise<ApiGroupClient> => {
-        try {
-            const response = await api.get(`/group/client/${clientId}`);
-            const success = apiGroupClient.safeParse(response.data.data.client);
-            if (!success.success) {
-                throw new Error("Failed to parse client:" + success.error);
-            }
-            return success.data;
-        } catch (error) {
-            console.error(`Error fetching client with ID ${clientId}:`, error);
-            throw error;
+        const response = await api.get(`/group/client/${clientId}`);
+        const success = apiGroupClient.safeParse(response.data.data.client);
+        if (!success.success) {
+            throw new Error("Failed to parse client:" + success.error);
         }
+        return success.data;
     },
 
     createClient: async (name: string, description: string, scope: string): Promise<{client: Client, secret: string}> => {
@@ -82,12 +72,7 @@ const clientApi = {
     },
 
     deleteClient: async (clientId: string): Promise<void> => {
-        try {
-            await api.delete(`/group/client/${clientId}`);
-        } catch (error) {
-            console.error(`Error deleting client with ID ${clientId}:`, error);
-            throw error;
-        }
+        api.delete(`/group/client/${clientId}`)
     },
 }
 
