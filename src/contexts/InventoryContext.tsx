@@ -100,9 +100,10 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
 
             await inventoryApi.refillItem(id, amount);
             fetchInventory();
+            notify(`Vara påfylld`, 'success');
             return true;
         } catch (error) {
-            console.error('Failed to refill Item', error);
+            notify(`Misslyckades med att fylla på vara med id "${id}"`, 'error');
             return false;
         }
     }
