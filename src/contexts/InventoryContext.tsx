@@ -110,13 +110,13 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
 
     const toggleFavourite = async (id: Id): Promise<Item | null> => {
         try {
-            const itemToUpdate = items.find(item => item.id === id);
-            if (!itemToUpdate) throw new Error('Item not found');
+            const itemToUpdate = items.find(item => item.id === id)
+            if (!itemToUpdate) throw new Error('Item not found')
 
-            const updatedItem: Item = { ...itemToUpdate, favorite: !itemToUpdate.favorite };
+            const updateItem: Partial<Item> = { favorite: !itemToUpdate.favorite }
 
-            const item = await inventoryApi.updateItem(id, updatedItem);
-            fetchInventory();
+            const item = await inventoryApi.updateItem(id, updateItem)
+            fetchInventory()
             
             return item;
         } catch (error) {

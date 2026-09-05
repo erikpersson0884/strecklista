@@ -1,5 +1,4 @@
 
-
 .item {
     background-color: var(--card-color);
 
@@ -25,10 +24,6 @@
     transform: scale(1.1);
 }
 
-.item:hover img {
-    transform: scale(0.95);
-}
-
 .item .item-image {
     background-color: var(--accent-color);
 
@@ -45,7 +40,7 @@
     padding: .5rem;
 }
 
-.item img {
+.item .item-icon {
     max-height: 100%;
     max-width: 100%;
 }
@@ -90,6 +85,14 @@
     padding: .4rem;
     border-radius: 0 0 2rem 0;
     z-index: 9;
+}
+
+.favourite-button:hover {
+    background-color: var(--card-color);
+}
+
+.favourite-button:hover .favourite-icon {
+    transform: scale(0.9);
 }
 
 

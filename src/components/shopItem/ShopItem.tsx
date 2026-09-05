@@ -23,6 +23,7 @@ const Item: React.FC<ProductProps> = ({ item }) => {
             <button className='favourite-button' onClick={(e) => {e.stopPropagation(); toggleFavourite(item.id)}}>
                 <img 
                     src={item.favorite ? favouriteIconFilled : favouriteIcon}
+                    className='favourite-icon'
                     alt="heart" 
                     height={20}
                 />
@@ -37,6 +38,7 @@ const Item: React.FC<ProductProps> = ({ item }) => {
             <div className='item-image'>
                 <img
                     src={item.icon || defaultItemImage}
+                    className='item-icon'
                     alt={item.name}
                     onError={(e) => {
                         e.currentTarget.onerror = null; // prevent loop
