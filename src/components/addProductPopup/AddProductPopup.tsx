@@ -3,12 +3,10 @@ import ActionPopupWindow from "@/components/actionPopupWindow/ActionPopupWindow"
 
 import useInventoryContext from "@/contexts/InventoryContext";
 import useModalContext from "@/contexts/ModalContext";
-import useNotificationContext from "@/contexts/NotificationContext";
 
 const AddProductPopup: React.FC = () => {
     const { addItem } = useInventoryContext();
     const { closeModal } = useModalContext();
-    const { notify } = useNotificationContext();
 
     const [ name, setName ] = React.useState<string>("");
     const [ internalPrice, setInternalPrice ] = React.useState<number>(0);
@@ -22,14 +20,11 @@ const AddProductPopup: React.FC = () => {
 
         if (value.trim() === '' || isNaN(parsed))  return;
         else setValue(parsed);
-
     }
 
     const handleAddProduct = async () => {
         const updatedItem: Item | null = await addItem(name, internalPrice, icon);
         if (updatedItem) closeModal();
-        else notify("Det gick inte att lägga till varan. Kontrollera att alla fält är ifyllda korrekt.");
-
     };
 
     return (

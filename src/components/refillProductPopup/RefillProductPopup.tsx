@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import ActionPopupWindow from '@/components/actionPopupWindow/ActionPopupWindow';
 import { useInventoryContext } from '@/contexts/InventoryContext';
-import { useNotificationContext } from '@/contexts/NotificationContext';
 import { useModalContext } from '@/contexts/ModalContext';
 
 
@@ -11,7 +10,6 @@ interface RefillProductPopupProps {
 
 const RefillProductPopup: React.FC<RefillProductPopupProps> = ({ item }) => {
     const { refillItem } = useInventoryContext();
-    const { notify } = useNotificationContext();
     const { closeModal } = useModalContext();
 
     const [amountToRefill, setAmountToRefill] = useState<number>(0);
@@ -19,7 +17,6 @@ const RefillProductPopup: React.FC<RefillProductPopupProps> = ({ item }) => {
     const handleRefillProduct = async () => {
         const wasSuccessfull = await refillItem(item.id, amountToRefill);
         if (wasSuccessfull) closeModal();
-        else notify("Det gick inte att fylla på varan", "error");
     };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

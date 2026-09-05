@@ -3,11 +3,10 @@ import './InventoryPage.css';
 
 import { useInventoryContext } from '@/contexts/InventoryContext';
 import useModalContext from '@/contexts/ModalContext';
-import useNotificationContext from '@/contexts/NotificationContext';
 
 import AddProductPopup from '@/components/addProductPopup/AddProductPopup';
 import RefillProductPopup from '@/components/refillProductPopup/RefillProductPopup';
-import UpdateProductPopup from '@/components/updateProductPopup/UpdateProductPopup';
+import UpdateProductPopup from '@/components/updateItemPopup/UpdateItemPopup';
 import ConfirmDialog from '@/components/confirmDialog/ConfirmDialog';
 
 import editIcon from '@/assets/images/edit.svg';
@@ -18,13 +17,11 @@ import refillIcon from '@/assets/images/refill.svg';
 const InventoryPage: React.FC = () => {
     const { items, isLoadingInventory, deleteItem } = useInventoryContext();
     const { openModal, closeModal } = useModalContext();
-    const { notify } = useNotificationContext();
 
     const DeleteConfirmDialog: React.FC<{ item: Item }> = ({ item }) => {
         const handleDelete = async () => {
             const success: boolean = await deleteItem(item.id);
             if (success) closeModal();
-            else notify("Det gick inte att radera produkten.");
         }
         return (
             <ConfirmDialog

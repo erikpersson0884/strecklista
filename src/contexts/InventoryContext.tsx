@@ -9,7 +9,7 @@ interface InventoryContextProps {
     isLoadingInventory: boolean;
     items: Item[];
     addItem: (displayName: string, internalPrice: number, icon?: string) => Promise<Item | null>;
-    updateItem: (id: Id, updatedItem: Item) => Promise<Item | null>;
+    updateItem: (id: Id, updatedItem: Partial<Item>) => Promise<Item | null>;
     deleteItem: (id: Id) => Promise<boolean>;
     toggleFavourite: (id: Id) => Promise<Item | null>;
     refillItem: (id: Id, amount: number) => Promise<boolean>;
@@ -84,11 +84,11 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
 
             const newItem: Item = await inventoryApi.updateItem(itemId, updatedItem)
             fetchInventory();
-            notify(`Vara "${newItem.name}" har uppdaterats`, 'success')
+            notify(`Vara uppdateratd`, 'success')
             return newItem
         } catch (error) {
             console.error('Failed to update item', error);
-            notify(`Misslyckades med att uppdatera vara med id "${itemId}"`, 'error');
+            notify(`Misslyckades med att uppdatera vara`, 'error');
             return null;
         }
     };
@@ -126,10 +126,15 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
     }
 
     const deleteItem = async (id: Id): Promise<boolean>  => {
-        if (!items.some(item => item.id === id)) throw new Error('Item not found');
-        await inventoryApi.deleteItem(id);
-        fetchInventory();
-        return true;
+        try {
+            if (!items.some(item => item.id === id)) throw new Error('Item not found');
+            await inventoryApi.deleteItem(id);
+            fetchInventory();
+            return true;
+        } catch (error) {
+            notify(`Misslyckades med att ta bort vara med id "${id}"`, 'error');
+            return false;
+        }
     }
 
     return (
