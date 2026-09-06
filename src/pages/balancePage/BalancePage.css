@@ -14,8 +14,11 @@
     padding: 1rem;
 }
 
-.balancepage .user-div img {
-    height: 100%;
+.balance-page .user-div img {
+    transition: transform .3s ease-in-out;
+}
+.balance-page .open-popup-button:hover img {
+    transform: scale(1.15);
 }
 
 .balance-page .name-div {
@@ -25,4 +28,10 @@
     gap: .3rem;
 
     margin-right: auto;
+}
+
+@media screen and (max-width: 600px) {
+    .balance-page .open-popup-button:hover img {
+        transform: none;
+    }
 }

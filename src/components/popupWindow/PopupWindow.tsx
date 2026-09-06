@@ -1,7 +1,8 @@
 import React from 'react';
 import './PopupWindow.css';
 import useModalContext from '@/contexts/ModalContext';
-import Closebutton from '@/components/closebutton/Closebutton';
+import closeImage from '@/assets/images/close.svg';
+
 
 interface PopupWindowProps {
     children: React.ReactNode;
@@ -27,6 +28,9 @@ const PopupWindow: React.FC<PopupWindowProps> = ({
 
     return (
         <div className={`popup-window ${className ? `${className}` : ''}`} onClick={(e) => e.stopPropagation()}>
+            <button className='close-button' onClick={closeAction}>
+                <img src={closeImage} alt="close" height={20}/>
+            </button>
             {title && 
                 <header className="popup-header">
                     <h2>{title}</h2>
@@ -40,7 +44,7 @@ const PopupWindow: React.FC<PopupWindowProps> = ({
                 {children}
             </div>
 
-            <Closebutton closeAction={closeAction} />
+
         </div>
     );
 };

@@ -1,19 +1,257 @@
-
-.refill-user-balance-popup input {
-    text-align: right;
-
-    width: 2rem;
-}
-
-.refill-user-balance-popup .popup-body>* {
+.refill-user-balance-popup header {
     display: flex;
     flex-direction: row;
-    justify-content: flex-end;
     align-items: center;
-    gap: 0.5rem;
+    justify-content: flex-start;
+    gap: 0.85rem;
+    margin-bottom: 1.25rem;
 }
 
-.refill-user-balance-popup .popup-body>*>*:first-child {
+.refill-user-balance-popup .user-icon {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 14px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.refill-user-balance-popup header h2 {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 600;
+}
+
+.refill-user-balance-popup header p {
+    margin: 0.1rem 0 0;
+    font-size: 0.85rem;
+    opacity: 0.6;
+}
+
+/* --- balance rows (current + new) --- */
+
+.refill-user-balance-popup .balance-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    padding: 0.9rem 1rem;
+    border-radius: 12px;
+    background-color: rgba(255, 255, 255, 0.04);
+}
+
+.refill-user-balance-popup .balance-row span:first-child {
+    margin-right: auto;
+    font-size: 0.85rem;
+    opacity: 0.65;
+}
+
+.refill-user-balance-popup .balance-row span:nth-child(2) {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.refill-user-balance-popup .balance-row span:last-child {
+    font-size: 0.85rem;
+    opacity: 0.6;
+}
+
+.refill-user-balance-popup .balance-row.new-balance {
+    background-color: rgba(56, 217, 169, 0.12);
+    border: 1px solid rgba(56, 217, 169, 0.25);
+}
+
+.refill-user-balance-popup .balance-row.new-balance span:nth-child(2) {
+    color: #38D9A9;
+}
+
+/* --- amount input row --- */
+
+.refill-user-balance-popup .amount-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.refill-user-balance-popup .amount-row label {
+    font-size: 0.9rem;
+    color: var(--faint-text-color);
     margin-right: auto;
 }
 
+.refill-user-balance-popup .amount-row div {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 80%;
+}
+
+.refill-user-balance-popup .amount-row p {
+    color: var(--faint-text-color);
+}
+
+.refill-user-balance-popup input {
+    text-align: right;
+    width: 5rem;
+    padding: 0.5rem 0.7rem;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.04);
+    color: inherit;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+    flex: 2;
+    text-align:center;
+    padding: 0.9rem 1rem
+}
+
+.refill-user-balance-popup input:focus {
+    border-color: rgba(56, 217, 169, 0.5);
+    background-color: rgba(255, 255, 255, 0.07);
+}
+
+/* --- comment section --- */
+
+.refill-user-balance-popup hr {
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    margin: 1rem 0;
+}
+
+.refill-user-balance-popup textarea {
+    width: 100%;
+    min-height: 4.5rem;
+    margin-top: 0.5rem;
+    padding: 0.7rem 0.85rem;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.04);
+    color: inherit;
+    font-family: inherit;
+    font-size: 0.9rem;
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.15s ease;
+    box-sizing: border-box;
+}
+
+.refill-user-balance-popup textarea:focus {
+    border-color: rgba(56, 217, 169, 0.5);
+}
+
+.refill-user-balance-popup .comment-button {
+    background: none;
+    border: none;
+    padding: 0.4rem 0;
+    color: inherit;
+    opacity: 0.6;
+    font-size: 0.85rem;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+    align-self: flex-start;
+    transition: opacity 0.15s ease;
+}
+
+.refill-user-balance-popup .comment-button:hover {
+    opacity: 1;
+}
+
+.refill-user-balance-popup div:has(> label[htmlFor="comment"]) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.refill-user-balance-popup div:has(> label[htmlFor="comment"]) button {
+    background: none;
+    border: none;
+    color: inherit;
+    opacity: 0.5;
+    font-size: 0.8rem;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.refill-user-balance-popup div:has(> label[htmlFor="comment"]) button:hover {
+    opacity: 0.8;
+}
+
+.refill-user-balance-popup hr {
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin: 1.25rem 0;
+}
+
+.refill-user-balance-popup .comment-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.refill-user-balance-popup .comment-header label {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.refill-user-balance-popup .comment-header button {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    opacity: 0.55;
+    font-size: 0.8rem;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+    transition: opacity 0.15s ease;
+}
+
+.refill-user-balance-popup .comment-header button:hover {
+    opacity: 0.9;
+}
+
+.refill-user-balance-popup textarea {
+    width: 100%;
+    min-height: 4.5rem;
+    padding: 0.75rem 0.9rem;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.04);
+    color: inherit;
+    font-family: inherit;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    resize: vertical;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.refill-user-balance-popup textarea::placeholder {
+    color: inherit;
+    opacity: 0.4;
+}
+
+.refill-user-balance-popup textarea:focus {
+    border-color: rgba(56, 217, 169, 0.5);
+    background-color: rgba(255, 255, 255, 0.06);
+}
+
+.refill-user-balance-popup .comment-button {
+    background: none;
+    border: none;
+    padding: 0.4rem 0;
+    color: inherit;
+    opacity: 0.6;
+    font-size: 0.85rem;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+    align-self: flex-start;
+    transition: opacity 0.15s ease;
+}
+
+.refill-user-balance-popup .comment-button:hover {
+    opacity: 1;
+}

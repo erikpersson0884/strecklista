@@ -1,7 +1,10 @@
 import { createContext, useState, useContext, ReactNode, useEffect } from 'react';
+
 import userApi from '@/api/userApi';
 import transactionsApi from '@/api/transactionApi';
+
 import useAuthContext from './AuthContext';
+import useNotificationContext from './NotificationContext';
 
 
 interface UsersContextType {
@@ -16,6 +19,7 @@ const UsersContext = createContext<UsersContextType | undefined>(undefined);
 
 export const UsersProvider = ({ children }: { children: ReactNode }) => {
     const { isAuthenticated } = useAuthContext();
+    const { notify } = useNotificationContext();
 
     const [ isLoadingUsers, setIsLoadingUsers ] = useState<boolean>(true);
     const [ users, setUsers ] = useState<User[]>([]);
@@ -42,10 +46,15 @@ export const UsersProvider = ({ children }: { children: ReactNode }) => {
     }, [isAuthenticated]);
 
     const addUserBalance = async (userId: UserId, amount: number, comment?: string): Promise<boolean> => {
-        checkThatUserExists(userId);
-        const newBalance = await transactionsApi.makeDeposit(userId, amount, comment)
-        setUserBalance(userId, newBalance);
-        return true;
+        try {
+            const newBalance = await transactionsApi.makeDeposit(userId, amount, comment)
+            setUserBalance(userId, newBalance);
+            notify('Saldo uppdaterat!');
+            return true;
+        } catch (error) {
+            notify('Något gick fel, försök igen senare.');
+            return false;
+        }
     };
 
     const setUserBalance = (userId: UserId, newBalance: number) => {

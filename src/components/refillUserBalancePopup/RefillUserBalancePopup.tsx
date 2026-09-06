@@ -5,7 +5,6 @@ import ActionPopupWindow from '@/components/actionPopupWindow/ActionPopupWindow'
 import { useUsersContext } from '@/contexts/UsersContext';
 import useModalContext from '@/contexts/ModalContext';
 import useNotificationContext from '@/contexts/NotificationContext';
-const MAX_COMMENT_LENGTH = 1000;
 
 
 interface RefillUserBalancePopupProps {
@@ -16,21 +15,16 @@ const RefillUserBalancePopup: React.FC<RefillUserBalancePopupProps> = ({ user })
     const { notify } = useNotificationContext();
     const { closeModal } = useModalContext();
 
-    const [amountToDeposit, setAmountToDeposit] = useState<number>(0); // Use string
+    const [amountToDeposit, setAmountToDeposit] = useState<string>(''); // Use string
     const [comment, setComment] = useState<string>('');
     const [includeComment, setIncludeComment] = useState<boolean>(false);
 
     const handleRefill = async () => {
-        if (isNaN(amountToDeposit)) {
-            notify('Beloppet måste vara ett giltigt nummer', 'error');
-            return;
-        }
-
-        if (includeComment && !validateComment(comment)) return;
+        const parsedAmount = parseFloat(amountToDeposit);
 
         const wasSuccessFull: boolean = await addUserBalance(
             user.id,
-            amountToDeposit,
+            parsedAmount,
             includeComment ? comment : undefined
         );
         
@@ -39,14 +33,8 @@ const RefillUserBalancePopup: React.FC<RefillUserBalancePopupProps> = ({ user })
     };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        const parsed = parseFloat(value);
-
-        if (value.trim() === '' || isNaN(parsed)) {
-            setAmountToDeposit(0);
-        } else {
-            setAmountToDeposit(parsed);
-        }
+        const newInput: string = e.target.value.replace(/[^0-9.]/g, '');
+        setAmountToDeposit(newInput);
     };
 
 
@@ -56,50 +44,46 @@ const RefillUserBalancePopup: React.FC<RefillUserBalancePopupProps> = ({ user })
         }
     }
 
-    const handleCommentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        const newComment: string = e.target.value;
-        if (!validateComment(newComment)) return;
-        setComment(newComment);
-    }
-
-    const validateComment = (comment: string) => {
-        if (comment.length > MAX_COMMENT_LENGTH) {
-            notify(`Kommentaren får max vara ${MAX_COMMENT_LENGTH} tecken lång`);
-            return false;
-        }
-        return true;
-    };
+    const newAmount: string = ((amountToDeposit !== '' ? parseFloat(amountToDeposit) : 0) + user.balance).toString();
 
     return (
         <ActionPopupWindow 
-            title={user.nick}
             onAccept={handleRefill}
-            acceptButtonText="Fyll på"
+            acceptButtonText={`Fyll på med ${newAmount} kr`}
             className='refill-user-balance-popup'
         >
-            <p>
+            <header>
+                <img className='user-icon' src={user.icon} alt={`${user.name}'s profilbild`} />
+                <div>
+                    <h2>{user.nick}</h2>
+                    <p>{user.name}</p>
+                </div>
+            </header>
+            <p className="balance-row">
                 <span>Nuvarande saldo:</span> 
                 <span>{user.balance}</span>
                 <span>kr</span>
             </p>
 
-            <div>
+            <div className="amount-row">
                 <label htmlFor="amount">Fyll på med: </label>
-                <input 
-                    id="amount" 
-                    type="string" 
-                    value={amountToDeposit} 
-                    onChange={handleInputChange} 
-                    onKeyDown={handleKeyPress}
-                    placeholder="Ange belopp här..."
-                />
-                <p>kr</p>
+                <div>
+                    <input 
+                        id="amount" 
+                        type="string" 
+                        value={amountToDeposit} 
+                        onChange={handleInputChange} 
+                        onKeyDown={handleKeyPress}
+                        placeholder="0"
+                    />
+                    <p>kr</p>
+                </div>
             </div>
-            
-            <p>
+
+            <p className="balance-row new-balance">
                 <span>Nytt saldo:</span>
-                <span style={{ color: 'greeen' }}>
-                    {(user.balance + amountToDeposit).toLocaleString('sv-SE')}
+                <span>
+                    {newAmount}
                 </span>
                 <span>kr</span>
             </p>
@@ -107,15 +91,14 @@ const RefillUserBalancePopup: React.FC<RefillUserBalancePopupProps> = ({ user })
 
             { includeComment ? (
                 <>
-                    <hr />
-                    <div>
+                    <div className="comment-header">
                         <label htmlFor="comment">Kommentar (valfritt): </label>
                         <button onClick={() => { setIncludeComment(false)} }>Ingen Kommentar</button>
                     </div>
                     <textarea
                         id="comment" 
                         value={comment} 
-                        onChange={handleCommentChange}
+                        onChange={(e) => setComment(e.target.value)}
                         placeholder="Skriv en kommentar här..."
                     /> 
                 </>
