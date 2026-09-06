@@ -14,7 +14,7 @@ import BalancePage from './pages/balancePage/BalancePage';
 import TransactionsPage from './pages/transactionsPage/TransactionsPage';
 
 import ClientPage from './pages/clientPage/ClientPage';
-import ProfilePage from './pages/profilePage/profilePage';
+import ProfilePage from './pages/profilePage/ProfilePage';
 
 import useAuthContext from '@/contexts/AuthContext';
 
