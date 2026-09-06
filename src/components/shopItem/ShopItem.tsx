@@ -7,19 +7,30 @@ import defaultItemImage from '@/assets/images/grocery.svg';
 
 import { useCartContext } from '@/contexts/CartContext';
 import { useInventoryContext } from '@/contexts/InventoryContext';
+import { useModalContext } from '@/contexts/ModalContext';
+
+import { useLongPress } from '@/hooks/useLongPress';
+import SwishQRCode from '@/components/swishQRCode/SwishQRCode';
 
 interface ProductProps {
     item: Item;
 }
+const SWISH_PAYEE_NUMBER = '0706649794'; // TODO: move to env/config
 
 const Item: React.FC<ProductProps> = ({ item }) => {
     const { addItemToCart, itemsInCart } = useCartContext(); 
     const { toggleFavourite } = useInventoryContext();
+    const { openModal } = useModalContext();
 
     const internalPrice: string = item.internalPrice % 1 === 0 ? item.internalPrice.toFixed(0) : item.internalPrice.toFixed(2)
 
+    const longPress = useLongPress({
+        onLongPress: () => openModal(<SwishQRCode item={item} payeeNumber={SWISH_PAYEE_NUMBER} />),
+        onClick: () => addItemToCart(item),
+    });
+
     return (
-        <div className="item" onClick={() => addItemToCart(item)}>
+        <div className="item" {...longPress}>
             <button className='favourite-button' onClick={(e) => {e.stopPropagation(); toggleFavourite(item.id)}}>
                 <img 
                     src={item.favorite ? favouriteIconFilled : favouriteIcon}
