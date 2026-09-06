@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import './RefillUserBalancePopup.css';
 
-import ActionPopupWindow from '../actionPopupWindow/ActionPopupWindow';
-import { useUsersContext } from '../../contexts/UsersContext';
-
+import ActionPopupWindow from '@/components/actionPopupWindow/ActionPopupWindow';
+import { useUsersContext } from '@/contexts/UsersContext';
+import useModalContext from '@/contexts/ModalContext';
+import useNotificationContext from '@/contexts/NotificationContext';
 const MAX_COMMENT_LENGTH = 1000;
 
 
@@ -12,15 +13,16 @@ interface RefillUserBalancePopupProps {
 }
 const RefillUserBalancePopup: React.FC<RefillUserBalancePopupProps> = ({ user }) => {
     const { addUserBalance } = useUsersContext();
+    const { notify } = useNotificationContext();
+    const { closeModal } = useModalContext();
 
-    const [errorText, setErrorText] = useState<string | undefined>(undefined);
     const [amountToDeposit, setAmountToDeposit] = useState<number>(0); // Use string
     const [comment, setComment] = useState<string>('');
     const [includeComment, setIncludeComment] = useState<boolean>(false);
 
     const handleRefill = async () => {
         if (isNaN(amountToDeposit)) {
-            setErrorText('Ange ett giltigt belopp.');
+            notify('Beloppet måste vara ett giltigt nummer', 'error');
             return;
         }
 
@@ -32,14 +34,9 @@ const RefillUserBalancePopup: React.FC<RefillUserBalancePopupProps> = ({ user })
             includeComment ? comment : undefined
         );
         
-        if (wasSuccessFull) handleClose();
-        else setErrorText('Något gick fel, försök igen senare.');
+        if (wasSuccessFull) closeModal();
+        else notify('Något gick fel, försök igen senare.');
     };
-
-    const handleClose = () => {
-        setAmountToDeposit(0);
-        setErrorText(undefined);
-    }
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
@@ -63,12 +60,11 @@ const RefillUserBalancePopup: React.FC<RefillUserBalancePopupProps> = ({ user })
         const newComment: string = e.target.value;
         if (!validateComment(newComment)) return;
         setComment(newComment);
-        setErrorText(undefined);
     }
 
     const validateComment = (comment: string) => {
         if (comment.length > MAX_COMMENT_LENGTH) {
-            setErrorText(`Kommentaren får max vara ${MAX_COMMENT_LENGTH} tecken lång`);
+            notify(`Kommentaren får max vara ${MAX_COMMENT_LENGTH} tecken lång`);
             return false;
         }
         return true;
@@ -78,10 +74,8 @@ const RefillUserBalancePopup: React.FC<RefillUserBalancePopupProps> = ({ user })
         <ActionPopupWindow 
             title={user.nick}
             onAccept={handleRefill}
-            onClose={handleClose}
             acceptButtonText="Fyll på"
             className='refill-user-balance-popup'
-            errorText={errorText}
         >
             <p>
                 <span>Nuvarande saldo:</span> 
@@ -116,7 +110,7 @@ const RefillUserBalancePopup: React.FC<RefillUserBalancePopupProps> = ({ user })
                     <hr />
                     <div>
                         <label htmlFor="comment">Kommentar (valfritt): </label>
-                        <button onClick={() => { setErrorText(undefined); setIncludeComment(false)}}>Ingen Kommentar</button>
+                        <button onClick={() => { setIncludeComment(false)} }>Ingen Kommentar</button>
                     </div>
                     <textarea
                         id="comment" 

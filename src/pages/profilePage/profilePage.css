@@ -1,10 +1,11 @@
 
 .profile-page {
+    box-sizing: border-box;
     padding: .8rem;
 }
 
-.profile-page>div {
-    background-color: var(--contrast-color);
+.profile-page .profile-header {
+    background-color: var(--card-color);
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -33,7 +34,17 @@
     gap: .5rem;
 }
 
+.profile-page .client-page-navigation-button {
+    background-color: var(--primary-color);
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 320px;
+}
+
 .profile-page .logout-button {
-    width: 50%;
+    background-color: var(--destructive-color);
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 320px;
     margin-top: auto;
 }

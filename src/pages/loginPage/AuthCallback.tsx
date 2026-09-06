@@ -1,10 +1,10 @@
 import { useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useAuth } from "../../contexts/AuthContext";
+import useAuthContext from "../../contexts/AuthContext";
 import "./AuthCallback.css";
 
 const AuthCallback = () => {
-  const { exchangeCodeForToken } = useAuth();
+  const { exchangeCodeForToken } = useAuthContext();
   const location = useLocation();
   const navigate = useNavigate();
 

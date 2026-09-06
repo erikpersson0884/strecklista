@@ -1,5 +1,5 @@
 .cart-item {
-    background-color: var(--secondary-contrast-color);
+    background-color: var(--accent-color);
 
     display: flex;
     flex-direction: row;
@@ -38,6 +38,6 @@
 }
 
 .cart-item .item-quantity:focus {
-    background-color: var(--contrast-color);
+    background-color: var(--AAAAA-color);
     outline: var(--border-color) solid 1px;
 }

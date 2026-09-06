@@ -1,25 +1,26 @@
 import React from 'react';
 import './BalancePage.css';
 
-import { useUsersContext } from '../../contexts/UsersContext';
-import { useAuth } from '../../contexts/AuthContext';
-import { useModalContext } from '../../contexts/ModalContext';
+import { useUsersContext } from '@/contexts/UsersContext';
+import useAuthContext from '@/contexts/AuthContext';
+import useModalContext from '@/contexts/ModalContext';
 
-import RefillUserBalancePopup from '../../components/refillUserBalancePopup/RefillUserBalancePopup';
-import addIcon from '../../assets/images/add.svg';
+import RefillUserBalancePopup from '@/components/refillUserBalancePopup/RefillUserBalancePopup';
+import addIcon from '@/assets/images/add.svg';
 
 
 const BalancePage: React.FC = () => {
-    const { currentUser } = useAuth();
+    const { currentUser } = useAuthContext();
     const { users, isLoadingUsers, getUserFromUserId } = useUsersContext();
 
     if (isLoadingUsers || !currentUser) return ( // should implement a better check for current user
         <p>Laddar användare...</p>
     )
     else if (users.length === 0) return <p>Hittade inga användare</p>
-    else return (
-            <div className='balancepage list-page page'>
 
+    else return (
+        <div className='balance-page page'>
+            <ul className='page-list'>
                 <UserBalance 
                     user={getUserFromUserId(currentUser.id)} 
                     key={currentUser.id}
@@ -31,7 +32,8 @@ const BalancePage: React.FC = () => {
                         key={user.id}
                     />
                 ))}
-            </div>
+            </ul>
+        </div>
     );
 };
 
@@ -42,9 +44,7 @@ interface UserBalanceProps {
 const UserBalance: React.FC<UserBalanceProps> = ({ user }) => {
     const { openModal } = useModalContext()
 
-    const openRefillPopup = () => {
-        openModal(<RefillUserBalancePopup user={user}/>)
-    }
+    const openRefillPopup = () => openModal(<RefillUserBalancePopup user={user}/>)
 
 
     return (
@@ -68,6 +68,5 @@ const UserBalance: React.FC<UserBalanceProps> = ({ user }) => {
         </li>
     );
 }
-
 
 export default BalancePage;

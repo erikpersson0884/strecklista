@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { setAuthToken as setAuthTokenInAxios } from "../api/axiosInstance";
-import usersApi from "../api/usersApi";
+import usersApi from "../api/userApi";
 import authApi from "../api/authApi";
 
 interface AuthContextType {
@@ -10,7 +10,7 @@ interface AuthContextType {
     logout: () => void;
     currentUser: User | null;
     exchangeCodeForToken: (code: string) => Promise<void>;
-    setToken: (token: string | null) => void;
+    setToken: (token: string) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -50,8 +50,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }, [token]); // Ensure it refetches user when token changes
 
     const authenticate = async (): Promise<void> => {
-        const authenticationUrl = (__API_BASE__ + "/authorize");
-        window.location.href = authenticationUrl;
+        authApi.authenticate();
     };
 
     const exchangeCodeForToken = async (code: string): Promise<void> => {
@@ -86,10 +85,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     );
 };
 
-export const useAuth = () => {
+export const useAuthContext = () => {
     const context = useContext(AuthContext);
     if (!context) {
         throw new Error("useAuth must be used within an AuthProvider");
     }
     return context;
 };
+
+export default useAuthContext;

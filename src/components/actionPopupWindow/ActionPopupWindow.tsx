@@ -1,7 +1,6 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import './ActionPopupWindow.css';
-import PopupWindow from '../popupWindow/PopupWindow';
-import { useModalContext } from '../../contexts/ModalContext';
+import PopupWindow from '@/components/popupWindow/PopupWindow';
 
 interface ActionPopupWindowProps {
     children: React.ReactNode;
@@ -16,36 +15,28 @@ interface ActionPopupWindowProps {
 
     className?: string;
 }
-
-
+/**
+ * Renders a modal popup with custom content and an accept button.
+ * The modal closes after the accept callback completes.
+ *
+ * @param props.children Content displayed inside the popup.
+ * @param props.onAccept Callback invoked when the accept button is clicked.
+ * @param props.onClose Callback used as the default accept callback.
+ * @param props.title Optional popup title.
+ * @param props.acceptButtonText Text displayed on the accept button.
+ * @param props.acceptButtonDisabled Whether the accept button is disabled.
+ * @param props.className Additional CSS class applied to the popup.
+ */
 const ActionPopupWindow: React.FC<ActionPopupWindowProps> = ({ 
     onClose = () => {}, 
     onAccept = onClose,
     title, 
     acceptButtonText = 'Skapa',
-    errorText = null,
-    errortextDisplayTime = 3000, // Time in milliseconds the error text is displayed
     acceptButtonDisabled = false,
     children, 
     className = '',
 }) => {
-    const { closeModal } = useModalContext();
-
-    const [ localErrorText, setLocalErrorText] = React.useState<string | null>(errorText);
-
-    useEffect(() => {
-        setLocalErrorText(errorText ?? null);
-        if (errorText) {
-            const timer = setTimeout(() => {
-                setLocalErrorText(null);
-            }, errortextDisplayTime);
-
-            return () => clearTimeout(timer);
-        }
-    }, [errorText, errortextDisplayTime]);
-
     const acceptHandler = async () => {
-        closeModal();
         await onAccept();
     }
 
@@ -58,8 +49,6 @@ const ActionPopupWindow: React.FC<ActionPopupWindowProps> = ({
             <button className="accept-button" onClick={acceptHandler} disabled={acceptButtonDisabled}>
                 <span>{acceptButtonText}</span>
                 </button>
-
-            {localErrorText && <p className='error-message'>{localErrorText}</p>}
         </PopupWindow>
     );
 };

@@ -1,21 +1,35 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap'); */
+/* Imported in index.html instead to avoid FOUT */
 
 :root {
     --background-color: #33373a;
-    --contrast-color: #242424;
-    --secondary-contrast-color: #4f4f4f;
+    --overlay-color: #0000004e;
+    --primary-color: var(--success-color);
+    --primary-hover-color: #0ec050;
+
+    --foreground-color: #fff;
+    --card-color: #242424;
+    --accent-color: #333;
 
     --text-color: #ffffff;
-    --secondary-text-color: #bbbbbb;
-
-    --blue-color: #2583E1;
-    --red-color: #C70303;
-    --green-color: #329C3D;
-
-    --border-color: var(--secondary-text-color);
+    --faint-text-color: #d9d7db;
     --link-color: #09cdda;
+
+    --button-color: #4f4f4f;
+    --button-hover-color: #393939;
+
+    --input-bg-color: #2a2a2a;
+    --input-bg-hover-color: #333;
+
+    --border-color: #d9d7db;
+
+    --success-color: #0e8b3c;
+    --destructive-color: #ab2222;
+    --info-color: #3b82f6;
+
+    --header-height: 103px;
 }
 
 
@@ -58,7 +72,7 @@ a {
 }
 
 button {
-    background-color: var(--secondary-contrast-color);
+    background-color: var(--button-color);
     color: var(--text-color);
 
     font-weight: normal;
@@ -74,7 +88,23 @@ button {
 
     padding: .5rem 1rem;
     border: none;
-    border-radius: .2rem;
+    border-radius: 10px;
+    
+    transition: all 0.2s ease-in-out;
+}
+
+button:hover {
+    background-color: var(--button-hover-color);
+
+    transform: scale(1.01);
+}
+
+button:disabled {
+    background-color: var(--card-color);
+    color: var(--text-color);
+    transform: scale(1);
+
+    cursor: not-allowed;
 }
 
 button>* {
@@ -90,26 +120,56 @@ button img {
     justify-content: center;
 }
 
-select {
-    background-color: var(--secondary-contrast-color);
+select, input, textarea {
+    background-color: var(--input-bg-color);
     color: var(--text-color);
 
-    padding: .5rem;
-    border-radius: .5rem;
+    padding: .5rem 1rem;
+    border-radius: 10px;
 }
 
 input, textarea {
-    background-color: var(--contrast-color);
-    color: var(--text-color);
-
-    padding: .5rem;
-    border-radius: .5rem;
     border: 1px solid var(--border-color);
-    
+}
+
+select {
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
 }
 
 hr {
-    background-color: #fff;
+    background-color: var(--border-color);
     
     width: 100%;
+}
+
+ul {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+ul li {
+    background-color: var(--card-color);
+    list-style: none;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 2rem;
+
+    padding: 1rem;
+    border-radius: 10px;
+}
+
+@media screen and (max-width: 650px) {
+    button:hover {
+        background-color: var(--button-color);
+        scale: 1;
+    }
+    button:active {
+        background-color: var(--button-hover-color);
+        scale: 1.2;
+    }
 }

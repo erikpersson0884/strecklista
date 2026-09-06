@@ -1,29 +1,33 @@
 import React from 'react';
 import './InventoryPage.css';
 
-import { useInventory } from '../../contexts/InventoryContext';
-import { useModalContext } from '../../contexts/ModalContext';
+import { useInventoryContext } from '@/contexts/InventoryContext';
+import useModalContext from '@/contexts/ModalContext';
 
-import AddProductPopup from '../../components/addProductPopup/AddProductPopup';
-import RefillProductPopup from '../../components/refillProductPopup/RefillProductPopup';
-import UpdateProductPopup from '../../components/updateProductPopup/UpdateProductPopup';
-import ConfirmDialog from '../../components/confirmDialog/ConfirmDialog';
+import AddProductPopup from '@/components/addProductPopup/AddProductPopup';
+import RefillProductPopup from '@/components/refillProductPopup/RefillProductPopup';
+import UpdateProductPopup from '@/components/updateItemPopup/UpdateItemPopup';
+import ConfirmDialog from '@/components/confirmDialog/ConfirmDialog';
 
-import editIcon from '../../assets/images/edit.svg';
-import deleteIcon from '../../assets/images/delete-white.svg';
-import refillIcon from '../../assets/images/refill.svg';
+import editIcon from '@/assets/images/edit.svg';
+import deleteIcon from '@/assets/images/delete-white.svg';
+import refillIcon from '@/assets/images/refill.svg';
 
 
 const InventoryPage: React.FC = () => {
-    const { products, isLoadingInventory, deleteProduct } = useInventory();
-    const { openModal } = useModalContext();
+    const { items, isLoadingInventory, deleteItem } = useInventoryContext();
+    const { openModal, closeModal } = useModalContext();
 
-    const DeleteConfirmDialog: React.FC<{ item: IItem }> = ({ item }) => {
+    const DeleteConfirmDialog: React.FC<{ item: Item }> = ({ item }) => {
+        const handleDelete = async () => {
+            const success: boolean = await deleteItem(item.id);
+            if (success) closeModal();
+        }
         return (
             <ConfirmDialog
                 title="Radera produkt"
                 confirmButtonText="Radera"
-                onConfirm={() => deleteProduct(item.id)}
+                onConfirm={handleDelete}
             >
                 <p>Är du säker på att du vill radera produkten?</p>
                 <p>Produkt: {item.name}</p>
@@ -32,7 +36,7 @@ const InventoryPage: React.FC = () => {
     };
 
 
-    const InventoryItem: React.FC<{item: IItem;}> = ({ item }) => {
+    const InventoryItem: React.FC<{item: Item;}> = ({ item }) => {
         return (
                 <li className='inventory-item list-item'>
                     <p>{item.name}</p>
@@ -54,7 +58,7 @@ const InventoryPage: React.FC = () => {
 
     const InventoryItems = () => {
         return (
-            products.map((item) => (
+            items.map((item) => (
                     <InventoryItem key={item.id} item={item} />
             ))
         )
@@ -63,11 +67,11 @@ const InventoryPage: React.FC = () => {
     if (isLoadingInventory) return <p>Loading...</p>;
 
     return (
-        <>
-            <ul className='page'>
+        <div className='inventory-page page'>
+            <ul className='page-list'>
 
-                {products.length === 0 ? (
-                    <p className='no-products'>Inga produkter i lager</p>
+                {items.length === 0 ? (
+                    <p className='no-items'>Inga produkter i lager</p>
                 ) : (
                     <InventoryItems />
                 )}
@@ -78,7 +82,7 @@ const InventoryPage: React.FC = () => {
                     </button>
                 </li>
             </ul>
-        </>
+        </div>
     );
 };
 

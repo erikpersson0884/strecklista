@@ -1,6 +1,6 @@
 
 .cart {
-    background-color: var(--contrast-color);
+    background-color: var(--card-color);
 
     display: flex;
     flex-direction: column;
@@ -68,7 +68,7 @@
 }
 
 .cart .pay-button {
-    background-color: var(--green-color);
+    background-color: var(--primary-color);
 
     height: 3.5rem;
     width: 100%;

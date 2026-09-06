@@ -1,16 +1,26 @@
 import api from "./axiosInstance";
+// import { z } from "zod";
+import { ApiItem, apiItem, apiStockUpdate } from "../schemas/api";
+import itemAdapter from "../adapters/itemAdapter";
+import transactionAdapter from "../adapters/transactionAdapter";
 
 const inventoryApi = {
     /**
      * Fetches the inventory data from the API.
      *
-     * @returns {Promise<IItem[]>} A promise that resolves to an array of products.
+     * @returns {Promise<Item[]>} A promise that resolves to an array of items.
      * @throws Will throw an error if the API request fails.
      */
-    getInventory: async (): Promise<ApiItem[]> => {
+    getInventory: async (): Promise<Item[]> => {
         const response = await api.get("/group/item");
-        const items = response.data.data.items;
-        return items;
+
+        const parsed = apiItem.array().safeParse(response.data.data.items);
+        if (!parsed.success) {
+            console.error("Zod: Unexpected /group/item response shape:", parsed.error.issues);
+             throw new Error("Failed to parse inventory data"); 
+        }
+
+        return parsed.data.map(itemAdapter.apiItemToItem);
     },
 
     /**
@@ -21,26 +31,39 @@ const inventoryApi = {
      * @param icon - (Optional) A string representing the icon for the item.
      * @returns A promise that resolves to a boolean indicating whether the item was successfully added.
      */
-    addProduct: async (displayName: string, prices: Price[], icon?: string): Promise<boolean> => {
+    addItem: async (displayName: string, prices: Price[], icon?: string): Promise<Item> => {
         const response = await api.post("/group/item", {
             displayName: displayName,
             prices: prices,
             ...(icon && { icon }),
         });
-        return response.status === 200 || response.status === 201;
+         const parsed = apiItem.safeParse(response.data.data.item);
+        if (!parsed.success) {
+            console.error("Zod: Unexpected /group/item response shape:", parsed.error.issues);
+            throw new Error("Failed to parse added item data");
+        }
+        return itemAdapter.apiItemToItem(parsed.data);
     },
 
     /**
      * Updates a item with the specified updates.
      *
-     * @param productId - The unique identifier of the item to update.
+     * @param ItemId - The unique identifier of the item to update.
      * @param updates - A partial object containing the fields to update in the item.
      * @returns A promise that resolves to `true` if the update was successful (HTTP status 200),
      *          or `false` otherwise.
      */
-    updateProduct: async (productId: ProductId, updates: Partial<ApiItem>): Promise<boolean> => {
-        const response = await api.patch(`group/item/${productId}`, updates);
-        return response.status === 200;
+    updateItem: async (ItemId: ItemId, partialItem: Partial<Item>): Promise<Item> => {
+        const updates: Partial<ApiItem> = itemAdapter.partialItemToPartialApiItem(partialItem);
+        if (Object.keys(updates).length === 0) throw new Error("No updates provided for item update.");
+
+        const response = await api.patch(`/group/item/${ItemId}`, updates);
+        const parsed = apiItem.safeParse(response.data.data.item);
+        if (!parsed.success) {
+            console.error("Zod: Unexpected /group/item response shape:", parsed.error.issues);
+            throw new Error("Failed to parse updated item data");
+        }
+        return itemAdapter.apiItemToItem(parsed.data);
     },
 
     /**
@@ -52,25 +75,34 @@ const inventoryApi = {
      *
      * @throws Will throw an error if the API request fails.
      */
-    deleteProduct: async (id: Id): Promise<boolean> => {
+    deleteItem: async (id: Id): Promise<void> => {
         const response = await api.delete(`/group/item/${id}`);
-        return response.status === 200;
+        const success = apiItem.safeParse(response.data.data.item);
+        if (!success.success) {
+            console.error("Zod: Unexpected /group/item response shape:", success.error.issues);
+            throw new Error("Failed to parse deleted item data");
+        }
     },
 
-    refillProduct: async (id: Id, amount: number): Promise<boolean> => {
+    refillItem: async (id: Id, amount: number): Promise<StockUpdate> => {
         const body = {
             items: [
                 {
-                    id: id,
+                    id: Number(id),
                     quantity: amount
                 }
             ]
         }
         const response = await api.post(`/group/stock`, body);
-        return response.status === 200 || response.status === 201;
+        const parsed = apiStockUpdate.safeParse(response.data.data.transaction);
+        if (!parsed.success) {
+            console.error("Zod: Unexpected /group/stock response shape:", parsed.error.issues);
+            throw new Error("Failed to parse stock refill response data");
+        }
+        return transactionAdapter.adaptStockUpdate(parsed.data);
     },
 
-    setProductQuntity: async (id: Id, amount: number): Promise<boolean> => {
+    setItemQuantity: async (id: Id, amount: number): Promise<StockUpdate> => {
         const body = {
             items: [
                 {
@@ -80,8 +112,13 @@ const inventoryApi = {
                 }
             ]
         }
-        const response = await api.post(`api/group/stock`, body);
-        return response.status === 200;
+        const response = await api.post(`/group/stock`, body);
+        const parsed = apiStockUpdate.safeParse(response.data.data.transaction);
+        if (!parsed.success) {
+            console.error("Zod: Unexpected /group/stock response shape:", parsed.error.issues);
+            throw new Error("Failed to parse stock update response data");
+        }
+        return transactionAdapter.adaptStockUpdate(parsed.data);
     }
 };
 

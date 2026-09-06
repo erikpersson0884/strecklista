@@ -22,21 +22,21 @@
 }
 
 .clear-search-bar-button {
-    background-color: var(--contrast-color);
+    background-color: var(--card-color);
 
     aspect-ratio: 1/1;
     padding: .4rem;
     border-radius: 10px;
 }
 
-.no-products {
+.no-items {
     margin-top: 4rem;
     font-style: italic;
 }
 
 
 .show-cart-button {
-    background-color: var(--green-color);
+    background-color: var(--primary-color);
 
     font-size: 2rem;
 

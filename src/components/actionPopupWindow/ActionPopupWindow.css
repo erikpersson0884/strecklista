@@ -9,7 +9,7 @@
 }
 
 .popup-window .accept-button {
-    background-color: var(--green-color);
+    background-color: var(--primary-color);
     
     display: flex;
     flex-direction: row;

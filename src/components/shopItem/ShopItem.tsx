@@ -1,28 +1,40 @@
 import React from 'react';
 import './ShopItem.css';
 
-import favouriteIcon from '../../assets/images/favourite.svg';
-import favouriteIconFilled from '../../assets/images/favourite-filled.svg';
-import defaultItemImage from '../../assets/images/grocery.svg';
+import favouriteIcon from '@/assets/images/favourite.svg';
+import favouriteIconFilled from '@/assets/images/favourite-filled.svg';
+import defaultItemImage from '@/assets/images/grocery.svg';
 
-import { useCart } from '../../contexts/CartContext';
-import { useInventory } from '../../contexts/InventoryContext';
+import { useCartContext } from '@/contexts/CartContext';
+import { useInventoryContext } from '@/contexts/InventoryContext';
+import { useModalContext } from '@/contexts/ModalContext';
+
+import { useLongPress } from '@/hooks/useLongPress';
+import SwishQRCode from '@/components/swishQRCode/SwishQRCode';
 
 interface ProductProps {
-    item: IItem;
+    item: Item;
 }
+const SWISH_PAYEE_NUMBER = '0706649794'; // TODO: move to env/config
 
 const Item: React.FC<ProductProps> = ({ item }) => {
-    const { addIProductoCart, itemsInCart } = useCart(); 
-    const { toggleFavourite } = useInventory();
+    const { addItemToCart, itemsInCart } = useCartContext(); 
+    const { toggleFavourite } = useInventoryContext();
+    const { openModal } = useModalContext();
 
     const internalPrice: string = item.internalPrice % 1 === 0 ? item.internalPrice.toFixed(0) : item.internalPrice.toFixed(2)
 
+    const longPress = useLongPress({
+        onLongPress: () => openModal(<SwishQRCode item={item} payeeNumber={SWISH_PAYEE_NUMBER} />),
+        onClick: () => addItemToCart(item),
+    });
+
     return (
-        <div className="item" onClick={() => addIProductoCart(item)}>
+        <div className="item" {...longPress}>
             <button className='favourite-button' onClick={(e) => {e.stopPropagation(); toggleFavourite(item.id)}}>
                 <img 
                     src={item.favorite ? favouriteIconFilled : favouriteIcon}
+                    className='favourite-icon'
                     alt="heart" 
                     height={20}
                 />
@@ -37,6 +49,7 @@ const Item: React.FC<ProductProps> = ({ item }) => {
             <div className='item-image'>
                 <img
                     src={item.icon || defaultItemImage}
+                    className='item-icon'
                     alt={item.name}
                     onError={(e) => {
                         e.currentTarget.onerror = null; // prevent loop

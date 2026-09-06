@@ -1,71 +1,129 @@
 import { render, screen } from '@testing-library/react';
-import Header from '../../layouts/header/Header';
 import { BrowserRouter } from 'react-router-dom';
-import { AuthProvider } from '../../contexts/AuthContext';
 import userEvent from '@testing-library/user-event';
+import { vi } from 'vitest';
+import Header from '@/layouts/header/Header';
 
+const mockNavigate = vi.fn();
+vi.mock('react-router-dom', async () => {
+    const actual = await vi.importActual<typeof import('react-router-dom')>('react-router-dom');
+    return {
+        ...actual,
+        useNavigate: () => mockNavigate,
+    };
+});
 
-function renderWithBrowserRouter(children: React.ReactNode) {
-    return render(<BrowserRouter><AuthProvider>{children}</AuthProvider></BrowserRouter>)
+const mockUseAuthContext = vi.fn();
+vi.mock('@/contexts/AuthContext', () => ({
+    default: () => mockUseAuthContext(),
+}));
+
+vi.mock('@/api/userApi', () => ({
+    default: {
+        getGroupInfo: vi.fn().mockResolvedValue({ id: '1', name: 'Göken', avatarUrl: '', gammaId: 'g1' }),
+    },
+}));
+
+function renderHeader() {
+    return render(
+        <BrowserRouter>
+            <Header />
+        </BrowserRouter>
+    );
 }
 
 describe('Header tests', () => {
-    it('should render header title', () => {
-        renderWithBrowserRouter(<Header />);
-        expect(screen.getByText(/Strecklista/)).toBeInTheDocument();
+    afterEach(() => {
+        vi.clearAllMocks();
     });
 
-    it('Should render menu button', () => {
-        renderWithBrowserRouter(<Header />);
-        expect(screen.getByRole('button')).toBeInTheDocument();
+    describe('when the user is not authenticated', () => {
+        beforeEach(() => {
+            mockUseAuthContext.mockReturnValue({ isAuthenticated: false });
+        });
+
+        it('renders the logo linking home', () => {
+            renderHeader();
+            const logo = screen.getByAltText('logo');
+            expect(logo).toBeInTheDocument();
+            expect(logo.closest('a')).toHaveAttribute('href', '/');
+        });
+
+        it('renders the navigation links', () => {
+            renderHeader();
+            expect(screen.getByText('Strecka')).toBeInTheDocument();
+            expect(screen.getByText('Utbud')).toBeInTheDocument();
+            expect(screen.getByText('Tillgodo')).toBeInTheDocument();
+            expect(screen.getByText('Transaktioner')).toBeInTheDocument();
+        });
+
+        it('does not render the menu or profile buttons', () => {
+            renderHeader();
+            expect(screen.queryByRole('button')).not.toBeInTheDocument();
+        });
+
+        it('does not render the nav as open', () => {
+            renderHeader();
+            const nav = screen.getByRole('navigation');
+            expect(nav).not.toHaveClass('nav-open');
+        });
     });
 
-    it('should not render the mobile nav by default', () => {
-        renderWithBrowserRouter(<Header />);
-        const mobileNav = screen.queryByRole('navigation');
-        expect(mobileNav).not.toHaveClass('nav-open');
-    });
+    describe('when the user is authenticated', () => {
+        beforeEach(() => {
+            mockUseAuthContext.mockReturnValue({ isAuthenticated: true });
+        });
 
-    it('should open nav when menu button is clicked', async () => {
-        renderWithBrowserRouter(<Header />);
-        const button = screen.getByRole('button', { name: /toggle navigation/i });
-        let mobileNav = screen.queryByRole('navigation');
+        it('renders the menu and profile buttons', () => {
+            renderHeader();
+            expect(screen.getByRole('button', { name: /toggle navigation/i })).toBeInTheDocument();
+            expect(screen.getByRole('button', { name: /profile/i })).toBeInTheDocument();
+        });
 
-        // 1️⃣ Initially, nav should NOT be in the DOM
-        expect(mobileNav).not.toHaveClass('nav-open');
+        it('opens the nav when the menu button is clicked', async () => {
+            renderHeader();
+            const nav = screen.getByRole('navigation');
+            const menuButton = screen.getByRole('button', { name: /toggle navigation/i });
 
-        // 2️⃣ Click button to open
-        await userEvent.click(button);
+            expect(nav).not.toHaveClass('nav-open');
+            await userEvent.click(menuButton);
+            expect(nav).toHaveClass('nav-open');
+        });
 
-        // 3️⃣ Wait for nav to appear
-        expect(mobileNav).toHaveClass('nav-open');
+        it('closes the nav when the menu button is clicked again', async () => {
+            renderHeader();
+            const nav = screen.getByRole('navigation');
+            const menuButton = screen.getByRole('button', { name: /toggle navigation/i });
 
-    });
+            await userEvent.click(menuButton);
+            expect(nav).toHaveClass('nav-open');
 
-    it('should close nav when menu button is clicked again', async () => {
-        renderWithBrowserRouter(<Header />);
-        const mobileNav = screen.getByRole('navigation');
-        const button = screen.getByRole('button', { name: /toggle navigation/i });
-        expect(mobileNav).not.toHaveClass('nav-open');
+            await userEvent.click(menuButton);
+            expect(nav).not.toHaveClass('nav-open');
+        });
 
-        await userEvent.click(button);
-        expect(mobileNav).toHaveClass('nav-open');
+        it('closes the nav when a nav link is clicked', async () => {
+            renderHeader();
+            const nav = screen.getByRole('navigation');
+            const menuButton = screen.getByRole('button', { name: /toggle navigation/i });
 
-        await userEvent.click(button);
-        expect(mobileNav).not.toHaveClass('nav-open');
-    });
+            await userEvent.click(menuButton);
+            expect(nav).toHaveClass('nav-open');
 
-    it('should close nav when a link is clicked', async () => {
-        renderWithBrowserRouter(<Header />);
-        const mobileNav = screen.getByRole('navigation');
-        const button = screen.getByRole('button', { name: /toggle navigation/i });
+            const firstLink = nav.querySelector('a');
+            expect(firstLink).toBeInTheDocument();
+            await userEvent.click(firstLink!);
 
-        await userEvent.click(button);
-        expect(mobileNav).toHaveClass('nav-open');
-        const firstLink = mobileNav.querySelector('a');
-        expect(firstLink).toBeInTheDocument();
+            expect(nav).not.toHaveClass('nav-open');
+        });
 
-        await userEvent.click(firstLink!);
-        expect(mobileNav).not.toHaveClass('nav-open');
+        it('navigates to the profile page when the profile button is clicked', async () => {
+            renderHeader();
+            const profileButton = screen.getByRole('button', { name: /profile/i });
+
+            await userEvent.click(profileButton);
+
+            expect(mockNavigate).toHaveBeenCalledWith('/profile');
+        });
     });
 });

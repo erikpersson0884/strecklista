@@ -1,47 +1,37 @@
-import { FC, useState, ChangeEvent } from 'react';
+import { FC, useState, ChangeEvent, useEffect } from 'react';
 import './Cart.css';
 
-import { useCart } from '../../contexts/CartContext';
-import { useUsersContext } from '../../contexts/UsersContext';
-import { useAuth } from '../../contexts/AuthContext';
+import { useCartContext } from '@/contexts/CartContext';
+import { useUsersContext } from '@/contexts/UsersContext';
+import useAuthContext from '@/contexts/AuthContext';
+import useModalContext from '@/contexts/ModalContext';
+import useNotificationContext from '@/contexts/NotificationContext';
 
 import CartItem from './cartItem/CartItem';
 
-const MAX_COMMENT_LENGTH = 1000;
 
-interface CartProps {
-    closeCart: () => void;
-}
+const Cart: FC = () => {
+    const { itemsInCart, purchaseCart } = useCartContext();
+    const { currentUser } = useAuthContext();
+    const { closeModal } = useModalContext();
+    const { notify } = useNotificationContext();
 
-const Cart: FC<CartProps> = ({ closeCart }) => {
-    const { itemsInCart, buyProducts } = useCart();
-    const { currentUser } = useAuth();
     if (!currentUser) return null; // Should never happen, but it can open before currentUser is set, so we need to handle this case
 
     const [ comment, setComment ] = useState<string>('');
-    const [ selectedUser, setSelectedUser ] = useState<User>(currentUser);
     const [ includeComment, setIncludeComment ] = useState<boolean>(false);
-    const [ errorMessage, setErrorMessage ] = useState<string>('');
 
     const handleBuyProducts = async () => {
-        if (itemsInCart.length === 0) return;
-        if (comment.length > MAX_COMMENT_LENGTH) {
-            alert(`Kommentaren får inte vara längre än ${MAX_COMMENT_LENGTH} tecken`);
-            return;
-        }
-        const successfullBuy: boolean = await buyProducts(selectedUser.id, includeComment ? comment : undefined);
-        if (successfullBuy) { 
-            closeCart();
-            setErrorMessage('');
-        }
-        else setErrorMessage('Köpet misslyckades, försök igen senare');
+        const successfullBuy: boolean = await purchaseCart(includeComment ? comment : undefined);
+        if (successfullBuy) closeModal();
+        else notify('Kunde inte genomföra köpet. Försök igen senare.', 'error');
     };
 
 
     return (
         <div className='cart' onClick={(e) => e.stopPropagation()}>
             <CartItems />
-            <CartFooter selectedUser={selectedUser} setSelectedUser={setSelectedUser}/>
+            <CartFooter />
             
             <div>
                 <CommentSection 
@@ -55,14 +45,12 @@ const Cart: FC<CartProps> = ({ closeCart }) => {
                     Sträcka
                 </button>
             </div>
-
-            {errorMessage && <p className='error-message'>{errorMessage}</p>}
         </div>
     );
 };
 
 const CartItems: FC = () => {
-    const { itemsInCart } = useCart();
+    const { itemsInCart } = useCartContext();
 
     return (
         <ul className='cart-list'>
@@ -74,21 +62,26 @@ const CartItems: FC = () => {
     )
 };
 
-interface CartFooterProps {
-  selectedUser: User;
-  setSelectedUser: React.Dispatch<React.SetStateAction<User>>;
-}
 
-const CartFooter: FC<CartFooterProps> = ({selectedUser, setSelectedUser}) => {
-    const { users } = useUsersContext();
-    const { total } = useCart();
+const CartFooter: FC = () => {
+    const { payingUser, setPayingUser } = useCartContext();
+    const { currentUser } = useAuthContext();
+    const { users, getUserFromUserId } = useUsersContext();
+    const { total } = useCartContext();
+
+    if (!currentUser) return null; // Should never happen, but it can open before currentUser is set, so we need to handle this case
 
     const handleSelectUserChangeChange = (e: ChangeEvent<HTMLSelectElement>): void => {
         const selectedUserId: string = e.target.value;
-        const user: User | undefined = users.find(user => user.id === Number(selectedUserId));
-        if (!user) throw new Error('Tried to set a user to pay that does not exist in users list');
-        setSelectedUser(user);
+        setPayingUser(getUserFromUserId(selectedUserId));
     };
+
+    useEffect(() => {
+        if (currentUser && !payingUser) {
+            setPayingUser(currentUser);
+        }
+    }, [currentUser, payingUser, setPayingUser]);
+
 
     return (
         <div className='cart-footer'>
@@ -102,7 +95,7 @@ const CartFooter: FC<CartFooterProps> = ({selectedUser, setSelectedUser}) => {
                     <label htmlFor="selectPayingUser">Sträcka åt</label>
                     <select 
                         id="selectPayingUser"
-                        value={selectedUser.id}
+                        value={payingUser?.id || currentUser.id}
                         onChange={handleSelectUserChangeChange}
                     >
                         {users.map((user: User) => (
@@ -143,7 +136,7 @@ const CommentSection: FC<CommentSectionProps> = ({comment, setComment, includeCo
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
                 placeholder="Skriv en kommentar här..."
-                maxLength={MAX_COMMENT_LENGTH}
+                maxLength={1000}
             />
         </>
     )

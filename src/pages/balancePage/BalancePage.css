@@ -1,8 +1,8 @@
-.balancepage .user-div {
+.balance-page .user-div {
     padding: 0;
 }
 
-.balancepage .user-div-content {
+.balance-page .user-div-content {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
@@ -18,7 +18,7 @@
     height: 100%;
 }
 
-.balancepage .name-div {
+.balance-page .name-div {
     display: flex;
     flex-direction: column;
     align-items: flex-start;

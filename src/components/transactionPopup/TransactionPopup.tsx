@@ -2,7 +2,8 @@ import { type FC } from "react";
 import './TransactionPopup.css';
 
 import { useTransactionsContext } from "../../contexts/TransactionsContext";
-import { useModalContext } from "../../contexts/ModalContext";
+import { useUsersContext } from "../../contexts/UsersContext";
+import useModalContext from "../../contexts/ModalContext";
 
 import ActionPopupWindow from "../actionPopupWindow/ActionPopupWindow";
 import PopupWindow from "../popupWindow/PopupWindow";
@@ -15,6 +16,7 @@ interface TransactionPopupProps {
 
 const TransactionPopup: FC<TransactionPopupProps> = ({transaction}) => {
     const { removeTransaction } = useTransactionsContext();
+    const { getUserFromUserId } = useUsersContext();
     const { openModal } = useModalContext();
 
 
@@ -140,13 +142,21 @@ const TransactionPopup: FC<TransactionPopupProps> = ({transaction}) => {
                         { 'createdFor' in transaction && (
                             <p>
                                 <span>Berört konto:</span>
-                                <span>{(transaction.createdFor as { nick: string }).nick}</span>
+                                <span>{(() => {
+                                    const user = getUserFromUserId((transaction as FinancialTransaction).createdFor);
+                                    return typeof user === "string" ? user : user.nick;
+                                })()}</span>
                             </p>
                         )}
 
                         <p>
                             <span>Utförd av:</span>
-                            <span>{transaction.createdBy ? transaction.createdBy.nick : 'N/A'}</span>
+                            <span>{transaction.createdBy.type === "user"
+                                ? (() => {
+                                    const user = getUserFromUserId(transaction.createdBy.id);
+                                    return typeof user === "string" ? user : user.nick;
+                                })()
+                                : "Client id: " + transaction.createdBy.id}</span>
                         </p>
                     </div>
                     

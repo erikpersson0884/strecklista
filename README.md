@@ -7,6 +7,11 @@ The frontend for a "strecklista", originally developed for <a href="https://prit
 [![Repo Size][repo-size-shield]][repo-size-url]
 [![Author][author-shield]][author-url]
 
+
+
+# About the Project
+Skrubblista is a digital tally system for small communities, such as those at Chalmers Student Union. It runs on a display in shared community spaces, showing real-time inventory counts and enabling barcode-scanner purchases from the shop.
+
 ## Built with
 ![Vite][vite-shield]
 ![React][react-shield]
@@ -14,6 +19,10 @@ The frontend for a "strecklista", originally developed for <a href="https://prit
 ![Docker][docker-shield]
 ![TypeScript][typescript-shield]
 
+## Features
+- User-friendly interface
+- Fast and responsive design
+- Integration with backend APIs
 
 # Index
 
@@ -24,10 +33,7 @@ The frontend for a "strecklista", originally developed for <a href="https://prit
 1. [Authors](#authors)
 1. [Acknowledgments](#acknowledgments)
 
-# Features
-- User-friendly interface
-- Fast and responsive design
-- Integration with backend APIs
+
 
 # Installation
 Instructions on how to install and set up the project.
@@ -42,7 +48,9 @@ cd strecklista
 # Install dependencies
 npm install
 ```
-Create a `.env` file in the root of the project and add the necessary environment variables. You may use copy the .env.example file
+
+
+Optional: The default backend location is localhost:8080 for development. Should you wish to use another url or port you can create a `.env` file in the root of the project or copy the `.env.example` file and rename it to `.env`. Then change the `API_URL` variable to your desired backend url.
 
 # Usage
 

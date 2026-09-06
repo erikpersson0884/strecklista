@@ -1,16 +1,6 @@
 import api from "./axiosInstance";
-
-
-const IProductoApiItem = (item: ProductInCart): ApiPurchaseRequestItem => {
-    return {
-        id: item.id,
-        quantity: item.quantity,
-        purchasePrice: {
-            displayName: "Internt",
-            price: item.internalPrice,
-        }
-    };
-};
+import { apiTransaction } from "../schemas/api";
+import transactionAdapter from "../adapters/transactionAdapter";
 
 const transactionsApi = {
     /**
@@ -21,7 +11,7 @@ const transactionsApi = {
      * @param {number} [offset=0] - The number of transactions to skip before starting to collect the result set.
      * 
      * @returns {Promise<{
-     *   apiTransactions: ApiTransaction[], 
+     *   transactions: ITransaction[], 
      *   nextUrl: string | null, 
      *   prevUrl: string | null
      * }>} A promise that resolves to an object containing the fetched transactions and pagination URLs.
@@ -30,27 +20,29 @@ const transactionsApi = {
      */
     fetchTransactions: async (url?: string | null, limit: number = 10, offset: number = 0)
     : Promise<{
-        apiTransactions: ApiTransaction[], 
+        transactions: ITransaction[], 
         nextUrl: string | null, 
         prevUrl: string | null
     }> => {
-        try {
-            let response;
-            if (url) {
-                response = await api.get(url);
-            } else {
-                response = await api.get(`/group/transaction`, {
-                    params: { limit, offset },
-                });
-            }
-
-            const apiTransactions: ApiTransaction[] = response.data.data.transactions;
-            const nextUrl: string | null = response.data.data.next || null;
-            const prevUrl: string | null = response.data.data.previous || null;
-            return { apiTransactions, nextUrl, prevUrl };
-        } catch (error: any) {
-            throw new Error(error.response?.data?.message || "Failed to fetch purchases");
+        let response;
+        if (url) {
+            response = await api.get(url);
+        } else {
+            response = await api.get(`/group/transaction`, {
+                params: { limit, offset },
+            });
         }
+
+        const parsed = apiTransaction.array().safeParse(response.data.data.transactions);
+        if (!parsed.success) {
+            console.error("Failed to parse transactions:", parsed.error);
+            throw new Error(`Failed to parse transactions: ${parsed.error}`);
+        }
+        const transactions: ITransaction[] = parsed.data.map(transaction => transactionAdapter.adaptTransaction(transaction));
+
+        const nextUrl: string | null = response.data.data.next || null;
+        const prevUrl: string | null = response.data.data.previous || null;
+        return { transactions, nextUrl, prevUrl };
     },
 
     
@@ -66,7 +58,7 @@ const transactionsApi = {
     makeDeposit: async (userId: UserId, amount: number, comment?: string): Promise<number> => {
         try {
             const response = await api.post("/group/deposit", { 
-                userId, 
+                userId: Number(userId), 
                 total: amount,
                 comment,
             });
@@ -81,17 +73,17 @@ const transactionsApi = {
     /**
      * Makes a purchase for a user.
      * @param {UserId} userId - The ID of the user making the purchase.
-     * @param {ProductInCart[]} products - The products to be purchased.
+     * @param {ItemInCart[]} Items - The Items to be purchased.
      * @param {string} [comment] - An optional comment for the purchase.
      *
      * @returns {Promise<number>} A promise that resolves to the user's new balance.
      * @throws Will throw an error if the request fails.
      */
-    makePurchase: async (userId: UserId, products: ProductInCart[], comment?: string): Promise<number> => {
+    makePurchase: async (userId: UserId, items: ItemInCart[], comment?: string): Promise<number> => {
         try {
-            const apiItems = products.map(IProductoApiItem);
+            const apiItems = items.map(transactionAdapter.ItemInCartToApiItems);
             const response = await api.post("/group/purchase", { 
-                userId, 
+                userId: Number(userId), 
                 items: apiItems,
                 comment,
             });

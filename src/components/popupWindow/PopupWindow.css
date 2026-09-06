@@ -1,12 +1,12 @@
 
 .popup-window {
-    background-color: var(--contrast-color);
+    background-color: var(--card-color);
 
     position: absolute;
     
     box-sizing: border-box;
     width: 80%;
-    max-width: 20rem;
+    max-width: 24rem;
     min-height: 10rem;
     padding: 1rem;
     border-radius: .5rem;

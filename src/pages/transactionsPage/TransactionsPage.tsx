@@ -2,21 +2,24 @@ import type { FC } from 'react';
 import { useState } from 'react';
 import './TransactionsPage.css';
 
-import { useTransactionsContext } from '../../contexts/TransactionsContext';
-import { useModalContext } from '../../contexts/ModalContext';
+import { useTransactionsContext } from '@/contexts/TransactionsContext';
+import { useUsersContext } from '@/contexts/UsersContext';
+import useModalContext from '@/contexts/ModalContext';
 
-import TransactionPopup from '../../components/transactionPopup/TransactionPopup';
+import TransactionPopup from '@/components/transactionPopup/TransactionPopup';
 import Filter from './Filter/Filter';
 
-import downIcon from '../../assets/images/down.svg';
-import filterIcon from '../../assets/images/filter.svg';
+import downIcon from '@/assets/images/down.svg';
+import filterIcon from '@/assets/images/filter.svg';
 
 const TransactionsPage: FC = () => {
     const { isLoadingTransactions } = useTransactionsContext();
+    const { isLoadingUsers } = useUsersContext();
     
     const [ showFilters, setShowFilters ] = useState<boolean>(false);
 
-    if (isLoadingTransactions) return <p>Loading...</p>;
+    if (isLoadingTransactions) return <p>Loading transactions...</p>;
+    else if (isLoadingUsers) return <p>Loading users...</p>;
     else return (
         <div className='transactions-page page'>
             <SearchbarAndFilters showFilters={showFilters} setShowFilters={setShowFilters} />
@@ -34,7 +37,7 @@ const TransactionList = () => {
         <p className='no-transactions'>Inga transaktioner hittades.</p>
     ) 
     else return (
-        <ul className='transactions-list'>
+        <ul className='page-list'>
             {filteredTransactions.map((transaction: ITransaction) => 
                 <TransactionPreview key={transaction.id} transaction={transaction} />
             )}
@@ -91,6 +94,7 @@ interface TransactionPreviewProps {
 }
 const TransactionPreview: FC<TransactionPreviewProps> = ({transaction}) => {
     const { openModal } = useModalContext();
+    const { getUserFromUserId } = useUsersContext();
 
     let transactionTypeString: string;
     switch (transaction.type) {
@@ -107,9 +111,14 @@ const TransactionPreview: FC<TransactionPreviewProps> = ({transaction}) => {
             transactionTypeString = 'Okänd';
     }
 
-    let username: string;
-    if (transaction.type === 'purchase'  ||  transaction.type === 'deposit') username = (transaction as Purchase | Deposit).createdFor.nick;
-    else username = transaction.createdBy.nick;
+    let username;
+    if (transaction.type === 'purchase'  ||  transaction.type === 'deposit') {
+        const userId = (transaction as Purchase | Deposit).createdFor;
+        username = getUserFromUserId(userId).nick;
+    } else if (transaction.createdBy.type === "user") {
+        const userId = transaction.createdBy.id;
+        username = getUserFromUserId(userId).nick;
+    } else username = 'client id:' + transaction.createdBy.id;
 
     return (
         <li 

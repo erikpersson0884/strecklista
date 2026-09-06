@@ -1,0 +1,77 @@
+.display-client-popup {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.display-client-popup .client-field {
+    display: flex;
+    flex-direction: column;
+    gap: .25rem;
+}
+
+.display-client-popup .field-label {
+    font-size: .75rem;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    color: var(--faint-text-color);
+}
+
+.display-client-popup .field-value {
+    font-size: .95rem;
+    word-break: break-word;
+}
+
+/* Copyable fields (ID, Secret) */
+.display-client-popup button.field-value {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+
+    font-family: 'Courier New', monospace;
+    font-size: .85rem;
+    text-align: left;
+
+    background-color: var(--input-bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: .4rem;
+    padding: .5rem .75rem;
+    color: inherit;
+    cursor: pointer;
+
+    transition: background-color .15s ease, border-color .15s ease;
+}
+
+.display-client-popup button.field-value:hover {
+    background-color: var(--input-bg-hover-color);
+    border-color: var(--accent-color, #5eead4);
+}
+
+.display-client-popup button.field-value:active {
+    transform: scale(.99);
+}
+
+.display-client-popup .copy-feedback {
+    margin-left: auto;
+    font-size: .75rem;
+    color: #5eead4;
+    font-family: inherit;
+    white-space: nowrap;
+}
+
+/* Scopes as pills */
+.display-client-popup .scope-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+}
+
+.display-client-popup .scope-pill {
+    text-transform: capitalize;
+
+    background-color: var(--accent-color);
+    border-radius: 999px;
+    padding: .3rem .8rem;
+    font-size: .85rem;
+    line-height: 1.2;
+}
