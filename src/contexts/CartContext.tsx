@@ -85,7 +85,6 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
     const emptyCart = () => {
         setItemsInCart([]);
-        notify('Korgen tömdes', 'info');
     };
 
     const purchaseCart = async (comment?: string): Promise<boolean> => {

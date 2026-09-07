@@ -39,12 +39,13 @@ const SearchBar: React.FC<SearchBarProps> = ({searchTerm, setSearchTerm}) => {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
             />
-            { (searchTerm.length > 0) && <button 
-                className='clear-search-bar-button' 
-                onClick={() => setSearchTerm('')}
-            >
-                <img src={emptySearchIcon} alt="clear search" height={20}/>
-            </button>
+            { (searchTerm.length > 0) && 
+                <button 
+                    className='clear-search-bar-button' 
+                    onClick={() => setSearchTerm('')}
+                >
+                    <img src={emptySearchIcon} alt="clear search" height={20}/>
+                </button>
             }
         </div>
     )
@@ -83,10 +84,10 @@ const ShopItems: React.FC<ShopItemsProps> = ({ items, searchTerm}) => {
 
 const OpenCartButton: React.FC = () => {
     const { numberOfItemsInCart } = useCartContext();
-    const { openModal } = useModalContext();
+    const { openModal, modalIsOpen } = useModalContext();
     const isVisible: boolean = numberOfItemsInCart > 0;
 
-    if (!isVisible) return null;
+    if (!isVisible || modalIsOpen) return null;
     else return (
         <button className='show-cart-button' onClick={() => openModal(<Cart />)}>
             <div className='items-indicator'>{numberOfItemsInCart}</div>

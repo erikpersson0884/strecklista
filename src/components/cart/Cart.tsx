@@ -125,7 +125,6 @@ const CommentSection: FC<CommentSectionProps> = ({comment, setComment, includeCo
     )
     else return (
         <>
-            <hr />
             <div className='comment-header'>
                 <label htmlFor="comment">Kommentar (valfritt): </label>
                 <button onClick={() => { setIncludeComment(false); }}>Ingen Kommentar</button>

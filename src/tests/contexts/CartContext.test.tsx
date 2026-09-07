@@ -5,6 +5,7 @@ import { CartProvider, useCartContext } from '@/contexts/CartContext';
 
 const mockRefreshTransactions = vi.fn();
 vi.mock('@/contexts/TransactionsContext', () => ({
+    default: () => ({ refreshTransactions: mockRefreshTransactions }),
     useTransactionsContext: () => ({ refreshTransactions: mockRefreshTransactions }),
 }));
 
@@ -141,14 +142,13 @@ describe('CartContext', () => {
         expect(result.current.getProductQuantity('does-not-exist')).toBe(0);
     });
 
-    it('empties the cart and notifies the user', () => {
+    it('empties the cart', () => {
         const { result } = renderHook(() => useCartContext(), { wrapper });
         act(() => result.current.addItemToCart(item));
 
         act(() => result.current.emptyCart());
 
         expect(result.current.itemsInCart).toEqual([]);
-        expect(mockNotify).toHaveBeenCalledWith('Korgen tömdes', 'info');
     });
 
     describe('purchaseCart', () => {
