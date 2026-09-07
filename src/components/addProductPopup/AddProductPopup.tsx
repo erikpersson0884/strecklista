@@ -1,13 +1,13 @@
 import React from "react";
-import ActionPopupWindow from "../../components/actionPopupWindow/ActionPopupWindow";
+import ActionPopupWindow from "@/components/actionPopupWindow/ActionPopupWindow";
 
-import { useInventory } from "../../contexts/InventoryContext";
-
+import useInventoryContext from "@/contexts/InventoryContext";
+import useModalContext from "@/contexts/ModalContext";
 
 const AddProductPopup: React.FC = () => {
-    const { addProduct } = useInventory();
+    const { addItem } = useInventoryContext();
+    const { closeModal } = useModalContext();
 
-    const [ errorText, setErrorText ] = React.useState<string | null>(null);
     const [ name, setName ] = React.useState<string>("");
     const [ internalPrice, setInternalPrice ] = React.useState<number>(0);
     const [ amountInStock, setAmountInStock ] = React.useState<number>(0);
@@ -18,36 +18,21 @@ const AddProductPopup: React.FC = () => {
         const value = e.target.value;
         const parsed = parseFloat(value);
 
-        if (value.trim() === '' || isNaN(parsed)) {
-            return;
-        } else {
-            setValue(parsed);
-        }
+        if (value.trim() === '' || isNaN(parsed))  return;
+        else setValue(parsed);
     }
 
     const handleAddProduct = async () => {
-        const wasSuccessfull: boolean = await addProduct(name, internalPrice, icon);
-        if (wasSuccessfull) handleClose();
-        else setErrorText("Det gick inte att lägga till varan. Kontrollera att alla fält är ifyllda korrekt.");
-    };
-
-    const handleClose = () => {
-        setName("");
-        setInternalPrice(0);
-        setAmountInStock(0);
-        seticon("");
-        setAvailable(true);
-        setErrorText(null);
+        const updatedItem: Item | null = await addItem(name, internalPrice, icon);
+        if (updatedItem) closeModal();
     };
 
     return (
         <ActionPopupWindow 
             title="Lägg till vara" 
             onAccept={handleAddProduct} 
-            onClose={handleClose}
             className="add-item-popup"
             acceptButtonText="Lägg till"
-            errorText={errorText || undefined}
         >
             <div className="inputdiv">
                 <label>Varunamn</label>

@@ -8,8 +8,8 @@
     width: 100%;
 }
 
-.popup-window .accept-button {
-    background-color: var(--green-color);
+.accept-button {
+    background-color: var(--primary-color);
     
     display: flex;
     flex-direction: row;

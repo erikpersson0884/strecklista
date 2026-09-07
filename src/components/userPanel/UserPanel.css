@@ -1,0 +1,19 @@
+
+.user-panel-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1rem;
+
+    width: 100%;
+}
+
+.user-panel {
+    flex-direction: row;
+    flex-wrap: wrap;
+
+}
+
+.user-item:hover {
+    cursor: pointer;
+}

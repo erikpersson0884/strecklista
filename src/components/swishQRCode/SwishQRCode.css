@@ -1,0 +1,58 @@
+/* SwishQRCode.css */
+.swish-qr {
+    background-color: var(--card-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+
+    padding: 24px 28px;
+    border: 2px solid var(--foreground-color);
+    border-radius: 10px;
+    max-width: 280px;
+}
+
+.swish-qr-badge {
+    display: flex;
+
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--foreground-color);
+    opacity: 0.85;
+}
+
+.swish-qr-logo {
+    height: 24px;
+    width: auto;
+}
+.swish-qr h2 {
+    text-transform: capitalize;
+    margin: 0;
+    text-align: center;
+}
+
+.swish-qr-price {
+    margin: -6px 0 4px;
+    font-size: 16px;
+    opacity: 0.8;
+}
+
+.swish-qr-code-frame {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 14px;
+    display: flex;
+}
+
+.swish-qr-toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 12px;
+    margin-top: 4px;
+    font-size: 14px;
+}

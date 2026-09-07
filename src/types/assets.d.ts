@@ -13,4 +13,6 @@ declare module '*.css' {
   export default content;
 }
 
+declare module 'swish-qr';
+
 // Add others if needed (.jpg, .jpeg, .gif)

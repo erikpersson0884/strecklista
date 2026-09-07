@@ -7,6 +7,9 @@
         "module": "es2015",
         "moduleResolution": "bundler",
         "forceConsistentCasingInFileNames": true,
+        "paths": {
+            "@/*": ["./src/*"]
+        }
     },
     "include": [
         "src",

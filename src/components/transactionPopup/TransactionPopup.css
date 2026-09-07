@@ -69,5 +69,5 @@
 
 
 .transaction-popup .accept-button {
-    background-color: var(--secondary-contrast-color) !important;
+    background-color: var(--primary-color) !important;
 }

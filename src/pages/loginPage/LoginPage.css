@@ -11,7 +11,7 @@
 }
 
 .login-page button {
-    background-color: var(--green-color);
+    background-color: var(--primary-color);
 }
 
 .login-page>* {

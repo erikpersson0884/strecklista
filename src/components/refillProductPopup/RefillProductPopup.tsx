@@ -1,56 +1,54 @@
 import React, { useState } from 'react';
-import ActionPopupWindow from '../actionPopupWindow/ActionPopupWindow';
-import { useInventory } from '../../contexts/InventoryContext';
+import ActionPopupWindow from '@/components/actionPopupWindow/ActionPopupWindow';
+import { useInventoryContext } from '@/contexts/InventoryContext';
+import { useModalContext } from '@/contexts/ModalContext';
+
 
 interface RefillProductPopupProps {
-    item: IItem | null;
+    item: Item;
 }
 
 const RefillProductPopup: React.FC<RefillProductPopupProps> = ({ item }) => {
-    if (!item) return null;
-    
-    const { refillProduct } = useInventory();
+    const { refillItem } = useInventoryContext();
+    const { closeModal } = useModalContext();
 
-    const [ amountToRefill, setAmountToRefill ] = useState<number>(0);
-    const [ errorText, setErrorText ] = useState<string | undefined>(undefined);
+    const [amountToRefill, setAmountToRefill] = useState<number>(0);
 
     const handleRefillProduct = async () => {
-        const wasSuccessfull = await refillProduct(item.id, amountToRefill);
-        if (wasSuccessfull) handleClose();
-        else setErrorText("Det gick inte att fylla på varan. Kontrollera att alla fält är ifyllda korrekt.");
+        const wasSuccessfull = await refillItem(item.id, amountToRefill);
+        if (wasSuccessfull) closeModal();
     };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
-        const parsed = parseFloat(value);
 
-        if (value.trim() === '' || isNaN(parsed)) {
-            setAmountToRefill(0);
-        } else {
-            setAmountToRefill(parsed);
-        }
+        // Ignore anything that isn't a number
+        if (!/^\d*$/.test(value)) return;
+        
+        setAmountToRefill(value === '' ? 0 : Number(value));
     };
 
-    const handleClose = () => {
-        setAmountToRefill(0);
-        setErrorText(undefined);
-    }
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            handleRefillProduct();
+        }
+    };
 
     return (
         <ActionPopupWindow 
             title={`Fyll på ${item.name}`}
-            onClose={handleClose}
             onAccept={handleRefillProduct}
             acceptButtonText='Fyll på'
-            errorText={errorText}
         >
             <p>Nuvarande antal: {item.amountInStock} st</p>
             <label htmlFor="amount">Fyll på med: </label>
             <input 
                 id="amount" 
                 type="string" 
+                inputMode="numeric"
                 value={amountToRefill} 
-                onChange={(e) => handleInputChange(e)} 
+                onChange={handleInputChange} 
+                onKeyDown={handleKeyDown}
             />
             <p>Nytt antal: {item.amountInStock + amountToRefill} st</p>
         </ActionPopupWindow>

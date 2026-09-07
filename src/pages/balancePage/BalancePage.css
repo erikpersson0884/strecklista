@@ -1,8 +1,9 @@
-.balancepage .user-div {
+.balance-page .user-div {
     padding: 0;
+    gap: 0;
 }
 
-.balancepage .user-div-content {
+.balance-page .user-div-content {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
@@ -14,15 +15,24 @@
     padding: 1rem;
 }
 
-.balancepage .user-div img {
-    height: 100%;
+.balance-page .user-div img {
+    transition: transform .3s ease-in-out;
+}
+.balance-page .open-popup-button:hover img {
+    transform: scale(1.15);
 }
 
-.balancepage .name-div {
+.balance-page .name-div {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: .3rem;
 
     margin-right: auto;
+}
+
+@media screen and (max-width: 600px) {
+    .balance-page .open-popup-button:hover img {
+        transform: none;
+    }
 }
