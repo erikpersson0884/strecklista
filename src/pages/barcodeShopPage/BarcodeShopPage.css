@@ -1,0 +1,53 @@
+.barcode-shop-page {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 2rem;
+
+    box-sizing: border-box;
+    min-height: 0;
+    height: calc(100vh - var(--header-height));
+    box-sizing: border-box;
+    width: 100%;
+    padding: 1rem;
+    
+}
+
+.panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 1rem;
+
+    box-sizing: border-box;
+}
+
+.panel button {
+    background-color: var(--background-color);
+}
+
+.barcode-shop-page .left-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 2rem;
+
+    flex: 1;
+    flex-shrink: 1;
+    min-height: 0;
+    height: calc(100%);
+
+    /* margin-inline: 3rem; */
+}
+
+@media screen and (max-width: 850px) {
+    .barcode-shop-page {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .barcode-shop-page .left-panel {
+        margin-inline: 0;
+    }
+}

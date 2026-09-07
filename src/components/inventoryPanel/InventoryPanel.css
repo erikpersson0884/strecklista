@@ -1,0 +1,34 @@
+
+.inventory-panel {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    width: 100%;
+}
+
+.inventory-panel .scanner {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+    opacity: 0;
+}
+
+.inventory-panel ul {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+}
+
+.inventory-item:hover {
+    cursor: pointer;
+}
+
+.inventory-item .barcode {
+    margin-left: auto;
+    margin-right: 20px;
+}
+
+.inventory-item p {
+    text-transform: capitalize;
+}
