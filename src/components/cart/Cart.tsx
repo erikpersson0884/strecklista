@@ -2,7 +2,7 @@ import { FC, useState, ChangeEvent, useEffect } from 'react';
 import './Cart.css';
 
 import { useCartContext } from '@/contexts/CartContext';
-import { useUsersContext } from '@/contexts/UsersContext';
+import useUsersContext from '@/contexts/UsersContext';
 import useAuthContext from '@/contexts/AuthContext';
 import useModalContext from '@/contexts/ModalContext';
 import useNotificationContext from '@/contexts/NotificationContext';

@@ -1,8 +1,8 @@
 import { type FC } from "react";
 import './TransactionPopup.css';
 
-import { useTransactionsContext } from "../../contexts/TransactionsContext";
-import { useUsersContext } from "../../contexts/UsersContext";
+import useTransactionsContext from "../../contexts/TransactionsContext";
+import useUsersContext from "../../contexts/UsersContext";
 import useModalContext from "../../contexts/ModalContext";
 
 import ActionPopupWindow from "../actionPopupWindow/ActionPopupWindow";

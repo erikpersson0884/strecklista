@@ -6,7 +6,7 @@ import favouriteIconFilled from '@/assets/images/favourite-filled.svg';
 import defaultItemImage from '@/assets/images/grocery.svg';
 
 import { useCartContext } from '@/contexts/CartContext';
-import { useInventoryContext } from '@/contexts/InventoryContext';
+import useInventoryContext from '@/contexts/InventoryContext';
 import { useModalContext } from '@/contexts/ModalContext';
 
 import { useLongPress } from '@/hooks/useLongPress';

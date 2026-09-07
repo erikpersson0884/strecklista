@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 import transactionsApi from '@/api/transactionApi';
-import { useTransactionsContext } from './TransactionsContext';
+import useTransactionsContext from './TransactionsContext';
 import useNotificationContext from './NotificationContext';
 
 const MAX_COMMENT_LENGTH = 1000;

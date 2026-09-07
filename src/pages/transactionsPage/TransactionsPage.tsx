@@ -2,8 +2,8 @@ import type { FC } from 'react';
 import { useState } from 'react';
 import './TransactionsPage.css';
 
-import { useTransactionsContext } from '@/contexts/TransactionsContext';
-import { useUsersContext } from '@/contexts/UsersContext';
+import useTransactionsContext from '@/contexts/TransactionsContext';
+import useUsersContext from '@/contexts/UsersContext';
 import useModalContext from '@/contexts/ModalContext';
 
 import TransactionPopup from '@/components/transactionPopup/TransactionPopup';

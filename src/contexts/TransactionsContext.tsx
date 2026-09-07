@@ -1,7 +1,7 @@
 import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 import transactionsApi from '@/api/transactionApi';
-import { useUsersContext } from './UsersContext';
-import { useInventoryContext } from './InventoryContext';
+import useUsersContext from './UsersContext';
+import useInventoryContext from './InventoryContext';
 import useAuthContext from './AuthContext';
 
 interface TransactionsContextProps {

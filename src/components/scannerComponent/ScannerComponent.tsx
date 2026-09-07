@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { useCartContext } from '@/contexts/CartContext';
-import { useUsersContext } from '@/contexts/UsersContext';
-import { useInventoryContext } from '@/contexts/InventoryContext';
+import useUsersContext from '@/contexts/UsersContext';
+import useInventoryContext from '@/contexts/InventoryContext';
 
 const SCAN_CHAR_TIMEOUT = 50;   // ms — max gap between chars to still count as "same scan"
 const SCAN_IDLE_TIMEOUT = 100;  // ms — if no new char for this long, treat scan as finished

@@ -1,8 +1,9 @@
-import { createContext, useState, useContext, ReactNode } from 'react';
+import { createContext, useState, useContext, ReactNode, useEffect } from 'react';
+
 import inventoryApi from '@/api/inventoryApi';
-import { useEffect } from 'react';
+
 import useAuthContext from './AuthContext';
-import { useNotificationContext } from './NotificationContext';
+import useNotificationContext from './NotificationContext';
 
 
 interface InventoryContextProps {

@@ -1,8 +1,7 @@
 import React from 'react';
 import './InventoryPage.css';
 
-import { useInventoryContext } from '@/contexts/InventoryContext';
-import useTransactionsContext from '@/contexts/TransactionsContext';
+import useInventoryContext from '@/contexts/InventoryContext';
 import useModalContext from '@/contexts/ModalContext';
 
 import AddProductPopup from '@/components/addProductPopup/AddProductPopup';

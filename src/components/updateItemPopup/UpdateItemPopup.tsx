@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import ActionPopupWindow from "@/components/actionPopupWindow/ActionPopupWindow";
 
-import { useInventoryContext } from "@/contexts/InventoryContext";
-import { useNotificationContext } from '@/contexts/NotificationContext';
+import useInventoryContext from "@/contexts/InventoryContext";
+import useNotificationContext from '@/contexts/NotificationContext';
 import { useModalContext } from '@/contexts/ModalContext';
 
 

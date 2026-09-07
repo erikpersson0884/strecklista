@@ -1,7 +1,7 @@
 import React from 'react';
 import './BalancePage.css';
 
-import { useUsersContext } from '@/contexts/UsersContext';
+import useUsersContext from '@/contexts/UsersContext';
 import useAuthContext from '@/contexts/AuthContext';
 import useModalContext from '@/contexts/ModalContext';
 

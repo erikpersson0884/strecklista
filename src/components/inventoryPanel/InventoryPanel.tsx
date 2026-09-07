@@ -3,7 +3,7 @@ import './InventoryPanel.css'
 import ScannerComponent from '@/components/scannerComponent/ScannerComponent'
 import ProductIcon from '@/components/icon/Icon'
 
-import { useInventoryContext } from '@/contexts/InventoryContext'
+import useInventoryContext from '@/contexts/InventoryContext'
 import { useCartContext } from '@/contexts/CartContext'
 import Barcode from 'react-barcode'
 

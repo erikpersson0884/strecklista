@@ -2,7 +2,7 @@ import React from 'react';
 import './ShopPage.css';
 
 import ShopItem from '@/components/shopItem/ShopItem';
-import { useInventoryContext } from '@/contexts/InventoryContext';
+import useInventoryContext from '@/contexts/InventoryContext';
 import { useCartContext } from '@/contexts/CartContext';
 import Cart from '@/components/cart/Cart';
 import emptySearchIcon from '@/assets/images/close.svg';
