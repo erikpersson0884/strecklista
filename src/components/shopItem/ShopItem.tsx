@@ -7,7 +7,7 @@ import defaultItemImage from '@/assets/images/grocery.svg';
 
 import { useCartContext } from '@/contexts/CartContext';
 import useInventoryContext from '@/contexts/InventoryContext';
-import { useModalContext } from '@/contexts/ModalContext';
+import useModalContext from '@/contexts/ModalContext';
 
 import { useLongPress } from '@/hooks/useLongPress';
 import SwishQRCode from '@/components/swishQRCode/SwishQRCode';

@@ -3,7 +3,7 @@ import ActionPopupWindow from "@/components/actionPopupWindow/ActionPopupWindow"
 
 import useInventoryContext from "@/contexts/InventoryContext";
 import useNotificationContext from '@/contexts/NotificationContext';
-import { useModalContext } from '@/contexts/ModalContext';
+import useModalContext from '@/contexts/ModalContext';
 
 
 interface UpdateItemPopupProps {
@@ -15,32 +15,35 @@ const UpdateItemPopup: React.FC<UpdateItemPopupProps> = ({ item }) => {
     const { notify } = useNotificationContext();
     const { closeModal } = useModalContext();
 
-    const [updatedItem, setUpdatedItem] = useState(item);
-    const [isChanged, setIsChanged] = useState(false);
+    const [ updatedItem, setUpdatedItem ] = useState(item);
+    const [ isChanged, setIsChanged ] = useState(false);
 
     useEffect(() => {
         setIsChanged(
             item.name !== updatedItem.name ||
             item.internalPrice !== updatedItem.internalPrice ||
             item.icon !== updatedItem.icon ||
-            item.available !== updatedItem.available
+            item.available !== updatedItem.available ||
+            item.externalId !== updatedItem.externalId
         );
     }, [updatedItem, item]);
 
     const handleUpdate = async () => {
         const changes: Partial<Item> = {};
 
+        changes.internalPrice = updatedItem.internalPrice; // Always update the price since the adapter needs it in InventoryApi
+
         if (item.name !== updatedItem.name)                     changes.name = updatedItem.name;
         if (item.internalPrice !== updatedItem.internalPrice)   changes.internalPrice = updatedItem.internalPrice;
         if (item.icon !== updatedItem.icon)                     changes.icon = updatedItem.icon;
         if (item.available !== updatedItem.available)           changes.available = updatedItem.available;
+        if (item.externalId !== updatedItem.externalId)         changes.externalId = updatedItem.externalId;
 
         const successful = await updateItem(item.id, changes);
 
         if (successful) closeModal();
         else notify(`Misslyckades med att uppdatera`, 'error');
     };
-
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value, type, checked } = e.target;
@@ -51,7 +54,7 @@ const UpdateItemPopup: React.FC<UpdateItemPopupProps> = ({ item }) => {
                 type === "checkbox"
                     ? checked
                     : type === "number"
-                        ? parseFloat(value)
+                        ? (value === "" ? 0 : parseFloat(value))
                         : value,
         }));
     };
@@ -96,15 +99,29 @@ const UpdateItemPopup: React.FC<UpdateItemPopupProps> = ({ item }) => {
                 />
             </div>
 
-            <div>
-                <label htmlFor="available">Tillgänglig: </label>
+            <div className="inputdiv">
+                <label htmlFor="externalId">Externt Id: </label>
                 <input
-                    id="available"
-                    type="checkbox"
-                    name="available"
-                    checked={updatedItem.available}
+                    id="externalId"
+                    type="text"
+                    name="externalId"
+                    value={updatedItem.externalId}
                     onChange={handleChange}
                 />
+            </div>
+
+            <div>
+                <label htmlFor="available">Tillgänglig: </label>
+                <label className="switch">
+                    <input
+                        id="available"
+                        type="checkbox"
+                        name="available"
+                        checked={updatedItem.available}
+                        onChange={handleChange}
+                    />
+                    <span className="slider"></span>
+                </label>
             </div>
         </ActionPopupWindow>
     );

@@ -55,7 +55,6 @@ const inventoryApi = {
      */
     updateItem: async (ItemId: ItemId, partialItem: Partial<Item>): Promise<Item> => {
         const updates: Partial<ApiItem> = itemAdapter.partialItemToPartialApiItem(partialItem);
-        if (Object.keys(updates).length === 0) throw new Error("No updates provided for item update.");
 
         const response = await api.patch(`/group/item/${ItemId}`, updates);
         const parsed = apiItem.safeParse(response.data.data.item);

@@ -83,7 +83,7 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
                 return existingItem; // Return the existing item if no changes were made
             }
 
-            const newItem: Item = await inventoryApi.updateItem(itemId, updatedItem)
+            const newItem: Item = await inventoryApi.updateItem(itemId, updatedItem);
             fetchInventory();
             notify(`Vara uppdateratd`, 'success')
             return newItem
