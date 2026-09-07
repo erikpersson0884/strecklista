@@ -49,12 +49,12 @@ describe('Header tests', () => {
             expect(logo.closest('a')).toHaveAttribute('href', '/');
         });
 
-        it('renders the navigation links', () => {
+        it('does not render the navigation links', () => {
             renderHeader();
-            expect(screen.getByText('Strecka')).toBeInTheDocument();
-            expect(screen.getByText('Utbud')).toBeInTheDocument();
-            expect(screen.getByText('Tillgodo')).toBeInTheDocument();
-            expect(screen.getByText('Transaktioner')).toBeInTheDocument();
+            expect(screen.queryByText('Strecka')).not.toBeInTheDocument();
+            expect(screen.queryByText('Utbud')).not.toBeInTheDocument();
+            expect(screen.queryByText('Tillgodo')).not.toBeInTheDocument();
+            expect(screen.queryByText('Transaktioner')).not.toBeInTheDocument();
         });
 
         it('does not render the menu or profile buttons', () => {
@@ -72,6 +72,14 @@ describe('Header tests', () => {
     describe('when the user is authenticated', () => {
         beforeEach(() => {
             mockUseAuthContext.mockReturnValue({ isAuthenticated: true });
+        });
+
+        it('renders the navigation links', () => {
+            renderHeader();
+            expect(screen.getByText('Strecka')).toBeInTheDocument();
+            expect(screen.getByText('Utbud')).toBeInTheDocument();
+            expect(screen.getByText('Tillgodo')).toBeInTheDocument();
+            expect(screen.getByText('Transaktioner')).toBeInTheDocument();
         });
 
         it('renders the menu and profile buttons', () => {

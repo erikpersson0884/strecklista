@@ -12,6 +12,7 @@ import ShopPage from './pages/shopPage/ShopPage';
 import InventoryPage from './pages/inventoryPage/InventoryPage';
 import BalancePage from './pages/balancePage/BalancePage';
 import TransactionsPage from './pages/transactionsPage/TransactionsPage';
+import BarcodeShopPage from './pages/barcodeShopPage/BarcodeShopPage';
 
 import ClientPage from './pages/clientPage/ClientPage';
 import ProfilePage from './pages/profilePage/ProfilePage';
@@ -29,6 +30,7 @@ const App: React.FC = () => {
         { url: '/transactions', component: <TransactionsPage /> },
         { url: '/profile', component: <ProfilePage /> },
         { url: '/clients', component: <ClientPage /> },
+        { url: '/barcode-shop', component: <BarcodeShopPage /> },
     ]
     
     if (isLoggingIn) {

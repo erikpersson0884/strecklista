@@ -17,7 +17,7 @@
     gap: 0.5rem;
 
     box-sizing: border-box;
-    width: calc(350px + 1rem);
+    width: 100%;
     max-width: 30rem;
 }
 
