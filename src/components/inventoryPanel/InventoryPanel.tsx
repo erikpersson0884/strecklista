@@ -1,7 +1,7 @@
 import React from 'react'
 import './InventoryPanel.css'
 import ScannerComponent from '@/components/scannerComponent/ScannerComponent'
-import ProductIcon from '@/components/productIcon/ProductIcon'
+import ProductIcon from '@/components/icon/Icon'
 
 import { useInventoryContext } from '@/contexts/InventoryContext'
 import { useCartContext } from '@/contexts/CartContext'

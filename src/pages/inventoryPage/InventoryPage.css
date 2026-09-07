@@ -11,3 +11,13 @@
     width: 100%;
     height: 100%;
 }
+
+.inventory-item p {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+
+    min-width: 0;
+    flex: 1;
+}

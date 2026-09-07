@@ -49,16 +49,15 @@ export const UsersProvider = ({ children }: { children: ReactNode }) => {
         try {
             const newBalance = await transactionsApi.makeDeposit(userId, amount, comment)
             setUserBalance(userId, newBalance);
-            notify('Saldo uppdaterat!');
+            notify('Saldo uppdaterat', 'success');
             return true;
         } catch (error) {
-            notify('Något gick fel, försök igen senare.');
+            notify('Något gick fel, försök igen senare.', 'error');
             return false;
         }
     };
 
     const setUserBalance = (userId: UserId, newBalance: number) => {
-        checkThatUserExists(userId);
         setUsers((prevUsers) =>
             prevUsers.map((user) =>
                 user.id === userId ? { ...user, balance: newBalance } : user
@@ -71,14 +70,6 @@ export const UsersProvider = ({ children }: { children: ReactNode }) => {
         if (!user) throw new Error(`User with id ${userId} not found`);
         return user;
     }
-
-    const checkThatUserExists = (userId: UserId): void => {
-        if (!userExists(userId)) throw new Error(`User with id ${userId} not found`);
-    }
-
-    const userExists = (userId: UserId): boolean => {
-        return users.some((user) => user.id === userId);
-    };
 
 
     return (

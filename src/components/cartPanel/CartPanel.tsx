@@ -3,7 +3,7 @@ import './CartPanel.css'
 import useCartContext from '@/contexts/CartContext'
 import useUsersContext from '@/contexts/UsersContext'
 import Barcode from 'react-barcode'
-import ProductIcon from '@/components/productIcon/ProductIcon'
+import ProductIcon from '@/components/icon/Icon'
 
 
 interface ItemInCartProps {

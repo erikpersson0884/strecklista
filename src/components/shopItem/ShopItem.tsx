@@ -62,7 +62,7 @@ const Item: React.FC<ProductProps> = ({ item }) => {
                 <h2>{item.name}</h2>
 
                 <div className='item-stats'>
-                    <p>{item.amountInStock} i lager</p>
+                    <p>{Math.max(item.amountInStock, 0)} st kvar</p>
                     <p>{internalPrice}:-</p>
                 </div>
             </div>

@@ -5,7 +5,7 @@ import { useUsersContext } from '@/contexts/UsersContext';
 import useAuthContext from '@/contexts/AuthContext';
 import useModalContext from '@/contexts/ModalContext';
 
-import RefillUserBalancePopup from '@/components/refillUserBalancePopup/RefillUserBalancePopup';
+import RefillPopup from '@/components/refillPopup/RefillPopup';
 import addIcon from '@/assets/images/add.svg';
 
 
@@ -43,8 +43,9 @@ interface UserBalanceProps {
 }
 const UserBalance: React.FC<UserBalanceProps> = ({ user }) => {
     const { openModal } = useModalContext()
+    const { addUserBalance } = useUsersContext();
 
-    const openRefillPopup = () => openModal(<RefillUserBalancePopup user={user}/>)
+    const openRefillPopup = () => openModal(<RefillPopup item={user} refillAction={addUserBalance} currentBalance={user.balance} suffix='kr'/>)
 
 
     return (

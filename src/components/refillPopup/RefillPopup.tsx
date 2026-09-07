@@ -1,29 +1,33 @@
 import React, { useState } from 'react';
-import './RefillUserBalancePopup.css';
+import './RefillPopup.css';
 
-import ActionPopupWindow from '@/components/actionPopupWindow/ActionPopupWindow';
-import { useUsersContext } from '@/contexts/UsersContext';
 import useModalContext from '@/contexts/ModalContext';
 import useNotificationContext from '@/contexts/NotificationContext';
 
+import ActionPopupWindow from '@/components/actionPopupWindow/ActionPopupWindow';
+import Icon from '@/components/icon/Icon';
 
-interface RefillUserBalancePopupProps {
-    user: User;
+
+interface RefillPopupPopupProps {
+    item: User | Item;
+    currentBalance: number;
+    suffix: string;
+    refillAction: (id: string, amount: number, comment?: string) => Promise<boolean>;
 }
-const RefillUserBalancePopup: React.FC<RefillUserBalancePopupProps> = ({ user }) => {
-    const { addUserBalance } = useUsersContext();
+const RefillPopup: React.FC<RefillPopupPopupProps> = ({ item, currentBalance, refillAction, suffix }) => {
     const { notify } = useNotificationContext();
     const { closeModal } = useModalContext();
 
-    const [amountToDeposit, setAmountToDeposit] = useState<string>(''); // Use string
-    const [comment, setComment] = useState<string>('');
-    const [includeComment, setIncludeComment] = useState<boolean>(false);
+    const [ amountToDeposit, setAmountToDeposit ] = useState<string>('');
+    const [ comment, setComment ] = useState<string>('');
+    const [ includeComment, setIncludeComment ] = useState<boolean>(false);
 
     const handleRefill = async () => {
         const parsedAmount = parseFloat(amountToDeposit);
 
-        const wasSuccessFull: boolean = await addUserBalance(
-            user.id,
+
+        const wasSuccessFull: boolean = await refillAction(
+            item.id,
             parsedAmount,
             includeComment ? comment : undefined
         );
@@ -44,26 +48,26 @@ const RefillUserBalancePopup: React.FC<RefillUserBalancePopupProps> = ({ user })
         }
     }
 
-    const newAmount: string = ((amountToDeposit !== '' ? parseFloat(amountToDeposit) : 0) + user.balance).toString();
+    const newAmount: string = ((amountToDeposit !== '' ? parseFloat(amountToDeposit) : 0) + currentBalance).toString();
 
     return (
         <ActionPopupWindow 
             onAccept={handleRefill}
-            acceptButtonText={`Fyll på med ${(amountToDeposit !== '' ? parseFloat(amountToDeposit) : 0)} kr`}
+            acceptButtonText={`Fyll på med ${(amountToDeposit !== '' ? parseFloat(amountToDeposit) : 0)} ${suffix}`}
             className='refill-user-balance-popup'
             acceptButtonDisabled={amountToDeposit === '' || parseFloat(amountToDeposit) <= 0}
         >
             <header>
-                <img className='icon' src={user.icon} alt={`${user.name}'s profilbild`} />
+                <Icon item={item} />
                 <div>
-                    <h2>{user.nick}</h2>
-                    <p>{user.name}</p>
+                    <h2>{item.name}</h2>
+                    {'nick' in item && <p>{item.nick}</p>}
                 </div>
             </header>
             <p className="balance-row">
                 <span>Nuvarande saldo:</span> 
-                <span>{user.balance}</span>
-                <span>kr</span>
+                <span>{currentBalance}</span>
+                <span>{suffix}</span>
             </p>
 
             <div className="amount-row">
@@ -77,7 +81,7 @@ const RefillUserBalancePopup: React.FC<RefillUserBalancePopupProps> = ({ user })
                         onKeyDown={handleKeyPress}
                         placeholder="0"
                     />
-                    <p>kr</p>
+                    <p>{suffix}</p>
                 </div>
             </div>
 
@@ -86,7 +90,7 @@ const RefillUserBalancePopup: React.FC<RefillUserBalancePopupProps> = ({ user })
                 <span>
                     {newAmount}
                 </span>
-                <span>kr</span>
+                <span>{suffix}</span>
             </p>
 
 
@@ -112,4 +116,4 @@ const RefillUserBalancePopup: React.FC<RefillUserBalancePopupProps> = ({ user })
     );
 }
 
-export default RefillUserBalancePopup;
+export default RefillPopup;
