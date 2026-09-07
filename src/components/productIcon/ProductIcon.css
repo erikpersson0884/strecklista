@@ -1,0 +1,21 @@
+
+.product-icon {
+    background-color: var(--accent-color);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    aspect-ratio: 1/1;
+    width: 50px;
+
+    border-radius: 50%;
+}
+
+.product-icon img {
+    object-fit: contain;
+
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
