@@ -70,6 +70,7 @@
     .page-header .header-buttons {
         order: 3;
     }
+
 }
 
 @media screen and (max-width: 650px) {
@@ -97,5 +98,9 @@
     #root .page-header .nav-open {
         max-height: 10rem;
         padding-bottom: .4rem;
+    }
+    
+    .page-header .barcode-shop-link {
+        display: none;
     }
 }

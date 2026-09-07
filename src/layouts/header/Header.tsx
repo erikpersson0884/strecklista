@@ -19,6 +19,7 @@ const Header: React.FC = () => {
         { url: '/inventory', linkText: 'Utbud', authenticatedOnly: true },
         { url: '/balance', linkText: 'Tillgodo', authenticatedOnly: true },
         { url: '/transactions', linkText: 'Transaktioner', authenticatedOnly: true },
+        { url: '/barcode-shop', linkText: 'Streckkods-handel', authenticatedOnly: true, className: 'barcode-shop-link' },
     ]
 
 
@@ -63,6 +64,7 @@ const Header: React.FC = () => {
                             to={page.url}
                             key={page.url}
                             onClick={() => setNavOpen(false)}
+                            className={page.className || ''}
                         >
                             {page.linkText}
                         </Link>
