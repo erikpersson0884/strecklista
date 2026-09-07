@@ -21,13 +21,13 @@ const Filter: React.FC<FilterProps> = ({ isVisible, hideFilters }) => {
             <EndDateFilter />
             <DeletedTransactionFilter />
             
-            <div>
+            <footer className='filter-footer'>
                 <button onClick={resetFilters}>
                     Återställ filter
                 </button>
 
                 <button onClick={hideFilters}>Stäng filter</button>
-            </div>
+            </footer>
         </div>
     )
 };
@@ -37,7 +37,7 @@ const UserFilter = () => {
     const { users } = useUsersContext();
 
     return (
-        <div>
+        <div className="inputdiv">
             <label htmlFor='user-filter'>Användare:</label>
             <select
                 id='user-filter' 
@@ -64,8 +64,8 @@ const TypeFilter = () => {
     }
     
     return (
-        <div>
-            <label htmlFor='transaction-type-filter'>Transaktions-typ:</label>
+        <div className="inputdiv">
+            <label htmlFor='transaction-type-filter'>Typ:</label>
             <select
                 id='transaction-type-filter' 
                 onChange={(e) => handleTransactionTypeChange(e)}
@@ -85,7 +85,7 @@ const TypeFilter = () => {
 const StartDateFilter = () => {
     const { filters, setFilters } = useTransactionsContext();
     return (
-        <div>
+        <div className="inputdiv">
             <label htmlFor='start-date-filter'>Från datum:</label>
             <input
                 type='date'
@@ -101,7 +101,7 @@ const StartDateFilter = () => {
 const EndDateFilter = () => {
     const { filters, setFilters } = useTransactionsContext();
     return (
-        <div>
+        <div className="inputdiv">
             <label htmlFor='end-date-filter'>Till datum:</label>
             <input
                 type='date'
@@ -116,14 +116,18 @@ const EndDateFilter = () => {
 const DeletedTransactionFilter = () => {
     const { filters, setFilters } = useTransactionsContext();
     return (
-        <div>
+        <div className="inputdiv">
             <label htmlFor='show-deleted-transactions'>Visa strukna transaktioner:</label>
-            <input
-                type='checkbox'
-                id='show-deleted-transactions'
-                checked={filters.showRemoved}
-                onChange={() => setFilters(f => ({ ...f, showRemoved: !f.showRemoved }))}
-            />
+
+            <label className="switch">
+                <input
+                    type='checkbox'
+                    id='show-deleted-transactions'
+                    checked={filters.showRemoved}
+                    onChange={() => setFilters(f => ({ ...f, showRemoved: !f.showRemoved }))}
+                />
+                <span className="slider"></span>
+            </label>
         </div>
     )
 }

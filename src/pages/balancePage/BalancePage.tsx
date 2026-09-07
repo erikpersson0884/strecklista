@@ -49,11 +49,11 @@ const UserBalance: React.FC<UserBalanceProps> = ({ user }) => {
 
 
     return (
-        <li className='user-div list-item'>
-            <div className='user-div-content'>
+        <li className='user-item list-item'>
+            <div className='user-item-content'>
                 <div className='name-div'>
-                    <p className='list-item__primary'>{user.nick}</p>
-                    <p className='list-item__secondary'>{user.name}</p>
+                    <p >{user.nick}</p>
+                    <p >{user.name}</p>
                 </div>
                 <p className={`user-balance`}>
                     {user.balance.toLocaleString('sv-SE', { maximumFractionDigits: 0 })} kr

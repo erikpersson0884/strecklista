@@ -5,6 +5,12 @@
     padding: 0;
 }
 
+.inventory-item>button {
+    background-color: inherit;
+
+    padding: 0;
+}
+
 .add-item-li>button {
     font-size: 20px;
     
@@ -20,4 +26,15 @@
 
     min-width: 0;
     flex: 1;
+}
+
+.list-item .open-popup-button {
+    background-color: var(--primary-color);
+    
+    box-sizing: border-box;
+    width: 4rem;
+    height: 100%;
+    padding: 1rem;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
 }

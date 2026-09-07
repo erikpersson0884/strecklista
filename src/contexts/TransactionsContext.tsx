@@ -3,6 +3,7 @@ import transactionsApi from '@/api/transactionApi';
 import useUsersContext from './UsersContext';
 import useInventoryContext from './InventoryContext';
 import useAuthContext from './AuthContext';
+import useNotificationContext from './NotificationContext';
 
 interface TransactionsContextProps {
     isLoadingTransactions: boolean;
@@ -33,6 +34,7 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
     const { isLoadingUsers } = useUsersContext();
     const { isLoadingInventory } = useInventoryContext();
     const { isAuthenticated } = useAuthContext();
+    const { notify } = useNotificationContext();
 
     const [filteredTransactions, setFilteredTransactions] = useState<ITransaction[]>([]);
     const [transactions, setTransactions] = useState<ITransaction[]>([]);
@@ -157,11 +159,14 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
 
 
     const removeTransaction = async (id: Id): Promise<boolean> => {
-        const success = await transactionsApi.removeTransaction(id);
-        if (success) {
+        try {
+            await transactionsApi.removeTransaction(id);
             setTransactions((prevTransactions) => prevTransactions.filter((ITransaction) => ITransaction.id !== id));
+            return true;
+        } catch (error) {
+            notify('Något gick fel, försök igen senare.');
+            return false;
         }
-        return success;
     };
 
     const refreshTransactions = async () => {

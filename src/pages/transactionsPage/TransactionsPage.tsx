@@ -11,11 +11,15 @@ import Filter from './Filter/Filter';
 
 import downIcon from '@/assets/images/down.svg';
 import filterIcon from '@/assets/images/filter.svg';
+import shoppingCartIcon from '@/assets/images/shoppingcart.svg';
+import stockIcon from '@/assets/images/stock-add.svg';
+import walletIcon from '@/assets/images/wallet.svg';
+
 
 const TransactionsPage: FC = () => {
     const { isLoadingTransactions } = useTransactionsContext();
     const { isLoadingUsers } = useUsersContext();
-    
+
     const [ showFilters, setShowFilters ] = useState<boolean>(false);
 
     if (isLoadingTransactions) return <p>Loading transactions...</p>;
@@ -31,17 +35,39 @@ const TransactionsPage: FC = () => {
     );
 };
 
+function groupTransactionsByDate(transactions: ITransaction[]): [string, ITransaction[]][] {
+    const groups = new Map<string, ITransaction[]>();
+
+    for (const transaction of transactions) {
+        const date = new Date(transaction.createdTime);
+        const label = date.toLocaleDateString('sv-SE', { day: 'numeric', month: 'long', year: 'numeric' });
+
+        if (!groups.has(label)) groups.set(label, []);
+        groups.get(label)!.push(transaction);
+    }
+
+    return Array.from(groups.entries());
+}
+
 const TransactionList = () => {
     const { filteredTransactions } = useTransactionsContext();
-    if (filteredTransactions.length === 0) return (
-        <p className='no-transactions'>Inga transaktioner hittades.</p>
-    ) 
-    else return (
-        <ul className='page-list'>
-            {filteredTransactions.map((transaction: ITransaction) => 
-                <TransactionPreview key={transaction.id} transaction={transaction} />
-            )}
-        </ul>
+    if (filteredTransactions.length === 0) return <p className='no-transactions'>Inga transaktioner hittades.</p>
+
+    const groups = groupTransactionsByDate(filteredTransactions);
+
+    return (
+        <div className='transaction-groups'>
+            {groups.map(([dateLabel, transactions]) => (
+                <div key={dateLabel} className='transaction-group'>
+                    <p className='transaction-date-header'>{dateLabel}</p>
+                    <ul className='page-list'>
+                        {transactions.map((transaction: ITransaction) =>
+                            <TransactionPreview key={transaction.id} transaction={transaction} />
+                        )}
+                    </ul>
+                </div>
+            ))}
+        </div>
     );
 };
 
@@ -54,16 +80,16 @@ const SearchbarAndFilters: FC<SearchbarAndFiltersProps> = ({ showFilters, setSho
 
     return (
         <div className='search-and-filter'>
-            <input 
-                type='text' 
-                placeholder='Sök transaktioner...' 
-                className='search-bar' 
+            <input
+                type='text'
+                placeholder='Sök transaktioner...'
+                className='search-bar'
                 onChange={(e) =>
                     setFilters(f => ({ ...f, searchQuery: e.target.value }))
                 }
             />
-            <button 
-                className='open-filters-button' 
+            <button
+                className='open-filters-button'
                 onClick={() => setShowFilters(!showFilters)}
             >
                 <img src={filterIcon} alt='Filter' height={10}/>
@@ -74,9 +100,9 @@ const SearchbarAndFilters: FC<SearchbarAndFiltersProps> = ({ showFilters, setSho
 
 
 const Pagination = () => {
-    const { 
-        filteredTransactions, 
-        getNextTransactions, 
+    const {
+        filteredTransactions,
+        getNextTransactions,
         getPrevTransactions,
         transactionsPageNumber,
     } = useTransactionsContext();
@@ -98,7 +124,7 @@ const TransactionPreview: FC<TransactionPreviewProps> = ({transaction}) => {
 
     let transactionTypeString: string;
     switch (transaction.type) {
-        case 'purchase': 
+        case 'purchase':
             transactionTypeString = 'Köp';
             break;
         case 'deposit':
@@ -120,26 +146,51 @@ const TransactionPreview: FC<TransactionPreviewProps> = ({transaction}) => {
         username = getUserFromUserId(userId).nick;
     } else username = 'client id:' + transaction.createdBy.id;
 
+    let icon;
+    switch (transaction.type) {
+        case 'purchase':
+            icon = shoppingCartIcon;
+            break;
+        case 'deposit':
+            icon = walletIcon;
+            break;
+        case 'stockUpdate':
+            icon = stockIcon;
+            break;
+        default:
+            icon = "?";
+    }
+    if (transaction.type === 'purchase' || transaction.type === 'deposit' ) console.log('transaction', transaction.type, (transaction as FinancialTransaction).total);
+
     return (
-        <li 
-            className={`transaction-preview list-item ${transaction.removed ? 'removed-transaction' : ''}`} 
+        <li
+            className={`transaction-preview list-item ${transaction.removed ? 'removed-transaction' : ''}`}
             onClick={() => openModal(<TransactionPopup transaction={transaction}/>)}
         >
-            <div className='transaction-preview-content'>
-                <div className='list-item__primary'>
-                    <p>{new Date(transaction.createdTime).toISOString().split('T')[0]}</p>
-                    <p>{username}</p>
-                </div>
-                <div className='list-item__secondary'>
-                    <p>{transactionTypeString}</p>
-                    { transaction.type === 'purchase' && ( 
-                        <p>{(transaction as Purchase).total}kr</p>
-                    )} 
-                </div>
+            <div className={`transaction-icon transaction-icon-${transaction.type}`}>
+                <img src={icon} alt='Transaktion' height={20}/>
             </div>
-            <button className='open-popup-button'>
-                <img src={downIcon} alt='Expandera' height={10}/>
-            </button>
+
+            <div className='transaction-info'>
+                <p className='transaction-type'>{transactionTypeString}</p>
+                <p className='transacton-user-and-time'>{username}</p>            
+            </div>
+
+            <div className='transaction-amount-and-chevron'>
+            { transaction.type === 'purchase' && (
+                <p className='transaction-amount transaction-amount-negative'>-{(transaction as Purchase).total} kr</p>
+            )}
+            
+            { transaction.type === 'deposit' && (
+                <p className='transaction-amount transaction-amount-positive'>+{(transaction as Deposit).total} kr</p>
+            )}
+
+            { transaction.type === 'stockUpdate' && (
+                <p className='transaction-amount transaction-amount-neutral'>{(transaction as StockUpdate).items.length} st</p>
+            )}
+
+            <img className='chevron' src={downIcon} alt='' height={14}/>
+            </div>
         </li>
     );
 }

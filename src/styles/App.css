@@ -17,6 +17,10 @@
     gap: 0.5rem;
 }
 
+.inputdiv label {
+    color: var(--faint-text-color);
+}
+
 .error-message {
     color: var(--destructive-color);
     font-size: 0.8rem;
@@ -71,32 +75,6 @@
     border-radius: .4rem;
 }
 
-.list-item>p {
-    text-transform: capitalize;
-    
-    flex-grow: 1;
-}
-
-.list-item>button {
-    background-color: inherit;
-
-    padding: 0;
-}
-
-.list-item .open-popup-button {
-    background-color: var(--primary-color);
-    
-    box-sizing: border-box;
-    width: 4rem;
-    height: 100%;
-    padding: 1rem;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-}
-
-.list-item .list-item__primary {
-    font-size: 1.35rem;
-}
 
 /* --- Search Bar --- */
 

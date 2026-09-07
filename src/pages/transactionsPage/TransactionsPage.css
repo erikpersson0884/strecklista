@@ -43,29 +43,135 @@
     padding: .5rem;
 }
 
+/* --- Transaction Groups --- */
+
+.transaction-groups {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+}
+
+.transaction-group .page-list {
+    gap: 0.4rem;
+}
+
+.transaction-date-header {
+    font-size: 0.8rem;
+    color: var(--faint-text-color);
+    margin: 0 0 0.5rem 0.25rem;
+}
+
 /* ---  Transaction Preview --- */
 
 .transaction-preview {
-    padding: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+
+    box-sizing: border-box;
+    padding: 16px 1rem;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
 }
 
-.transaction-preview-content {
+.transaction-preview:hover {
+    background-color: rgba(255, 255, 255, 0.04);
+}
+
+.transaction-preview:active {
+    background-color: rgba(255, 255, 255, 0.07);
+}
+
+.transaction-preview .transaction-icon {
+    box-sizing: border-box;
+    height: 2.5rem;
+    width: 2.5rem;
+    padding: 0.5rem;
+    background-color: var(--accent-color);
+    border-radius: 8px;
+    justify-content: center;
     display: flex;
-    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.transaction-preview .transaction-icon > img {
+    height: 55%;
+}
+
+.transaction-icon-purchase {
+    background-color: rgba(226, 75, 74, 0.15);
+}
+
+.transaction-icon-deposit {
+    background-color: rgba(56, 217, 169, 0.15);
+}
+
+.transaction-icon-stockUpdate {
+    background-color: rgba(55, 138, 221, 0.15);
+}
+
+.transaction-preview .transaction-info {
+    display: flex;
     flex-direction: column;
+    gap: 0.2rem;
 
-    flex-grow: 1;
-
-    padding: 1rem;
+    flex: 1;
+    min-width: 0;
 }
 
-.transaction-preview-content>div {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: .5rem;
+.transaction-preview .transaction-type {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.transaction-preview .transacton-user-and-time {
+    font-size: 0.75rem;
+    color: var(--faint-text-color);
+}
+
+.transaction-preview .transaction-amount {
+    font-size: 0.95rem;
+    font-weight: 600;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-left: auto;
+}
+
+.transaction-amount-negative {
+    color: #E24B4A;
+}
+
+.transaction-amount-positive {
+    color: #38D9A9;
+}
+
+.transaction-amount-neutral {
+    color: var(--info-color);
+    color: #19b2d4;
+}
+
+
+.transaction-preview .chevron {
+    opacity: 0.4;
+    transform: rotate(-90deg);
+    transition: opacity 0.15s ease;
+    flex-shrink: 0;
+    margin-left: 0.75rem;
+    height: 25px;
+}
+
+.transaction-preview:hover .chevron {
+    opacity: 0.8;
 }
 
 .removed-transaction {
     opacity: .5;
+}
+
+.transaction-preview .transaction-amount-and-chevron {
+    display: flex;
+    align-items: center;
 }

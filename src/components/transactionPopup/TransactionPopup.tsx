@@ -17,16 +17,20 @@ interface TransactionPopupProps {
 const TransactionPopup: FC<TransactionPopupProps> = ({transaction}) => {
     const { removeTransaction } = useTransactionsContext();
     const { getUserFromUserId } = useUsersContext();
-    const { openModal } = useModalContext();
+    const { openModal, closeModal } = useModalContext();
 
+
+    const handleRemoveTransaction = async () => {
+        const success = await removeTransaction(transaction.id);
+        if (success) closeModal();
+    }
 
     const openConfirmDeleteDialog = () => {
-        
         openModal(
             <ConfirmDialog
                 title="Stryk Transaktion"
                 confirmButtonText="Stryk"
-                onConfirm={() => removeTransaction(transaction.id)}
+                onConfirm={() => handleRemoveTransaction()}
             >
                 <p>Är du säker på att du vill stryka denna transaktion?</p>
             </ConfirmDialog>

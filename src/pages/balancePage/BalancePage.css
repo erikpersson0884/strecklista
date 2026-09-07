@@ -1,9 +1,9 @@
-.balance-page .user-div {
+.balance-page .user-item {
     padding: 0;
     gap: 0;
 }
 
-.balance-page .user-div-content {
+.balance-page .user-item-content {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
