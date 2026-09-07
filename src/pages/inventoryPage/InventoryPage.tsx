@@ -12,6 +12,7 @@ import ConfirmDialog from '@/components/confirmDialog/ConfirmDialog';
 import editIcon from '@/assets/images/edit.svg';
 import deleteIcon from '@/assets/images/delete-white.svg';
 import refillIcon from '@/assets/images/refill.svg';
+import defaultItemImage from '@/assets/images/grocery.svg';
 
 
 const InventoryPage: React.FC = () => {
@@ -39,6 +40,11 @@ const InventoryPage: React.FC = () => {
     const InventoryItem: React.FC<{item: Item;}> = ({ item }) => {
         return (
                 <li className='inventory-item list-item'>
+                    <img 
+                        className='user-avatar icon' 
+                        src={item.icon? item.icon : defaultItemImage} 
+                        alt={`${item.name} icon`} 
+                    />
                     <p>{item.name}</p>
 
                     <button onClick={() => openModal(<UpdateProductPopup item={item} />)}>

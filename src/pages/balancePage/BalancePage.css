@@ -1,5 +1,6 @@
 .balance-page .user-div {
     padding: 0;
+    gap: 0;
 }
 
 .balance-page .user-div-content {

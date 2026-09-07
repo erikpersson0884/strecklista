@@ -15,10 +15,10 @@ const Header: React.FC = () => {
     const [ groupAvatarUrl, setGroupAvatarUrl ] = React.useState<string>(fallbackLogo)
 
     const pages = [
-        { url: '/', linkText: 'Strecka'},
-        { url: '/inventory', linkText: 'Utbud'},
-        { url: '/balance', linkText: 'Tillgodo' },
-        { url: '/transactions', linkText: 'Transaktioner'},
+        { url: '/', linkText: 'Strecka', authenticatedOnly: true },
+        { url: '/inventory', linkText: 'Utbud', authenticatedOnly: true },
+        { url: '/balance', linkText: 'Tillgodo', authenticatedOnly: true },
+        { url: '/transactions', linkText: 'Transaktioner', authenticatedOnly: true },
     ]
 
 
@@ -56,15 +56,17 @@ const Header: React.FC = () => {
             </div>
 
             <nav className={`header-nav ${navOpen ? 'nav-open' : ''}`}>
-                {pages.map((page) =>
-                    <Link
-                        to={page.url}
-                        key={page.url}
-                        onClick={() => setNavOpen(false)}
-                    >
-                        {page.linkText}
-                    </Link>
-                )}
+                {pages
+                    .filter((page) => !page.authenticatedOnly || isAuthenticated)
+                    .map((page) => (
+                        <Link
+                            to={page.url}
+                            key={page.url}
+                            onClick={() => setNavOpen(false)}
+                        >
+                            {page.linkText}
+                        </Link>
+                    ))}
             </nav>
         </header>
     )

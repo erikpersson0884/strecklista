@@ -49,11 +49,12 @@ const RefillUserBalancePopup: React.FC<RefillUserBalancePopupProps> = ({ user })
     return (
         <ActionPopupWindow 
             onAccept={handleRefill}
-            acceptButtonText={`Fyll på med ${newAmount} kr`}
+            acceptButtonText={`Fyll på med ${(amountToDeposit !== '' ? parseFloat(amountToDeposit) : 0)} kr`}
             className='refill-user-balance-popup'
+            acceptButtonDisabled={amountToDeposit === '' || parseFloat(amountToDeposit) <= 0}
         >
             <header>
-                <img className='user-icon' src={user.icon} alt={`${user.name}'s profilbild`} />
+                <img className='icon' src={user.icon} alt={`${user.name}'s profilbild`} />
                 <div>
                     <h2>{user.nick}</h2>
                     <p>{user.name}</p>

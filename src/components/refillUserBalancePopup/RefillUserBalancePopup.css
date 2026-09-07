@@ -7,14 +7,6 @@
     margin-bottom: 1.25rem;
 }
 
-.refill-user-balance-popup .user-icon {
-    width: 3rem;
-    height: 3rem;
-    border-radius: 14px;
-    object-fit: cover;
-    flex-shrink: 0;
-}
-
 .refill-user-balance-popup header h2 {
     margin: 0;
     font-size: 1.05rem;
