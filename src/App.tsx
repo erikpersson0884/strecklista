@@ -18,12 +18,8 @@ import StylePage from './pages/stylePage/StylePage';
 import ClientPage from './pages/clientPage/ClientPage';
 import ProfilePage from './pages/profilePage/ProfilePage';
 
-import useAuthContext from '@/contexts/AuthContext';
-
 
 const App: React.FC = () => {
-    const { isLoggingIn } = useAuthContext();
-
     const pages = [
         { url: '/', component: <ShopPage /> },
         { url: '/inventory', component: <InventoryPage /> },
@@ -35,9 +31,7 @@ const App: React.FC = () => {
         { url: '/style', component: <StylePage /> },
     ]
     
-    if (isLoggingIn) return <p>logging in...</p>;
-
-    else return (
+    return (
         <>
             <Header />
                 <Routes>

@@ -28,13 +28,11 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const { notify } = useNotificationContext();
 
-    const [ isLoggingIn , setIsLoggingIn ] = useState<boolean>(false);
+    const [ isLoggingIn , setIsLoggingIn ] = useState<boolean>(true);
     const [ isAuthenticated, setIsAuthenticated ] = useState<boolean>(false);
     const [ currentUser, setCurrentUser ] = useState<User | null>(null);
     const [ currentClient, setCurrentClient ] = useState<Partial<Client> | null>(null);
     const [ rememberMe, setRememberMe ] = useState<boolean>(localStorage.getItem('rememberMe') === 'true');
-
-    const hasCheckedToken = useRef(false);
 
     const handleTokenUpdate = (token: string) => {
         try {
@@ -76,32 +74,28 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
 
     useEffect(() => { // Check for token / remember-me on mount
-        if (hasCheckedToken.current) return;
-        hasCheckedToken.current = true;
-
         const checkForToken = async () => {
             const storedToken: string | null = localStorage.getItem('authToken');
             const rememberMe: boolean = localStorage.getItem('rememberMe') === 'true';
             const lastLoginType: string | null = localStorage.getItem('lastLoginType');
 
             if (!rememberMe) return;
-            if (isLoggingIn) return;
 
             if (lastLoginType === 'client') {
                 await clientLogin();
             } else if (storedToken) {
                 handleTokenUpdate(storedToken);
-                return;
             }
-            // else if (lastLoginType === 'user') {
-            //     // No stored token, but user was logged in via OAuth before ->
-            //     // send them straight back to the provider.
-            //     setIsLoggingIn(true);
-            //     userAuthenticate();
-            // }
-        }
+        };
 
-        checkForToken();
+        (async () => {
+            setIsLoggingIn(true);
+            try {
+                await checkForToken();
+            } finally {
+                setIsLoggingIn(false);
+            }
+        })();
     }, []);
 
     useEffect(() => {
