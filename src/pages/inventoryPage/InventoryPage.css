@@ -1,8 +1,6 @@
 
 .add-item-li {
-    background-color: var(--primary-color);
 
-    padding: 0;
 }
 
 .inventory-item>button {

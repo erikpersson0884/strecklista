@@ -66,11 +66,9 @@ const ClientPage: React.FC = () => {
                     </li>
                 ))}
 
-                <li className="list-item add-item-li">
-                    <button onClick={openCreateClientModal}>
-                        Add Client
-                    </button>
-                </li>
+                <button className="list-item list-item-add" onClick={openCreateClientModal}>
+                    Add Client
+                </button>
             </ul>
         </div>
     );

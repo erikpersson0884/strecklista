@@ -115,6 +115,7 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
             const itemToUpdate = items.find(item => item.id === id)
             if (!itemToUpdate) throw new Error('Item not found')
 
+                console.log("Toggling favourite for item:", itemToUpdate);
             const updateItem: Partial<Item> = { favorite: !itemToUpdate.favorite }
 
             const item = await inventoryApi.updateItem(id, updateItem)

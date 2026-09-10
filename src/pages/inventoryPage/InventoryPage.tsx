@@ -58,13 +58,6 @@ const InventoryPage: React.FC = () => {
         );
     };
 
-    const InventoryItems = () => {
-        return (
-            items.map((item) => (
-                    <InventoryItem key={item.id} item={item} />
-            ))
-        )
-    };
 
     if (isLoadingInventory) return <p>Loading...</p>;
 
@@ -75,14 +68,14 @@ const InventoryPage: React.FC = () => {
                 {items.length === 0 ? (
                     <p className='no-items'>Inga produkter i lager</p>
                 ) : (
-                    <InventoryItems />
+                    items.map((item) => (
+                        <InventoryItem key={item.id} item={item} />
+                    ))
                 )}
                 
-                <li className='add-item-li list-item'>
-                    <button onClick={() => openModal(<AddProductPopup />)}>
-                        <p>Lägg till vara</p>
-                    </button>
-                </li>
+                <button className='list-item-add list-item' onClick={() => openModal(<AddProductPopup />)}>
+                    <p>Lägg till vara</p>
+                </button>
             </ul>
         </div>
     );

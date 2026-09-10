@@ -47,7 +47,7 @@ const LoginPage = () => {
             <button onClick={userAuthenticate}>Logga in med Gamma</button>
             <button onClick={handleClientLogin}>Logga in med klient</button>
             <div className="remember-me">
-                <p>Remember me: </p>
+                <p>Kom ihåg mig: </p>
                 <label className="switch">
                     <input
                         type="checkbox"

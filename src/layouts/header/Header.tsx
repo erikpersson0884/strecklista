@@ -24,11 +24,12 @@ const Header: React.FC = () => {
     ]
 
     React.useEffect(() => {
-        const getGroupAvatar = async () => {
+        const setLogoToGroupIcon = async () => {
             const groupInfo = await usersApi.getGroupInfo()
             if (groupInfo.avatarUrl) setGroupAvatarUrl(groupInfo.avatarUrl)
         }
-        if (isAuthenticated) getGroupAvatar()
+        if (isAuthenticated) setLogoToGroupIcon()
+        else setGroupAvatarUrl(fallbackLogo)
     }, [isAuthenticated])
     
     return (
