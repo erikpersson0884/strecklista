@@ -16,10 +16,10 @@ interface ClientContextType {
 const ClientContext = createContext<ClientContextType | undefined>(undefined);
 
 export const ClientProvider = ({ children }: { children: ReactNode }) => {
-    const { isAuthenticated } = useAuthContext();
+    const { isAuthenticated, currentUser } = useAuthContext();
     const { notify } = useNotificationContext();
 
-    const [ isLoadingClients, setIsLoadingClient ] = useState<boolean>(true);
+    const [ isLoadingClients, setIsLoadingClient ] = useState<boolean>(false);
     const [ clients, setClients ] = useState<Client[]>([]);
     const [ availableScope, setAvailableScope ] = useState<string[]>([]);
     
@@ -36,7 +36,7 @@ export const ClientProvider = ({ children }: { children: ReactNode }) => {
     };
 
     useEffect(() => {
-        if (isAuthenticated) fetchClients();
+        if (isAuthenticated && currentUser) fetchClients();
     }, [isAuthenticated]);
 
     useEffect(() => {

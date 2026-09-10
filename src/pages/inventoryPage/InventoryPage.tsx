@@ -8,7 +8,7 @@ import AddProductPopup from '@/components/addProductPopup/AddProductPopup';
 import UpdateProductPopup from '@/components/updateItemPopup/UpdateItemPopup';
 import ConfirmDialog from '@/components/confirmDialog/ConfirmDialog';
 import RefillPopup from '@/components/refillPopup/RefillPopup';
-import ProductIcon from '@/components/icon/Icon';
+import ProductIcon from '@/components/icon/ProductIcon';
 
 import editIcon from '@/assets/images/edit.svg';
 import deleteIcon from '@/assets/images/delete-white.svg';

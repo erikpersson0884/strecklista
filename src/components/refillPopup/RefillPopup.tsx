@@ -5,7 +5,7 @@ import useModalContext from '@/contexts/ModalContext';
 import useNotificationContext from '@/contexts/NotificationContext';
 
 import ActionPopupWindow from '@/components/actionPopupWindow/ActionPopupWindow';
-import Icon from '@/components/icon/Icon';
+import ProductIcon from '@/components/icon/ProductIcon';
 
 
 interface RefillPopupPopupProps {
@@ -58,7 +58,7 @@ const RefillPopup: React.FC<RefillPopupPopupProps> = ({ item, currentBalance, re
             acceptButtonDisabled={amountToDeposit === '' || parseFloat(amountToDeposit) <= 0}
         >
             <header>
-                <Icon item={item} />
+                <ProductIcon item={item} />
                 <div>
                     <h2>{item.name}</h2>
                     {'nick' in item && <p>{item.nick}</p>}

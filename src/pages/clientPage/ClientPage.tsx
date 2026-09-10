@@ -13,9 +13,7 @@ const ClientPage: React.FC = () => {
     const { clients, isLoadingClients, createClient, deleteClient } = useClientContext();
     const { openModal } = useModalContext();
 
-    if (isLoadingClients) {
-        return <div>Loading clients...</div>;
-    }
+    if (isLoadingClients) return <div>Loading clients...</div>;
 
     const handleCreateClient = async (name: string, description: string, scope: string) => {
         const {client: createdClient, secret} = await createClient(name, description, scope);

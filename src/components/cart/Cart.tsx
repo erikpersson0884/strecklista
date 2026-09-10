@@ -11,12 +11,9 @@ import CartItem from './cartItem/CartItem';
 
 
 const Cart: FC = () => {
-    const { itemsInCart, purchaseCart } = useCartContext();
-    const { currentUser } = useAuthContext();
+    const { itemsInCart, payingUser, purchaseCart } = useCartContext();
     const { closeModal } = useModalContext();
     const { notify } = useNotificationContext();
-
-    if (!currentUser) return null; // Should never happen, but it can open before currentUser is set, so we need to handle this case
 
     const [ comment, setComment ] = useState<string>('');
     const [ includeComment, setIncludeComment ] = useState<boolean>(false);
@@ -41,7 +38,7 @@ const Cart: FC = () => {
                     setIncludeComment={setIncludeComment} 
                 />
 
-                <button className='pay-button' onClick={handleBuyProducts} disabled={itemsInCart.length === 0}>
+                <button className='pay-button' onClick={handleBuyProducts} disabled={itemsInCart.length === 0 || payingUser === null}>
                     Sträcka
                 </button>
             </div>
@@ -65,23 +62,15 @@ const CartItems: FC = () => {
 
 const CartFooter: FC = () => {
     const { payingUser, setPayingUser } = useCartContext();
-    const { currentUser } = useAuthContext();
     const { users, getUserFromUserId } = useUsersContext();
+    const { currentUser } = useAuthContext();
     const { total } = useCartContext();
 
-    if (!currentUser) return null; // Should never happen, but it can open before currentUser is set, so we need to handle this case
 
     const handleSelectUserChangeChange = (e: ChangeEvent<HTMLSelectElement>): void => {
         const selectedUserId: string = e.target.value;
         setPayingUser(getUserFromUserId(selectedUserId));
     };
-
-    useEffect(() => {
-        if (currentUser && !payingUser) {
-            setPayingUser(currentUser);
-        }
-    }, [currentUser, payingUser, setPayingUser]);
-
 
     return (
         <div className='cart-footer'>
@@ -95,9 +84,10 @@ const CartFooter: FC = () => {
                     <label htmlFor="selectPayingUser">Sträcka åt</label>
                     <select 
                         id="selectPayingUser"
-                        value={payingUser?.id || currentUser.id}
+                        value={payingUser?.id}
                         onChange={handleSelectUserChangeChange}
                     >
+                        <option value={undefined}>Ingen</option>
                         {users.map((user: User) => (
                             <option key={user.id} value={user.id}>
                                 {user.nick}

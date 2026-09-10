@@ -160,7 +160,6 @@ const TransactionPreview: FC<TransactionPreviewProps> = ({transaction}) => {
         default:
             icon = "?";
     }
-    if (transaction.type === 'purchase' || transaction.type === 'deposit' ) console.log('transaction', transaction.type, (transaction as FinancialTransaction).total);
 
     return (
         <li

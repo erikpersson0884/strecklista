@@ -4,6 +4,7 @@ import useUsersContext from './UsersContext';
 import useInventoryContext from './InventoryContext';
 import useAuthContext from './AuthContext';
 import useNotificationContext from './NotificationContext';
+import { isAxiosError } from "axios";
 
 interface TransactionsContextProps {
     isLoadingTransactions: boolean;
@@ -33,14 +34,14 @@ const TransactionsContext = createContext<TransactionsContextProps | undefined>(
 export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const { isLoadingUsers } = useUsersContext();
     const { isLoadingInventory } = useInventoryContext();
-    const { isAuthenticated } = useAuthContext();
+    const { isAuthenticated, currentClient } = useAuthContext();
     const { notify } = useNotificationContext();
 
     const [filteredTransactions, setFilteredTransactions] = useState<ITransaction[]>([]);
     const [transactions, setTransactions] = useState<ITransaction[]>([]);
     const [nextUrl, setNextUrl] = useState<string | null>(null);
     const [prevUrl, setPrevUrl] = useState<string | null>(null);
-    const [isLoadingTransactions, setIsLoadingTransactions] = useState<boolean>(true);
+    const [isLoadingTransactions, setIsLoadingTransactions] = useState<boolean>(false);
     const [transactionsPageNumber, settransactionsPageNumber] = useState<number>(1);
     const [filters, setFilters] = useState<TransactionFilters>({
         userId: 'all',
@@ -122,7 +123,8 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
 
 
 
-    const getTransactions = async (url?: string | null) => {
+    const fetchTransactions = async (url?: string | null) => {
+        setIsLoadingTransactions(true);
         try {
             const response = await transactionsApi.fetchTransactions(url, 30, 0);
             setNextUrl(response.nextUrl);
@@ -130,31 +132,34 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
 
             setTransactions(response.transactions);
         } catch (error) {
+            if (isAxiosError(error)) {
+                const backendMessage = error.response?.data?.error?.message;
+                notify("Fetching transactions failed: " + (backendMessage ?? error.message), 'error');
+            }
             console.error(error);
+        } finally {
+            setIsLoadingTransactions(false);
         }
     };
 
     const getNextTransactions = async () => {
         if (!nextUrl) throw new Error('No next URL available');
-        getTransactions(nextUrl);
+        fetchTransactions(nextUrl);
         settransactionsPageNumber(prevPage => prevPage + 1);
     }
 
     const getPrevTransactions = async () => {
         if (!prevUrl) throw new Error('No previous URL available');
-        getTransactions(prevUrl);
+        fetchTransactions(prevUrl);
         settransactionsPageNumber(prevPage => Math.max(prevPage - 1, 1));
     }
 
 
     React.useEffect(() => {
-        if (!isAuthenticated || isLoadingUsers || isLoadingInventory) return;
-
-        const fetchTransactions = async () => {
-            await getTransactions();
-            setIsLoadingTransactions(false);
-        };
+        const notInScope = !currentClient?.scope?.includes('transactions.read');
+        if (!isAuthenticated || isLoadingUsers || isLoadingInventory || notInScope) return;
         fetchTransactions();
+        
     }, [isLoadingUsers, isAuthenticated, isLoadingInventory]);
 
 
@@ -170,9 +175,7 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
     };
 
     const refreshTransactions = async () => {
-        setIsLoadingTransactions(true);
-        await getTransactions();
-        setIsLoadingTransactions(false);
+        await fetchTransactions();
     }
 
     return (

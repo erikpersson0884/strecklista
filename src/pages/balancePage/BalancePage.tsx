@@ -13,18 +13,19 @@ const BalancePage: React.FC = () => {
     const { currentUser } = useAuthContext();
     const { users, isLoadingUsers, getUserFromUserId } = useUsersContext();
 
-    if (isLoadingUsers || !currentUser) return ( // should implement a better check for current user
-        <p>Laddar användare...</p>
-    )
+    if (isLoadingUsers) return <p>Laddar användare...</p>
+
     else if (users.length === 0) return <p>Hittade inga användare</p>
 
     else return (
         <div className='balance-page page'>
             <ul className='page-list'>
-                <UserBalance 
-                    user={getUserFromUserId(currentUser.id)} 
-                    key={currentUser.id}
-                />
+                {currentUser &&
+                    <UserBalance 
+                        user={getUserFromUserId(currentUser.id)} 
+                        key={currentUser.id}
+                    />
+                }
 
                 {users.filter((user) => user.id !== currentUser?.id).map(user => (
                     <UserBalance 

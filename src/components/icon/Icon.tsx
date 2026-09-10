@@ -3,15 +3,16 @@ import './Icon.css'
 import placeholderItemIcon from '@/assets/images/grocery.svg'
 
 
-interface ProductIconProps {
-    item: Item | User;
+interface IconProps {
+    src: string;
+    alt?: string;
     className?: string;
 }
 
-const Icon: FC<ProductIconProps> = ({ item, className }) => {
+const Icon: FC<IconProps> = ({ src, alt, className }) => {
     return (
         <div className={`icon ${className? className : ""}`}>
-            <img src={item.icon !== "" ? item.icon : placeholderItemIcon} alt={`${item.name} icon`} height={20} />
+            <img src={src !== "" ? src : placeholderItemIcon} alt={`${alt} icon`} />
         </div>
     )
 }

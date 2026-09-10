@@ -14,7 +14,7 @@ interface ItemInCartProps {
 const ItemInCart: React.FC<ItemInCartProps> = ({item, index, justAdded}) => {
     return (
         <li key={`${item.id}-${index}`} className={`itemsInCart-item ${justAdded ? 'blinking' : ''}`}>
-            <ProductIcon item={item} />
+            <ProductIcon src='' />
             <p>{item.name}</p>
             <p>{item.quantity} st</p>
         </li>

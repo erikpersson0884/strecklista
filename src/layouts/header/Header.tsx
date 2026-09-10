@@ -6,22 +6,22 @@ import useAuthContext from '@/contexts/AuthContext';
 import fallbackLogo from '@/assets/images/bird.png';
 import menuIcon from '@/assets/images/menu-icon.svg';
 import profileIcon from '@/assets/images/profile.svg';
+import Icon from '@/components/icon/Icon';
 
 const Header: React.FC = () => {
-    const { isAuthenticated } = useAuthContext();
+    const { isAuthenticated, currentClient, currentUser } = useAuthContext();
     const navigate = useNavigate();
 
     const [ navOpen, setNavOpen ] = React.useState(false)
     const [ groupAvatarUrl, setGroupAvatarUrl ] = React.useState<string>(fallbackLogo)
 
     const pages = [
-        { url: '/', linkText: 'Strecka', authenticatedOnly: true },
-        { url: '/inventory', linkText: 'Utbud', authenticatedOnly: true },
-        { url: '/balance', linkText: 'Tillgodo', authenticatedOnly: true },
-        { url: '/transactions', linkText: 'Transaktioner', authenticatedOnly: true },
-        { url: '/barcode-shop', linkText: 'Streckkods-handel', authenticatedOnly: true, className: 'barcode-shop-link' },
+        { url: '/', linkText: 'Strecka', visibleCriteria: isAuthenticated },
+        { url: '/inventory', linkText: 'Utbud', visibleCriteria: isAuthenticated && (!currentClient || currentClient.scope?.includes("items.read")) },
+        { url: '/balance', linkText: 'Tillgodo', visibleCriteria: isAuthenticated && (!currentClient || currentClient.scope?.includes("group.read")) },
+        { url: '/transactions', linkText: 'Transaktioner', visibleCriteria: isAuthenticated && (!currentClient || currentClient.scope?.includes("transactions.read")) },
+        { url: '/barcode-shop', linkText: 'Streckkods-handel', visibleCriteria: isAuthenticated, className: 'barcode-shop-link' },
     ]
-
 
     React.useEffect(() => {
         const getGroupAvatar = async () => {
@@ -58,7 +58,7 @@ const Header: React.FC = () => {
 
             <nav className={`header-nav ${navOpen ? 'nav-open' : ''}`}>
                 {pages
-                    .filter((page) => !page.authenticatedOnly || isAuthenticated)
+                    .filter((page) => page.visibleCriteria !== false)
                     .map((page) => (
                         <Link
                             to={page.url}

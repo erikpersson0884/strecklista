@@ -33,9 +33,7 @@ const App: React.FC = () => {
         { url: '/barcode-shop', component: <BarcodeShopPage /> },
     ]
     
-    if (isLoggingIn) {
-        return <p>Loading...</p>;
-    } 
+    if (isLoggingIn) return <p>logging in...</p>;
 
     else return (
         <>

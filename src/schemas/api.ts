@@ -73,7 +73,7 @@ export const apiItem = z.object({
   stock: z.number().int(),
   timesPurchased: z.number().int(),
   visible: z.boolean(),
-  favorite: z.boolean(),
+  favorite: z.boolean().optional().default(false),
 });
 export type ApiItem = z.infer<typeof apiItem>;
 

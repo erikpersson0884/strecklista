@@ -23,8 +23,8 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
     const { isAuthenticated } = useAuthContext();
     const { notify } = useNotificationContext();
 
-    const [isLoadingInventory, setIsLoadingInventory] = useState<boolean>(true);
-    const [items, setItems] = useState<Item[]>([]);
+    const [ isLoadingInventory, setIsLoadingInventory ] = useState<boolean>(true);
+    const [ items, setItems ] = useState<Item[]>([]);
 
     const fetchInventory = async () => {
         try {
@@ -32,6 +32,7 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
             setItems(newItems);
         } catch (error) {
             console.error('Failed to fetch inventory', error);
+            notify('Misslyckades med att hämta inventariet', 'error');
         }
     };
 

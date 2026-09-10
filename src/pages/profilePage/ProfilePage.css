@@ -1,9 +1,4 @@
 
-.profile-page {
-    box-sizing: border-box;
-    padding: .8rem;
-}
-
 .profile-page .profile-header {
     background-color: var(--card-color);
     display: flex;
@@ -17,15 +12,14 @@
 }
 
 .profile-page .profile-image {
-    background-position: center;
-    background-size: cover;
-
-    height: 100%;
-    aspect-ratio: 1/1;
-    
+    height: 5rem;
+    width: 5rem;
+    flex-shrink: 0;
     border-radius: 50%;
     box-shadow: 0 0 .5rem #fff;
 }
+
+
 
 .profile-page .profile-name {
     display: flex;

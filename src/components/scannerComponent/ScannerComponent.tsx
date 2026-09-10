@@ -34,8 +34,6 @@ const ScannerComponent: React.FC<ScannerComponentProps> = ({className}) => {
     const processBuffer = () => {
         const barcode = bufferRef.current.replace(/[\r\n!]/g, ''); // remove newlines and exclamation marks
 
-        console.log("Scanned barcode:", barcode);
-        console.log("Current paying user:", inventory[1].externalId);
         clearBuffer();
 
         if (cooldownRef.current || barcode.length === 0) return;

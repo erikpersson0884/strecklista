@@ -12,7 +12,4 @@ export const setAuthToken = async (token: string | null): Promise<void> => {
     }
 };
 
-const token = localStorage.getItem('authToken');
-if (token) setAuthToken(token);
-
 export default api;
