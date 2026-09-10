@@ -89,7 +89,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
             if (lastLoginType === 'client') {
                 await clientLogin();
-                notify("Jag kom ihåg dig kompis!", "info");
             } else if (storedToken) {
                 handleTokenUpdate(storedToken);
                 return;
