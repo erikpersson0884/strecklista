@@ -28,7 +28,7 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const { refreshTransactions } = useTransactionsContext();
     const { notify } = useNotificationContext();
-    const { currentClient } = useAuthContext();
+    const { currentClient, currentUser } = useAuthContext();
 
     const [ itemsInCart, setItemsInCart ] = useState<ItemInCart[]>([]);
     const [ numberOfItemsInCart, setNumberOfItemsInCart ] = useState<number>(0);
@@ -97,7 +97,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             else {
                 transactionsApi.makePurchase(payingUser.id, itemsInCart, comment);
                 emptyCart();
-                if (currentClient?.scope?.split(/\s+/).includes("transactions.read")) refreshTransactions();
+                if (currentUser || currentClient?.scope?.split(/\s+/).includes("transactions.read")) refreshTransactions();
                 setPayingUser(null);
                 notify('Köp Genomfört', 'success');
                 return true;

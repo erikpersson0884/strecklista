@@ -2,6 +2,7 @@ import React from 'react';
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { CartProvider, useCartContext } from '@/contexts/CartContext';
+import { AuthProvider } from '@/contexts/AuthContext';
 
 const mockRefreshTransactions = vi.fn();
 vi.mock('@/contexts/TransactionsContext', () => ({
@@ -15,12 +16,36 @@ vi.mock('@/contexts/NotificationContext', () => ({
     useNotificationContext: () => ({ notify: mockNotify }),
 }));
 
+const mockCurrentClient = vi.fn(() => ({ scope: 'transactions.read' }));
+const mockCurrentUser = vi.fn();
+vi.mock('@/contexts/AuthContext', async (importOriginal) => {
+    const actual = await importOriginal<typeof import('@/contexts/AuthContext')>();
+
+    return {
+        ...actual,
+        default: () => ({ currentClient: mockCurrentClient(), currentUser: mockCurrentUser() }),
+        AuthProvider: ({ children }: { children: React.ReactNode }) => children,
+        useAuthContext: () => ({
+            currentClient: mockCurrentClient(),
+            currentUser: mockCurrentUser(),
+        }),
+    };
+});
+
 const mockMakePurchase = vi.fn();
 vi.mock('@/api/transactionApi', () => ({
     default: { makePurchase: (...args: unknown[]) => mockMakePurchase(...args) },
 }));
 
-const wrapper = ({ children }: { children: React.ReactNode }) => <CartProvider>{children}</CartProvider>;
+const wrapper = ({ children }: { children: React.ReactNode }) => {
+    return (
+        <AuthProvider>
+            <CartProvider>
+                {children}
+            </CartProvider>
+        </AuthProvider>
+    );
+}
 
 const item: Item = {
     id: '1',
@@ -162,7 +187,7 @@ describe('CartContext', () => {
             });
 
             expect(success).toBe(false);
-            expect(mockNotify).toHaveBeenCalledWith('No paying user set', 'error');
+            expect(mockNotify).toHaveBeenCalledWith('Försökte stäcka utan att ha valt användare som ska stå för köpet', 'error');
             expect(mockMakePurchase).not.toHaveBeenCalled();
         });
 
@@ -176,7 +201,7 @@ describe('CartContext', () => {
             });
 
             expect(success).toBe(false);
-            expect(mockNotify).toHaveBeenCalledWith('Cart is empty', 'error');
+            expect(mockNotify).toHaveBeenCalledWith('Försökte stäcka utan produkter i korgen', 'error');
         });
 
         it('fails when the comment is too long', async () => {
