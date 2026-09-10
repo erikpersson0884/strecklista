@@ -85,6 +85,39 @@
     justify-content: center;
 }
 
+/* --- Manager styles --- */
+.manager {
+    background-color: var(--card-color);
+
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    width: 450px;
+    max-width: 80%;
+    padding: 16px;
+    border-radius: 10px;
+}
+
+.manager ul {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.manager ul li {
+    background-color: var(--accent-color);
+    
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+
+    transition: opacity 0.2s ease;
+}
+
+.manager li:hover {
+    opacity: 0.7;
+}
 
 
 /* --- Search Bar --- */

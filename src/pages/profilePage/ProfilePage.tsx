@@ -47,6 +47,8 @@ const ProfilePage: React.FC = () => {
                     <button className='client-page-navigation-button' onClick={() => navigate("/clients")}>Mina Klienter</button>
                 </>
             }
+            <button className='client-page-navigation-button' onClick={() => navigate("/style")}>Styling</button>
+
 
             <button className='logout-button' onClick={logout}>Logga ut</button>
         </div>

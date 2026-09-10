@@ -13,6 +13,7 @@ import InventoryPage from './pages/inventoryPage/InventoryPage';
 import BalancePage from './pages/balancePage/BalancePage';
 import TransactionsPage from './pages/transactionsPage/TransactionsPage';
 import BarcodeShopPage from './pages/barcodeShopPage/BarcodeShopPage';
+import StylePage from './pages/stylePage/StylePage';
 
 import ClientPage from './pages/clientPage/ClientPage';
 import ProfilePage from './pages/profilePage/ProfilePage';
@@ -31,6 +32,7 @@ const App: React.FC = () => {
         { url: '/profile', component: <ProfilePage /> },
         { url: '/clients', component: <ClientPage /> },
         { url: '/barcode-shop', component: <BarcodeShopPage /> },
+        { url: '/style', component: <StylePage /> },
     ]
     
     if (isLoggingIn) return <p>logging in...</p>;

@@ -1,0 +1,26 @@
+.color-picker-field {
+    position: relative;
+    display: inline-block;
+}
+
+.color-picker-swatch {
+    width: 40px;
+    height: 40px;
+    border: 2px solid #ccc;
+    border-radius: 6px;
+    cursor: pointer;
+    padding: 0;
+}
+
+.color-picker-popover {
+    z-index: 1000;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    padding: 12px;
+}
+
+.color-picker-popover .react-colorful {
+    width: 200px;
+    height: 200px;
+}

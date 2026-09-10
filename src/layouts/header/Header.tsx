@@ -6,10 +6,9 @@ import useAuthContext from '@/contexts/AuthContext';
 import fallbackLogo from '@/assets/images/bird.png';
 import menuIcon from '@/assets/images/menu-icon.svg';
 import profileIcon from '@/assets/images/profile.svg';
-import Icon from '@/components/icon/Icon';
 
 const Header: React.FC = () => {
-    const { isAuthenticated, currentClient, currentUser } = useAuthContext();
+    const { isAuthenticated, currentClient } = useAuthContext();
     const navigate = useNavigate();
 
     const [ navOpen, setNavOpen ] = React.useState(false)

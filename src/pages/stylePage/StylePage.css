@@ -1,0 +1,10 @@
+
+.style-page .style-manager-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 1rem;
+
+    width: 100%;
+    margin: 20px 0;
+}

@@ -1,9 +1,8 @@
-import { FC, useState, ChangeEvent, useEffect } from 'react';
+import { FC, useState, ChangeEvent } from 'react';
 import './Cart.css';
 
 import { useCartContext } from '@/contexts/CartContext';
 import useUsersContext from '@/contexts/UsersContext';
-import useAuthContext from '@/contexts/AuthContext';
 import useModalContext from '@/contexts/ModalContext';
 import useNotificationContext from '@/contexts/NotificationContext';
 
@@ -63,7 +62,6 @@ const CartItems: FC = () => {
 const CartFooter: FC = () => {
     const { payingUser, setPayingUser } = useCartContext();
     const { users, getUserFromUserId } = useUsersContext();
-    const { currentUser } = useAuthContext();
     const { total } = useCartContext();
 
 
