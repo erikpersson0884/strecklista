@@ -49,7 +49,7 @@ const CartItems: FC = () => {
     const { itemsInCart } = useCartContext();
 
     return (
-        <ul className='cart-list'>
+        <ul className='cart-items'>
             { itemsInCart.length === 0 && <p className='empty-cart-message'>Din korg är tom</p> }
             {itemsInCart.map((item) => (
                 <CartItem key={item.id} item={item} />
@@ -82,7 +82,7 @@ const CartFooter: FC = () => {
                     <label htmlFor="selectPayingUser">Sträcka åt</label>
                     <select 
                         id="selectPayingUser"
-                        value={payingUser?.id}
+                        value={payingUser?.id ?? undefined}
                         onChange={handleSelectUserChangeChange}
                     >
                         <option value={undefined}>Ingen</option>

@@ -126,8 +126,11 @@ export type ApiDeposit = z.infer<typeof apiDeposit>;
 // --- StockUpdate ---
 export const apiItemStockUpdateEntry = z.object({
   id: z.number().int(),
+  itemId: z.number().int(),
   before: z.number().int(),
   after: z.number().int(),
+  displayName: z.string(),
+  icon: z.string().nullable().optional(),
 });
 
 export const apiStockUpdate = apiTransactionBase.extend({

@@ -1,12 +1,20 @@
 
+.profile-page button, .profile-page .profile-header {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 350px;
+}
+
 .profile-page .profile-header {
     background-color: var(--card-color);
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: center;
     gap: 2rem;
 
-    height: 5rem;
+
+    height: 9rem;
     padding: 2rem;
     border-radius: 10px;
 }
@@ -28,17 +36,19 @@
     gap: .5rem;
 }
 
+
+
+
 .profile-page .client-page-navigation-button {
     background-color: var(--primary-color);
-    box-sizing: border-box;
-    width: 100%;
-    max-width: 320px;
+}
+
+.profile-page .open-clients-button {
+    margin-top: 1rem;
 }
 
 .profile-page .logout-button {
     background-color: var(--destructive-color);
-    box-sizing: border-box;
-    width: 100%;
-    max-width: 320px;
+
     margin-top: auto;
 }

@@ -53,3 +53,9 @@
 .show-cart-button .items-indicator {
     transform: translate(50%, -50%);
 }
+
+@media screen and (max-width: 600px) {
+    .shop-page .search-bar-container {
+        width: calc(145px * 2 + 1rem);
+    }
+}

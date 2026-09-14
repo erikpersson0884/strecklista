@@ -67,9 +67,17 @@ const AddProductPopup: React.FC = () => {
                 <input type="text" name="icon" value={icon} onChange={(e) => seticon(e.target.value)} />
             </div>
 
-            <div>
-                <label>Finns i lager</label>
-                <input type="checkbox" name="available" checked={available} onChange={(e) => setAvailable(e.target.checked)} />
+            <div className="inputdiv-row">
+                <label htmlFor="item-is-available">Finns i lager</label>
+                <label className="switch">
+                    <input
+                        type="checkbox"
+                        id="item-is-available"
+                        checked={available}
+                        onChange={(e) => setAvailable(e.target.checked)}
+                    />
+                    <span className="slider"></span>
+                </label>
             </div>
         </ActionPopupWindow>
     );

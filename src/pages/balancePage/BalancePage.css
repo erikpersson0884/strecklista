@@ -18,9 +18,6 @@
 .balance-page .user-div img {
     transition: transform .3s ease-in-out;
 }
-.balance-page .open-popup-button:hover img {
-    transform: scale(1.15);
-}
 
 .balance-page .name-div {
     display: flex;

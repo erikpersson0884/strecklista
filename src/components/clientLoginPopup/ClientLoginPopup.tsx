@@ -27,7 +27,9 @@ const ClientLoginPopup: FC<ClientLoginPopupProps> = ({title, acceptButtonText, c
             onAccept={handleLogin}
             className={className}
         >
+            <label htmlFor="clientId">Client ID:</label>
             <input type="text" placeholder="Client ID" defaultValue={clientId} onChange={(e) => setClientId(e.target.value)} />
+            <label htmlFor="clientSecret">Client Secret:</label>
             <input type="text" placeholder="Client Secret" defaultValue={clientSecret} onChange={(e) => setClientSecret(e.target.value)} />
         </ActionPopupWindow>
     )

@@ -157,10 +157,9 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
 
     React.useEffect(() => {
         const notInScope = !currentClient?.scope?.includes('transactions.read');
-        if (!isAuthenticated || isLoadingUsers || isLoadingInventory || notInScope) return;
-        fetchTransactions();
-        
-    }, [isLoadingUsers, isAuthenticated, isLoadingInventory]);
+        if(isLoadingUsers || isLoadingInventory) return;
+        if (isAuthenticated && !(currentClient && notInScope)) fetchTransactions();        
+    }, [isLoadingUsers, isAuthenticated, isLoadingInventory, currentClient]);
 
 
     const removeTransaction = async (id: Id): Promise<boolean> => {

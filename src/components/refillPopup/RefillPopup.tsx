@@ -22,6 +22,17 @@ const RefillPopup: React.FC<RefillPopupPopupProps> = ({ item, currentBalance, re
     const [ comment, setComment ] = useState<string>('');
     const [ includeComment, setIncludeComment ] = useState<boolean>(false);
 
+    const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            handleRefill();
+        }
+    }
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newInput: string = e.target.value.replace(/[^0-9.\-]/g, '');
+        setAmountToDeposit(newInput);
+    };
+
     const handleRefill = async () => {
         const parsedAmount = parseFloat(amountToDeposit);
 
@@ -36,18 +47,6 @@ const RefillPopup: React.FC<RefillPopupPopupProps> = ({ item, currentBalance, re
         else notify('Något gick fel, försök igen senare.');
     };
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const newInput: string = e.target.value.replace(/[^0-9.]/g, '');
-        setAmountToDeposit(newInput);
-    };
-
-
-    const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'Enter') {
-            handleRefill();
-        }
-    }
-
     const newAmount: string = ((amountToDeposit !== '' ? parseFloat(amountToDeposit) : 0) + currentBalance).toString();
 
     return (
@@ -55,7 +54,7 @@ const RefillPopup: React.FC<RefillPopupPopupProps> = ({ item, currentBalance, re
             onAccept={handleRefill}
             acceptButtonText={`Fyll på med ${(amountToDeposit !== '' ? parseFloat(amountToDeposit) : 0)} ${suffix}`}
             className='refill-user-balance-popup'
-            acceptButtonDisabled={amountToDeposit === '' || parseFloat(amountToDeposit) <= 0}
+            acceptButtonDisabled={amountToDeposit === ''}
         >
             <header>
                 <ProductIcon item={item} />

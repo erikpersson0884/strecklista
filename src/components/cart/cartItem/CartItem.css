@@ -1,4 +1,4 @@
-.cart-item {
+.cart-items .cart-item {
     background-color: rgba(255, 255, 255, 0.04);
 
     display: flex;
@@ -11,7 +11,7 @@
     border-radius: 12px;
 }
 
-.cart-item .item-name {
+.cart-items .cart-item .item-name {
     word-break: break-word;
     white-space: nowrap;
     overflow: hidden;
@@ -22,7 +22,7 @@
     font-size: 0.9rem;
 }
 
-.cart-item button {
+.cart-items .cart-item button {
     height: 28px;
     width: 28px;
     padding: 0;
@@ -30,11 +30,11 @@
     background-color: rgba(255, 255, 255, 0.06);
 }
 
-.cart-item button:hover {
+.cart-items .cart-item button:hover {
     background-color: rgba(255, 255, 255, 0.12);
 }
 
-.cart-item .item-quantity {
+.cart-items .cart-item .item-quantity {
     height: 28px;
     width: 28px;
     padding: 0;
@@ -46,7 +46,7 @@
     border: none;
 }
 
-.cart-item .item-quantity:focus {
+.cart-items .cart-item .item-quantity:focus {
     background-color: rgba(255, 255, 255, 0.06);
     outline: rgba(56, 217, 169, 0.5) solid 1px;
     border-radius: 8px;

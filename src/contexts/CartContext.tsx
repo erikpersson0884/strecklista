@@ -48,6 +48,10 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         });
     };
 
+    useEffect(() => {
+        setPayingUser(currentUser);
+    }, [currentUser]);
+
     React.useEffect(() => {
         const totalItems = itemsInCart.reduce((sum, item) => sum + item.quantity, 0);
         setNumberOfItemsInCart(totalItems);
@@ -98,7 +102,10 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                 transactionsApi.makePurchase(payingUser.id, itemsInCart, comment);
                 emptyCart();
                 if (currentUser || currentClient?.scope?.split(/\s+/).includes("transactions.read")) refreshTransactions();
-                setPayingUser(null);
+
+                if (currentUser) setPayingUser(currentUser);
+                else setPayingUser(null);
+
                 notify('Köp Genomfört', 'success');
                 return true;
             }

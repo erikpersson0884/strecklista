@@ -15,7 +15,7 @@
     box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.5);
 }
 
-.cart-list {
+.cart-items {
     display: flex;
     flex-direction: column;
     gap: 0.6rem;

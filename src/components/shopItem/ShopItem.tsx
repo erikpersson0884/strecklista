@@ -30,7 +30,7 @@ const Item: React.FC<ProductProps> = ({ item }) => {
     });
 
     return (
-        <div className="item" {...longPress}>
+        <div className="shop-item" {...longPress}>
             <button className='favourite-button' onClick={(e) => {e.stopPropagation(); toggleFavourite(item.id)}}>
                 <img 
                     src={item.favorite ? favouriteIconFilled : favouriteIcon}
@@ -46,10 +46,10 @@ const Item: React.FC<ProductProps> = ({ item }) => {
                 </p>
             )}
 
-            <div className='item-image'>
+            <div className='shop-item-image'>
                 <img
                     src={item.icon || defaultItemImage}
-                    className='item-icon'
+                    className='shop-item-icon'
                     alt={item.name}
                     onError={(e) => {
                         e.currentTarget.onerror = null; // prevent loop
@@ -58,7 +58,7 @@ const Item: React.FC<ProductProps> = ({ item }) => {
                 />
             </div>
 
-            <div className='item-info'>
+            <div className='shop-item-info'>
                 <h2>{item.name}</h2>
 
                 <div className='item-stats'>

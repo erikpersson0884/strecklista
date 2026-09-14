@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { useCartContext } from '@/contexts/CartContext';
 import useUsersContext from '@/contexts/UsersContext';
 import useInventoryContext from '@/contexts/InventoryContext';
+import { useNotificationContext } from '@/contexts/NotificationContext';
 
 const SCAN_CHAR_TIMEOUT = 50;   // ms — max gap between chars to still count as "same scan"
 const SCAN_IDLE_TIMEOUT = 100;  // ms — if no new char for this long, treat scan as finished
@@ -15,6 +16,7 @@ const ScannerComponent: React.FC<ScannerComponentProps> = ({className}) => {
     const { setPayingUser, addItemToCart, purchaseCart, emptyCart, payingUser, itemsInCart } = useCartContext();
     const { users } = useUsersContext();
     const { items: inventory } = useInventoryContext();
+    const { notify } = useNotificationContext();
 
     const inputRef = useRef<HTMLInputElement>(null);
     const bufferRef = useRef<string>("");
@@ -38,8 +40,13 @@ const ScannerComponent: React.FC<ScannerComponentProps> = ({className}) => {
 
         if (cooldownRef.current || barcode.length === 0) return;
 
-        const matchingItem = inventory.find(i => String(i.externalId) === barcode);
-        const matchingUser = users.find(u => String(u.externalId) === barcode);
+        const matchingItem = inventory.find(i => String(i.externalId?.replace(/[\r\n!]/g, '')) === barcode);
+        const matchingUser = users.find(u => (String(u.externalId?.replace(/[\r\n!]/g, '')) === barcode) || String(u.id) === barcode);
+
+        if (matchingItem && matchingUser) {
+            notify("Varning: streckkoden matchar både en produkt och en användare. Inget kommer att läggas till.", "error");
+            return;
+        }
 
         if (matchingItem) {
             addItemToCart(matchingItem);
@@ -51,6 +58,7 @@ const ScannerComponent: React.FC<ScannerComponentProps> = ({className}) => {
             emptyCart();
         } else {
             // unrecognized scan — just discard, nothing else to do
+            notify(`Okänd streckkod: ${barcode}`, "error");
             return;
         }
 

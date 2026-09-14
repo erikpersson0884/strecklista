@@ -23,14 +23,7 @@ const LoginPage = () => {
 
 
     const handleClientLogin = () => {
-        const clientId = localStorage.getItem("clientId");
-        const clientSecret = localStorage.getItem("clientSecret");
-
-        if (!clientId || !clientSecret) {
-            notify("Ingen klient-data hittades, vänligen ange klient-id och klient-hemlighet för att logga in.");
-            openModal(<ClientLoginPopup />);
-        }
-        else clientLogin(clientId, clientSecret);
+        openModal(<ClientLoginPopup />);
     }
 
     if (isLoggingIn) return <div className="login-page"><p>Logging in...</p></div>;

@@ -17,7 +17,13 @@
     gap: 0.5rem;
 }
 
-.inputdiv label {
+.inputdiv-row {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+label {
     color: var(--faint-text-color);
 }
 
@@ -83,6 +89,14 @@
 
     display: flex;
     justify-content: center;
+}
+
+.list-item .list-item__primary {
+    font-size: 1.35rem;
+}
+
+.list-item .list-item__secondary {
+    color: var(--faint-text-color);
 }
 
 /* --- Manager styles --- */

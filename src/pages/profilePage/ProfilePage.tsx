@@ -18,7 +18,6 @@ const ProfilePageHeader = ({
 }) => {
     return (
         <div className='profile-header'>
-            {/* <div className='profile-image' style={{ backgroundImage: `url(${imageUrl ?? backUpIcon})` }}></div> */}
             <Icon src={imageUrl ?? backUpIcon} className='profile-image' alt='Profile image' />
             <div className='profile-name'>
                 <h1>{title}</h1>
@@ -44,7 +43,7 @@ const ProfilePage: React.FC = () => {
             {currentUser &&
                 <>
                     <p>Saldo: {currentUser.balance} kr</p>
-                    <button className='client-page-navigation-button' onClick={() => navigate("/clients")}>Mina Klienter</button>
+                    <button className='open-clients-button client-page-navigation-button' onClick={() => navigate("/clients")}>Mina Klienter</button>
                 </>
             }
             <button className='client-page-navigation-button' onClick={() => navigate("/style")}>Styling</button>

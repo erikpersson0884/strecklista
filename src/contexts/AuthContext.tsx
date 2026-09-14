@@ -2,6 +2,7 @@ import { createContext, useContext, useState, useEffect, useRef } from "react";
 
 import { setAuthToken as setAuthTokenInAxios } from "@/api/axiosInstance";
 import authApi from "@/api/authApi";
+import userApi from "@/api/userApi";
 
 import useNotificationContext from "./NotificationContext";
 
@@ -34,7 +35,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [ currentClient, setCurrentClient ] = useState<Partial<Client> | null>(null);
     const [ rememberMe, setRememberMe ] = useState<boolean>(localStorage.getItem('rememberMe') === 'true');
 
-    const handleTokenUpdate = (token: string) => {
+    const handleTokenUpdate = async (token: string) => {
         try {
             const payload = JSON.parse(atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
             if (!payload.exp) return;
@@ -50,6 +51,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             setAuthTokenInAxios(token);
             setIsAuthenticated(true);
             localStorage.setItem("authToken", token);
+            if (payload.user) {
+                const authenticatedUser: User =  await userApi.getCurrentUser();
+                setCurrentUser(authenticatedUser);
+            }
 
             const warningTimeMs = 2 * 60 * 1000;
             const warningTimer = setTimeout(() => {
