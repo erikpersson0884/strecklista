@@ -18,32 +18,37 @@ const transactionsApi = {
      * 
      * @throws Will throw an error if the request fails.
      */
-    fetchTransactions: async (url?: string | null, limit: number = 10, offset: number = 0)
-    : Promise<{
-        transactions: ITransaction[], 
-        nextUrl: string | null, 
-        prevUrl: string | null
-    }> => {
-        let response;
-        if (url) {
-            response = await api.get(url);
-        } else {
-            response = await api.get(`/group/transaction`, {
-                params: { limit, offset },
-            });
-        }
+    fetchTransactions: async (url?: string | null, limit: number = 10, offset: number = 0, createdBy?: string, createdFor?: string)
+        : Promise<{
+            transactions: ITransaction[], 
+            nextUrl: string | null, 
+            prevUrl: string | null
+        }> => {
+            let response;
+            if (url) {
+                response = await api.get(url);
+            } else {
+                response = await api.get(`/group/transaction`, {
+                    params: {
+                        limit,
+                        offset,
+                        ...(createdBy && { createdBy }),
+                        ...(createdFor && { createdFor }),
+                    },
+                });
+            }
 
-        const parsed = apiTransaction.array().safeParse(response.data.data.transactions);
-        if (!parsed.success) {
-            console.error("Failed to parse transactions:", parsed.error);
-            throw new Error(`Failed to parse transactions: ${parsed.error}`);
-        }
-        const transactions: ITransaction[] = parsed.data.map(transaction => transactionAdapter.adaptTransaction(transaction));
+            const parsed = apiTransaction.array().safeParse(response.data.data.transactions);
+            if (!parsed.success) {
+                console.error("Failed to parse transactions:", parsed.error);
+                throw new Error(`Failed to parse transactions: ${parsed.error}`);
+            }
+            const transactions: ITransaction[] = parsed.data.map(transaction => transactionAdapter.adaptTransaction(transaction));
 
-        const nextUrl: string | null = response.data.data.next || null;
-        const prevUrl: string | null = response.data.data.previous || null;
-        return { transactions, nextUrl, prevUrl };
-    },
+            const nextUrl: string | null = response.data.data.next || null;
+            const prevUrl: string | null = response.data.data.previous || null;
+            return { transactions, nextUrl, prevUrl };
+        },
 
     
     /**

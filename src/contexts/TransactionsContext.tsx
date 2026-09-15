@@ -34,7 +34,7 @@ interface TransactionFilters {
 const TransactionsContext = createContext<TransactionsContextProps | undefined>(undefined);
 
 export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-    const { isLoadingUsers } = useUsersContext();
+    const { isLoadingUsers, getUserFromUserId } = useUsersContext();
     const { isLoadingInventory } = useInventoryContext();
     const { isAuthenticated, currentClient } = useAuthContext();
     const { notify } = useNotificationContext();
@@ -68,16 +68,6 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
     useEffect(() => {
         let filtered: ITransaction[] = transactions;
 
-        if (filters.userId !== 'all') {
-            const id = filters.userId;
-            filtered = filtered.filter((t) => {
-                if (t.type === 'purchase' || t.type === 'deposit') {
-                    return (t as FinancialTransaction).createdFor === id;
-                }
-                else return t.createdBy.id === id;
-            });
-        }
-
         if (filters.startDate) {
             filtered = filtered.filter(
                 (t) => t.createdTime >= new Date(filters.startDate!)
@@ -98,26 +88,48 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
             filtered = filtered.filter((t) => t.type === filters.transactionType);
         }
 
-        if (filters.searchQuery.trim()) {
+        if (filters.searchQuery.trim()) { // If any searchterm is provided, filter the transactions based on it
             const searchString = filters.searchQuery.toLowerCase();
             filtered = filtered.filter((t: ITransaction) => {
+                // makes it so if i search 6 all 2026 transaction remain, it is unsure if this is preferable so the function is disabled for now
                 // If the createdTime string matches the search, include it
-                if (t.createdTime.toISOString().slice(0, 16).toLowerCase().includes(searchString)) {
-                    return true;
+                // if (t.createdTime.toISOString().slice(0, 16).toLowerCase().includes(searchString)) {
+                //     return true; 
+                // }
+
+                if (t.createdBy.type === 'user') {
+                    const createdByUser: User = getUserFromUserId(t.createdBy.id);
+                    if (createdByUser.nick.toLowerCase().includes(searchString) || createdByUser.name.toLowerCase().includes(searchString)) return true;
                 }
 
-                // If it's a financial transaction, check createdFor.nick
+                // If it's a financial transaction, check createdFor's nick/name
                 if (t.type === 'purchase' || t.type === 'deposit') {
-                    // const ft = t as FinancialTransaction;
-                    // return getUserFromUserId(ft.createdFor).nick.toLowerCase().includes(searchString) ||
-                    //     getUserFromUserId(t.createdBy).nick.toLowerCase().includes(searchString) ||
-                    //     ft.total.toString().includes(searchString);
-                    return t.createdBy.id; // TODO: Implement a proper search for non-financial transactions
-                } else {
-                    // For stock updates or other transactions
-                    // return getUserFromUserId(t.createdBy).nick.toLowerCase().includes(searchString)
-                    return t.createdBy.id; // TODO: Implement a proper search for non-financial transactions
+                    const financialTransaction = t as Purchase | Deposit;
+                    if (financialTransaction.total.toString().includes(searchString)) return true;
+
+                    const createdForUser: User = getUserFromUserId(financialTransaction.createdFor);
+                    if (createdForUser.nick.toLowerCase().includes(searchString) || createdForUser.name.toLowerCase().includes(searchString)) return true;
                 }
+
+                // If it's a purchase, check the purchased item names
+                if (t.type === 'purchase') {
+                    const purchase: Purchase = t as Purchase;
+                    const purchasedItemNames: string[] = purchase.items.map(item => item.item.displayName.toLowerCase());
+                    if (purchasedItemNames.some(name => name.includes(searchString))) return true;
+                }
+
+                // If it's a stockUpdate, check the inventory item names
+                if (t.type === 'stockUpdate') {
+                    const stockUpdate: StockUpdate = t as StockUpdate;
+                    if (stockUpdate.items.some(item => String(item.after - item.before).includes(searchString))) return true;
+
+                    const updatedItemNames: string[] = stockUpdate.items.map(item => item.name.toLowerCase());
+                    if (updatedItemNames.some(name => name.includes(searchString))) return true;
+                }
+
+                if (t.comment && t.comment.toLowerCase().includes(searchString)) return true;
+
+                return false;
             });
         }
 
@@ -125,11 +137,18 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
     }, [transactions, filters]);
 
 
+    useEffect(() => {
+        if (filters.userId !== 'all') {
+            fetchTransactions();
+        }
+    }, [filters]);
 
     const fetchTransactions = async (url?: string | null) => {
         setIsLoadingTransactions(true);
         try {
-            const response = await transactionsApi.fetchTransactions(url, 30, 0);
+            const createdBy = filters.userId !== 'all' ? filters.userId : undefined;
+            const createdFor = filters.userId !== 'all' ? filters.userId : undefined;
+            const response = await transactionsApi.fetchTransactions(url, 30, 0, createdBy, createdFor);
 
             setTransactions(response.transactions);
             setNextUrl(response.nextUrl);

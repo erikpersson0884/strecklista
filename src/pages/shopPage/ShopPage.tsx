@@ -18,7 +18,6 @@ const ShopPage: React.FC = () => {
         <div className='shop-page page'>
             <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
             <ShopItems items={items} searchTerm={searchTerm} />
-            
             <OpenCartButton />
         </div>
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './RefillPopup.css';
 
 import useModalContext from '@/contexts/ModalContext';
@@ -22,8 +22,14 @@ const RefillPopup: React.FC<RefillPopupPopupProps> = ({ item, currentBalance, re
     const [ comment, setComment ] = useState<string>('');
     const [ includeComment, setIncludeComment ] = useState<boolean>(false);
 
+    const amountInputRef = useRef<HTMLInputElement>(null);
+
+    useEffect(() => {
+        amountInputRef.current?.focus();
+    }, []);
+
     const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'Enter') {
+        if (e.key === 'Enter' && amountToDeposit !== '') {
             handleRefill();
         }
     }
@@ -75,6 +81,7 @@ const RefillPopup: React.FC<RefillPopupPopupProps> = ({ item, currentBalance, re
                     <input 
                         id="amount" 
                         type="string" 
+                        ref={amountInputRef}
                         value={amountToDeposit} 
                         onChange={handleInputChange} 
                         onKeyDown={handleKeyPress}
