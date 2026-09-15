@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, useRef } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 
 import { setAuthToken as setAuthTokenInAxios } from "@/api/axiosInstance";
 import authApi from "@/api/authApi";

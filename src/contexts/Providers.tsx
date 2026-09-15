@@ -6,24 +6,27 @@ import { ModalProvider } from './ModalContext';
 import { ClientProvider } from './ClientContext';
 import { NotificationProvider } from './NotificationContext';
 import { AuthProvider } from '@/contexts/AuthContext';
+import { TransactionRefreshProvider } from './TransactionRefreshContext';
 
 const Providers: React.FC<{children: React.ReactNode}> = ({ children }) => {
     return (
         <NotificationProvider>
             <AuthProvider>
-                <UsersProvider>
-                    <InventoryProvider>
-                        <TransactionsProvider>
-                            <CartProvider>
-                                <ClientProvider>
-                                    <ModalProvider>
-                                        {children}
-                                    </ModalProvider>
-                                </ClientProvider>
-                            </CartProvider>
-                        </TransactionsProvider>
-                    </InventoryProvider>
-                </UsersProvider>
+                <TransactionRefreshProvider>
+                    <UsersProvider>
+                        <InventoryProvider>
+                            <TransactionsProvider>
+                                <CartProvider>
+                                    <ClientProvider>
+                                        <ModalProvider>
+                                            {children}
+                                        </ModalProvider>
+                                    </ClientProvider>
+                                </CartProvider>
+                            </TransactionsProvider>
+                        </InventoryProvider>
+                    </UsersProvider>
+                </TransactionRefreshProvider>
             </AuthProvider>
         </NotificationProvider>
     )

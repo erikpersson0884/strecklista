@@ -5,13 +5,13 @@ import transactionsApi from '@/api/transactionApi';
 
 import useAuthContext from './AuthContext';
 import useNotificationContext from './NotificationContext';
+import useTransactionRefreshContext from './TransactionRefreshContext';
 
 
 interface UsersContextType {
     isLoadingUsers: boolean;
     users: User[];
     addUserBalance: (userId: UserId, amount: number, comment?: string) => Promise<boolean>;
-    setUserBalance: (userId: UserId, newBalance: number) => void;
     getUserFromUserId: (userId: UserId) => User;
 }
 
@@ -20,6 +20,7 @@ const UsersContext = createContext<UsersContextType | undefined>(undefined);
 export const UsersProvider = ({ children }: { children: ReactNode }) => {
     const { isAuthenticated } = useAuthContext();
     const { notify } = useNotificationContext();
+    const { triggerTransactionsRefresh } = useTransactionRefreshContext();
 
     const [ isLoadingUsers, setIsLoadingUsers ] = useState<boolean>(true);
     const [ users, setUsers ] = useState<User[]>([]);
@@ -49,6 +50,7 @@ export const UsersProvider = ({ children }: { children: ReactNode }) => {
         try {
             const newBalance = await transactionsApi.makeDeposit(userId, amount, comment)
             setUserBalance(userId, newBalance);
+            triggerTransactionsRefresh();
             notify('Saldo uppdaterat', 'success');
             return true;
         } catch (error) {
@@ -77,7 +79,6 @@ export const UsersProvider = ({ children }: { children: ReactNode }) => {
             isLoadingUsers, 
             users, 
             addUserBalance,
-            setUserBalance,
             getUserFromUserId 
         }}>
             {children}

@@ -5,6 +5,8 @@ import useInventoryContext from './InventoryContext';
 import useAuthContext from './AuthContext';
 import useNotificationContext from './NotificationContext';
 import { isAxiosError } from "axios";
+import { useTransactionRefreshContext } from './TransactionRefreshContext';
+
 
 interface TransactionsContextProps {
     isLoadingTransactions: boolean;
@@ -36,6 +38,7 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
     const { isLoadingInventory } = useInventoryContext();
     const { isAuthenticated, currentClient } = useAuthContext();
     const { notify } = useNotificationContext();
+    const { refreshSignal } = useTransactionRefreshContext();
 
     const [filteredTransactions, setFilteredTransactions] = useState<ITransaction[]>([]);
     const [transactions, setTransactions] = useState<ITransaction[]>([]);
@@ -127,10 +130,10 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
         setIsLoadingTransactions(true);
         try {
             const response = await transactionsApi.fetchTransactions(url, 30, 0);
-            setNextUrl(response.nextUrl);
-            setPrevUrl(response.prevUrl);
 
             setTransactions(response.transactions);
+            setNextUrl(response.nextUrl);
+            setPrevUrl(response.prevUrl);
         } catch (error) {
             if (isAxiosError(error)) {
                 const backendMessage = error.response?.data?.error?.message;
@@ -159,7 +162,10 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
         const notInScope = !currentClient?.scope?.includes('transactions.read');
         if(isLoadingUsers || isLoadingInventory) return;
         if (isAuthenticated && !(currentClient && notInScope)) fetchTransactions();        
-    }, [isLoadingUsers, isAuthenticated, isLoadingInventory, currentClient]);
+        // refreshSignal is bumped by UsersContext/InventoryContext after a deposit or stock
+        // refill, since they can't call this context's own refreshTransactions() directly
+        // (see TransactionRefreshContext.tsx for why).
+    }, [isLoadingUsers, isAuthenticated, isLoadingInventory, currentClient, refreshSignal]);
 
 
     const removeTransaction = async (id: Id): Promise<boolean> => {

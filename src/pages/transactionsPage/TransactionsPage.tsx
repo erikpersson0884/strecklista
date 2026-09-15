@@ -18,12 +18,12 @@ import walletIcon from '@/assets/images/wallet.svg';
 
 const TransactionsPage: FC = () => {
     const { isLoadingTransactions } = useTransactionsContext();
-    const { isLoadingUsers } = useUsersContext();
 
     const [ showFilters, setShowFilters ] = useState<boolean>(false);
 
-    if (isLoadingTransactions) return <p>Loading transactions...</p>;
-    else if (isLoadingUsers) return <p>Loading users...</p>;
+    if (isLoadingTransactions) 
+        return <div className="page"><p>Loading transactions...</p></div>;
+
     else return (
         <div className='transactions-page page'>
             <SearchbarAndFilters showFilters={showFilters} setShowFilters={setShowFilters} />

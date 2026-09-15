@@ -4,12 +4,10 @@ import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import useModalContext from "@/contexts/ModalContext";
 import ClientLoginPopup from "@/components/clientLoginPopup/ClientLoginPopup";
-import { useNotificationContext } from "@/contexts/NotificationContext";
 
 const LoginPage = () => {
-    const { userAuthenticate, clientLogin, setToken, isAuthenticated, isLoggingIn, rememberMe, setRememberMe } = useAuthContext();
+    const { userAuthenticate, setToken, isAuthenticated, isLoggingIn, rememberMe, setRememberMe } = useAuthContext();
     const { openModal } = useModalContext();
-    const { notify } = useNotificationContext();
 
     const [ numberOfClicks, setNumberOfClicks ] = useState(0);
    

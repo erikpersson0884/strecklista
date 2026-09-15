@@ -1,9 +1,9 @@
 import { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 
 import inventoryApi from '@/api/inventoryApi';
-
 import useAuthContext from './AuthContext';
 import useNotificationContext from './NotificationContext';
+import useTransactionRefreshContext from './TransactionRefreshContext';
 
 
 interface InventoryContextProps {
@@ -22,6 +22,7 @@ const InventoryContext = createContext<InventoryContextProps | undefined>(undefi
 export const InventoryProvider = ({ children }: { children: ReactNode }) => {
     const { isAuthenticated } = useAuthContext();
     const { notify } = useNotificationContext();
+    const { triggerTransactionsRefresh } = useTransactionRefreshContext();
 
     const [ isLoadingInventory, setIsLoadingInventory ] = useState<boolean>(true);
     const [ items, setItems ] = useState<Item[]>([]);
@@ -101,7 +102,8 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
             if (!item) throw new Error('Item not found');
 
             await inventoryApi.refillItem(id, amount);
-            fetchInventory();
+            await fetchInventory();
+            triggerTransactionsRefresh();
             notify(`Vara påfylld`, 'success');
             return true;
         } catch (error) {
