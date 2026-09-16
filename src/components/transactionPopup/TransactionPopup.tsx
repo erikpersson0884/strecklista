@@ -39,44 +39,38 @@ const TransactionPopup: FC<TransactionPopupProps> = ({transaction}) => {
 
 
     const Details: FC = () => {
-        if (transaction.type === 'purchase') {
-            const purchase = transaction as Purchase;
+        if (transaction.type === 'purchase' || transaction.type === 'stockUpdate') {
+            const purchase = transaction as Purchase | StockUpdate;
 
             return (
                 <div className="receipt-details">
-                    <br />
-                    <p>Detaljer</p>
-                    <hr />
-                    <ul className='receipt-list'>
-                        {purchase.items.map((item,index) => (
-                            <li className='receipt-item' key={index}>
-                                <p>{item.item.displayName}</p>
-                                <p>x{item.quantity}</p>
-                                <p className="item-total">{item.purchasePrice.price * item.quantity} kr</p>
-                            </li>
-                        ))}
-                    </ul>
+                    <p>Produkter</p>
+                    <ul className="receipt-list">
+                        {purchase.items.map((item, index) => (
+                            <li className="receipt-item" key={index}>
+                                <p>
+                                    {transaction.type === "purchase"
+                                        ? (item as PurchasedItem).item.displayName
+                                        : (item as StockUpdateItem).name}
+                                </p>
 
-                    <hr />
-                    <p className='total'>
-                        <span>Totalt</span>
-                        <span>{purchase.total}kr</span>
-                    </p>
-            </div>
-            );
-        }
-        else if (transaction.type === 'stockUpdate') {
-            const stockUpdate = transaction as StockUpdate;
-            return (
-                <div>
-                    <br />
-                    <p>Detaljer</p>
-                    <hr />
-                    <ul className='receipt-list'>
-                        {stockUpdate.items.map((item,index) => (
-                            <li key={index} className='receipt-item'>
-                                <p>{item.name}</p>
-                                <p>{item.after - item.before} st</p>
+                                {transaction.type === "purchase" && (
+                                    <p>{(item as PurchasedItem).quantity}st</p>
+                                )}
+
+                                {transaction.type === "purchase" && (
+                                    <p>
+                                        {(item as PurchasedItem).purchasePrice.price *
+                                            (item as PurchasedItem).quantity} kr
+                                    </p>
+                                )}
+
+                                {transaction.type === "stockUpdate" && (
+                                    <p>
+                                        {(item as StockUpdateItem).after -
+                                            (item as StockUpdateItem).before} kr
+                                    </p>
+                                )}
                             </li>
                         ))}
                     </ul>
@@ -103,21 +97,6 @@ const TransactionPopup: FC<TransactionPopupProps> = ({transaction}) => {
         timeString = `${pad(d.getHours())}:${pad(d.getMinutes())}`;
     }
 
-    let transactionTypeString: string;
-    switch (transaction.type) {
-        case 'purchase': 
-            transactionTypeString = 'Köp';
-            break;
-        case 'deposit':
-            transactionTypeString = 'Insättning';
-            break;
-        case 'stockUpdate':
-            transactionTypeString = 'Lageruppdatering';
-            break;
-        default:
-            transactionTypeString = 'Okänd';
-    }
-
     let comment: string | null = null;
     if (transaction.type === 'purchase' || transaction.type === 'deposit') comment = (transaction as Purchase | Deposit).comment;
 
@@ -125,21 +104,9 @@ const TransactionPopup: FC<TransactionPopupProps> = ({transaction}) => {
         return (
             <>
                 <div className="transaction-overview">
-                    <p>
-                        <span>Typ av transaktion:</span>
-                        <span>{transactionTypeString}</span>
-                    </p>
-                    
-                    <div>
-                        <p>
-                            <span>Datum:</span>
-                            <span>{dateString}</span>
-                        </p>
-
-                        <p>
-                            <span>Klockslag:</span>
-                            <span>{timeString}</span>
-                        </p>
+                    <div className="transaction-time">
+                        <div className="transaction-bubble">{dateString}</div>
+                        <div className="transaction-bubble">{timeString}</div>
                     </div>  
 
                     <div>
@@ -160,8 +127,22 @@ const TransactionPopup: FC<TransactionPopupProps> = ({transaction}) => {
                                     const user = getUserFromUserId(transaction.createdBy.id);
                                     return typeof user === "string" ? user : user.nick;
                                 })()
-                                : "Client id: " + transaction.createdBy.id}</span>
+                                : "En klient"}</span>
                         </p>
+
+                        {transaction.type ==="deposit" && (
+                            <p>
+                                <span>Insättning:</span>
+                                <span>{(transaction as Deposit).total} kr</span>
+                            </p>
+                        )}
+
+                        {transaction.type ==="purchase" && (
+                            <p>
+                                <span>Totalt:</span>
+                                <span>{(transaction as Purchase).total}kr</span>
+                            </p>
+                        )}
                     </div>
                     
                     { comment && (
@@ -171,11 +152,6 @@ const TransactionPopup: FC<TransactionPopupProps> = ({transaction}) => {
                         </p>
                     )}
                     
-
-                    <p>
-                        <span>Summa:</span>
-                        <span>{'total' in transaction ? transaction.total + ' kr' : 'N/A'}</span>
-                    </p>
                 </div>
 
                 <Details />
@@ -185,22 +161,37 @@ const TransactionPopup: FC<TransactionPopupProps> = ({transaction}) => {
 
     if (transaction.removed) return (
         <PopupWindow
-            title="Transaktion"
+            title={"Struken" + transaction.type}
             className="transaction-popup"
         >
             <PopupContent />
         </PopupWindow>
     )
-    else return (
-        <ActionPopupWindow
-            title="Transaktion"
+    else {
+        let transactionTypeString: string;
+        switch (transaction.type) {
+            case 'purchase': 
+                transactionTypeString = 'Köp';
+                break;
+            case 'deposit':
+                transactionTypeString = 'Insättning';
+                break;
+            case 'stockUpdate':
+                transactionTypeString = 'Lageruppdatering';
+                break;
+            default:
+                transactionTypeString = 'Okänd';
+        }
+
+        return <ActionPopupWindow
+            title={transactionTypeString}
             className="transaction-popup"
             acceptButtonText="Stryk Transaktion"
             onAccept={openConfirmDeleteDialog}
         >
            <PopupContent />
         </ActionPopupWindow>
-    )
+    }
 }
 
 export default TransactionPopup;
