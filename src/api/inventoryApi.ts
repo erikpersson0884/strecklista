@@ -16,8 +16,7 @@ const inventoryApi = {
 
         const parsed = apiItem.array().safeParse(response.data.data.items);
         if (!parsed.success) {
-            console.error("Zod: Unexpected /group/item response shape:", parsed.error.issues);
-             throw new Error("Failed to parse inventory data"); 
+             throw new Error("Zod: Unexpected /group/item response shape:" + parsed.error); 
         }
 
         return parsed.data.map(itemAdapter.apiItemToItem);
@@ -55,13 +54,11 @@ const inventoryApi = {
      */
     updateItem: async (ItemId: ItemId, partialItem: Partial<Item>): Promise<Item> => {
         const updates: Partial<ApiItem> = itemAdapter.partialItemToPartialApiItem(partialItem);
-        if (Object.keys(updates).length === 0) throw new Error("No updates provided for item update.");
 
         const response = await api.patch(`/group/item/${ItemId}`, updates);
         const parsed = apiItem.safeParse(response.data.data.item);
         if (!parsed.success) {
-            console.error("Zod: Unexpected /group/item response shape:", parsed.error.issues);
-            throw new Error("Failed to parse updated item data");
+            throw new Error("Zod: Unexpected /group/item response shape: " + parsed.error.issues);
         }
         return itemAdapter.apiItemToItem(parsed.data);
     },

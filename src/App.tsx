@@ -1,6 +1,8 @@
 import './styles/App.css';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
+import useConnectionContext from '@/contexts/ConnectionContext';
+
 import Header from './layouts/header/Header';
 import Footer from './layouts/footer/Footer';
 
@@ -14,15 +16,13 @@ import BalancePage from './pages/balancePage/BalancePage';
 import TransactionsPage from './pages/transactionsPage/TransactionsPage';
 import BarcodeShopPage from './pages/barcodeShopPage/BarcodeShopPage';
 
-import ClientPage from './pages/clientPage/ClientPage';
 import ProfilePage from './pages/profilePage/ProfilePage';
-
-import useAuthContext from '@/contexts/AuthContext';
+import ClientPage from './pages/clientPage/ClientPage';
+import StylePage from './pages/stylePage/StylePage';
 
 
 const App: React.FC = () => {
-    const { isLoggingIn } = useAuthContext();
-
+    const { isConnected } = useConnectionContext();
     const pages = [
         { url: '/', component: <ShopPage /> },
         { url: '/inventory', component: <InventoryPage /> },
@@ -31,25 +31,29 @@ const App: React.FC = () => {
         { url: '/profile', component: <ProfilePage /> },
         { url: '/clients', component: <ClientPage /> },
         { url: '/barcode-shop', component: <BarcodeShopPage /> },
+        { url: '/style', component: <StylePage /> },
     ]
     
-    if (isLoggingIn) {
-        return <p>Loading...</p>;
-    } 
-
-    else return (
+    return (
         <>
             <Header />
-                <Routes>
-                    <Route path="/login" element={<LoginPage />} />
-                    <Route path="/callback" element={<AuthCallback />} />
-                    <Route element={<ProtectedRoute/>}>
-                        {pages.map((page, index) => (
-                            <Route key={index} path={page.url} element={page.component} />
-                        ))}
-                    </Route>
-                    <Route path="*" element={<Navigate to="/" replace />} />
-                </Routes>
+                { !isConnected ? (
+                    <main className="offline-notice page">
+                        <p>Ingen anslutning till servern.</p>
+                        <p>Försöker återansluta...</p>
+                    </main>
+                ) : (
+                    <Routes>
+                        <Route path="/login" element={<LoginPage />} />
+                        <Route path="/callback" element={<AuthCallback />} />
+                        <Route element={<ProtectedRoute/>}>
+                            {pages.map((page, index) => (
+                                <Route key={index} path={page.url} element={page.component} />
+                            ))}
+                        </Route>
+                        <Route path="*" element={<Navigate to="/" replace />} />
+                    </Routes>
+                )}
             <Footer />
         </>
     )

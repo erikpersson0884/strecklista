@@ -7,7 +7,7 @@
     gap: .8rem;
 
     box-sizing: border-box;
-    width: 90%;
+    width: 100%;
     max-height: 0;
     padding: 0rem;
     border-radius: .4rem;
@@ -22,11 +22,24 @@
     max-height: 1000px; /* Arbitrary large value to allow for content expansion */
 }
 
-.filter-div>div {
+.filter-div .inputdiv {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    width: 100%;
+}
+
+.filter-div .filter-footer {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: .5rem;
 
     width: 100%;
+    margin-top: 1rem;
+}
+
+.filter-div .filter-footer button {
+    background-color: var(--info-color);
 }

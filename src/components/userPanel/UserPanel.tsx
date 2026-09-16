@@ -10,16 +10,13 @@ interface UserListItemProps {
 const UserListItem: React.FC<UserListItemProps> = ({ user }) => {
     const { setPayingUser } = useCartContext();
 
-    if (!user.externalId) return null;
-
+    const title = user.externalId ? `Välj ${user.nick} som betalande användare` : `Välj ${user.nick} som betalande användare \n(OBS: saknar externt id)`;
     return (
-        <li className='user-item' key={user.id} onClick={() => setPayingUser(user)}>
+        <li className='user-item' key={user.id} onClick={() => setPayingUser(user)} title={title}>
             <Barcode
-                value={user.externalId || "missing externalId"}
+                value={user.externalId || user.id || "missing externalId"}
                 format="CODE128"
                 className="barcode"
-                // background="transparent"
-                // lineColor="#fff"
                 text={user.nick}
                 height={40}
             />

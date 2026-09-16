@@ -5,13 +5,13 @@ import transactionsApi from '@/api/transactionApi';
 
 import useAuthContext from './AuthContext';
 import useNotificationContext from './NotificationContext';
+import useTransactionRefreshContext from './TransactionRefreshContext';
 
 
 interface UsersContextType {
     isLoadingUsers: boolean;
     users: User[];
     addUserBalance: (userId: UserId, amount: number, comment?: string) => Promise<boolean>;
-    setUserBalance: (userId: UserId, newBalance: number) => void;
     getUserFromUserId: (userId: UserId) => User;
 }
 
@@ -20,6 +20,7 @@ const UsersContext = createContext<UsersContextType | undefined>(undefined);
 export const UsersProvider = ({ children }: { children: ReactNode }) => {
     const { isAuthenticated } = useAuthContext();
     const { notify } = useNotificationContext();
+    const { triggerTransactionsRefresh } = useTransactionRefreshContext();
 
     const [ isLoadingUsers, setIsLoadingUsers ] = useState<boolean>(true);
     const [ users, setUsers ] = useState<User[]>([]);
@@ -49,16 +50,16 @@ export const UsersProvider = ({ children }: { children: ReactNode }) => {
         try {
             const newBalance = await transactionsApi.makeDeposit(userId, amount, comment)
             setUserBalance(userId, newBalance);
-            notify('Saldo uppdaterat!');
+            triggerTransactionsRefresh();
+            notify('Saldo uppdaterat', 'success');
             return true;
         } catch (error) {
-            notify('Något gick fel, försök igen senare.');
+            notify('Något gick fel, försök igen senare.', 'error');
             return false;
         }
     };
 
     const setUserBalance = (userId: UserId, newBalance: number) => {
-        checkThatUserExists(userId);
         setUsers((prevUsers) =>
             prevUsers.map((user) =>
                 user.id === userId ? { ...user, balance: newBalance } : user
@@ -72,21 +73,12 @@ export const UsersProvider = ({ children }: { children: ReactNode }) => {
         return user;
     }
 
-    const checkThatUserExists = (userId: UserId): void => {
-        if (!userExists(userId)) throw new Error(`User with id ${userId} not found`);
-    }
-
-    const userExists = (userId: UserId): boolean => {
-        return users.some((user) => user.id === userId);
-    };
-
 
     return (
         <UsersContext.Provider value={{ 
             isLoadingUsers, 
             users, 
             addUserBalance,
-            setUserBalance,
             getUserFromUserId 
         }}>
             {children}

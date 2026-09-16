@@ -1,9 +1,9 @@
 import React from 'react'
 import './InventoryPanel.css'
 import ScannerComponent from '@/components/scannerComponent/ScannerComponent'
-import ProductIcon from '@/components/productIcon/ProductIcon'
+import ProductIcon from '@/components/icon/ProductIcon'
 
-import { useInventoryContext } from '@/contexts/InventoryContext'
+import useInventoryContext from '@/contexts/InventoryContext'
 import { useCartContext } from '@/contexts/CartContext'
 import Barcode from 'react-barcode'
 
@@ -31,7 +31,7 @@ const InventoryPanel: React.FC = () => {
                     })
                     .map(item => (
                     <li key={item.id} onClick={() => addItemToCart(item)} className='inventory-item'>
-                        <ProductIcon item={item} />
+                        <ProductIcon item={item}/>
                         <div>
                             <p>{item.name}</p>
                             <p className='sub-text'>{Math.max(0, item.amountInStock)} st kvar</p>

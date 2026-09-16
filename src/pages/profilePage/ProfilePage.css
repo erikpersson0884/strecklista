@@ -1,7 +1,8 @@
 
-.profile-page {
+.profile-page button, .profile-page .profile-header {
     box-sizing: border-box;
-    padding: .8rem;
+    width: 100%;
+    max-width: 350px;
 }
 
 .profile-page .profile-header {
@@ -9,23 +10,24 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: center;
     gap: 2rem;
 
-    height: 5rem;
+
+    height: 9rem;
     padding: 2rem;
     border-radius: 10px;
 }
 
 .profile-page .profile-image {
-    background-position: center;
-    background-size: cover;
-
-    height: 100%;
-    aspect-ratio: 1/1;
-    
+    height: 5rem;
+    width: 5rem;
+    flex-shrink: 0;
     border-radius: 50%;
     box-shadow: 0 0 .5rem #fff;
 }
+
+
 
 .profile-page .profile-name {
     display: flex;
@@ -34,17 +36,19 @@
     gap: .5rem;
 }
 
+
+
+
 .profile-page .client-page-navigation-button {
     background-color: var(--primary-color);
-    box-sizing: border-box;
-    width: 100%;
-    max-width: 320px;
+}
+
+.profile-page .open-clients-button {
+    margin-top: 1rem;
 }
 
 .profile-page .logout-button {
     background-color: var(--destructive-color);
-    box-sizing: border-box;
-    width: 100%;
-    max-width: 320px;
+
     margin-top: auto;
 }

@@ -75,6 +75,7 @@ button {
     background-color: var(--button-color);
     color: var(--text-color);
 
+    font-size: 1rem;
     font-weight: normal;
     text-align: center;
 
@@ -86,7 +87,7 @@ button {
     justify-content: center;
     gap: .5rem;
 
-    padding: .5rem 1rem;
+    padding: 1rem 1rem;
     border: none;
     border-radius: 10px;
     

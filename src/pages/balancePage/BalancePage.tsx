@@ -1,11 +1,11 @@
 import React from 'react';
 import './BalancePage.css';
 
-import { useUsersContext } from '@/contexts/UsersContext';
+import useUsersContext from '@/contexts/UsersContext';
 import useAuthContext from '@/contexts/AuthContext';
 import useModalContext from '@/contexts/ModalContext';
 
-import RefillUserBalancePopup from '@/components/refillUserBalancePopup/RefillUserBalancePopup';
+import RefillPopup from '@/components/refillPopup/RefillPopup';
 import addIcon from '@/assets/images/add.svg';
 
 
@@ -13,18 +13,19 @@ const BalancePage: React.FC = () => {
     const { currentUser } = useAuthContext();
     const { users, isLoadingUsers, getUserFromUserId } = useUsersContext();
 
-    if (isLoadingUsers || !currentUser) return ( // should implement a better check for current user
-        <p>Laddar användare...</p>
-    )
+    if (isLoadingUsers) return <p>Laddar användare...</p>
+
     else if (users.length === 0) return <p>Hittade inga användare</p>
 
     else return (
         <div className='balance-page page'>
             <ul className='page-list'>
-                <UserBalance 
-                    user={getUserFromUserId(currentUser.id)} 
-                    key={currentUser.id}
-                />
+                {currentUser &&
+                    <UserBalance 
+                        user={getUserFromUserId(currentUser.id)} 
+                        key={currentUser.id}
+                    />
+                }
 
                 {users.filter((user) => user.id !== currentUser?.id).map(user => (
                     <UserBalance 
@@ -43,13 +44,14 @@ interface UserBalanceProps {
 }
 const UserBalance: React.FC<UserBalanceProps> = ({ user }) => {
     const { openModal } = useModalContext()
+    const { addUserBalance } = useUsersContext();
 
-    const openRefillPopup = () => openModal(<RefillUserBalancePopup user={user}/>)
+    const openRefillPopup = () => openModal(<RefillPopup item={user} refillAction={addUserBalance} currentBalance={user.balance} suffix='kr'/>)
 
 
     return (
-        <li className='user-div list-item'>
-            <div className='user-div-content'>
+        <li className='user-item list-item'>
+            <div className='user-item-content'>
                 <div className='name-div'>
                     <p className='list-item__primary'>{user.nick}</p>
                     <p className='list-item__secondary'>{user.name}</p>

@@ -73,7 +73,7 @@ export const apiItem = z.object({
   stock: z.number().int(),
   timesPurchased: z.number().int(),
   visible: z.boolean(),
-  favorite: z.boolean(),
+  favorite: z.boolean().optional().default(false),
 });
 export type ApiItem = z.infer<typeof apiItem>;
 
@@ -126,8 +126,11 @@ export type ApiDeposit = z.infer<typeof apiDeposit>;
 // --- StockUpdate ---
 export const apiItemStockUpdateEntry = z.object({
   id: z.number().int(),
+  itemId: z.number().int(),
   before: z.number().int(),
   after: z.number().int(),
+  displayName: z.string(),
+  icon: z.string().nullable().optional(),
 });
 
 export const apiStockUpdate = apiTransactionBase.extend({

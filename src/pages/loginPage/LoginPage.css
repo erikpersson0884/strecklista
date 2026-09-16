@@ -12,8 +12,17 @@
 
 .login-page button {
     background-color: var(--primary-color);
+    min-width: 200px;
+    min-height: 50px;
 }
 
 .login-page>* {
     width: max-content !important;
+}
+
+.login-page .remember-me {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 8px
 }

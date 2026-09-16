@@ -213,8 +213,6 @@ Three layers, from generic to specific:
   - **Production (Docker)**: `nginx.conf`'s `location /api/` proxies to the backend container, stripping the `/api` prefix before forwarding (`proxy_pass http://strecklista-backend:8080/;` — note the trailing slash, which is what does the stripping).
   - **Local dev (`npm run dev`)**: Vite's `server.proxy['/api']` in `vite.config.ts` does the same thing, forwarding to a local backend and stripping the `/api` prefix (`rewrite: path => path.replace(/^\/api/, '')`).
   - Both must strip the prefix identically, since the backend's real routes have no `/api` prefix (e.g. `/group/item`, not `/api/group/item`) — if you ever change one side, change the other to match.
-- **`VITE_API_URL`** (optional, `.env` / `.env.example`) only configures the **local dev proxy target** — i.e. where `npm run dev` should forward `/api/*` requests on your machine. It defaults to `http://localhost:8080` if unset. It has no effect on the production/Docker build.
-- **Docker**: `Dockerfile` and `docker-compose.yml` no longer accept or need a `VITE_API_URL` build arg — the build is identical regardless of where it's eventually deployed.
 - ⚠️ If you're ever debugging a "requests aren't reaching the backend" issue in a new environment, check that whatever's serving the built app in front of it (nginx, or an equivalent reverse proxy) actually has an `/api/*` → backend rule with the prefix stripped — the app itself has no fallback and no way to reach the backend without one.
 
 ## Testing

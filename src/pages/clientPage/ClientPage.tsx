@@ -13,9 +13,7 @@ const ClientPage: React.FC = () => {
     const { clients, isLoadingClients, createClient, deleteClient } = useClientContext();
     const { openModal } = useModalContext();
 
-    if (isLoadingClients) {
-        return <div>Loading clients...</div>;
-    }
+    if (isLoadingClients) return <div>Loading clients...</div>;
 
     const handleCreateClient = async (name: string, description: string, scope: string) => {
         const {client: createdClient, secret} = await createClient(name, description, scope);
@@ -68,11 +66,9 @@ const ClientPage: React.FC = () => {
                     </li>
                 ))}
 
-                <li className="list-item add-item-li">
-                    <button onClick={openCreateClientModal}>
-                        Add Client
-                    </button>
-                </li>
+                <button className="list-item list-item-add" onClick={openCreateClientModal}>
+                    Add Client
+                </button>
             </ul>
         </div>
     );

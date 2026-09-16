@@ -69,7 +69,7 @@ export const transactionAdapter = {
             return {
                 before: apiItem.before,
                 after: apiItem.after,
-                name: '', //TODO: Implement logic for this when backend return name of the item
+                name: apiItem.displayName,
                 id: apiItem.id.toString(),
             };
         });

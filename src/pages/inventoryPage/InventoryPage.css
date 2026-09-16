@@ -1,6 +1,10 @@
 
 .add-item-li {
-    background-color: var(--primary-color);
+
+}
+
+.inventory-item>button {
+    background-color: inherit;
 
     padding: 0;
 }
@@ -10,4 +14,25 @@
     
     width: 100%;
     height: 100%;
+}
+
+.inventory-item p {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+
+    min-width: 0;
+    flex: 1;
+}
+
+.list-item .open-popup-button {
+    background-color: var(--primary-color);
+    
+    box-sizing: border-box;
+    width: 4rem;
+    height: 100%;
+    padding: 1rem;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
 }

@@ -1,7 +1,8 @@
 import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 import transactionsApi from '@/api/transactionApi';
-import { useTransactionsContext } from './TransactionsContext';
+import useTransactionsContext from './TransactionsContext';
 import useNotificationContext from './NotificationContext';
+import useAuthContext from './AuthContext';
 
 const MAX_COMMENT_LENGTH = 1000;
 
@@ -27,6 +28,7 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const { refreshTransactions } = useTransactionsContext();
     const { notify } = useNotificationContext();
+    const { currentClient, currentUser } = useAuthContext();
 
     const [ itemsInCart, setItemsInCart ] = useState<ItemInCart[]>([]);
     const [ numberOfItemsInCart, setNumberOfItemsInCart ] = useState<number>(0);
@@ -45,6 +47,10 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             }
         });
     };
+
+    useEffect(() => {
+        setPayingUser(currentUser);
+    }, [currentUser]);
 
     React.useEffect(() => {
         const totalItems = itemsInCart.reduce((sum, item) => sum + item.quantity, 0);
@@ -85,20 +91,25 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
     const emptyCart = () => {
         setItemsInCart([]);
-        notify('Korgen tömdes', 'info');
     };
 
     const purchaseCart = async (comment?: string): Promise<boolean> => {
         try {
-        if (!payingUser) throw new Error("No paying user set");
-        if (itemsInCart.length === 0) throw new Error("Cart is empty");
-        if (comment && comment.length > MAX_COMMENT_LENGTH) throw new Error(`Kommentaren får inte vara längre än ${MAX_COMMENT_LENGTH} tecken`);
-            transactionsApi.makePurchase(payingUser.id, itemsInCart, comment);
-            emptyCart();
-            refreshTransactions();
-            setPayingUser(null);
-            notify('Köp Genomfört', 'success');
-            return true;
+            if (!payingUser) notify("Försökte stäcka utan att ha valt användare som ska stå för köpet", 'error');
+            else if (itemsInCart.length === 0) notify("Försökte stäcka utan produkter i korgen", 'error')
+            else if (comment && comment.length > MAX_COMMENT_LENGTH) notify(`Kommentaren får inte vara längre än ${MAX_COMMENT_LENGTH} tecken`);
+            else {
+                await transactionsApi.makePurchase(payingUser.id, itemsInCart, comment);
+                emptyCart();
+                if (currentUser || currentClient?.scope?.split(/\s+/).includes("transactions.read")) refreshTransactions();
+
+                if (currentUser) setPayingUser(currentUser);
+                else setPayingUser(null);
+
+                notify('Köp Genomfört', 'success');
+                return true;
+            }
+            return false;
         }
         catch (error: any) {
             notify(error.message, 'error');

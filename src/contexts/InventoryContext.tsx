@@ -1,8 +1,9 @@
-import { createContext, useState, useContext, ReactNode } from 'react';
+import { createContext, useState, useContext, ReactNode, useEffect } from 'react';
+
 import inventoryApi from '@/api/inventoryApi';
-import { useEffect } from 'react';
 import useAuthContext from './AuthContext';
-import { useNotificationContext } from './NotificationContext';
+import useNotificationContext from './NotificationContext';
+import useTransactionRefreshContext from './TransactionRefreshContext';
 
 
 interface InventoryContextProps {
@@ -21,9 +22,10 @@ const InventoryContext = createContext<InventoryContextProps | undefined>(undefi
 export const InventoryProvider = ({ children }: { children: ReactNode }) => {
     const { isAuthenticated } = useAuthContext();
     const { notify } = useNotificationContext();
+    const { triggerTransactionsRefresh } = useTransactionRefreshContext();
 
-    const [isLoadingInventory, setIsLoadingInventory] = useState<boolean>(true);
-    const [items, setItems] = useState<Item[]>([]);
+    const [ isLoadingInventory, setIsLoadingInventory ] = useState<boolean>(true);
+    const [ items, setItems ] = useState<Item[]>([]);
 
     const fetchInventory = async () => {
         try {
@@ -31,6 +33,7 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
             setItems(newItems);
         } catch (error) {
             console.error('Failed to fetch inventory', error);
+            notify('Misslyckades med att hämta inventariet', 'error');
         }
     };
 
@@ -82,7 +85,7 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
                 return existingItem; // Return the existing item if no changes were made
             }
 
-            const newItem: Item = await inventoryApi.updateItem(itemId, updatedItem)
+            const newItem: Item = await inventoryApi.updateItem(itemId, updatedItem);
             fetchInventory();
             notify(`Vara uppdateratd`, 'success')
             return newItem
@@ -99,7 +102,8 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
             if (!item) throw new Error('Item not found');
 
             await inventoryApi.refillItem(id, amount);
-            fetchInventory();
+            await fetchInventory();
+            triggerTransactionsRefresh();
             notify(`Vara påfylld`, 'success');
             return true;
         } catch (error) {

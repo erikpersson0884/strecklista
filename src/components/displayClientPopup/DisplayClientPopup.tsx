@@ -1,6 +1,7 @@
 import { FC, useState } from "react";
 import "./DisplayClientPopup.css";
-import PopupWindow from "../popupWindow/PopupWindow";
+import PopupWindow from "@/components/popupWindow/PopupWindow";
+import copyIcon from "@/assets/images/copy.svg";
 
 interface DisplayClientPopupProps {
     client: Client;
@@ -47,7 +48,10 @@ const DisplayClientPopup: FC<DisplayClientPopupProps> = ({ client, secret, title
                     title="Klicka för att kopiera"
                 >
                     {client.id}
-                    <span className="copy-feedback">{copiedField === "id" ? "Kopierat!" : ""}</span>
+                    {
+                        copiedField === "id" ? <span className="copy-feedback">Kopierat!</span>
+                        : <img src={copyIcon} alt="Kopiera" className="copy-icon" />
+                    }
                 </button>
             </div>
 
@@ -60,7 +64,10 @@ const DisplayClientPopup: FC<DisplayClientPopupProps> = ({ client, secret, title
                         title="Klicka för att kopiera"
                     >
                         {secret}
-                        <span className="copy-feedback">{copiedField === "secret" ? "Kopierat!" : ""}</span>
+                        {
+                            copiedField === "secret" ? <span className="copy-feedback">Kopierat!</span>
+                            : <img src={copyIcon} alt="Kopiera" className="copy-icon" />
+                        }
                     </button>
                 </div>
             )}
