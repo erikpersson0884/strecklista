@@ -15,7 +15,7 @@ const BalancePage: React.FC = () => {
 
     if (isLoadingUsers) return <p>Laddar användare...</p>
 
-    else if (users.length === 0) return <p>Hittade inga användare</p>
+    else if (users.length === 0) return <p className='page'>Hittade inga användare</p>
 
     else return (
         <div className='balance-page page'>

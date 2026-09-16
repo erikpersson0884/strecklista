@@ -55,26 +55,25 @@ interface ShopItemsProps {
     searchTerm: string;
 }
 const ShopItems: React.FC<ShopItemsProps> = ({ items, searchTerm}) => {
-    if (items.length === 0) {
+    const filteredItems = items.filter((item: Item) => 
+        item.available &&
+        item.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    console.log('filteredItems', filteredItems);
+
+    if (filteredItems.length === 0) return (
         <div className='no-items'>
-                <p>Inga produkter hittades</p>
-            </div>
-    }
+            <p>Inga produkter hittades</p>
+        </div>
+    )
     else return (
         <div className='shop-items'>
-            {items.filter((item: Item) => 
-                item.favorite == true && 
-                item.available &&
-                item.name.toLowerCase().includes(searchTerm.toLowerCase())
-            ).map((item: Item) => 
+            {filteredItems.filter((item: Item) => item.favorite == true).map((item: Item) => 
                 <ShopItem key={item.id} item={item} />
             )}
             
-            {items.filter((item: Item) => 
-                item.favorite == false && 
-                item.available && 
-                item.name.toLowerCase().includes(searchTerm.toLowerCase())
-            ).map((item: Item) => 
+            {filteredItems.filter((item: Item) => item.favorite == false ).map((item: Item) => 
                 <ShopItem key={item.id} item={item} />
             )}
         </div>
