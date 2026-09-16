@@ -37,7 +37,7 @@ export const ClientProvider = ({ children }: { children: ReactNode }) => {
 
     useEffect(() => {
         if (isAuthenticated && currentUser) fetchClients();
-    }, [isAuthenticated]);
+    }, [isAuthenticated, currentUser]);
 
     useEffect(() => {
         const fetchScopes = async () => {
