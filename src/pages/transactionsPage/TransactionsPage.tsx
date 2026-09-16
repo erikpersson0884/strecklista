@@ -101,16 +101,21 @@ const SearchbarAndFilters: FC<SearchbarAndFiltersProps> = ({ showFilters, setSho
 
 const Pagination = () => {
     const {
-        filteredTransactions,
+        hasNextPage,
+        hasPrevPage,
         getNextTransactions,
         getPrevTransactions,
         transactionsPageNumber,
     } = useTransactionsContext();
     return (
         <footer className='pagination'>
-            <button disabled={transactionsPageNumber <= 1} className='prev-button' onClick={getPrevTransactions}>&lt;</button>
+            <button disabled={!hasPrevPage} className='prev-button' onClick={getPrevTransactions}>
+                &lt; Föregående
+            </button>
             <span className='page-number'>{transactionsPageNumber}</span>
-            <button disabled={filteredTransactions.length == 0} className='next-button' onClick={getNextTransactions}>&gt;</button>
+            <button disabled={!hasNextPage} className='next-button' onClick={getNextTransactions}>
+                Nästa &gt;
+            </button>
         </footer>
     );
 };
