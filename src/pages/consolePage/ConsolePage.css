@@ -1,0 +1,76 @@
+.console-page {
+    display: flex;
+    flex-direction: column;
+
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.console-page .console-output {
+    background-color: var(--card-color);
+
+    width: 100%;
+    height: 70vh;
+    padding: 16px;
+    border-radius: 12px;
+
+    overflow-y: auto;
+    cursor: text;
+}
+
+.console-line {
+    margin: 0 0 0.3rem 0;
+
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.console-line-input {
+    color: var(--text-color);
+    font-weight: bold;
+}
+
+.console-line-success {
+    color: var(--success-color);
+}
+
+.console-line-error {
+    color: var(--destructive-color);
+}
+
+.console-line-info {
+    color: var(--faint-text-color);
+}
+
+/* The live prompt line, rendered as the last line of the buffer itself. */
+.console-input-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.console-prompt {
+    color: var(--success-color);
+    font-weight: bold;
+}
+
+.console-input-row input {
+    background: none;
+    border: none;
+    outline: none;
+
+    color: var(--text-color);
+    font-family: inherit;
+    font-size: 1rem;
+
+    flex: 1;
+    padding: 0;
+    caret-color: var(--success-color);
+}
+
+@media screen and (max-width: 600px) {
+    .console-page .console-input-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
