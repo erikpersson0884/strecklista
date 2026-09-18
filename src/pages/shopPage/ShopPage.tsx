@@ -60,8 +60,6 @@ const ShopItems: React.FC<ShopItemsProps> = ({ items, searchTerm}) => {
         item.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    console.log('filteredItems', filteredItems);
-
     if (filteredItems.length === 0) return (
         <div className='no-items'>
             <p>Inga produkter hittades</p>

@@ -80,6 +80,7 @@ export const transactionAdapter = {
             items: items,
             createdTime: apiStockUpdate.createdTime,
             removed: apiStockUpdate.removed,
+            comment: apiStockUpdate.comment || ''
         };
     },
 
