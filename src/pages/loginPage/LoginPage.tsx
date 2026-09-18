@@ -2,8 +2,10 @@ import useAuthContext from "@/contexts/AuthContext";
 import "./LoginPage.css";
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
+
 import useModalContext from "@/contexts/ModalContext";
 import ClientLoginPopup from "@/components/clientLoginPopup/ClientLoginPopup";
+import LoadingPage from "@/pages/loadingPage/LoadingPage";
 
 const LoginPage = () => {
     const { userAuthenticate, setToken, isAuthenticated, isLoggingIn, rememberMe, setRememberMe } = useAuthContext();
@@ -24,7 +26,7 @@ const LoginPage = () => {
         openModal(<ClientLoginPopup />);
     }
 
-    if (isLoggingIn) return <div className="login-page"><p>Logging in...</p></div>;
+    if (isLoggingIn) return <LoadingPage message="Loggar in..." />;
     if (isAuthenticated) return <Navigate to="/" replace />;
 
     return (

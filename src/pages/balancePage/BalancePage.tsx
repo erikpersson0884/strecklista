@@ -8,12 +8,13 @@ import useModalContext from '@/contexts/ModalContext';
 import RefillPopup from '@/components/refillPopup/RefillPopup';
 import addIcon from '@/assets/images/add.svg';
 
+import LoadingPage from '@/pages/loadingPage/LoadingPage';
 
 const BalancePage: React.FC = () => {
     const { currentUser } = useAuthContext();
     const { users, isLoadingUsers, getUserFromUserId } = useUsersContext();
 
-    if (isLoadingUsers) return <p>Laddar användare...</p>
+    if (isLoadingUsers) return <LoadingPage message="Hämtar användare..." />
 
     else if (users.length === 0) return <p className='page'>Hittade inga användare</p>
 
