@@ -35,6 +35,47 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [ currentClient, setCurrentClient ] = useState<Partial<Client> | null>(null);
     const [ rememberMe, setRememberMe ] = useState<boolean>(localStorage.getItem('rememberMe') === 'true');
 
+    const isTokenValid = (token: string): boolean => {
+        try {
+            const payload = JSON.parse(atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
+            if (!payload.exp) return false;
+
+            const currentTime = Math.floor(Date.now() / 1000);
+            return payload.exp > currentTime;
+        }
+        catch (err) {
+            console.error('Error parsing token', err);
+            return false;
+        }
+    };
+
+    const setLogoutTimers = (token: string) => {
+        try {
+            const payload = JSON.parse(atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
+            if (!payload.exp) return;
+            const currentTime = Math.floor(Date.now() / 1000);
+            const timeUntilExpiry = (payload.exp - currentTime) * 1000;
+
+            const warningTimeMs = 2 * 60 * 1000;
+            const warningTimer = setTimeout(() => {
+                notify(`Session will expire in ${warningTimeMs / 60000} min`, "info");
+            }, timeUntilExpiry - warningTimeMs);
+
+            const logoutTimer = setTimeout(() => {
+                notify("Session expired. Please log in again.", "info");
+                logout();
+            }, timeUntilExpiry);
+
+            return () => {
+                clearTimeout(warningTimer);
+                clearTimeout(logoutTimer);
+            };
+        } catch (err) {
+            console.error('Error parsing token for auto-logout', err);
+            logout();
+        }
+    };
+
     const handleTokenUpdate = async (token: string) => {
         try {
             const payload = JSON.parse(atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
@@ -78,29 +119,38 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
     };
 
-    useEffect(() => { // Check for token / remember-me on mount
+    useEffect(() => {
+        // Check for token / remember-me on mount
         const checkForToken = async () => {
-            const storedToken: string | null = localStorage.getItem('authToken');
-            const rememberMe: boolean = localStorage.getItem('rememberMe') === 'true';
-            const lastLoginType: string | null = localStorage.getItem('lastLoginType');
-
-            if (!rememberMe) return;
-
-            if (lastLoginType === 'client') {
-                await clientLogin();
-            } else if (storedToken) {
-                handleTokenUpdate(storedToken);
-            }
-        };
-
-        (async () => {
             setIsLoggingIn(true);
+
             try {
-                await checkForToken();
+                const rememberMe: boolean = localStorage.getItem('rememberMe') === 'true';
+                if (!rememberMe) return;
+
+                const storedToken: string | null = localStorage.getItem('authToken');
+                if (storedToken && isTokenValid(storedToken)) handleTokenUpdate(storedToken);
+                
+                const lastLoginType: string | null = localStorage.getItem('lastLoginType');
+                if (lastLoginType === 'client') {
+                    try {
+                        await clientLogin();
+                    } catch (error) {
+                        notify("Failed to log in with stored client credentials. Please log in again.", "error");
+                    }
+                } else if (lastLoginType === 'user') {
+                    try {
+                        await userAuthenticate();
+                    } catch (error) {
+                        notify("Failed to log in with stored user credentials. Please log in again.", "error");
+                    }
+                }
             } finally {
                 setIsLoggingIn(false);
             }
-        })();
+        };
+
+        checkForToken();
     }, []);
 
     useEffect(() => {
@@ -150,6 +200,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const exchangeCodeForToken = async (code: string): Promise<void> => {
         try {
             setIsLoggingIn(true);
+            localStorage.removeItem('lastLoginType');
+
             const { token, user } = await authApi.userLogin(code);
             handleTokenUpdate(token);
             setCurrentUser(user);
