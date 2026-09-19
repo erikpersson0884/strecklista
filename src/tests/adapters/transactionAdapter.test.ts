@@ -39,9 +39,10 @@ const stockUpdate: ApiStockUpdate = {
     id: 3,
     type: 'stockUpdate',
     createdBy: { userId: 7 },
-    items: [{ id: 9, before: 10, after: 15, displayName: 'Socker' }],
+    items: [{ id: 9, itemId: 9, before: 10, after: 15, displayName: 'Socker' }],
     createdTime: new Date('2024-01-03T00:00:00.000Z'),
     removed: false,
+    comment: 'Test stock update',
 };
 
 describe('transactionAdapter', () => {
@@ -115,6 +116,7 @@ describe('transactionAdapter', () => {
                 items: [{ before: 10, after: 15, name: stockUpdate.items[0].displayName, id: '9' }],
                 createdTime: stockUpdate.createdTime,
                 removed: false,
+                comment: 'Test stock update',
             });
         });
     });

@@ -85,6 +85,12 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
                 return existingItem; // Return the existing item if no changes were made
             }
 
+            const conflictingItem = items.find(otherItem =>otherItem.externalId === updatedItem.externalId && otherItem.id !== itemId)
+            if (conflictingItem) {
+                notify(`${conflictingItem.name} har redan det externa id't: ${updatedItem.externalId}`, 'error');
+                throw new Error(`Another item with the same external id "${updatedItem.externalId}" already exists`);
+            }
+
             const newItem: Item = await inventoryApi.updateItem(itemId, updatedItem);
             fetchInventory();
             notify(`Vara uppdateratd`, 'success')
@@ -95,22 +101,6 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
             return null;
         }
     };
-
-    const refillItem = async (id: Id, amount: number): Promise<boolean> => {
-        try {
-            const item = items.find(item => item.id === id);
-            if (!item) throw new Error('Item not found');
-
-            await inventoryApi.refillItem(id, amount);
-            await fetchInventory();
-            triggerTransactionsRefresh();
-            notify(`Vara påfylld`, 'success');
-            return true;
-        } catch (error) {
-            notify(`Misslyckades med att fylla på vara med id "${id}"`, 'error');
-            return false;
-        }
-    }
 
     const toggleFavourite = async (id: Id): Promise<Item | null> => {
         try {
@@ -126,6 +116,22 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
         } catch (error) {
             notify(`Misslyckades med att uppdatera favoritstatus för vara med id "${id}"`, 'error');
             return null;
+        }
+    }
+
+    const refillItem = async (id: Id, amount: number): Promise<boolean> => {
+        try {
+            const item = items.find(item => item.id === id);
+            if (!item) throw new Error('Item not found');
+
+            await inventoryApi.refillItem(id, amount);
+            await fetchInventory();
+            triggerTransactionsRefresh();
+            notify(`Vara påfylld`, 'success');
+            return true;
+        } catch (error) {
+            notify(`Misslyckades med att fylla på vara med id "${id}"`, 'error');
+            return false;
         }
     }
 

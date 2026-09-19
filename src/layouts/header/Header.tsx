@@ -34,7 +34,7 @@ const Header: React.FC = () => {
     return (
         <header className="page-header">
             <div className="header-content">
-                <Link to="/">
+                <Link to="/" onClick={() => setNavOpen(false)} >
                     <img className= "logo" src={groupAvatarUrl} height={100} alt="logo" onError={(e) => e.currentTarget.src = fallbackLogo} />
                 </Link>
 
@@ -49,7 +49,7 @@ const Header: React.FC = () => {
                             <img src={menuIcon} alt="menu" height={50} />
                         </button>
 
-                        <button onClick={() => navigate('/profile')} className="profile-button" aria-label="Profile">
+                        <button onClick={() => { navigate('/profile'); setNavOpen(false)}} className="profile-button" aria-label="Profile">
                             <img src={profileIcon} alt="profile" height={50} />
                         </button>
                     </div>

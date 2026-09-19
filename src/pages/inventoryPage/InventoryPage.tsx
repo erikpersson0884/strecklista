@@ -13,6 +13,7 @@ import ProductIcon from '@/components/icon/ProductIcon';
 import editIcon from '@/assets/images/edit.svg';
 import deleteIcon from '@/assets/images/delete-white.svg';
 import refillIcon from '@/assets/images/refill.svg';
+import LoadingPage from '../loadingPage/LoadingPage';
 
 
 const InventoryPage: React.FC = () => {
@@ -59,7 +60,7 @@ const InventoryPage: React.FC = () => {
     };
 
 
-    if (isLoadingInventory) return <p>Loading...</p>;
+    if (isLoadingInventory) return <LoadingPage message="Hämtar produkter..." />;
 
     return (
         <div className='inventory-page page'>

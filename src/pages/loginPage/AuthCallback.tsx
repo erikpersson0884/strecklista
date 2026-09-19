@@ -1,8 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import useAuthContext from "@/contexts/AuthContext";
-import "./AuthCallback.css";
-import loadingGif from "@/assets/loading.gif";
+import LoadingPage from "@/pages/loadingPage/LoadingPage";
 
 const AuthCallback = () => {
     const { exchangeCodeForToken } = useAuthContext();
@@ -29,10 +28,7 @@ const AuthCallback = () => {
     }, [location]);
 
     return (
-        <div className="auth-callback page">
-            <img src={loadingGif} alt="Loading" className="loading-gif" height={40}/>
-            <p>Loggar in...</p>
-        </div>
+        <LoadingPage message="Loggar in..." />
     );
 };
 

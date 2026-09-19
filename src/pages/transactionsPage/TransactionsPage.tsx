@@ -14,6 +14,7 @@ import filterIcon from '@/assets/images/filter.svg';
 import shoppingCartIcon from '@/assets/images/shoppingcart.svg';
 import stockIcon from '@/assets/images/stock-add.svg';
 import walletIcon from '@/assets/images/wallet.svg';
+import LoadingPage from '../loadingPage/LoadingPage';
 
 
 const TransactionsPage: FC = () => {
@@ -22,7 +23,9 @@ const TransactionsPage: FC = () => {
     const [ showFilters, setShowFilters ] = useState<boolean>(false);
 
     if (isLoadingTransactions) 
-        return <div className="page"><p>Loading transactions...</p></div>;
+        return <LoadingPage message="Hämtar transaktioner..." />
+    else if (showFilters && !useUsersContext().users) 
+        return <LoadingPage message="Hämtar användare..." />
 
     else return (
         <div className='transactions-page page'>

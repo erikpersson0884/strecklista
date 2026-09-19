@@ -15,6 +15,8 @@ import InventoryPage from './pages/inventoryPage/InventoryPage';
 import BalancePage from './pages/balancePage/BalancePage';
 import TransactionsPage from './pages/transactionsPage/TransactionsPage';
 import BarcodeShopPage from './pages/barcodeShopPage/BarcodeShopPage';
+import AboutPage from './pages/aboutPage/AboutPage';
+import ConsolePage from './pages/consolePage/ConsolePage';
 
 import ProfilePage from './pages/profilePage/ProfilePage';
 import ClientPage from './pages/clientPage/ClientPage';
@@ -31,7 +33,9 @@ const App: React.FC = () => {
         { url: '/profile', component: <ProfilePage /> },
         { url: '/clients', component: <ClientPage /> },
         { url: '/barcode-shop', component: <BarcodeShopPage /> },
+        { url: '/about', component: <AboutPage /> },
         { url: '/style', component: <StylePage /> },
+        { url: '/console', component: <ConsolePage /> },
     ]
     
     return (

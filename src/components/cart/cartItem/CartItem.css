@@ -1,5 +1,5 @@
 .cart-items .cart-item {
-    background-color: rgba(255, 255, 255, 0.04);
+    background-color: var(--accent-color);
 
     display: flex;
     flex-direction: row;

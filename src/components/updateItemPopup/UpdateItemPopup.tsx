@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import ActionPopupWindow from "@/components/actionPopupWindow/ActionPopupWindow";
 
 import useInventoryContext from "@/contexts/InventoryContext";
-import useNotificationContext from '@/contexts/NotificationContext';
 import useModalContext from '@/contexts/ModalContext';
 
 
@@ -12,7 +11,6 @@ interface UpdateItemPopupProps {
 
 const UpdateItemPopup: React.FC<UpdateItemPopupProps> = ({ item }) => {
     const { updateItem } = useInventoryContext();
-    const { notify } = useNotificationContext();
     const { closeModal } = useModalContext();
 
     const [ updatedItem, setUpdatedItem ] = useState(item);
@@ -42,7 +40,6 @@ const UpdateItemPopup: React.FC<UpdateItemPopupProps> = ({ item }) => {
         const successful = await updateItem(item.id, changes);
 
         if (successful) closeModal();
-        else notify(`Misslyckades med att uppdatera`, 'error');
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
