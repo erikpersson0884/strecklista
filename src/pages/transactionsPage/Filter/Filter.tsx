@@ -116,7 +116,7 @@ const EndDateFilter = () => {
 const DeletedTransactionFilter = () => {
     const { filters, setFilters } = useTransactionsContext();
     return (
-        <div className="inputdiv">
+        <div className="inputdiv deleted-transactions-filter">
             <label htmlFor='show-deleted-transactions'>Visa strukna transaktioner:</label>
 
             <label className="switch">

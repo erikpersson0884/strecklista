@@ -2,3 +2,13 @@
 .client-page ul, .client-page li {
     width: 100%;
 }
+
+.client-page .delete-button {
+    background-color: transparent;
+}
+
+@media screen and (min-width: 650px) {
+    .client-page .delete-button:hover {
+        background-color: var(--accent-color);
+    }
+}
