@@ -97,7 +97,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         try {
             if (!payingUser) notify("Försökte stäcka utan att ha valt användare som ska stå för köpet", 'error');
             else if (itemsInCart.length === 0) notify("Försökte stäcka utan produkter i korgen", 'error')
-            else if (comment && comment.length > MAX_COMMENT_LENGTH) notify(`Kommentaren får inte vara längre än ${MAX_COMMENT_LENGTH} tecken`);
+            else if (comment && comment.length > MAX_COMMENT_LENGTH) notify(`Kommentaren får inte vara längre än ${MAX_COMMENT_LENGTH} tecken`, 'error');
             else {
                 await transactionsApi.makePurchase(payingUser.id, itemsInCart, comment);
                 emptyCart();
