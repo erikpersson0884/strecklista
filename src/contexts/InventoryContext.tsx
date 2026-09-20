@@ -12,7 +12,7 @@ interface InventoryContextProps {
     addItem: (displayName: string, internalPrice: number, icon?: string) => Promise<Item | null>;
     updateItem: (id: Id, updatedItem: Partial<Item>) => Promise<Item | null>;
     deleteItem: (id: Id) => Promise<boolean>;
-    toggleFavourite: (id: Id) => Promise<Item | null>;
+    toggleFavourite: (item: Item) => Promise<Item | null>;
     refillItem: (id: Id, amount: number) => Promise<boolean>;
     getItemById: (id: Id) => Item;
 }
@@ -28,21 +28,21 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
     const [ items, setItems ] = useState<Item[]>([]);
 
     const fetchInventory = async () => {
+        setIsLoadingInventory(true);
         try {
             const newItems: Item[] = await inventoryApi.getInventory();
             setItems(newItems);
         } catch (error) {
             console.error('Failed to fetch inventory', error);
             notify('Misslyckades med att hämta inventariet', 'error');
+        } finally {
+            setIsLoadingInventory(false);
         }
     };
 
     useEffect( () => {
         if (!isAuthenticated) return;
-
-        setIsLoadingInventory(true);
         fetchInventory();
-        setIsLoadingInventory(false);
     }, [isAuthenticated]);
 
     const getItemById = (id: Id): Item => {
@@ -85,15 +85,17 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
                 return existingItem; // Return the existing item if no changes were made
             }
 
-            const conflictingItem = items.find(otherItem =>otherItem.externalId === updatedItem.externalId && otherItem.id !== itemId)
-            if (conflictingItem) {
-                notify(`${conflictingItem.name} har redan det externa id't: ${updatedItem.externalId}`, 'error');
-                throw new Error(`Another item with the same external id "${updatedItem.externalId}" already exists`);
+            if (updatedItem.externalId && updatedItem.externalId !== existingItem.externalId) {
+                const conflictingItem = items.find(otherItem =>otherItem.externalId === updatedItem.externalId && otherItem.id !== itemId)
+                if (conflictingItem) {
+                    notify(`${conflictingItem.name} har redan det externa id't: ${updatedItem.externalId}`, 'error');
+                    throw new Error(`Another item with the same external id "${updatedItem.externalId}" already exists`);
+                }
             }
 
             const newItem: Item = await inventoryApi.updateItem(itemId, updatedItem);
             fetchInventory();
-            notify(`Vara uppdateratd`, 'success')
+            notify(`Vara uppdaterad`, 'success')
             return newItem
         } catch (error) {
             console.error('Failed to update item', error);
@@ -102,19 +104,14 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
         }
     };
 
-    const toggleFavourite = async (id: Id): Promise<Item | null> => {
+    const toggleFavourite = async (item: Item): Promise<Item | null> => {
         try {
-            const itemToUpdate = items.find(item => item.id === id)
-            if (!itemToUpdate) throw new Error('Item not found')
-
-            const updateItem: Partial<Item> = { favorite: !itemToUpdate.favorite }
-
-            const item = await inventoryApi.updateItem(id, updateItem)
-            fetchInventory()
-            
-            return item;
+            const updatedItem: Item = await inventoryApi.updateItem(item.id, { favorite: !item.favorite });
+            notify(item.name + (updatedItem.favorite ? ' är nu favorit' : ' är inte längre favorit'), 'success');
+            fetchInventory();
+            return updatedItem;
         } catch (error) {
-            notify(`Misslyckades med att uppdatera favoritstatus för vara med id "${id}"`, 'error');
+            notify(`Misslyckades med att ändra favoritstatus för vara "${item.name}"`, 'error');
             return null;
         }
     }

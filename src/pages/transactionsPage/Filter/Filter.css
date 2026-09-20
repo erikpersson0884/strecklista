@@ -23,11 +23,11 @@
 }
 
 .filter-div .inputdiv {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-
     width: 100%;
+}
+
+.filter-div .deleted-transactions-filter {
+    flex-direction: row;
 }
 
 .filter-div .filter-footer {

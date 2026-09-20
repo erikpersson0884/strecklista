@@ -31,10 +31,15 @@ const Item: React.FC<ProductProps> = ({ item }) => {
         onClick: () => addItemToCart(item),
     });
 
+    const handleFavouriteClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
+        toggleFavourite(item);
+    }
+
     return (
         <div className="shop-item" {...longPress}>
             { currentUser && ( // only show favourite button if logged in as a user, and not as a client
-                <button className='favourite-button' onClick={(e) => {e.stopPropagation(); toggleFavourite(item.id)}}>
+                <button className='favourite-button' onClick={handleFavouriteClick}>
                     <img 
                         src={item.favorite ? favouriteIconFilled : favouriteIcon}
                         className='favourite-icon'

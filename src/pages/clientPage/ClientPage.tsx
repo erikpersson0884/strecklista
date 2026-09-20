@@ -60,7 +60,7 @@ const ClientPage: React.FC = () => {
                 {clients.map((client) => (
                     <li key={client.id} className="list-item" onClick={() => openViewClientModal(client)}>
                         <p>{client.displayName}</p>
-                        <button onClick={(e) => {
+                        <button className="delete-button" onClick={(e) => {
                             e.stopPropagation();
                             handleDeleteClient(client.id);
                         }}>
