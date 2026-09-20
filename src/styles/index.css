@@ -11,7 +11,7 @@
 
     --foreground-color: #fff;
     --card-color: #242424;
-    --accent-color: #333;
+    --accent-color: #ffffff0a;
 
     --text-color: #ffffff;
     --faint-text-color: #d9d7db;
@@ -23,7 +23,7 @@
     --input-bg-color: #2a2a2a;
     --input-bg-hover-color: #333;
 
-    --border-color: #d9d7db;
+    --border-color: #ffffff14;
 
     --success-color: #0e8b3c;
     --destructive-color: #ab2222;
@@ -75,6 +75,7 @@ button {
     background-color: var(--button-color);
     color: var(--text-color);
 
+    font-size: 1rem;
     font-weight: normal;
     text-align: center;
 
@@ -86,7 +87,7 @@ button {
     justify-content: center;
     gap: .5rem;
 
-    padding: .5rem 1rem;
+    padding: 1rem 1rem;
     border: none;
     border-radius: 10px;
     

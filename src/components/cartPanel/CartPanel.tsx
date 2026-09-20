@@ -3,7 +3,7 @@ import './CartPanel.css'
 import useCartContext from '@/contexts/CartContext'
 import useUsersContext from '@/contexts/UsersContext'
 import Barcode from 'react-barcode'
-import ProductIcon from '@/components/productIcon/ProductIcon'
+import ProductIcon from '@/components/icon/Icon'
 
 
 interface ItemInCartProps {
@@ -13,10 +13,10 @@ interface ItemInCartProps {
 }
 const ItemInCart: React.FC<ItemInCartProps> = ({item, index, justAdded}) => {
     return (
-        <li key={`${item.id}-${index}`} className={`itemsInCart-item ${justAdded ? 'blinking' : ''}`}>
-            <ProductIcon item={item} />
+        <li key={`${item.id}-${index}`} className={`cart-item ${justAdded ? 'blinking' : ''}`}>
+            <ProductIcon src={item.icon} />
             <p>{item.name}</p>
-            <p>{item.quantity} st</p>
+            <p className='item-quantity'>{item.quantity} st</p>
         </li>
     )
 }
@@ -63,11 +63,16 @@ const CartPanel: React.FC = () => {
         )
     }
 
+    const handleResetCart = () => {
+        emptyCart();
+        setPayingUser(null);
+    }
+
     return (
-        <div className='shopping-cart panel'>
+        <div className='cart-panel panel'>
             <header>
                 <h2>Kundvagn</h2>
-                <button className='empty-itemsInCart-button' onClick={emptyCart} title="Töm kundvagn">
+                <button className='empty-itemsInCart-button' onClick={handleResetCart} title="Töm kundvagn">
                     {/* <img src={emptyCartIcon} alt="Töm kundvagn" className='itemsInCart-icon' height={40}/> */}
                     <Barcode 
                         value="emptyCart"

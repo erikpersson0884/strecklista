@@ -1,11 +1,18 @@
 import useAuthContext from "@/contexts/AuthContext";
 import "./LoginPage.css";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 
+import useModalContext from "@/contexts/ModalContext";
+import ClientLoginPopup from "@/components/clientLoginPopup/ClientLoginPopup";
+import LoadingPage from "@/pages/loadingPage/LoadingPage";
+
 const LoginPage = () => {
-    const { authenticate, setToken, isAuthenticated, isLoggingIn } = useAuthContext();
+    const { userAuthenticate, setToken, isAuthenticated, isLoggingIn, rememberMe, setRememberMe } = useAuthContext();
+    const { openModal } = useModalContext();
+
     const [ numberOfClicks, setNumberOfClicks ] = useState(0);
+   
 
     useEffect(() => {
         if (numberOfClicks >= 3) {
@@ -14,8 +21,12 @@ const LoginPage = () => {
         }
     }, [numberOfClicks, setToken]);
 
-    if (isLoggingIn) return <div className="login-page"><p>Logging in...</p></div>;
 
+    const handleClientLogin = () => {
+        openModal(<ClientLoginPopup />);
+    }
+
+    if (isLoggingIn) return <LoadingPage message="Loggar in..." />;
     if (isAuthenticated) return <Navigate to="/" replace />;
 
     return (
@@ -26,7 +37,20 @@ const LoginPage = () => {
             >
                 Strecklista
             </h1>
-            <button onClick={authenticate}>Logga in med Gamma</button>
+            <button onClick={userAuthenticate}>Logga in med Gamma</button>
+            <button onClick={handleClientLogin}>Logga in med klient</button>
+            <div className="remember-me">
+                <p>Kom ihåg mig: </p>
+                <label className="switch">
+                    <input
+                        type="checkbox"
+                        id="remember-login"
+                        checked={rememberMe}
+                        onChange={(e) => setRememberMe(e.target.checked)}
+                    />
+                    <span className="slider"></span>
+                </label>
+            </div>
         </div>
     );
 };

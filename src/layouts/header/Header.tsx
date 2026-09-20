@@ -8,33 +8,33 @@ import menuIcon from '@/assets/images/menu-icon.svg';
 import profileIcon from '@/assets/images/profile.svg';
 
 const Header: React.FC = () => {
-    const { isAuthenticated } = useAuthContext();
+    const { isAuthenticated, currentClient } = useAuthContext();
     const navigate = useNavigate();
 
     const [ navOpen, setNavOpen ] = React.useState(false)
     const [ groupAvatarUrl, setGroupAvatarUrl ] = React.useState<string>(fallbackLogo)
 
     const pages = [
-        { url: '/', linkText: 'Strecka', authenticatedOnly: true },
-        { url: '/inventory', linkText: 'Utbud', authenticatedOnly: true },
-        { url: '/balance', linkText: 'Tillgodo', authenticatedOnly: true },
-        { url: '/transactions', linkText: 'Transaktioner', authenticatedOnly: true },
-        { url: '/barcode-shop', linkText: 'Streckkods-handel', authenticatedOnly: true, className: 'barcode-shop-link' },
+        { url: '/', linkText: 'Strecka', visibleCriteria: isAuthenticated },
+        { url: '/inventory', linkText: 'Utbud', visibleCriteria: isAuthenticated && (!currentClient || currentClient.scope?.includes("items.read")) },
+        { url: '/balance', linkText: 'Tillgodo', visibleCriteria: isAuthenticated && (!currentClient || currentClient.scope?.includes("group.read")) },
+        { url: '/transactions', linkText: 'Transaktioner', visibleCriteria: isAuthenticated && (!currentClient || currentClient.scope?.includes("transactions.read")) },
+        { url: '/barcode-shop', linkText: 'Streckkods-handel', visibleCriteria: isAuthenticated, className: 'barcode-shop-link' },
     ]
 
-
     React.useEffect(() => {
-        const getGroupAvatar = async () => {
+        const setLogoToGroupIcon = async () => {
             const groupInfo = await usersApi.getGroupInfo()
             if (groupInfo.avatarUrl) setGroupAvatarUrl(groupInfo.avatarUrl)
         }
-        if (isAuthenticated) getGroupAvatar()
+        if (isAuthenticated) setLogoToGroupIcon()
+        else setGroupAvatarUrl(fallbackLogo)
     }, [isAuthenticated])
     
     return (
         <header className="page-header">
             <div className="header-content">
-                <Link to="/">
+                <Link to="/" onClick={() => setNavOpen(false)} >
                     <img className= "logo" src={groupAvatarUrl} height={100} alt="logo" onError={(e) => e.currentTarget.src = fallbackLogo} />
                 </Link>
 
@@ -49,7 +49,7 @@ const Header: React.FC = () => {
                             <img src={menuIcon} alt="menu" height={50} />
                         </button>
 
-                        <button onClick={() => navigate('/profile')} className="profile-button" aria-label="Profile">
+                        <button onClick={() => { navigate('/profile'); setNavOpen(false)}} className="profile-button" aria-label="Profile">
                             <img src={profileIcon} alt="profile" height={50} />
                         </button>
                     </div>
@@ -58,7 +58,7 @@ const Header: React.FC = () => {
 
             <nav className={`header-nav ${navOpen ? 'nav-open' : ''}`}>
                 {pages
-                    .filter((page) => !page.authenticatedOnly || isAuthenticated)
+                    .filter((page) => page.visibleCriteria !== false)
                     .map((page) => (
                         <Link
                             to={page.url}

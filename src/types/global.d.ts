@@ -22,12 +22,12 @@ declare global {
         }
         createdTime: Date;
         removed: boolean;
+        comment: string;
     }
 
     interface FinancialTransaction  extends ITransaction {
         createdFor: Id;
         total: number;
-        comment: string;
     }
 
     interface Purchase extends FinancialTransaction {

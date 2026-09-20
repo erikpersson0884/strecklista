@@ -75,3 +75,11 @@
     font-size: .85rem;
     line-height: 1.2;
 }
+
+.display-client-popup .copy-icon {
+    flex: 0;
+
+    width: 16px;
+    height: 16px;
+    margin-left: auto;
+}

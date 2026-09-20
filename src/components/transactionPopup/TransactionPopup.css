@@ -9,6 +9,24 @@
     gap: .8rem;
 }
 
+.transaction-overview .transaction-time {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: .5rem;
+}
+
+.transaction-overview .transaction-bubble {
+    background-color: var(--accent-color);
+
+    font-size: 1rem;
+
+    padding: .4rem 1rem;
+    border-radius: .8rem;
+
+    display: inline-block;
+}
+
 
 .transaction-overview p {
     display: flex;
@@ -32,17 +50,13 @@
 
 /* --- RECEIPT DETAILS --- */
 
-.receipt-details>hr {
-    margin: .5rem 0;
-}
-
 .receipt-list {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    gap: .5rem;
+    gap: 1rem;
 
-    max-height: 5.7rem;
+    max-height: 13rem;
     overflow-y: auto;
 }
 
@@ -50,6 +64,10 @@
     display: flex;
     justify-content: flex-end;
     gap: .5rem;
+}
+
+.receipt-item {
+    background-color: var(--accent-color);
 }
 
 .receipt-item p:first-child {
@@ -64,10 +82,9 @@
 .receipt-details .total {
     font-weight: bold;
 
-    justify-content: space-between !important;
+    justify-content: space-between;
 }
 
-
 .transaction-popup .accept-button {
-    background-color: var(--primary-color) !important;
+    background-color: var(--destructive-color);
 }

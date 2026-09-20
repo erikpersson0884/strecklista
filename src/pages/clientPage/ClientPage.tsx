@@ -8,14 +8,14 @@ import ClientPopup from "@/components/clientPopup/ClientPopup";
 import DisplayClientPopup from "@/components/displayClientPopup/DisplayClientPopup";
 
 import deleteIcon from "@/assets/images/delete-white.svg";
+import LoadingPage from "../loadingPage/LoadingPage";
 
 const ClientPage: React.FC = () => {
     const { clients, isLoadingClients, createClient, deleteClient } = useClientContext();
     const { openModal } = useModalContext();
 
-    if (isLoadingClients) {
-        return <div>Loading clients...</div>;
-    }
+    if (isLoadingClients) return <LoadingPage message="Hämtar klienter..." />
+
 
     const handleCreateClient = async (name: string, description: string, scope: string) => {
         const {client: createdClient, secret} = await createClient(name, description, scope);
@@ -56,10 +56,11 @@ const ClientPage: React.FC = () => {
         <div className="client-page page">
             <h2>Client Manager</h2>
             <ul >
+                {clients.length === 0 && <p className="no-clients">Inga klienter hittades.</p>}
                 {clients.map((client) => (
                     <li key={client.id} className="list-item" onClick={() => openViewClientModal(client)}>
                         <p>{client.displayName}</p>
-                        <button onClick={(e) => {
+                        <button className="delete-button" onClick={(e) => {
                             e.stopPropagation();
                             handleDeleteClient(client.id);
                         }}>
@@ -68,11 +69,9 @@ const ClientPage: React.FC = () => {
                     </li>
                 ))}
 
-                <li className="list-item add-item-li">
-                    <button onClick={openCreateClientModal}>
-                        Add Client
-                    </button>
-                </li>
+                <button className="list-item list-item-add" onClick={openCreateClientModal}>
+                    Add Client
+                </button>
             </ul>
         </div>
     );

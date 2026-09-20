@@ -5,9 +5,10 @@ import favouriteIcon from '@/assets/images/favourite.svg';
 import favouriteIconFilled from '@/assets/images/favourite-filled.svg';
 import defaultItemImage from '@/assets/images/grocery.svg';
 
-import { useCartContext } from '@/contexts/CartContext';
-import { useInventoryContext } from '@/contexts/InventoryContext';
-import { useModalContext } from '@/contexts/ModalContext';
+import useCartContext from '@/contexts/CartContext';
+import useInventoryContext from '@/contexts/InventoryContext';
+import useModalContext from '@/contexts/ModalContext';
+import useAuthContext from '@/contexts/AuthContext';
 
 import { useLongPress } from '@/hooks/useLongPress';
 import SwishQRCode from '@/components/swishQRCode/SwishQRCode';
@@ -21,6 +22,7 @@ const Item: React.FC<ProductProps> = ({ item }) => {
     const { addItemToCart, itemsInCart } = useCartContext(); 
     const { toggleFavourite } = useInventoryContext();
     const { openModal } = useModalContext();
+    const { currentUser } = useAuthContext();
 
     const internalPrice: string = item.internalPrice % 1 === 0 ? item.internalPrice.toFixed(0) : item.internalPrice.toFixed(2)
 
@@ -29,16 +31,23 @@ const Item: React.FC<ProductProps> = ({ item }) => {
         onClick: () => addItemToCart(item),
     });
 
+    const handleFavouriteClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
+        toggleFavourite(item);
+    }
+
     return (
-        <div className="item" {...longPress}>
-            <button className='favourite-button' onClick={(e) => {e.stopPropagation(); toggleFavourite(item.id)}}>
-                <img 
-                    src={item.favorite ? favouriteIconFilled : favouriteIcon}
-                    className='favourite-icon'
-                    alt="heart" 
-                    height={20}
-                />
-            </button>
+        <div className="shop-item" {...longPress}>
+            { currentUser && ( // only show favourite button if logged in as a user, and not as a client
+                <button className='favourite-button' onClick={handleFavouriteClick}>
+                    <img 
+                        src={item.favorite ? favouriteIconFilled : favouriteIcon}
+                        className='favourite-icon'
+                        alt="heart" 
+                        height={20}
+                    />
+                </button>
+            )}
 
             {itemsInCart.find(cartItem => cartItem.id === item.id) && (
                 <p className='items-indicator'>
@@ -46,10 +55,10 @@ const Item: React.FC<ProductProps> = ({ item }) => {
                 </p>
             )}
 
-            <div className='item-image'>
+            <div className='shop-item-image'>
                 <img
                     src={item.icon || defaultItemImage}
-                    className='item-icon'
+                    className='shop-item-icon'
                     alt={item.name}
                     onError={(e) => {
                         e.currentTarget.onerror = null; // prevent loop
@@ -58,11 +67,11 @@ const Item: React.FC<ProductProps> = ({ item }) => {
                 />
             </div>
 
-            <div className='item-info'>
+            <div className='shop-item-info'>
                 <h2>{item.name}</h2>
 
                 <div className='item-stats'>
-                    <p>{item.amountInStock} i lager</p>
+                    <p>{Math.max(item.amountInStock, 0)} st kvar</p>
                     <p>{internalPrice}:-</p>
                 </div>
             </div>

@@ -1,9 +1,8 @@
-import { FC, useState, ChangeEvent, useEffect } from 'react';
+import { FC, useState, ChangeEvent } from 'react';
 import './Cart.css';
 
 import { useCartContext } from '@/contexts/CartContext';
-import { useUsersContext } from '@/contexts/UsersContext';
-import useAuthContext from '@/contexts/AuthContext';
+import useUsersContext from '@/contexts/UsersContext';
 import useModalContext from '@/contexts/ModalContext';
 import useNotificationContext from '@/contexts/NotificationContext';
 
@@ -11,12 +10,9 @@ import CartItem from './cartItem/CartItem';
 
 
 const Cart: FC = () => {
-    const { itemsInCart, purchaseCart } = useCartContext();
-    const { currentUser } = useAuthContext();
+    const { itemsInCart, payingUser, purchaseCart } = useCartContext();
     const { closeModal } = useModalContext();
     const { notify } = useNotificationContext();
-
-    if (!currentUser) return null; // Should never happen, but it can open before currentUser is set, so we need to handle this case
 
     const [ comment, setComment ] = useState<string>('');
     const [ includeComment, setIncludeComment ] = useState<boolean>(false);
@@ -41,7 +37,7 @@ const Cart: FC = () => {
                     setIncludeComment={setIncludeComment} 
                 />
 
-                <button className='pay-button' onClick={handleBuyProducts} disabled={itemsInCart.length === 0}>
+                <button className='pay-button' onClick={handleBuyProducts} disabled={itemsInCart.length === 0 || payingUser === null}>
                     Sträcka
                 </button>
             </div>
@@ -53,7 +49,7 @@ const CartItems: FC = () => {
     const { itemsInCart } = useCartContext();
 
     return (
-        <ul className='cart-list'>
+        <ul className='cart-items'>
             { itemsInCart.length === 0 && <p className='empty-cart-message'>Din korg är tom</p> }
             {itemsInCart.map((item) => (
                 <CartItem key={item.id} item={item} />
@@ -65,23 +61,14 @@ const CartItems: FC = () => {
 
 const CartFooter: FC = () => {
     const { payingUser, setPayingUser } = useCartContext();
-    const { currentUser } = useAuthContext();
     const { users, getUserFromUserId } = useUsersContext();
     const { total } = useCartContext();
 
-    if (!currentUser) return null; // Should never happen, but it can open before currentUser is set, so we need to handle this case
 
     const handleSelectUserChangeChange = (e: ChangeEvent<HTMLSelectElement>): void => {
         const selectedUserId: string = e.target.value;
         setPayingUser(getUserFromUserId(selectedUserId));
     };
-
-    useEffect(() => {
-        if (currentUser && !payingUser) {
-            setPayingUser(currentUser);
-        }
-    }, [currentUser, payingUser, setPayingUser]);
-
 
     return (
         <div className='cart-footer'>
@@ -95,9 +82,10 @@ const CartFooter: FC = () => {
                     <label htmlFor="selectPayingUser">Sträcka åt</label>
                     <select 
                         id="selectPayingUser"
-                        value={payingUser?.id || currentUser.id}
+                        value={payingUser?.id ?? undefined}
                         onChange={handleSelectUserChangeChange}
                     >
+                        <option value={undefined}>Ingen</option>
                         {users.map((user: User) => (
                             <option key={user.id} value={user.id}>
                                 {user.nick}
@@ -125,7 +113,6 @@ const CommentSection: FC<CommentSectionProps> = ({comment, setComment, includeCo
     )
     else return (
         <>
-            <hr />
             <div className='comment-header'>
                 <label htmlFor="comment">Kommentar (valfritt): </label>
                 <button onClick={() => { setIncludeComment(false); }}>Ingen Kommentar</button>

@@ -1,8 +1,9 @@
-import { createContext, useState, useContext, ReactNode } from 'react';
+import { createContext, useState, useContext, ReactNode, useEffect } from 'react';
+
 import inventoryApi from '@/api/inventoryApi';
-import { useEffect } from 'react';
 import useAuthContext from './AuthContext';
-import { useNotificationContext } from './NotificationContext';
+import useNotificationContext from './NotificationContext';
+import useTransactionRefreshContext from './TransactionRefreshContext';
 
 
 interface InventoryContextProps {
@@ -11,7 +12,7 @@ interface InventoryContextProps {
     addItem: (displayName: string, internalPrice: number, icon?: string) => Promise<Item | null>;
     updateItem: (id: Id, updatedItem: Partial<Item>) => Promise<Item | null>;
     deleteItem: (id: Id) => Promise<boolean>;
-    toggleFavourite: (id: Id) => Promise<Item | null>;
+    toggleFavourite: (item: Item) => Promise<Item | null>;
     refillItem: (id: Id, amount: number) => Promise<boolean>;
     getItemById: (id: Id) => Item;
 }
@@ -21,25 +22,27 @@ const InventoryContext = createContext<InventoryContextProps | undefined>(undefi
 export const InventoryProvider = ({ children }: { children: ReactNode }) => {
     const { isAuthenticated } = useAuthContext();
     const { notify } = useNotificationContext();
+    const { triggerTransactionsRefresh } = useTransactionRefreshContext();
 
-    const [isLoadingInventory, setIsLoadingInventory] = useState<boolean>(true);
-    const [items, setItems] = useState<Item[]>([]);
+    const [ isLoadingInventory, setIsLoadingInventory ] = useState<boolean>(true);
+    const [ items, setItems ] = useState<Item[]>([]);
 
     const fetchInventory = async () => {
+        setIsLoadingInventory(true);
         try {
             const newItems: Item[] = await inventoryApi.getInventory();
             setItems(newItems);
         } catch (error) {
             console.error('Failed to fetch inventory', error);
+            notify('Misslyckades med att hämta inventariet', 'error');
+        } finally {
+            setIsLoadingInventory(false);
         }
     };
 
     useEffect( () => {
         if (!isAuthenticated) return;
-
-        setIsLoadingInventory(true);
         fetchInventory();
-        setIsLoadingInventory(false);
     }, [isAuthenticated]);
 
     const getItemById = (id: Id): Item => {
@@ -82,9 +85,17 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
                 return existingItem; // Return the existing item if no changes were made
             }
 
-            const newItem: Item = await inventoryApi.updateItem(itemId, updatedItem)
+            if (updatedItem.externalId && updatedItem.externalId !== existingItem.externalId) {
+                const conflictingItem = items.find(otherItem =>otherItem.externalId === updatedItem.externalId && otherItem.id !== itemId)
+                if (conflictingItem) {
+                    notify(`${conflictingItem.name} har redan det externa id't: ${updatedItem.externalId}`, 'error');
+                    throw new Error(`Another item with the same external id "${updatedItem.externalId}" already exists`);
+                }
+            }
+
+            const newItem: Item = await inventoryApi.updateItem(itemId, updatedItem);
             fetchInventory();
-            notify(`Vara uppdateratd`, 'success')
+            notify(`Vara uppdaterad`, 'success')
             return newItem
         } catch (error) {
             console.error('Failed to update item', error);
@@ -93,35 +104,31 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
         }
     };
 
+    const toggleFavourite = async (item: Item): Promise<Item | null> => {
+        try {
+            const updatedItem: Item = await inventoryApi.updateItem(item.id, { favorite: !item.favorite });
+            notify(item.name + (updatedItem.favorite ? ' är nu favorit' : ' är inte längre favorit'), 'success');
+            fetchInventory();
+            return updatedItem;
+        } catch (error) {
+            notify(`Misslyckades med att ändra favoritstatus för vara "${item.name}"`, 'error');
+            return null;
+        }
+    }
+
     const refillItem = async (id: Id, amount: number): Promise<boolean> => {
         try {
             const item = items.find(item => item.id === id);
             if (!item) throw new Error('Item not found');
 
             await inventoryApi.refillItem(id, amount);
-            fetchInventory();
+            await fetchInventory();
+            triggerTransactionsRefresh();
             notify(`Vara påfylld`, 'success');
             return true;
         } catch (error) {
             notify(`Misslyckades med att fylla på vara med id "${id}"`, 'error');
             return false;
-        }
-    }
-
-    const toggleFavourite = async (id: Id): Promise<Item | null> => {
-        try {
-            const itemToUpdate = items.find(item => item.id === id)
-            if (!itemToUpdate) throw new Error('Item not found')
-
-            const updateItem: Partial<Item> = { favorite: !itemToUpdate.favorite }
-
-            const item = await inventoryApi.updateItem(id, updateItem)
-            fetchInventory()
-            
-            return item;
-        } catch (error) {
-            notify(`Misslyckades med att uppdatera favoritstatus för vara med id "${id}"`, 'error');
-            return null;
         }
     }
 

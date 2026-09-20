@@ -1,8 +1,12 @@
-import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
+import React, { createContext, useState, useContext, ReactNode } from 'react';
 import transactionsApi from '@/api/transactionApi';
-import { useUsersContext } from './UsersContext';
-import { useInventoryContext } from './InventoryContext';
+import useUsersContext from './UsersContext';
+import useInventoryContext from './InventoryContext';
 import useAuthContext from './AuthContext';
+import useNotificationContext from './NotificationContext';
+import { isAxiosError } from "axios";
+import { useTransactionRefreshContext } from './TransactionRefreshContext';
+
 
 interface TransactionsContextProps {
     isLoadingTransactions: boolean;
@@ -13,6 +17,8 @@ interface TransactionsContextProps {
     resetFilters: () => void;
     getNextTransactions: () => void;
     getPrevTransactions: () => void;
+    hasNextPage: boolean;
+    hasPrevPage: boolean;
     removeTransaction: (id: Id) => Promise<boolean>;
     refreshTransactions: () => void;
     transactionsPageNumber: number;
@@ -30,15 +36,17 @@ interface TransactionFilters {
 const TransactionsContext = createContext<TransactionsContextProps | undefined>(undefined);
 
 export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-    const { isLoadingUsers } = useUsersContext();
+    const { isLoadingUsers, getUserFromUserId } = useUsersContext();
     const { isLoadingInventory } = useInventoryContext();
-    const { isAuthenticated } = useAuthContext();
+    const { isAuthenticated, currentClient } = useAuthContext();
+    const { notify } = useNotificationContext();
+    const { refreshSignal } = useTransactionRefreshContext();
 
     const [filteredTransactions, setFilteredTransactions] = useState<ITransaction[]>([]);
     const [transactions, setTransactions] = useState<ITransaction[]>([]);
     const [nextUrl, setNextUrl] = useState<string | null>(null);
     const [prevUrl, setPrevUrl] = useState<string | null>(null);
-    const [isLoadingTransactions, setIsLoadingTransactions] = useState<boolean>(true);
+    const [isLoadingTransactions, setIsLoadingTransactions] = useState<boolean>(false);
     const [transactionsPageNumber, settransactionsPageNumber] = useState<number>(1);
     const [filters, setFilters] = useState<TransactionFilters>({
         userId: 'all',
@@ -59,18 +67,14 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
         });
     };
 
-    useEffect(() => {
+    // Only `filters.userId` maps to a server-side query param (createdBy/createdFor).
+    // Everything else here (search text, date range, type, showRemoved) is applied
+    // client-side, below, against whatever page is already in memory. That's a real
+    // limitation - searching only searches the currently loaded page, it doesn't
+    // reach across pages - but it at least means typing in the search box no longer
+    // triggers a network request on every keystroke.
+    React.useEffect(() => {
         let filtered: ITransaction[] = transactions;
-
-        if (filters.userId !== 'all') {
-            const id = filters.userId;
-            filtered = filtered.filter((t) => {
-                if (t.type === 'purchase' || t.type === 'deposit') {
-                    return (t as FinancialTransaction).createdFor === id;
-                }
-                else return t.createdBy.id === id;
-            });
-        }
 
         if (filters.startDate) {
             filtered = filtered.filter(
@@ -95,79 +99,109 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
         if (filters.searchQuery.trim()) {
             const searchString = filters.searchQuery.toLowerCase();
             filtered = filtered.filter((t: ITransaction) => {
-                // If the createdTime string matches the search, include it
-                if (t.createdTime.toISOString().slice(0, 16).toLowerCase().includes(searchString)) {
-                    return true;
+                if (t.createdBy.type === 'user') {
+                    const createdByUser: User = getUserFromUserId(t.createdBy.id);
+                    if (createdByUser.nick.toLowerCase().includes(searchString) || createdByUser.name.toLowerCase().includes(searchString)) return true;
                 }
 
-                // If it's a financial transaction, check createdFor.nick
                 if (t.type === 'purchase' || t.type === 'deposit') {
-                    // const ft = t as FinancialTransaction;
-                    // return getUserFromUserId(ft.createdFor).nick.toLowerCase().includes(searchString) ||
-                    //     getUserFromUserId(t.createdBy).nick.toLowerCase().includes(searchString) ||
-                    //     ft.total.toString().includes(searchString);
-                    return t.createdBy.id; // TODO: Implement a proper search for non-financial transactions
-                } else {
-                    // For stock updates or other transactions
-                    // return getUserFromUserId(t.createdBy).nick.toLowerCase().includes(searchString)
-                    return t.createdBy.id; // TODO: Implement a proper search for non-financial transactions
+                    const financialTransaction = t as Purchase | Deposit;
+                    if (financialTransaction.total.toString().includes(searchString)) return true;
+
+                    const createdForUser: User = getUserFromUserId(financialTransaction.createdFor);
+                    if (createdForUser.nick.toLowerCase().includes(searchString) || createdForUser.name.toLowerCase().includes(searchString)) return true;
                 }
+
+                if (t.type === 'purchase') {
+                    const purchase: Purchase = t as Purchase;
+                    const purchasedItemNames: string[] = purchase.items.map(item => item.item.displayName.toLowerCase());
+                    if (purchasedItemNames.some(name => name.includes(searchString))) return true;
+                }
+
+                if (t.type === 'stockUpdate') {
+                    const stockUpdate: StockUpdate = t as StockUpdate;
+                    if (stockUpdate.items.some(item => String(item.after - item.before).includes(searchString))) return true;
+
+                    const updatedItemNames: string[] = stockUpdate.items.map(item => item.name.toLowerCase());
+                    if (updatedItemNames.some(name => name.includes(searchString))) return true;
+                }
+
+                if (t.comment && t.comment.toLowerCase().includes(searchString)) return true;
+
+                return false;
             });
         }
 
         setFilteredTransactions(filtered);
     }, [transactions, filters]);
 
-
-
-    const getTransactions = async (url?: string | null) => {
+    const fetchTransactions = async (url?: string | null): Promise<boolean> => {
+        setIsLoadingTransactions(true);
         try {
-            const response = await transactionsApi.fetchTransactions(url, 30, 0);
+            const createdBy = filters.userId !== 'all' ? filters.userId : undefined;
+            const createdFor = filters.userId !== 'all' ? filters.userId : undefined;
+            const response = await transactionsApi.fetchTransactions(url, 20, 0, createdBy, createdFor);
+
+            setTransactions(response.transactions);
             setNextUrl(response.nextUrl);
             setPrevUrl(response.prevUrl);
 
-            setTransactions(response.transactions);
+            // A call with no explicit url is always a "fresh" load - initial mount,
+            // the userId filter changing, or a refresh signal firing - so the page
+            // counter and prev/next buttons should reset back to page 1. Calls with
+            // an explicit url are pagination itself (see getNext/PrevTransactions),
+            // which manage the counter themselves.
+            if (!url) settransactionsPageNumber(1);
+
+            return true;
         } catch (error) {
+            if (isAxiosError(error)) {
+                const backendMessage = error.response?.data?.error?.message;
+                notify("Fetching transactions failed: " + (backendMessage ?? error.message), 'error');
+            }
             console.error(error);
+            return false;
+        } finally {
+            setIsLoadingTransactions(false);
         }
     };
 
     const getNextTransactions = async () => {
-        if (!nextUrl) throw new Error('No next URL available');
-        getTransactions(nextUrl);
-        settransactionsPageNumber(prevPage => prevPage + 1);
+        if (!nextUrl) return;
+        const success = await fetchTransactions(nextUrl);
+        if (success) settransactionsPageNumber(prevPage => prevPage + 1);
     }
 
     const getPrevTransactions = async () => {
-        if (!prevUrl) throw new Error('No previous URL available');
-        getTransactions(prevUrl);
-        settransactionsPageNumber(prevPage => Math.max(prevPage - 1, 1));
+        if (!prevUrl) return;
+        const success = await fetchTransactions(prevUrl);
+        if (success) settransactionsPageNumber(prevPage => Math.max(prevPage - 1, 1));
     }
 
-
+    // Handles the initial load, auth/loading becoming ready, a userId filter change,
+    // and refreshSignal bumps (from UsersContext/InventoryContext after a deposit or
+    // stock refill - see TransactionRefreshContext.tsx) all through one path, so
+    // there's exactly one fetch per meaningful change instead of duplicated ones.
     React.useEffect(() => {
-        if (!isAuthenticated || isLoadingUsers || isLoadingInventory) return;
-
-        const fetchTransactions = async () => {
-            await getTransactions();
-            setIsLoadingTransactions(false);
-        };
-        fetchTransactions();
-    }, [isLoadingUsers, isAuthenticated, isLoadingInventory]);
+        const notInScope = !currentClient?.scope?.includes('transactions.read');
+        if (isLoadingUsers || isLoadingInventory) return;
+        if (isAuthenticated && !(currentClient && notInScope)) fetchTransactions();
+    }, [isLoadingUsers, isAuthenticated, isLoadingInventory, currentClient, refreshSignal, filters.userId]);
 
 
     const removeTransaction = async (id: Id): Promise<boolean> => {
-        const success = await transactionsApi.removeTransaction(id);
-        if (success) {
+        try {
+            await transactionsApi.removeTransaction(id);
             setTransactions((prevTransactions) => prevTransactions.filter((ITransaction) => ITransaction.id !== id));
+            return true;
+        } catch (error) {
+            notify('Något gick fel, försök igen senare.');
+            return false;
         }
-        return success;
     };
 
     const refreshTransactions = async () => {
-        setIsLoadingTransactions(true);
-        await getTransactions();
-        setIsLoadingTransactions(false);
+        await fetchTransactions();
     }
 
     return (
@@ -177,6 +211,8 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
             filteredTransactions, 
             getNextTransactions, 
             getPrevTransactions, 
+            hasNextPage: !!nextUrl,
+            hasPrevPage: !!prevUrl,
             removeTransaction,
             transactionsPageNumber,
             filters,

@@ -2,7 +2,7 @@ import React from 'react';
 import './ShopPage.css';
 
 import ShopItem from '@/components/shopItem/ShopItem';
-import { useInventoryContext } from '@/contexts/InventoryContext';
+import useInventoryContext from '@/contexts/InventoryContext';
 import { useCartContext } from '@/contexts/CartContext';
 import Cart from '@/components/cart/Cart';
 import emptySearchIcon from '@/assets/images/close.svg';
@@ -15,10 +15,9 @@ const ShopPage: React.FC = () => {
     const [ searchTerm, setSearchTerm ] = React.useState<string>('');
 
     return (
-        <div className='page'>
+        <div className='shop-page page'>
             <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
             <ShopItems items={items} searchTerm={searchTerm} />
-            
             <OpenCartButton />
         </div>
 
@@ -39,12 +38,13 @@ const SearchBar: React.FC<SearchBarProps> = ({searchTerm, setSearchTerm}) => {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
             />
-            { (searchTerm.length > 0) && <button 
-                className='clear-search-bar-button' 
-                onClick={() => setSearchTerm('')}
-            >
-                <img src={emptySearchIcon} alt="clear search" height={20}/>
-            </button>
+            { (searchTerm.length > 0) && 
+                <button 
+                    className='clear-search-bar-button' 
+                    onClick={() => setSearchTerm('')}
+                >
+                    <img src={emptySearchIcon} alt="clear search" height={20}/>
+                </button>
             }
         </div>
     )
@@ -55,26 +55,23 @@ interface ShopItemsProps {
     searchTerm: string;
 }
 const ShopItems: React.FC<ShopItemsProps> = ({ items, searchTerm}) => {
-    if (items.length === 0) {
+    const filteredItems = items.filter((item: Item) => 
+        item.available &&
+        item.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    if (filteredItems.length === 0) return (
         <div className='no-items'>
-                <p>Inga produkter hittades</p>
-            </div>
-    }
+            <p>Inga produkter hittades</p>
+        </div>
+    )
     else return (
         <div className='shop-items'>
-            {items.filter((item: Item) => 
-                item.favorite == true && 
-                item.available &&
-                item.name.toLowerCase().includes(searchTerm.toLowerCase())
-            ).map((item: Item) => 
+            {filteredItems.filter((item: Item) => item.favorite == true).map((item: Item) => 
                 <ShopItem key={item.id} item={item} />
             )}
             
-            {items.filter((item: Item) => 
-                item.favorite == false && 
-                item.available && 
-                item.name.toLowerCase().includes(searchTerm.toLowerCase())
-            ).map((item: Item) => 
+            {filteredItems.filter((item: Item) => item.favorite == false ).map((item: Item) => 
                 <ShopItem key={item.id} item={item} />
             )}
         </div>
@@ -83,10 +80,10 @@ const ShopItems: React.FC<ShopItemsProps> = ({ items, searchTerm}) => {
 
 const OpenCartButton: React.FC = () => {
     const { numberOfItemsInCart } = useCartContext();
-    const { openModal } = useModalContext();
+    const { openModal, modalIsOpen } = useModalContext();
     const isVisible: boolean = numberOfItemsInCart > 0;
 
-    if (!isVisible) return null;
+    if (!isVisible || modalIsOpen) return null;
     else return (
         <button className='show-cart-button' onClick={() => openModal(<Cart />)}>
             <div className='items-indicator'>{numberOfItemsInCart}</div>

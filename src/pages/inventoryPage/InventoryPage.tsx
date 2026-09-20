@@ -1,22 +1,23 @@
 import React from 'react';
 import './InventoryPage.css';
 
-import { useInventoryContext } from '@/contexts/InventoryContext';
+import useInventoryContext from '@/contexts/InventoryContext';
 import useModalContext from '@/contexts/ModalContext';
 
 import AddProductPopup from '@/components/addProductPopup/AddProductPopup';
-import RefillProductPopup from '@/components/refillProductPopup/RefillProductPopup';
 import UpdateProductPopup from '@/components/updateItemPopup/UpdateItemPopup';
 import ConfirmDialog from '@/components/confirmDialog/ConfirmDialog';
+import RefillPopup from '@/components/refillPopup/RefillPopup';
+import ProductIcon from '@/components/icon/ProductIcon';
 
 import editIcon from '@/assets/images/edit.svg';
 import deleteIcon from '@/assets/images/delete-white.svg';
 import refillIcon from '@/assets/images/refill.svg';
-import defaultItemImage from '@/assets/images/grocery.svg';
+import LoadingPage from '../loadingPage/LoadingPage';
 
 
 const InventoryPage: React.FC = () => {
-    const { items, isLoadingInventory, deleteItem } = useInventoryContext();
+    const { items, isLoadingInventory, deleteItem, refillItem } = useInventoryContext();
     const { openModal, closeModal } = useModalContext();
 
     const DeleteConfirmDialog: React.FC<{ item: Item }> = ({ item }) => {
@@ -40,18 +41,14 @@ const InventoryPage: React.FC = () => {
     const InventoryItem: React.FC<{item: Item;}> = ({ item }) => {
         return (
                 <li className='inventory-item list-item'>
-                    <img 
-                        className='user-avatar icon' 
-                        src={item.icon? item.icon : defaultItemImage} 
-                        alt={`${item.name} icon`} 
-                    />
+                    <ProductIcon item={item} />
                     <p>{item.name}</p>
 
                     <button onClick={() => openModal(<UpdateProductPopup item={item} />)}>
                         <img src={editIcon} alt='Redigera' height={10}/>
                     </button>
 
-                    <button onClick={() => openModal(<RefillProductPopup item={item} />)}>
+                    <button onClick={() => openModal(<RefillPopup item={item} refillAction={refillItem} currentBalance={item.amountInStock} suffix='st' />)}>
                         <img src={refillIcon} alt='Påfyllnad' height={10}/>
                     </button>
 
@@ -62,15 +59,8 @@ const InventoryPage: React.FC = () => {
         );
     };
 
-    const InventoryItems = () => {
-        return (
-            items.map((item) => (
-                    <InventoryItem key={item.id} item={item} />
-            ))
-        )
-    };
 
-    if (isLoadingInventory) return <p>Loading...</p>;
+    if (isLoadingInventory) return <LoadingPage message="Hämtar produkter..." />;
 
     return (
         <div className='inventory-page page'>
@@ -79,14 +69,14 @@ const InventoryPage: React.FC = () => {
                 {items.length === 0 ? (
                     <p className='no-items'>Inga produkter i lager</p>
                 ) : (
-                    <InventoryItems />
+                    items.map((item) => (
+                        <InventoryItem key={item.id} item={item} />
+                    ))
                 )}
                 
-                <li className='add-item-li list-item'>
-                    <button onClick={() => openModal(<AddProductPopup />)}>
-                        <p>Lägg till vara</p>
-                    </button>
-                </li>
+                <button className='list-item-add list-item' onClick={() => openModal(<AddProductPopup />)}>
+                    <p>Lägg till vara</p>
+                </button>
             </ul>
         </div>
     );
