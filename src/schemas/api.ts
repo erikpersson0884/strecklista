@@ -117,7 +117,7 @@ export type ApiPurchase = z.infer<typeof apiPurchase>;
 export const apiDeposit = apiTransactionBase.extend({
   type: z.literal('deposit'),
   createdFor: z.number().int(),
-  total: z.string().refine((val) => !isNaN(Number(val)), {
+  total: z.number().refine((val) => !isNaN(val), {
       message: "Total must be a valid number",
   }),
 });
