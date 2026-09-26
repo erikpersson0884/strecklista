@@ -13,7 +13,7 @@ const InventoryPanel: React.FC = () => {
 
     return (
         <div className='inventory-panel panel'>
-            <p className='section-label'>STRÄCKA PÅ VEM?</p>
+            <p className='section-label'>STRÄCKA VAD?</p>
 
             <ScannerComponent className='scanner'/>
 
