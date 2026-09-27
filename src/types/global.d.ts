@@ -19,7 +19,7 @@ declare global {
         createdBy: {
             type: "user" | "client";
             id: Id;
-        }
+        } | null;
         createdTime: Date;
         removed: boolean;
         comment: string;
