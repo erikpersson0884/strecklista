@@ -68,7 +68,7 @@ const TransactionPopup: FC<TransactionPopupProps> = ({transaction}) => {
                                 {transaction.type === "stockUpdate" && (
                                     <p>
                                         {(item as StockUpdateItem).after -
-                                            (item as StockUpdateItem).before} kr
+                                            (item as StockUpdateItem).before} st
                                     </p>
                                 )}
                             </li>
