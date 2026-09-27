@@ -13,12 +13,13 @@ const InventoryPanel: React.FC = () => {
 
     return (
         <div className='inventory-panel panel'>
-            <p className='section-label'>STRÄCKA PÅ VEM?</p>
+            <p className='section-label'>STRÄCKA VAD?</p>
 
             <ScannerComponent className='scanner'/>
 
             <ul>
                 {[...items]
+                    .filter(item => item.available === true)
                     .sort((a, b) => {
                         const aHasExternalId = Boolean(a.externalId);
                         const bHasExternalId = Boolean(b.externalId);

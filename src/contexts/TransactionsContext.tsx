@@ -99,7 +99,7 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
         if (filters.searchQuery.trim()) {
             const searchString = filters.searchQuery.toLowerCase();
             filtered = filtered.filter((t: ITransaction) => {
-                if (t.createdBy.type === 'user') {
+                if (t.createdBy?.type === 'user') {
                     const createdByUser: User = getUserFromUserId(t.createdBy.id);
                     if (createdByUser.nick.toLowerCase().includes(searchString) || createdByUser.name.toLowerCase().includes(searchString)) return true;
                 }
