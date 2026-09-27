@@ -87,7 +87,7 @@ export type ApiTransactionCreator = z.infer<typeof apiTransactionCreator>;
 // --- Base Transaction fields (reused via .extend in each subtype) ---
 const apiTransactionBase = z.object({
   id: z.number().int(),
-  createdBy: apiTransactionCreator,
+  createdBy: apiTransactionCreator.nullable().optional(),
   createdTime: z.coerce.date(),
   removed: z.boolean(),
   comment: z.string().nullable().optional(),
@@ -117,7 +117,9 @@ export type ApiPurchase = z.infer<typeof apiPurchase>;
 export const apiDeposit = apiTransactionBase.extend({
   type: z.literal('deposit'),
   createdFor: z.number().int(),
-  total: z.string().refine((val) => !isNaN(Number(val)), {
+  total: z.union([z.string(), z.number()])
+    .transform((val) => Number(val))
+    .refine((val) => !isNaN(val), {
       message: "Total must be a valid number",
   }),
 });
@@ -201,6 +203,7 @@ export const apiUserLoginResponse = z.object({
   nbf: z.number(),
   exp: z.number().min(0),
   jti: z.string(),
+  sub: z.string(),
   user: apiUser,
   group: apiGroup,
   balance: z.number(),
