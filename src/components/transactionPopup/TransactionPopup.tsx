@@ -122,17 +122,22 @@ const TransactionPopup: FC<TransactionPopupProps> = ({transaction}) => {
 
                         <p>
                             <span>Utförd av:</span>
-                            <span>{transaction.createdBy.type === "user"
-                                ? (() => {
-                                    const user = getUserFromUserId(transaction.createdBy.id);
-                                    return typeof user === "string" ? user : user.nick;
-                                })()
-                                : "En klient"}</span>
+                            <span>
+                                {!transaction.createdBy
+                                    ? "Okänd (förmodglien borttagen användare eller klient)"
+                                    : "userId" in transaction.createdBy
+                                    ? (() => {
+                                        const user = getUserFromUserId(transaction.createdBy.id);
+                                        return typeof user === "string" ? user : user.nick;
+                                    })()
+                                    : "En klient"
+                                }
+                    </span>
                         </p>
 
                         {transaction.type ==="deposit" && (
                             <p>
-                                <span>Insättning:</span>
+                                <span>Summa insatt:</span>
                                 <span>{(transaction as Deposit).total} kr</span>
                             </p>
                         )}

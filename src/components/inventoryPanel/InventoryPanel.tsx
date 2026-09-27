@@ -19,6 +19,7 @@ const InventoryPanel: React.FC = () => {
 
             <ul>
                 {[...items]
+                    .filter(item => item.available === true)
                     .sort((a, b) => {
                         const aHasExternalId = Boolean(a.externalId);
                         const bHasExternalId = Boolean(b.externalId);

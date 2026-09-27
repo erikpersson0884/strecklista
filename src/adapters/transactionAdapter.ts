@@ -20,8 +20,10 @@ export const transactionAdapter = {
         return new Date(apiTime);
     },
 
-    adaptCretedBy(apiCreatedBy: { userId?: number; clientId?: string }): { type: "user" | "client"; id: Id } {
-        if (apiCreatedBy.userId !== undefined) {
+    adaptCretedBy(apiCreatedBy: { userId?: number; clientId?: string } | null | undefined): { type: "user" | "client"; id: Id } | null {
+        if (!apiCreatedBy) {
+            return null;
+        } else if (apiCreatedBy.userId !== undefined) {
             return {
                 type: "user",
                 id: apiCreatedBy.userId.toString()
@@ -32,7 +34,7 @@ export const transactionAdapter = {
                 id: apiCreatedBy.clientId
             };
         } else {
-            throw new Error("Unknown createdBy format: " + apiCreatedBy);
+            throw new Error("Unknown createdBy format: " + JSON.stringify(apiCreatedBy));
         }
     },
 
