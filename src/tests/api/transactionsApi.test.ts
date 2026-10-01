@@ -1,8 +1,14 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
-import api from "../../api/axiosInstance";
-import transactionsApi from "../../api/transactionApi";
+import api from "@/api/axiosInstance";
+import transactionsApi from "@/api/transactionApi";
 
-vi.mock("@/api/axiosInstance");
+vi.mock("@/api/axiosInstance", () => ({
+    default: {
+        get: vi.fn(),
+        post: vi.fn(),
+        patch: vi.fn(),
+    },
+}));
 
 const mockedApi = api as unknown as {
     get: ReturnType<typeof vi.fn>;
@@ -186,23 +192,41 @@ describe("transactions", () => {
     });
 
     describe("removeTransaction", () => {
-        it("returns true on success (status 204)", async () => {
-            mockedApi.patch.mockResolvedValueOnce({ status: 204 } as any);
+        // Use whatever fixture your other tests in this file already use for a
+        // valid API transaction, with `removed: true` set.
+        const removedApiTransaction = { ...apiPurchaseFixture, removed: true };
+
+        it("returns the updated transaction", async () => {
+            mockedApi.patch.mockResolvedValueOnce({
+                data: { data: { transaction: removedApiTransaction } },
+            });
+
             const result = await transactionsApi.removeTransaction("1");
+
             expect(mockedApi.patch).toHaveBeenCalledWith("/group/transaction/1", { removed: true });
-            expect(result).toBe(true);
+            expect(result.removed).toBe(true);
         });
 
-        it("returns true on success (status 200)", async () => {
-            mockedApi.patch.mockResolvedValueOnce({ status: 200 } as any);
-            const result = await transactionsApi.removeTransaction("1");
-            expect(result).toBe(true);
-        });
-
-        it("returns false on error", async () => {
+        it("throws when the request fails", async () => {
             mockedApi.patch.mockRejectedValueOnce(new Error("Failed"));
-            const result = await transactionsApi.removeTransaction("1");
-            expect(result).toBe(false);
+            await expect(transactionsApi.removeTransaction("1")).rejects.toThrow("Failed");
+        });
+
+        it("throws when the response doesn't parse", async () => {
+            vi.spyOn(console, "error").mockImplementation(() => {});
+            mockedApi.patch.mockResolvedValueOnce({
+                data: { data: { transaction: { garbage: true } } },
+            });
+
+            await expect(transactionsApi.removeTransaction("1")).rejects.toThrow("Failed to parse transaction");
+        });
+
+        it("throws when the server returns the transaction as not removed", async () => {
+            mockedApi.patch.mockResolvedValueOnce({
+                data: { data: { transaction: { ...apiPurchaseFixture, removed: false } } },
+            });
+
+            await expect(transactionsApi.removeTransaction("1")).rejects.toThrow("as removed");
         });
     });
 });

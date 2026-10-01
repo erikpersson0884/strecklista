@@ -1,4 +1,4 @@
-import { ApiUserLoginResponse } from "../schemas/api";
+import { ApiUserLoginResponse } from "@/schemas/api";
 
 const authAdapter = {
     adaptLoginResponse: (response: ApiUserLoginResponse): { token: string; user: User } => {

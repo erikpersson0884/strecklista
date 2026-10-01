@@ -25,6 +25,7 @@ import StylePage from './pages/stylePage/StylePage';
 
 const App: React.FC = () => {
     const { isConnected } = useConnectionContext();
+
     const pages = [
         { url: '/', component: <ShopPage /> },
         { url: '/inventory', component: <InventoryPage /> },
@@ -36,31 +37,32 @@ const App: React.FC = () => {
         { url: '/about', component: <AboutPage /> },
         { url: '/style', component: <StylePage /> },
         { url: '/console', component: <ConsolePage /> },
-    ]
-    
+    ];
+
     return (
         <>
             <Header />
-                { !isConnected ? (
-                    <main className="offline-notice page">
-                        <p>Ingen anslutning till servern.</p>
-                        <p>Försöker återansluta...</p>
-                    </main>
-                ) : (
-                    <Routes>
-                        <Route path="/login" element={<LoginPage />} />
-                        <Route path="/callback" element={<AuthCallback />} />
-                        <Route element={<ProtectedRoute/>}>
-                            {pages.map((page, index) => (
-                                <Route key={index} path={page.url} element={page.component} />
-                            ))}
-                        </Route>
-                        <Route path="*" element={<Navigate to="/" replace />} />
-                    </Routes>
-                )}
+
+            {!isConnected && (
+                <div className="offline-banner" role="alert">
+                    Ingen anslutning till servern. Försöker återansluta...
+                </div>
+            )}
+
+            <Routes>
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/callback" element={<AuthCallback />} />
+                <Route element={<ProtectedRoute />}>
+                    {pages.map((page) => (
+                        <Route key={page.url} path={page.url} element={page.component} />
+                    ))}
+                </Route>
+                <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+
             <Footer />
         </>
-    )
-}
+    );
+};
 
 export default App

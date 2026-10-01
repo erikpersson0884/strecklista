@@ -1,6 +1,6 @@
 import api from "./axiosInstance";
-import { apiTransaction } from "../schemas/api";
-import transactionAdapter from "../adapters/transactionAdapter";
+import { apiTransaction } from "@/schemas/api";
+import transactionAdapter from "@/adapters/transactionAdapter";
 
 const transactionsApi = {
     /**
@@ -104,15 +104,23 @@ const transactionsApi = {
      * Remove a transaction by marking it as removed.
      * @param {Id} id - The ID of the transaction to be removed.
      * 
-     * @returns {Promise<boolean>} A promise that resolves to true if the transaction was successfully marked as removed.
+     * @returns {Promise<ITransaction>} A promise that resolves to the updated transaction object.
+     * @throws Will throw an error if the request fails or if the transaction cannot be marked as removed.
+     * 
+     * Note: This function does not delete the transaction from the database; it only marks it as removed.
      */
-    removeTransaction: async (id: Id): Promise<boolean> => {
-        try {
-            const success = await api.patch(`/group/transaction/${id}`, { removed: true });
-            return success.status === 204 || success.status === 200; // Return true if the request succeeds
-        } catch (error: any) {
-            return false;
+    removeTransaction: async (id: Id): Promise<ITransaction> => {
+        const response = await api.patch(`/group/transaction/${id}`, { removed: true });
+        const parsed = apiTransaction.safeParse(response.data.data.transaction);
+        if (!parsed.success) {
+            console.error("Failed to parse transaction:", parsed.error);
+            throw new Error(`Failed to parse transaction: ${parsed.error}`);
         }
+        const updatedTransaction: ITransaction = transactionAdapter.adaptTransaction(parsed.data);
+        if (!updatedTransaction.removed) {
+            throw new Error(`Failed to mark transaction ${id} as removed.`);
+        }
+        return updatedTransaction;
     }
 };
 

@@ -69,37 +69,38 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
     };
 
     const updateItem = async (itemId: Id, updatedItem: Partial<Item>): Promise<Item | null> => {
+        const existingItem = items.find(item => item.id === itemId);
+        if (!existingItem) {
+            notify(`Vara med id "${itemId}" hittades inte i inventariet`, 'error');
+            return null;
+        }
+
+        const itemHasChanged = Object.keys(updatedItem).some(
+            key => updatedItem[key as keyof Item] !== existingItem[key as keyof Item]
+        );
+        if (!itemHasChanged) {
+            notify(`Inga ändringar gjordes på vara "${existingItem.name}"`, 'info');
+            return existingItem;
+        }
+
+        if (updatedItem.externalId && updatedItem.externalId !== existingItem.externalId) {
+            const conflictingItem = items.find(
+                otherItem => otherItem.externalId === updatedItem.externalId && otherItem.id !== itemId
+            );
+            if (conflictingItem) {
+                notify(`${conflictingItem.name} har redan det externa id't: ${updatedItem.externalId}`, 'error');
+                return null;
+            }
+        }
+
         try {
-            const existingItem = items.find(item => item.id === itemId)
-            if (!existingItem) {
-                notify(`Vara med id "${updatedItem.id}" hittades inte i inventariet`, 'error');
-                throw new Error(`Item with id ${updatedItem.id} not found (in inventory context)`);
-            }
-
-            const itemHasChanged = Object.keys(updatedItem).some(key => { // Check if any property has changed
-                return updatedItem[key as keyof Item] !== existingItem[key as keyof Item];
-            });
-
-            if (!itemHasChanged) {
-                notify(`Inga ändringar gjordes på vara "${existingItem.name}"`, 'info');
-                return existingItem; // Return the existing item if no changes were made
-            }
-
-            if (updatedItem.externalId && updatedItem.externalId !== existingItem.externalId) {
-                const conflictingItem = items.find(otherItem =>otherItem.externalId === updatedItem.externalId && otherItem.id !== itemId)
-                if (conflictingItem) {
-                    notify(`${conflictingItem.name} har redan det externa id't: ${updatedItem.externalId}`, 'error');
-                    throw new Error(`Another item with the same external id "${updatedItem.externalId}" already exists`);
-                }
-            }
-
             const newItem: Item = await inventoryApi.updateItem(itemId, updatedItem);
             fetchInventory();
-            notify(`Vara uppdaterad`, 'success')
-            return newItem
+            notify('Vara uppdaterad', 'success');
+            return newItem;
         } catch (error) {
             console.error('Failed to update item', error);
-            notify(`Misslyckades med att uppdatera vara`, 'error');
+            notify('Misslyckades med att uppdatera vara', 'error');
             return null;
         }
     };

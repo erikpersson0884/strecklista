@@ -7,7 +7,7 @@ import { useCartContext } from '@/contexts/CartContext';
 import Cart from '@/components/cart/Cart';
 import emptySearchIcon from '@/assets/images/close.svg';
 import useModalContext from '@/contexts/ModalContext';
-
+import LoadingPage from '@/pages/loadingPage/LoadingPage';
 
 const ShopPage: React.FC = () => {
     const { items } = useInventoryContext();
@@ -55,12 +55,14 @@ interface ShopItemsProps {
     searchTerm: string;
 }
 const ShopItems: React.FC<ShopItemsProps> = ({ items, searchTerm}) => {
+    const { isLoadingInventory } = useInventoryContext();
     const filteredItems = items.filter((item: Item) => 
         item.available &&
         item.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    if (filteredItems.length === 0) return (
+    if ( isLoadingInventory ) return <LoadingPage message='Laddar produkter...' />
+    else if (filteredItems.length === 0) return (
         <div className='no-items'>
             <p>Inga produkter hittades</p>
         </div>

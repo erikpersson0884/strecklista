@@ -7,6 +7,7 @@ The frontend for a "strecklista", originally developed for <a href="https://prit
 [![Repo Size][repo-size-shield]][repo-size-url]
 [![Author][author-shield]][author-url]
 
+![Test Coverage](.github/coverage.svg)
 
 
 # About the Project

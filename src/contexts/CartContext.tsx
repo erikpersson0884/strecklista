@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
+import React, { createContext, useState, useContext, ReactNode, useEffect, useMemo } from 'react';
 import transactionsApi from '@/api/transactionApi';
 import useTransactionsContext from './TransactionsContext';
 import useNotificationContext from './NotificationContext';
@@ -31,9 +31,17 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const { currentClient, currentUser } = useAuthContext();
 
     const [ itemsInCart, setItemsInCart ] = useState<ItemInCart[]>([]);
-    const [ numberOfItemsInCart, setNumberOfItemsInCart ] = useState<number>(0);
-    const [ total, setTotal ] = useState<number>(0);
     const [ payingUser, setPayingUser ] = useState<User | null>(null);
+
+    const numberOfItemsInCart = useMemo(
+        () => itemsInCart.reduce((sum, item) => sum + item.quantity, 0),
+        [itemsInCart]
+    );
+
+    const total = useMemo(
+        () => itemsInCart.reduce((sum, item) => sum + item.internalPrice * item.quantity, 0),
+        [itemsInCart]
+    );
 
     const addItemToCart = (item: Item) => {
         setItemsInCart((prevItems) => {
@@ -51,12 +59,6 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     useEffect(() => {
         setPayingUser(currentUser);
     }, [currentUser]);
-
-    React.useEffect(() => {
-        const totalItems = itemsInCart.reduce((sum, item) => sum + item.quantity, 0);
-        setNumberOfItemsInCart(totalItems);
-    }
-    , [itemsInCart]);
 
     const setProductQuantity = (productId: Id, quantity: number) => {
         if (quantity < 0) throw new Error("Quantity cannot be negative");
@@ -116,11 +118,6 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             return false
         }
     }
-
-    useEffect(() => {
-        const newTotal = itemsInCart.reduce((sum, item) => sum + item.internalPrice * item.quantity, 0);
-        setTotal(newTotal);
-    }, [itemsInCart]);
 
     return (
         <CartContext.Provider value={{ 

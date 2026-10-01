@@ -1,13 +1,13 @@
 import { type FC } from "react";
 import './TransactionPopup.css';
 
-import useTransactionsContext from "../../contexts/TransactionsContext";
-import useUsersContext from "../../contexts/UsersContext";
-import useModalContext from "../../contexts/ModalContext";
+import useTransactionsContext from "@/contexts/TransactionsContext";
+import useUsersContext from "@/contexts/UsersContext";
+import useModalContext from "@/contexts/ModalContext";
 
-import ActionPopupWindow from "../actionPopupWindow/ActionPopupWindow";
-import PopupWindow from "../popupWindow/PopupWindow";
-import ConfirmDialog from "../confirmDialog/ConfirmDialog";
+import ActionPopupWindow from "@/components/actionPopupWindow/ActionPopupWindow";
+import PopupWindow from "@/components/popupWindow/PopupWindow";
+import ConfirmDialog from "@/components/confirmDialog/ConfirmDialog";
 
 
 interface TransactionPopupProps {

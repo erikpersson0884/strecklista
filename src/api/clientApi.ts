@@ -1,5 +1,5 @@
 import api from "./axiosInstance";
-import { apiGroupClient, ApiGroupClient, apiScope } from "../schemas/api";
+import { apiGroupClient, ApiGroupClient, apiScope } from "@/schemas/api";
 import clientAdapter from "@/adapters/clientAdapter";
 
 const clientApi = {
