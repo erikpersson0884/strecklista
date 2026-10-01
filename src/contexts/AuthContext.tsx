@@ -1,8 +1,8 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect, useRef } from "react";
 
-import { setAuthToken as setAuthTokenInAxios } from "@/api/axiosInstance";
-import authApi from "@/api/authApi";
+import { setAuthToken as setAuthTokenInAxios, UNAUTHORIZED_EVENT } from "@/api/axiosInstance";import authApi from "@/api/authApi";
 import userApi from "@/api/userApi";
+import { getTokenPayload, getMsUntilExpiry, isTokenValid } from "@/utils/tokenUtils";
 
 import useNotificationContext from "./NotificationContext";
 
@@ -32,99 +32,69 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
     const [currentUser, setCurrentUser] = useState<User | null>(null);
     const [currentClient, setCurrentClient] = useState<Partial<Client> | null>(null);
-    const [rememberMe, setRememberMe] = useState<boolean>(
-        localStorage.getItem("rememberMe") === "true"
-    );
+    const [rememberMe, setRememberMe] = useState<boolean>(localStorage.getItem("rememberMe") === "true");
+    const timersRef = useRef<{
+        warning?: ReturnType<typeof setTimeout>;
+        logout?: ReturnType<typeof setTimeout>;
+    }>({});
+    const isAuthenticatedRef = useRef(false);
 
-    const getTokenPayload = (token: string): any | null => {
-        try {
-            const payload = JSON.parse(
-                atob(
-                    token
-                        .split(".")[1]
-                        .replace(/-/g, "+")
-                        .replace(/_/g, "/")
-                )
-            );
+    useEffect(() => {
+        isAuthenticatedRef.current = isAuthenticated;
+    }, [isAuthenticated]);
 
-            return payload;
-        } catch (err) {
-            console.error("Error parsing token", err);
-            return null;
-        }
+    const clearLogoutTimers = () => {
+        clearTimeout(timersRef.current.warning);
+        clearTimeout(timersRef.current.logout);
+        timersRef.current = {};
     };
 
-    const isTokenValid = (token: string): boolean => {
-        try {
-            const payload = getTokenPayload(token);
+    useEffect(() => clearLogoutTimers, []);
 
-            if (!payload?.exp) {
-                return false;
-            }
+    useEffect(() => {
+        const handleUnauthorized = () => {
+            // Ignore if already logged out. This also stops several parallel
+            // requests that all fail with 401 from logging out and notifying repeatedly.
+            if (!isAuthenticatedRef.current) return;
+            isAuthenticatedRef.current = false;
 
-            const currentTime = Math.floor(Date.now() / 1000);
+            notify("Session expired. Please log in again.", "info");
+            logout();
+        };
 
-            return payload.exp > currentTime;
-        } catch (err) {
-            console.error("Error parsing token", err);
-            return false;
-        }
-    };
+        window.addEventListener(UNAUTHORIZED_EVENT, handleUnauthorized);
+        return () => window.removeEventListener(UNAUTHORIZED_EVENT, handleUnauthorized);
+    }, []);
 
     const setLogoutTimers = (token: string) => {
-        try {
-            const payload = getTokenPayload(token);
+        clearLogoutTimers();
 
-            if (!payload?.exp) {
-                return;
-            }
+        const timeUntilExpiry = getMsUntilExpiry(token);
+        if (timeUntilExpiry === null) return;
 
-            const currentTime = Math.floor(Date.now() / 1000);
-            const timeUntilExpiry = (payload.exp - currentTime) * 1000;
+        const warningTimeMs = 2 * 60 * 1000;
 
-            const warningTimeMs = 2 * 60 * 1000;
-
-            const warningTimer = setTimeout(() => {
-                notify(
-                    `Session will expire in ${warningTimeMs / 60000} min`,
-                    "info"
-                );
-            }, Math.max(timeUntilExpiry - warningTimeMs, 0));
-
-            const logoutTimer = setTimeout(() => {
-                notify(
-                    "Session expired. Please log in again.",
-                    "info"
-                );
-
-                logout();
-            }, Math.max(timeUntilExpiry, 0));
-
-            return () => {
-                clearTimeout(warningTimer);
-                clearTimeout(logoutTimer);
-            };
-        } catch (err) {
-            console.error(
-                "Error parsing token for auto-logout",
-                err
-            );
-
-            logout();
+        // Skip the warning if less than 2 minutes remain (e.g. a restored token)
+        if (timeUntilExpiry > warningTimeMs) {
+            timersRef.current.warning = setTimeout(() => {
+                notify(`Session will expire in ${warningTimeMs / 60000} min`, "info");
+            }, timeUntilExpiry - warningTimeMs);
         }
+
+        timersRef.current.logout = setTimeout(() => {
+            notify("Session expired. Please log in again.", "info");
+            logout();
+        }, Math.max(timeUntilExpiry, 0));
     };
 
     const setCurrentUserOrClient = async (token: string): Promise<void> => {
         try {
             const payload = getTokenPayload(token);
 
-            if (!payload) {
-                throw new Error("Invalid authentication token payload");
-            }
+            if (!payload) throw new Error("Invalid authentication token payload");
 
             if (payload.user) {
-                const authenticatedUser: User =
-                    await userApi.getCurrentUser();
+                const authenticatedUser: User = await userApi.getCurrentUser();
 
                 setCurrentUser(authenticatedUser);
                 setCurrentClient(null);
@@ -159,18 +129,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const handleTokenUpdate = async (token: string): Promise<void> => {
         try {
             if (!isTokenValid(token)) {
-                notify(
-                    "Session expired. Please log in again.",
-                    "info"
-                );
-
+                notify("Session expired. Please log in again.", "info");
                 logout();
                 return;
             }
 
             // Install the token before making any authenticated requests.
             setAuthTokenInAxios(token);
-
             localStorage.setItem("authToken", token);
 
             /*
@@ -181,16 +146,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
              * getCurrentUser() is still running.
              */
             await setCurrentUserOrClient(token);
-
             setIsAuthenticated(true);
-
             setLogoutTimers(token);
         } catch (err) {
-            console.error(
-                "Error handling authentication token",
-                err
-            );
-
+            console.error("Error handling authentication token", err);
             logout();
         }
     };
@@ -202,15 +161,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             setIsLoggingIn(true);
 
             try {
-                const storedRememberMe =
-                    localStorage.getItem("rememberMe") === "true";
+                const storedRememberMe = localStorage.getItem("rememberMe") === "true";
+                if (!storedRememberMe || cancelled) return;
 
-                if (!storedRememberMe || cancelled) {
-                    return;
-                }
-
-                const storedToken =
-                    localStorage.getItem("authToken");
 
                 /*
                  * If we already have a valid token, use that token.
@@ -219,6 +172,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                  * We return afterwards so we don't also start another
                  * authentication flow based on lastLoginType.
                  */
+                const storedToken = localStorage.getItem("authToken");
                 if (storedToken && isTokenValid(storedToken)) {
                     await handleTokenUpdate(storedToken);
                     return;
@@ -228,16 +182,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                  * Stored token is missing or expired.
                  * Remove it before attempting another login.
                  */
-                if (storedToken) {
-                    localStorage.removeItem("authToken");
-                }
+                if (storedToken) localStorage.removeItem("authToken");
+                if (cancelled) return;
 
-                if (cancelled) {
-                    return;
-                }
-
-                const lastLoginType =
-                    localStorage.getItem("lastLoginType");
+                const lastLoginType = localStorage.getItem("lastLoginType");
 
                 if (lastLoginType === "client") {
                     try {
@@ -307,11 +255,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     localStorage.getItem("clientSecret");
 
                 if (!storedClientId || !storedClientSecret) {
-                    notify(
-                        "Client ID or Secret not found. Please provide them.",
-                        "error"
-                    );
-
+                    notify("Client ID or Secret not found. Please provide them.", "error");
                     return;
                 }
 
@@ -404,6 +348,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
 
     const logout = (): void => {
+        clearLogoutTimers();
+
         setCurrentClient(null);
         setCurrentUser(null);
         setIsAuthenticated(false);

@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, ReactNode } from 'react';
+import React, { createContext, useState, useContext, useRef, ReactNode, useMemo } from 'react';
 import transactionsApi from '@/api/transactionApi';
 import useUsersContext from './UsersContext';
 import useInventoryContext from './InventoryContext';
@@ -42,7 +42,6 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
     const { notify } = useNotificationContext();
     const { refreshSignal } = useTransactionRefreshContext();
 
-    const [filteredTransactions, setFilteredTransactions] = useState<ITransaction[]>([]);
     const [transactions, setTransactions] = useState<ITransaction[]>([]);
     const [nextUrl, setNextUrl] = useState<string | null>(null);
     const [prevUrl, setPrevUrl] = useState<string | null>(null);
@@ -67,25 +66,25 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
         });
     };
 
+    const latestRequestId = useRef(0);
+
     // Only `filters.userId` maps to a server-side query param (createdBy/createdFor).
     // Everything else here (search text, date range, type, showRemoved) is applied
     // client-side, below, against whatever page is already in memory. That's a real
     // limitation - searching only searches the currently loaded page, it doesn't
     // reach across pages - but it at least means typing in the search box no longer
     // triggers a network request on every keystroke.
-    React.useEffect(() => {
+    const filteredTransactions = useMemo(() => {
         let filtered: ITransaction[] = transactions;
 
         if (filters.startDate) {
-            filtered = filtered.filter(
-                (t) => t.createdTime >= new Date(filters.startDate!)
-            );
+            const start = new Date(filters.startDate);
+            filtered = filtered.filter((t) => t.createdTime >= start);
         }
 
         if (filters.endDate) {
-            filtered = filtered.filter(
-                (t) => t.createdTime <= new Date(filters.endDate!)
-            );
+            const end = new Date(filters.endDate);
+            filtered = filtered.filter((t) => t.createdTime <= end);
         }
 
         if (!filters.showRemoved) {
@@ -132,29 +131,31 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
             });
         }
 
-        setFilteredTransactions(filtered);
-    }, [transactions, filters]);
+        return filtered;
+    }, [transactions, filters, getUserFromUserId]);
 
     const fetchTransactions = async (url?: string | null): Promise<boolean> => {
+        const requestId = ++latestRequestId.current;
         setIsLoadingTransactions(true);
+
         try {
             const createdBy = filters.userId !== 'all' ? filters.userId : undefined;
             const createdFor = filters.userId !== 'all' ? filters.userId : undefined;
             const response = await transactionsApi.fetchTransactions(url, 20, 0, createdBy, createdFor);
 
+            // A newer fetch started while we were waiting. Drop this result.
+            if (requestId !== latestRequestId.current) return false;
+
             setTransactions(response.transactions);
             setNextUrl(response.nextUrl);
             setPrevUrl(response.prevUrl);
 
-            // A call with no explicit url is always a "fresh" load - initial mount,
-            // the userId filter changing, or a refresh signal firing - so the page
-            // counter and prev/next buttons should reset back to page 1. Calls with
-            // an explicit url are pagination itself (see getNext/PrevTransactions),
-            // which manage the counter themselves.
             if (!url) settransactionsPageNumber(1);
 
             return true;
         } catch (error) {
+            if (requestId !== latestRequestId.current) return false;
+
             if (isAxiosError(error)) {
                 const backendMessage = error.response?.data?.error?.message;
                 notify("Fetching transactions failed: " + (backendMessage ?? error.message), 'error');
@@ -162,7 +163,11 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
             console.error(error);
             return false;
         } finally {
-            setIsLoadingTransactions(false);
+            // Only the latest request controls the loading flag. Otherwise an old
+            // request finishing would hide the spinner while a newer one is still running.
+            if (requestId === latestRequestId.current) {
+                setIsLoadingTransactions(false);
+            }
         }
     };
 
@@ -195,7 +200,7 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
             setTransactions((prevTransactions) => prevTransactions.filter((ITransaction) => ITransaction.id !== id));
             return true;
         } catch (error) {
-            notify('Något gick fel, försök igen senare.');
+            notify('Något gick fel, försök igen senare.', 'error');
             return false;
         }
     };

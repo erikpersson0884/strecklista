@@ -249,3 +249,10 @@ label {
 .switch input:checked + .slider::before {
     transform: translateX(20px);
 }
+
+.offline-banner {
+    height: 100vh;
+    padding: 2rem;
+    
+    text-align:center;
+}

@@ -61,7 +61,7 @@ export const authApi = {
             const parsed = apiClientLoginResponse.safeParse(response.data)
 
             if (!parsed.success)  {
-                throw new Error("Failed to parse group members " + parsed.error);
+                throw new Error("Failed to parse login response " + parsed.error);
             }
             const token: string = parsed.data.access_token
             const client: Partial<Client> = {

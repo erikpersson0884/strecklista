@@ -72,7 +72,7 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
         try {
             const existingItem = items.find(item => item.id === itemId)
             if (!existingItem) {
-                notify(`Vara med id "${updatedItem.id}" hittades inte i inventariet`, 'error');
+                notify(`Vara med id "${itemId}" hittades inte i inventariet`, 'error');
                 throw new Error(`Item with id ${updatedItem.id} not found (in inventory context)`);
             }
 

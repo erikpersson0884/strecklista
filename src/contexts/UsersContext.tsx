@@ -1,4 +1,4 @@
-import { createContext, useState, useContext, ReactNode, useEffect } from 'react';
+import { createContext, useState, useContext, ReactNode, useEffect, useCallback } from 'react';
 
 import userApi from '@/api/userApi';
 import transactionsApi from '@/api/transactionApi';
@@ -67,11 +67,11 @@ export const UsersProvider = ({ children }: { children: ReactNode }) => {
         );
     };
 
-    const getUserFromUserId = (userId: UserId): User => {
+    const getUserFromUserId = useCallback((userId: UserId) => {
         const user = users.find((user) => user.id === userId);
         if (!user) throw new Error(`User with id ${userId} not found`);
         return user;
-    }
+    }, [ users ]);
 
 
     return (
