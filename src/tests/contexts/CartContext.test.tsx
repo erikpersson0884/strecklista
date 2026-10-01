@@ -237,4 +237,119 @@ describe('CartContext', () => {
             expect(mockNotify).toHaveBeenCalledWith('Köp Genomfört', 'success');
         });
     });
+
+    describe('totals (derived values)', () => {
+        it('recomputes count and total when quantities change and items are removed', () => {
+            const { result } = renderHook(() => useCartContext(), { wrapper });
+
+            act(() => result.current.addItemToCart(item));       // 10
+            act(() => result.current.addItemToCart(otherItem));  // 5
+            act(() => result.current.setProductQuantity('1', 3)); // 30 + 5
+
+            expect(result.current.numberOfItemsInCart).toBe(4);
+            expect(result.current.total).toBe(35);
+
+            act(() => result.current.removeProductFromCart(item));
+
+            expect(result.current.numberOfItemsInCart).toBe(1);
+            expect(result.current.total).toBe(5);
+        });
+
+        it('resets count and total when the cart is emptied', () => {
+            const { result } = renderHook(() => useCartContext(), { wrapper });
+            act(() => result.current.addItemToCart(item));
+
+            act(() => result.current.emptyCart());
+
+            expect(result.current.numberOfItemsInCart).toBe(0);
+            expect(result.current.total).toBe(0);
+        });
+    });
+
+    describe('purchaseCart edge cases', () => {
+        afterEach(() => {
+            mockCurrentUser.mockReset();
+            mockCurrentClient.mockImplementation(() => ({ scope: 'transactions.read' }));
+        });
+
+        it('keeps the cart and paying user when the purchase fails', async () => {
+            mockMakePurchase.mockRejectedValueOnce(new Error('Saldo för lågt'));
+            const { result } = renderHook(() => useCartContext(), { wrapper });
+            act(() => result.current.addItemToCart(item));
+            act(() => result.current.setPayingUser(user));
+
+            let success: boolean = true;
+            await act(async () => {
+                success = await result.current.purchaseCart();
+            });
+
+            expect(success).toBe(false);
+            expect(result.current.itemsInCart).toEqual([{ ...item, quantity: 1 }]);
+            expect(result.current.payingUser).toEqual(user);
+            expect(mockNotify).toHaveBeenCalledWith('Saldo för lågt', 'error');
+            expect(mockRefreshTransactions).not.toHaveBeenCalled();
+        });
+
+        it('accepts a comment of exactly 1000 characters', async () => {
+            mockMakePurchase.mockResolvedValueOnce(90);
+            const { result } = renderHook(() => useCartContext(), { wrapper });
+            act(() => result.current.addItemToCart(item));
+            act(() => result.current.setPayingUser(user));
+
+            let success: boolean = false;
+            await act(async () => {
+                success = await result.current.purchaseCart('a'.repeat(1000));
+            });
+
+            expect(success).toBe(true);
+            expect(mockMakePurchase).toHaveBeenCalled();
+        });
+
+        it('resets the paying user to the logged-in user after a purchase', async () => {
+            mockCurrentUser.mockReturnValue(user);
+            mockMakePurchase.mockResolvedValueOnce(90);
+            const { result } = renderHook(() => useCartContext(), { wrapper });
+            expect(result.current.payingUser).toEqual(user);
+
+            const friend: User = { ...user, id: '100', nick: 'bob', name: 'Bob' };
+            act(() => result.current.setPayingUser(friend));
+            act(() => result.current.addItemToCart(item));
+
+            await act(async () => {
+                await result.current.purchaseCart();
+            });
+
+            expect(mockMakePurchase).toHaveBeenCalledWith('100', expect.any(Array), undefined);
+            expect(result.current.payingUser).toEqual(user);
+        });
+
+        it("doesn't refresh transactions for a client without the transactions.read scope", async () => {
+            mockCurrentClient.mockReturnValue({ scope: 'items.read' });
+            mockMakePurchase.mockResolvedValueOnce(90);
+            const { result } = renderHook(() => useCartContext(), { wrapper });
+            act(() => result.current.addItemToCart(item));
+            act(() => result.current.setPayingUser(user));
+
+            await act(async () => {
+                await result.current.purchaseCart();
+            });
+
+            expect(mockMakePurchase).toHaveBeenCalled();
+            expect(mockRefreshTransactions).not.toHaveBeenCalled();
+        });
+
+        it('refreshes when transactions.read is one of several scopes', async () => {
+            mockCurrentClient.mockReturnValue({ scope: 'items.read transactions.read' });
+            mockMakePurchase.mockResolvedValueOnce(90);
+            const { result } = renderHook(() => useCartContext(), { wrapper });
+            act(() => result.current.addItemToCart(item));
+            act(() => result.current.setPayingUser(user));
+
+            await act(async () => {
+                await result.current.purchaseCart();
+            });
+
+            expect(mockRefreshTransactions).toHaveBeenCalled();
+        });
+    });
 });
