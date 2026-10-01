@@ -4,9 +4,9 @@ The frontend for a "strecklista", originally developed for <a href="https://prit
 
 [![Last Commit][last-commit-shield]][last-commit-url]
 [![Build Status][build-shield]][build-url]
+[![Test Coverage][coverage-shield]][coverage-url]
 [![Repo Size][repo-size-shield]][repo-size-url]
 [![Author][author-shield]][author-url]
-[![Test Coverage][coverage-shield]][coverage-url]
 
 
 # About the Project
@@ -98,7 +98,7 @@ If you want to contribute, follow these steps:
 [stars-shield]: https://img.shields.io/github/stars/erikpersson0884/strecklista?style=for-the-badge
 [stars-url]: https://github.com/erikpersson0884/strecklista/stargazers
 
-[build-shield]: https://img.shields.io/github/actions/workflow/status/erikpersson0884/strecklista/.github/workflows/tests.yml?branch=main&style=for-the-badge
+[build-shield]: https://img.shields.io/github/actions/workflow/status/erikpersson0884/strecklista/.github/workflows/frontend-tests.yml?branch=main&style=for-the-badge
 [build-url]: https://github.com/erikpersson0884/strecklista/actions
 
 
