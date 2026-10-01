@@ -7,8 +7,7 @@ The frontend for a "strecklista", originally developed for <a href="https://prit
 [![Repo Size][repo-size-shield]][repo-size-url]
 [![Author][author-shield]][author-url]
 
-![Test Coverage](.github/coverage.svg)
-
+![Test Coverage](https://raw.githubusercontent.com/erikpersson0884/strecklista/coverage/.github/coverage.svg)
 
 # About the Project
 Skrubblista is a digital tally system for small communities, such as those at Chalmers Student Union. It runs on a display in shared community spaces, showing real-time inventory counts and enabling barcode-scanner purchases from the shop.
