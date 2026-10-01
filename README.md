@@ -6,8 +6,8 @@ The frontend for a "strecklista", originally developed for <a href="https://prit
 [![Build Status][build-shield]][build-url]
 [![Repo Size][repo-size-shield]][repo-size-url]
 [![Author][author-shield]][author-url]
+[![Test Coverage][coverage-shield]][coverage-url]
 
-![Test Coverage](https://raw.githubusercontent.com/erikpersson0884/strecklista/coverage/.github/coverage.svg)
 
 # About the Project
 Skrubblista is a digital tally system for small communities, such as those at Chalmers Student Union. It runs on a display in shared community spaces, showing real-time inventory counts and enabling barcode-scanner purchases from the shop.
@@ -111,3 +111,8 @@ If you want to contribute, follow these steps:
 [docker-shield]: https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white&style=for-the-badge
 [typescript-shield]: https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white&style=for-the-badge
 [express-shield]: https://img.shields.io/badge/Express.js-000000?logo=express&logoColor=white&style=for-the-badge
+
+
+<!-- Test Coverage Shields -->
+[coverage-shield]: https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/erikpersson0884/strecklista/coverage/.github/coverage.json&style=for-the-badge
+[coverage-url]: https://github.com/erikpersson0884/strecklista/actions
