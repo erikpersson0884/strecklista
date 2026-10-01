@@ -1,6 +1,6 @@
 import './ConfirmDialog.css'
 
-import ActionPopupWindow from "../actionPopupWindow/ActionPopupWindow";
+import ActionPopupWindow from "@/components/actionPopupWindow/ActionPopupWindow";
 
 interface ConfirmDialogProps {
     title: string;

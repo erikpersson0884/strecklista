@@ -1,6 +1,6 @@
 import api from "./axiosInstance";
-import { apiTransaction } from "../schemas/api";
-import transactionAdapter from "../adapters/transactionAdapter";
+import { apiTransaction } from "@/schemas/api";
+import transactionAdapter from "@/adapters/transactionAdapter";
 
 const transactionsApi = {
     /**

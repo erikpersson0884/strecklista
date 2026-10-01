@@ -13,7 +13,7 @@ import ProductIcon from '@/components/icon/ProductIcon';
 import editIcon from '@/assets/images/edit.svg';
 import deleteIcon from '@/assets/images/delete-white.svg';
 import refillIcon from '@/assets/images/refill.svg';
-import LoadingPage from '../loadingPage/LoadingPage';
+import LoadingPage from '@/pages/loadingPage/LoadingPage';
 
 
 const InventoryPage: React.FC = () => {

@@ -1,6 +1,6 @@
 import api from "./axiosInstance";
-import { apiUserLoginResponse, apiClientLoginResponse } from "../schemas/api";
-import authAdapter from "../adapters/authAdapter";
+import { apiUserLoginResponse, apiClientLoginResponse } from "@/schemas/api";
+import authAdapter from "@/adapters/authAdapter";
 
 export const authApi = {
     /**

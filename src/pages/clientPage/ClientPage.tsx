@@ -8,7 +8,7 @@ import ClientPopup from "@/components/clientPopup/ClientPopup";
 import DisplayClientPopup from "@/components/displayClientPopup/DisplayClientPopup";
 
 import deleteIcon from "@/assets/images/delete-white.svg";
-import LoadingPage from "../loadingPage/LoadingPage";
+import LoadingPage from "@/pages/loadingPage/LoadingPage";
 
 const ClientPage: React.FC = () => {
     const { clients, isLoadingClients, createClient, deleteClient } = useClientContext();

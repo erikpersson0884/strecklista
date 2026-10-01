@@ -1,8 +1,8 @@
 import api from "./axiosInstance";
 // import { z } from "zod";
-import { ApiItem, apiItem, apiStockUpdate } from "../schemas/api";
-import itemAdapter from "../adapters/itemAdapter";
-import transactionAdapter from "../adapters/transactionAdapter";
+import { ApiItem, apiItem, apiStockUpdate } from "@/schemas/api";
+import itemAdapter from "@/adapters/itemAdapter";
+import transactionAdapter from "@/adapters/transactionAdapter";
 
 const inventoryApi = {
     /**

@@ -1,4 +1,4 @@
-import { ApiScope, ApiGroupClient } from "../schemas/api";
+import { ApiScope, ApiGroupClient } from "@/schemas/api";
 
 const clientAdapter = {
     adaptScopes: (apiScopes: ApiScope[]): ClientScope[] => {

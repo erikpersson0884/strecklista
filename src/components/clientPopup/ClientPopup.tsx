@@ -1,6 +1,6 @@
 import React from "react";
 import "./ClientPopup.css";
-import ActionPopupWindow from "../actionPopupWindow/ActionPopupWindow";
+import ActionPopupWindow from "@/components/actionPopupWindow/ActionPopupWindow";
 import { useClientContext } from "@/contexts/ClientContext";
 import useNotificationContext from "@/contexts/NotificationContext";
 

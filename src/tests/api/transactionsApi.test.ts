@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
-import api from "../../api/axiosInstance";
-import transactionsApi from "../../api/transactionApi";
+import api from "@/api/axiosInstance";
+import transactionsApi from "@/api/transactionApi";
 
 vi.mock("@/api/axiosInstance");
 
