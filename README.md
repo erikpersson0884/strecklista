@@ -114,5 +114,5 @@ If you want to contribute, follow these steps:
 
 
 <!-- Test Coverage Shields -->
-[coverage-shield]: https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/erikpersson0884/strecklista/coverage/.github/coverage.json&style=for-the-badge
+[coverage-shield]: https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/erikpersson0884/strecklista/coverage/.github/coverage.json&style=for-the-badge&v=2
 [coverage-url]: https://github.com/erikpersson0884/strecklista/actions
