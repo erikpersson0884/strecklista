@@ -19,6 +19,10 @@ export default defineConfig(({ mode }) => {    // This loads the right file base
             globals: true,
             environment: 'jsdom',
             setupFiles: './src/setupTests.ts',
+
+            coverage: {
+                reporter: ['text', 'html', 'clover', 'json', 'lcov'],
+            },
         },
         server: {
             port: 3000,
