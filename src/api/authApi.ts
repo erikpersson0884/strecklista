@@ -27,7 +27,9 @@ export const authApi = {
             "code": code,
         }
 
-        const response = await api.post(`/oauth2/token`, body);
+        const response = await api.post(`/oauth2/token`, body, {
+            headers: { Authorization: false },
+        });
         const parsed = apiUserLoginResponse.safeParse(response.data);
         if (!parsed.success) {
             console.error("Failed to parse login response", parsed.error);
@@ -57,7 +59,9 @@ export const authApi = {
                 client_secret: clientSecret,
             };
 
-            const response = await api.post("/oauth2/token", body);
+            const response = await api.post("/oauth2/token", body, {
+                headers: { Authorization: false },
+            });
             const parsed = apiClientLoginResponse.safeParse(response.data)
 
             if (!parsed.success)  {
@@ -72,12 +76,17 @@ export const authApi = {
             return {token, client}
         } catch (error: any) {
             console.error("Login failed:", error.response?.data || error.message);
-            throw new Error(
+
+            const err = new Error(
                 error.response?.data?.error?.message ||
                 error.response?.data?.message ||
                 error.message ||
                 "Login failed, no additional error information available."
-            );
+            ) as Error & { status?: number };
+
+            // 0 = request was sent but no response arrived (network/server down)
+            err.status = error.response?.status ?? (error.request ? 0 : undefined);
+            throw err;
         }
     },
 };

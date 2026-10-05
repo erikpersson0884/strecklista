@@ -1,5 +1,4 @@
-// hooks/useLongPress.ts
-import { useRef, useCallback } from 'react';
+import { useRef, useCallback, useEffect } from 'react';
 
 interface LongPressOptions {
     onLongPress: () => void;
@@ -11,20 +10,24 @@ export function useLongPress({ onLongPress, onClick, ms = 500 }: LongPressOption
     const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const triggeredRef = useRef(false);
 
-    const start = useCallback(() => {
-        triggeredRef.current = false;
-        timerRef.current = setTimeout(() => {
-            triggeredRef.current = true;
-            onLongPress();
-        }, ms);
-    }, [onLongPress, ms]);
-
     const clear = useCallback(() => {
         if (timerRef.current) {
             clearTimeout(timerRef.current);
             timerRef.current = null;
         }
     }, []);
+
+    const start = useCallback(() => {
+        clear(); // never leave an earlier timer running
+        triggeredRef.current = false;
+        timerRef.current = setTimeout(() => {
+            timerRef.current = null;
+            triggeredRef.current = true;
+            onLongPress();
+        }, ms);
+    }, [onLongPress, ms, clear]);
+
+    useEffect(() => clear, [clear]); // no long press after unmount
 
     const handleClick = useCallback(() => {
         if (triggeredRef.current) {
@@ -40,6 +43,8 @@ export function useLongPress({ onLongPress, onClick, ms = 500 }: LongPressOption
         onMouseLeave: clear,
         onTouchStart: start,
         onTouchEnd: clear,
+        onTouchMove: clear,   // scrolling is not a long press
+        onTouchCancel: clear,
         onClick: handleClick,
     };
 }

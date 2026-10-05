@@ -21,7 +21,24 @@ export default defineConfig(({ mode }) => {    // This loads the right file base
             setupFiles: './src/setupTests.ts',
 
             coverage: {
-                reporter: ['text', 'html', 'clover', 'json', 'lcov'],
+                provider: 'v8',
+                reporter: ['text', 'html', 'lcov'],
+                include: ['src/**/*.{ts,tsx}'],
+                exclude: [
+                    'src/assets/**',
+                    'src/**/*.css',
+                    'src/tests/**',
+                    'src/**/*.d.ts',
+                    'src/types/**',
+                    'src/main.tsx',
+                    'src/setupTests.ts',
+
+                    'src/components/**',
+                    'src/pages/**',
+                    'src/layouts/**',
+                    'src/App.tsx',
+                    'src/contexts/Providers.tsx',
+                ],
             },
         },
         server: {
