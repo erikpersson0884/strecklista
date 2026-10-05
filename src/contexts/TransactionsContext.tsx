@@ -159,8 +159,10 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
             if (isAxiosError(error)) {
                 const backendMessage = error.response?.data?.error?.message;
                 notify("Fetching transactions failed: " + (backendMessage ?? error.message), 'error');
+            } else {
+                console.error(error);
             }
-            console.error(error);
+            
             return false;
         } finally {
             // Only the latest request controls the loading flag. Otherwise an old
