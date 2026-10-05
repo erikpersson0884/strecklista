@@ -103,7 +103,7 @@ const inventoryApi = {
         const body = {
             items: [
                 {
-                    id: id,
+                    id: Number(id),
                     quantity: amount,
                     absolute: true
                 }

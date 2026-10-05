@@ -71,7 +71,7 @@ const clientApi = {
     },
 
     deleteClient: async (clientId: string): Promise<void> => {
-        api.delete(`/group/client/${clientId}`)
+        await api.delete(`/group/client/${clientId}`)
     },
 }
 
