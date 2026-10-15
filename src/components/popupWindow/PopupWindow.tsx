@@ -27,7 +27,7 @@ const PopupWindow: React.FC<PopupWindowProps> = ({
     }
 
     return (
-        <div className={`popup-window ${className ? `${className}` : ''}`} onClick={(e) => e.stopPropagation()}>
+        <div className={`popup-window ${className ? `${className}` : ''}`} >
             <button className='close-button' onClick={closeAction}>
                 <img src={closeImage} alt="close" height={20}/>
             </button>
@@ -39,7 +39,6 @@ const PopupWindow: React.FC<PopupWindowProps> = ({
             }
             <div 
                 className={`popup-content `} 
-                onClick={(e) => e.stopPropagation()}
             >
                 {children}
             </div>

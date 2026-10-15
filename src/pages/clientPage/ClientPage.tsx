@@ -61,7 +61,6 @@ const ClientPage: React.FC = () => {
                     <li key={client.id} className="list-item" onClick={() => openViewClientModal(client)}>
                         <p>{client.displayName}</p>
                         <button className="delete-button" onClick={(e) => {
-                            e.stopPropagation();
                             handleDeleteClient(client.id);
                         }}>
                             <img src={deleteIcon} alt="Delete" />

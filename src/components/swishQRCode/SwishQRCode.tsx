@@ -44,7 +44,7 @@ const SwishQRCode: FC<SwishQRCodeProps> = ({ item, payeeNumber }) => {
     }, [allowPriceChange]);
 
     return (
-        <div className="swish-qr" onClick={(e) => e.stopPropagation()}>
+        <div className="swish-qr">
             <div className="swish-qr-badge">
                 <img src={swishLogo} alt="Swish" className="swish-qr-logo" />
                 <span>Betala med Swish</span>
