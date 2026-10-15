@@ -15,8 +15,8 @@ const ClientLoginPopup: FC<ClientLoginPopupProps> = ({title, acceptButtonText, c
     const [ clientId, setClientId] = useState<string>(localStorage.getItem("clientId") || "");
     const [ clientSecret, setClientSecret] = useState<string>(localStorage.getItem("clientSecret") || "");
 
-    const handleLogin = () => {
-        clientLogin(clientId, clientSecret);
+    const handleLogin = async () => {
+        await clientLogin(clientId, clientSecret);
         closeModal();
     }
 
