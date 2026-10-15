@@ -3,6 +3,7 @@ import ActionPopupWindow from "@/components/actionPopupWindow/ActionPopupWindow"
 
 import useInventoryContext from "@/contexts/InventoryContext";
 import useModalContext from "@/contexts/ModalContext";
+import Switch from "../switch/Switch";
 
 const AddProductPopup: React.FC = () => {
     const { addItem } = useInventoryContext();
@@ -51,7 +52,7 @@ const AddProductPopup: React.FC = () => {
             </div>
 
             <div className="inputdiv">
-                <label className="amountInStockInput">Antal i lager</label>
+                <label htmlFor="amountInStockInput">Antal i lager</label>
                 <input 
                     type="string" 
                     id="amountInStockInput"
@@ -69,16 +70,8 @@ const AddProductPopup: React.FC = () => {
             </div>
 
             <div className="inputdiv-row">
-                <label htmlFor="item-is-available">Finns i lager</label>
-                <label className="switch">
-                    <input
-                        type="checkbox"
-                        id="item-is-available"
-                        checked={available}
-                        onChange={(e) => setAvailable(e.target.checked)}
-                    />
-                    <span className="slider"></span>
-                </label>
+                <label htmlFor="item-is-available">Finns i lager:</label>
+                <Switch id="item-is-available"/>
             </div>
         </ActionPopupWindow>
     );

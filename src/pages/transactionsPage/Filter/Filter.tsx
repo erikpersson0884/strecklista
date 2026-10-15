@@ -1,9 +1,10 @@
 import React from 'react';
 import './Filter.css';
 
-
 import useUsersContext from '@/contexts/UsersContext';
 import useTransactionsContext from '@/contexts/TransactionsContext';
+import Switch from '@/components/switch/Switch';
+
 
 interface FilterProps {
     isVisible: boolean;
@@ -118,16 +119,11 @@ const DeletedTransactionFilter = () => {
     return (
         <div className="inputdiv deleted-transactions-filter">
             <label htmlFor='show-deleted-transactions'>Visa strukna transaktioner:</label>
-
-            <label className="switch">
-                <input
-                    type='checkbox'
-                    id='show-deleted-transactions'
-                    checked={filters.showRemoved}
-                    onChange={() => setFilters(f => ({ ...f, showRemoved: !f.showRemoved }))}
-                />
-                <span className="slider"></span>
-            </label>
+            <Switch
+                id='show-deleted-transactions'
+                checked={filters.showDeletedTransactions}
+                onChange={(e) => setFilters(f => ({ ...f, showDeletedTransactions: e.target.checked }))}
+            />
         </div>
     )
 }

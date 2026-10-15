@@ -6,6 +6,7 @@ import { Navigate } from "react-router-dom";
 import useModalContext from "@/contexts/ModalContext";
 import ClientLoginPopup from "@/components/clientLoginPopup/ClientLoginPopup";
 import LoadingPage from "@/pages/loadingPage/LoadingPage";
+import Switch from "@/components/switch/Switch";
 
 const LoginPage = () => {
     const { userAuthenticate, setToken, isAuthenticated, isLoggingIn, rememberMe, setRememberMe } = useAuthContext();
@@ -40,16 +41,8 @@ const LoginPage = () => {
             <button onClick={userAuthenticate}>Logga in med Gamma</button>
             <button onClick={handleClientLogin}>Logga in med klient</button>
             <div className="remember-me">
-                <p>Kom ihåg mig: </p>
-                <label className="switch">
-                    <input
-                        type="checkbox"
-                        id="remember-login"
-                        checked={rememberMe}
-                        onChange={(e) => setRememberMe(e.target.checked)}
-                    />
-                    <span className="slider"></span>
-                </label>
+                <label htmlFor='rememberMeSwitch'>Kom ihåg mig: </label>
+                <Switch id="rememberMeSwitch" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} />
             </div>
         </div>
     );
