@@ -20,6 +20,7 @@ The frontend for a "strecklista" (a tally list for the shop), originally develop
 1. [Configuration](#configuration)
 1. [Scripts](#scripts)
 1. [Testing](#testing)
+1. [Code analysis](#code-analysis)
 1. [Deployment](#deployment)
 1. [Contributing](#contributing)
 1. [Authors](#authors)
@@ -87,6 +88,7 @@ Using a .env file is optional, everything will work without one and having it is
 | `npm run build` | Type-check and build for production into `dist/` |
 | `npm run test` | Run the tests in watch mode |
 | `npm run test:coverage` | Run the tests once and print a coverage report (HTML report in `coverage/`) |
+| `npm run sonar` | Send the project to your own SonarQube server for analysis (see [Code analysis](#code-analysis)) |
 
 # Testing
 
@@ -97,6 +99,33 @@ npm run test:coverage
 ```
 
 The coverage badge is updated by a GitHub Actions workflow on every push to `main`.
+
+# Code analysis
+
+The project can optionally be analyzed with [SonarQube](https://www.sonarsource.com/products/sonarqube/). This requires access to your own SonarQube server, so it is not part of the normal setup.
+
+1. Create a project in SonarQube and generate a token (My Account → Security → Tokens).
+2. Set the server details as environment variables, for example in `~/.bashrc`:
+
+```sh
+   export SONAR_HOST_URL=http://your-server:9000
+   export SONAR_TOKEN=your_token
+```
+
+3. Make sure `sonar.projectKey` in `sonar-project.properties` matches your SonarQube project, or override it:
+
+```sh
+   npm run sonar -- -Dsonar.projectKey=your-project-key
+```
+
+4. Generate coverage, then run the analysis:
+
+```sh
+   npm run test:coverage
+   npm run sonar
+```
+
+Never commit your token. The temporary `.scannerwork/` folder is git-ignored.
 
 # Deployment
 
