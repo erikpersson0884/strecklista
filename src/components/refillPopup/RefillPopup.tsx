@@ -40,7 +40,7 @@ const RefillPopup: React.FC<RefillPopupPopupProps> = ({ item, currentBalance, re
     };
 
     const handleRefill = async () => {
-        const parsedAmount = parseFloat(amountToDeposit);
+        const parsedAmount = Number.parseFloat(amountToDeposit);
 
 
         const wasSuccessFull: boolean = await refillAction(
@@ -53,12 +53,12 @@ const RefillPopup: React.FC<RefillPopupPopupProps> = ({ item, currentBalance, re
         else notify('Något gick fel, försök igen senare.');
     };
 
-    const newAmount: string = ((amountToDeposit !== '' ? parseFloat(amountToDeposit) : 0) + currentBalance).toString();
+    const newAmount: string = ((amountToDeposit !== '' ? Number.parseFloat(amountToDeposit) : 0) + currentBalance).toString();
 
     return (
         <ActionPopupWindow 
             onAccept={handleRefill}
-            acceptButtonText={`Fyll på med ${(amountToDeposit !== '' ? parseFloat(amountToDeposit) : 0)} ${suffix}`}
+            acceptButtonText={`Fyll på med ${(amountToDeposit !== '' ? Number.parseFloat(amountToDeposit) : 0)} ${suffix}`}
             className='refill-user-balance-popup'
             acceptButtonDisabled={amountToDeposit === ''}
         >

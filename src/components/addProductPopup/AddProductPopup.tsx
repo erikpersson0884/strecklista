@@ -16,9 +16,9 @@ const AddProductPopup: React.FC = () => {
 
     const handleNumberInputChange = (e: React.ChangeEvent<HTMLInputElement>, setValue: React.Dispatch<React.SetStateAction<number>>) => {
         const value = e.target.value;
-        const parsed = parseFloat(value);
+        const parsed = Number.parseFloat(value);
 
-        if (value.trim() === '' || isNaN(parsed))  return;
+        if (value.trim() === '' || Number.isNaN(parsed))  return;
         else setValue(parsed);
     }
 

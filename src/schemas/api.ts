@@ -54,7 +54,7 @@ export type ApiGroupMember = z.infer<typeof apiGroupMember>;
 export const apiPrice = z.object({
   price: z.union([z.string(), z.number()])
     .transform((val) => String(val))
-    .refine((val) => !isNaN(Number(val)), {
+    .refine((val) => !Number.isNaN(Number(val)), {
       message: "Price must be a valid number",
     }),
   displayName: z.string(),
@@ -119,7 +119,7 @@ export const apiDeposit = apiTransactionBase.extend({
   createdFor: z.number().int(),
   total: z.union([z.string(), z.number()])
     .transform((val) => Number(val))
-    .refine((val) => !isNaN(val), {
+    .refine((val) => !Number.isNaN(val), {
       message: "Total must be a valid number",
   }),
 });

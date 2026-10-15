@@ -88,7 +88,7 @@ const TransactionPopup: FC<TransactionPopupProps> = ({transaction}) => {
     let dateString: string;
     let timeString: string;
     const d = new Date(transaction.createdTime);
-    if (isNaN(d.getTime())) {
+    if (Number.isNaN(d.getTime())) {
         dateString = String(transaction.createdTime);
         timeString = '';
     } else {

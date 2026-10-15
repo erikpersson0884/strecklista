@@ -31,7 +31,7 @@ const parseNameAndAmount = (arg: string): { name: string; amount: number } | nul
     const name = parts.join(' ');
     const amount = Number(amountStr);
 
-    return (!name || isNaN(amount)) ? null : { name, amount };
+    return (!name || Number.isNaN(amount)) ? null : { name, amount };
 };
 
 // Strips emoji and whitespace so "Göken 🐦" becomes a plausible filename "Göken".

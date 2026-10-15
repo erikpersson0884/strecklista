@@ -51,7 +51,7 @@ const UpdateItemPopup: React.FC<UpdateItemPopupProps> = ({ item }) => {
                 type === "checkbox"
                     ? checked
                     : type === "number"
-                        ? (value === "" ? 0 : parseFloat(value))
+                        ? (value === "" ? 0 : Number.parseFloat(value))
                         : value,
         }));
     };
