@@ -67,11 +67,11 @@ describe('ModalContext', () => {
             expect(screen.queryByText('Hello')).not.toBeInTheDocument();
         });
 
-        it('a click inside content that stops propagation keeps the modal open', () => {
+        it('a click inside the modal content stops propagation and keeps the modal open', () => {
             const { result } = setup();
             act(() =>
                 result.current.openModal(
-                    <div onClick={(e) => e.stopPropagation()}>
+                    <div>
                         <span>Hello</span>
                     </div>
                 )
@@ -83,21 +83,11 @@ describe('ModalContext', () => {
             expect(screen.getByText('Hello')).toBeInTheDocument();
         });
 
-        // Characterization: the overlay closes on ANY click that reaches it, so every
-        // popup has to call stopPropagation itself (PopupWindow, Cart and SwishQRCode do).
-        it('a click inside content that does not stop propagation closes the modal', () => {
-            const { result } = setup();
-            act(() => result.current.openModal(<span>Hello</span>));
-
-            fireEvent.click(screen.getByText('Hello'));
-
-            expect(result.current.modalIsOpen).toBe(false);
-        });
 
         it('lets content close the modal itself through the context', () => {
             const Content = () => {
                 const { closeModal } = useModalContext();
-                return <button onClick={(e) => { e.stopPropagation(); closeModal(); }}>Done</button>;
+                return <button onClick={(e) => { closeModal(); }}>Done</button>;
             };
             const { result } = setup();
             act(() => result.current.openModal(<Content />));

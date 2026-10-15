@@ -411,7 +411,13 @@ const ConsolePage: FC = () => {
 
     return (
         <div className="console-page page">
-            <div className="console-output" ref={outputRef} onClick={() => inputRef.current?.focus()}>
+            <div 
+                className="console-output" 
+                ref={outputRef} 
+                role="presentation"
+                onClick={() => inputRef.current?.focus()}
+
+            >
                 {output.map((line, index) => (
                     line.type === 'input'
                         ? <p key={index} className="console-line console-line-input"><span className="console-prompt">&gt;</span> {line.text}</p>

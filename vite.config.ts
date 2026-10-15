@@ -31,13 +31,11 @@ export default defineConfig(({ mode }) => {    // This loads the right file base
                     'src/**/*.d.ts',
                     'src/types/**',
                     'src/main.tsx',
-                    'src/setupTests.ts',
-
-                    'src/components/**',
-                    'src/pages/**',
-                    'src/layouts/**',
                     'src/App.tsx',
                     'src/contexts/Providers.tsx',
+                    'src/setupTests.ts',
+
+                    'src/pages/**',
                 ],
             },
         },

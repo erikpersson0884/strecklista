@@ -60,9 +60,7 @@ const ClientPage: React.FC = () => {
                 {clients.map((client) => (
                     <li key={client.id} className="list-item" onClick={() => openViewClientModal(client)}>
                         <p>{client.displayName}</p>
-                        <button className="delete-button" onClick={(e) => {
-                            handleDeleteClient(client.id);
-                        }}>
+                        <button className="delete-button" onClick={(e) => {void handleDeleteClient(client.id)}}>
                             <img src={deleteIcon} alt="Delete" />
                         </button>
                     </li>
