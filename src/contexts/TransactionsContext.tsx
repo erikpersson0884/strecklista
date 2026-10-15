@@ -192,7 +192,7 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
     React.useEffect(() => {
         const notInScope = !currentClient?.scope?.includes('transactions.read');
         if (isLoadingUsers || isLoadingInventory) return;
-        if (isAuthenticated && !(currentClient && notInScope)) fetchTransactions();
+        if (isAuthenticated && !(currentClient && notInScope)) void fetchTransactions();
     }, [isLoadingUsers, isAuthenticated, isLoadingInventory, currentClient, refreshSignal, filters.userId]);
 
 

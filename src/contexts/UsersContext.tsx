@@ -43,7 +43,7 @@ export const UsersProvider = ({ children }: { children: ReactNode }) => {
             setIsLoadingUsers(false);
         };
 
-        fetchData();
+        void fetchData();
     }, [isAuthenticated]);
 
     const addUserBalance = async (userId: UserId, amount: number, comment?: string): Promise<boolean> => {

@@ -36,7 +36,7 @@ export const ClientProvider = ({ children }: { children: ReactNode }) => {
     };
 
     useEffect(() => {
-        if (isAuthenticated && currentUser) fetchClients();
+        if (isAuthenticated && currentUser) void fetchClients();
     }, [isAuthenticated, currentUser]);
 
     useEffect(() => {
@@ -48,7 +48,7 @@ export const ClientProvider = ({ children }: { children: ReactNode }) => {
                 console.error('Failed to fetch availableScope:', error);
             }
         };
-        fetchScopes();
+        void fetchScopes();
     }, []);
 
     const createClient = async (name: string, description: string, scope: string): Promise<{client: Client, secret: string}> => {

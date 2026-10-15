@@ -43,7 +43,7 @@ const ProfilePage: React.FC = () => {
             {currentUser &&
                 <>
                     <p>Saldo: {currentUser.balance} kr</p>
-                    <button className='open-clients-button client-page-navigation-button' onClick={() => navigate("/clients")}>Mina Klienter</button>
+                    <button className='open-clients-button client-page-navigation-button' onClick={() => void navigate("/clients")}>Mina Klienter</button>
                 </>
             }
             <button className='client-page-navigation-button' onClick={() => navigate("/style")}>Styling</button>

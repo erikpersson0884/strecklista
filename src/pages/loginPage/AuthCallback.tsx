@@ -20,11 +20,11 @@ const AuthCallback = () => {
         if (code) {
             await exchangeCodeForToken(code);
         }
-        navigate("/");
+        await navigate("/");
       };
 
     useEffect(() => {
-        handleAuth();
+        void handleAuth();
     }, [location]);
 
     return (

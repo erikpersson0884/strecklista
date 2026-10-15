@@ -168,7 +168,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             }
 
             // Install the token before making any authenticated requests.
-            setAuthTokenInAxios(token);
+            await setAuthTokenInAxios(token);
             localStorage.setItem("authToken", token);
 
             /*
@@ -256,7 +256,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             }
         };
 
-        checkForToken();
+        void checkForToken();
 
         return () => {
             cancelled = true;
@@ -321,7 +321,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
 
     // Login via OAuth2 Authorization Code Flow
-    const userAuthenticate = async (): Promise<void> => {
+    const userAuthenticate = (): void => {
         authApi.userAuthenticate();
     };
 
@@ -371,7 +371,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setCurrentUser(null);
         setIsAuthenticated(false);
 
-        setAuthTokenInAxios(null);
+        void setAuthTokenInAxios(null);
 
         setRememberMe(false);
 

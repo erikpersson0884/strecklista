@@ -48,12 +48,12 @@ export const ConnectionProvider = ({ children }: { children: ReactNode }) => {
     }, []);
 
     useEffect(() => {
-        checkNow();
+        void checkNow();
 
         const interval = setInterval(checkNow, POLL_INTERVAL_MS);
 
         const handleVisibilityChange = () => {
-            if (document.visibilityState === 'visible') checkNow();
+            if (document.visibilityState === 'visible') void checkNow();
         };
         document.addEventListener('visibilitychange', handleVisibilityChange);
         window.addEventListener('focus', checkNow);

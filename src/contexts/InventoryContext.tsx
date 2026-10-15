@@ -42,7 +42,7 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
 
     useEffect( () => {
         if (!isAuthenticated) return;
-        fetchInventory();
+        else void fetchInventory();
     }, [isAuthenticated]);
 
     const getItemById = (id: Id): Item => {
@@ -59,7 +59,7 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
             }];
 
             const item: Item = await inventoryApi.addItem(displayName, prices, icon);
-            fetchInventory();
+            await fetchInventory();
             return item;
         } catch (error) {
             console.error('Failed to add item', error);
@@ -95,7 +95,7 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
 
         try {
             const newItem: Item = await inventoryApi.updateItem(itemId, updatedItem);
-            fetchInventory();
+            await fetchInventory();
             notify('Vara uppdaterad', 'success');
             return newItem;
         } catch (error) {
@@ -109,7 +109,7 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
         try {
             const updatedItem: Item = await inventoryApi.updateItem(item.id, { favorite: !item.favorite });
             notify(item.name + (updatedItem.favorite ? ' är nu favorit' : ' är inte längre favorit'), 'success');
-            fetchInventory();
+            await fetchInventory();
             return updatedItem;
         } catch (error) {
             notify(`Misslyckades med att ändra favoritstatus för vara "${item.name}"`, 'error');
@@ -137,7 +137,7 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
         try {
             if (!items.some(item => item.id === id)) throw new Error('Item not found');
             await inventoryApi.deleteItem(id);
-            fetchInventory();
+            await fetchInventory();
             return true;
         } catch (error) {
             notify(`Misslyckades med att ta bort vara med id "${id}"`, 'error');

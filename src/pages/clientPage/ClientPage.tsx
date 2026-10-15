@@ -22,10 +22,10 @@ const ClientPage: React.FC = () => {
         if (createdClient) openModal(<DisplayClientPopup client={createdClient} secret={secret} title="Skapad klient" />);
     }
 
-    const handleDeleteClient = (clientId: string) => {
+    const handleDeleteClient = async (clientId: string) => {
         const confirmDelete = window.confirm("Är du säker på att du vill ta bort klienten?");
         if (confirmDelete) {
-            deleteClient(clientId);
+            await deleteClient(clientId);
         }
     }
 

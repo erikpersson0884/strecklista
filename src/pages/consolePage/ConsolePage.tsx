@@ -381,10 +381,10 @@ const ConsolePage: FC = () => {
         print(`Command not found: "${trimmed}". Type 'help' for available commands.`, 'error');
     };
 
-    const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const onKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
             if (command.trim()) setCommandHistory((prev) => [...prev, command]);
-            handleCommand(command);
+            await handleCommand(command);
             setCommand('');
             setHistoryIndex(null);
         } else if (e.key === 'ArrowUp') {

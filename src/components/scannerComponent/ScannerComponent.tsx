@@ -74,7 +74,7 @@ const ScannerComponent: React.FC<ScannerComponentProps> = ({className}) => {
         // Enter = scanner signaling end-of-scan (most common config)
         if (e.key === "Enter") {
             e.preventDefault();
-            processBuffer();
+            void processBuffer();
             return;
         }
 
@@ -98,7 +98,7 @@ const ScannerComponent: React.FC<ScannerComponentProps> = ({className}) => {
         // (fallback for scanners that don't send Enter)
         if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
         idleTimerRef.current = setTimeout(() => {
-            processBuffer();
+            void processBuffer();
         }, SCAN_IDLE_TIMEOUT);
     };
 

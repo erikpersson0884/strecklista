@@ -27,7 +27,7 @@ const Header: React.FC = () => {
             const groupInfo = await usersApi.getGroupInfo()
             if (groupInfo.avatarUrl) setGroupAvatarUrl(groupInfo.avatarUrl)
         }
-        if (isAuthenticated) setLogoToGroupIcon()
+        if (isAuthenticated) void setLogoToGroupIcon()
         else setGroupAvatarUrl(fallbackLogo)
     }, [isAuthenticated])
     
@@ -49,7 +49,7 @@ const Header: React.FC = () => {
                             <img src={menuIcon} alt="menu" height={50} />
                         </button>
 
-                        <button onClick={() => { navigate('/profile'); setNavOpen(false)}} className="profile-button" aria-label="Profile">
+                        <button onClick={() => { void navigate('/profile'); setNavOpen(false)}} className="profile-button" aria-label="Profile">
                             <img src={profileIcon} alt="profile" height={50} />
                         </button>
                     </div>
