@@ -35,14 +35,14 @@ const AddProductPopup: React.FC = () => {
             acceptButtonText="Lägg till"
         >
             <div className="inputdiv">
-                <label>Varunamn</label>
-                <input type="text" name="name" value={name} onChange={(e) => setName(e.target.value)} />
+                <label htmlFor="addProductPopupNameInput">Varunamn</label>
+                <input type="text" id="addProductPopupNameInput" name="name" value={name} onChange={(e) => setName(e.target.value)} />
             </div>
 
             <div className="inputdiv">
-                <label>Pris (Internt)</label>
+                <label htmlFor="itemPriceInput">Pris (Internt)</label>
                 <input 
-                    id="amount" 
+                    id="itemPriceInput" 
                     type="string" 
                     value={internalPrice} 
                     onChange={e => handleNumberInputChange(e, setInternalPrice)} 
@@ -51,9 +51,10 @@ const AddProductPopup: React.FC = () => {
             </div>
 
             <div className="inputdiv">
-                <label>Antal i lager</label>
+                <label className="amountInStockInput">Antal i lager</label>
                 <input 
                     type="string" 
+                    id="amountInStockInput"
                     name="amountInStock" 
                     value={amountInStock} 
                     onChange={e => handleNumberInputChange(e, setAmountInStock)}
@@ -63,8 +64,8 @@ const AddProductPopup: React.FC = () => {
             </div>
 
             <div className="inputdiv">
-                <label>Bild URL</label>
-                <input type="text" name="icon" value={icon} onChange={(e) => seticon(e.target.value)} />
+                <label htmlFor="itemIconInput">Bild URL</label>
+                <input type="text" id="itemIconInput" name="icon" value={icon} onChange={(e) => seticon(e.target.value)} />
             </div>
 
             <div className="inputdiv-row">
