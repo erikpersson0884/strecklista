@@ -28,9 +28,9 @@ const RefillPopup: React.FC<RefillPopupPopupProps> = ({ item, currentBalance, re
         amountInputRef.current?.focus();
     }, []);
 
-    const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const handleKeyPress = async (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter' && amountToDeposit !== '') {
-            handleRefill();
+            await handleRefill();
         }
     }
 

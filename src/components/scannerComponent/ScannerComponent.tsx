@@ -33,7 +33,7 @@ const ScannerComponent: React.FC<ScannerComponentProps> = ({className}) => {
         }
     };
 
-    const processBuffer = () => {
+    const processBuffer = async () => {
         const barcode = bufferRef.current.replace(/[\r\n!]/g, ''); // remove newlines and exclamation marks
 
         clearBuffer();
@@ -53,7 +53,7 @@ const ScannerComponent: React.FC<ScannerComponentProps> = ({className}) => {
         } else if (matchingUser) {
             setPayingUser(matchingUser);
         } else if (barcode === "checkout" && payingUser !== null && itemsInCart.length > 0) {
-            purchaseCart();
+            await purchaseCart();
         } else if (barcode === "emptyCart") {
             emptyCart();
         } else {
