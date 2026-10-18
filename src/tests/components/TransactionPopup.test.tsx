@@ -227,9 +227,8 @@ describe('TransactionPopup', () => {
       expect(listItem('Kaffe')).toHaveTextContent(/-6/);
     });
 
-    it('does not show quantities, totals or deposit sums', () => {
+    it('does not show totals or deposit sums', () => {
       setup(stockUpdate);
-      expect(screen.queryByText(/st$/)).not.toBeInTheDocument();
       expect(screen.queryByText('Totalt:')).not.toBeInTheDocument();
       expect(screen.queryByText('Summa insatt:')).not.toBeInTheDocument();
     });

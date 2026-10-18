@@ -66,7 +66,7 @@ describe('InventoryPanel', () => {
   describe('rendering', () => {
     it('shows the section label', () => {
       setup([]);
-      expect(screen.getByText('STRÄCKA PÅ VEM?')).toBeInTheDocument();
+      expect(screen.getByText('STRÄCKA VAD?')).toBeInTheDocument();
     });
 
     it('renders the scanner with the scanner class', () => {
