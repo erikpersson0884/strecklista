@@ -2,7 +2,7 @@ import { useState, useEffect, FC } from 'react';
 import QRCode from 'react-qr-code';
 import './SwishQRCode.css';
 import swishLogo from '@/assets/images/swish-logo.svg';
-
+import Switch from '@/components/switch/Switch';
 
 // const PHONE_EDITABLE = 1;
 const AMOUNT_EDITABLE = 2;
@@ -44,7 +44,7 @@ const SwishQRCode: FC<SwishQRCodeProps> = ({ item, payeeNumber }) => {
     }, [allowPriceChange]);
 
     return (
-        <div className="swish-qr" onClick={(e) => e.stopPropagation()}>
+        <div className="swish-qr">
             <div className="swish-qr-badge">
                 <img src={swishLogo} alt="Swish" className="swish-qr-logo" />
                 <span>Betala med Swish</span>
@@ -59,18 +59,14 @@ const SwishQRCode: FC<SwishQRCodeProps> = ({ item, payeeNumber }) => {
 
             <div className="swish-qr-toggle-row">
                 <label htmlFor="swish-qr-allow-price-change">Tillåt att ändra pris</label>
-                <label className="switch">
-                    <input
-                        type="checkbox"
-                        id="swish-qr-allow-price-change"
-                        checked={allowPriceChange}
-                        onChange={(e) => setAllowPriceChange(e.target.checked)}
-                    />
-                    <span className="slider"></span>
-                </label>
+                <Switch
+                    id="swish-qr-allow-price-change"
+                    checked={allowPriceChange}
+                    onChange={(e) => setAllowPriceChange(e.target.checked)}
+                />
             </div>
         </div>
     );
-};
+}
 
 export default SwishQRCode;

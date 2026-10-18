@@ -1,5 +1,7 @@
 import React from 'react';
 import './Modal.css';
+import { useEffect } from 'react';
+
 
 interface ModalProps {
     isOpen?: boolean;
@@ -8,15 +10,25 @@ interface ModalProps {
 }
 
 const Modal: React.FC<ModalProps> = ({ isOpen = true, onClose, children }) => {
+    useEffect(() => {
+        if (!isOpen) return;
+        const onKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') onClose();
+        };
+        document.addEventListener('keydown', onKeyDown);
+        return () => document.removeEventListener('keydown', onKeyDown);
+    }, [isOpen, onClose]);
+
     if (!isOpen) return null;
 
-    const handleClick = (e: React.MouseEvent) => {
+    const handleBackdropClick = (e: React.MouseEvent) => {
         e.stopPropagation();
-        onClose();
-    }
+        // Only a click on the backdrop itself closes the modal, not clicks inside the content.
+        if (e.target === e.currentTarget) onClose();
+    };
 
     return (
-        <aside className='modal-overlay' onClick={handleClick}>
+        <aside className='modal-overlay' role="presentation" onClick={handleBackdropClick}>
             {children}
         </aside>
     );

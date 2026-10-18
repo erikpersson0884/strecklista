@@ -14,20 +14,22 @@ const Header: React.FC = () => {
     const [ navOpen, setNavOpen ] = React.useState(false)
     const [ groupAvatarUrl, setGroupAvatarUrl ] = React.useState<string>(fallbackLogo)
 
+    const hasScope = (scope: string) => !currentClient || !!currentClient.scope?.split(' ').includes(scope);
+
     const pages = [
         { url: '/', linkText: 'Strecka', visibleCriteria: isAuthenticated },
-        { url: '/inventory', linkText: 'Utbud', visibleCriteria: isAuthenticated && (!currentClient || currentClient.scope?.includes("items.read")) },
-        { url: '/balance', linkText: 'Tillgodo', visibleCriteria: isAuthenticated && (!currentClient || currentClient.scope?.includes("group.read")) },
-        { url: '/transactions', linkText: 'Transaktioner', visibleCriteria: isAuthenticated && (!currentClient || currentClient.scope?.includes("transactions.read")) },
+        { url: '/inventory', linkText: 'Utbud', visibleCriteria: isAuthenticated && hasScope('items.read') },
+        { url: '/balance', linkText: 'Tillgodo', visibleCriteria: isAuthenticated && hasScope('group.read') },
+        { url: '/transactions', linkText: 'Transaktioner', visibleCriteria: isAuthenticated && hasScope('transactions.read') },
         { url: '/barcode-shop', linkText: 'Streckkods-handel', visibleCriteria: isAuthenticated, className: 'barcode-shop-link' },
-    ]
+    ];
 
     React.useEffect(() => {
         const setLogoToGroupIcon = async () => {
             const groupInfo = await usersApi.getGroupInfo()
             if (groupInfo.avatarUrl) setGroupAvatarUrl(groupInfo.avatarUrl)
         }
-        if (isAuthenticated) setLogoToGroupIcon()
+        if (isAuthenticated) void setLogoToGroupIcon()
         else setGroupAvatarUrl(fallbackLogo)
     }, [isAuthenticated])
     
@@ -49,7 +51,7 @@ const Header: React.FC = () => {
                             <img src={menuIcon} alt="menu" height={50} />
                         </button>
 
-                        <button onClick={() => { navigate('/profile'); setNavOpen(false)}} className="profile-button" aria-label="Profile">
+                        <button onClick={() => { void navigate('/profile'); setNavOpen(false)}} className="profile-button" aria-label="Profile">
                             <img src={profileIcon} alt="profile" height={50} />
                         </button>
                     </div>
@@ -58,7 +60,7 @@ const Header: React.FC = () => {
 
             <nav className={`header-nav ${navOpen ? 'nav-open' : ''}`}>
                 {pages
-                    .filter((page) => page.visibleCriteria !== false)
+                    .filter((page) => page.visibleCriteria)
                     .map((page) => (
                         <Link
                             to={page.url}

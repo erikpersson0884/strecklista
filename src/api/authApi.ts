@@ -10,7 +10,7 @@ export const authApi = {
      * The provider redirects back to the application with an authorization
      * code, which should be passed to {@link userLogin}.
      */
-    userAuthenticate: async () => {
+    userAuthenticate: () => {
         window.location.href = "/api/oauth2/authorize";
     },
 

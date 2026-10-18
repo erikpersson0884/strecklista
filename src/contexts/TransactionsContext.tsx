@@ -28,7 +28,7 @@ interface TransactionFilters {
     userId: string;
     startDate: string | null;
     endDate: string | null;
-    showRemoved: boolean;
+    showRemovedTransactions: boolean;
     searchQuery: string;
     transactionType: TransactionType | 'all';
 }
@@ -51,7 +51,7 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
         userId: 'all',
         startDate: null,
         endDate: null,
-        showRemoved: false,
+        showRemovedTransactions: false,
         searchQuery: '',
         transactionType: 'all',
     });
@@ -60,7 +60,7 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
             userId: 'all',
             startDate: null,
             endDate: null,
-            showRemoved: false,
+            showRemovedTransactions: false,
             searchQuery: '',
             transactionType: 'all',
         });
@@ -69,7 +69,7 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
     const latestRequestId = useRef(0);
 
     // Only `filters.userId` maps to a server-side query param (createdBy/createdFor).
-    // Everything else here (search text, date range, type, showRemoved) is applied
+    // Everything else here (search text, date range, type, showRemovedTransactions) is applied
     // client-side, below, against whatever page is already in memory. That's a real
     // limitation - searching only searches the currently loaded page, it doesn't
     // reach across pages - but it at least means typing in the search box no longer
@@ -87,7 +87,7 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
             filtered = filtered.filter((t) => t.createdTime <= end);
         }
 
-        if (!filters.showRemoved) {
+        if (!filters.showRemovedTransactions) {
             filtered = filtered.filter((t) => !t.removed);
         }
 
@@ -192,7 +192,7 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
     React.useEffect(() => {
         const notInScope = !currentClient?.scope?.includes('transactions.read');
         if (isLoadingUsers || isLoadingInventory) return;
-        if (isAuthenticated && !(currentClient && notInScope)) fetchTransactions();
+        if (isAuthenticated && !(currentClient && notInScope)) void fetchTransactions();
     }, [isLoadingUsers, isAuthenticated, isLoadingInventory, currentClient, refreshSignal, filters.userId]);
 
 

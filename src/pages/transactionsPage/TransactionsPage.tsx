@@ -150,7 +150,7 @@ const TransactionPreview: FC<TransactionPreviewProps> = ({transaction}) => {
         const userId = (transaction as Purchase | Deposit).createdFor;
         username = getUserFromUserId(userId).nick;
     } else if (!transaction.createdBy) {
-        username = "Okänd (förmodglien borttagen användare eller klient)";
+        username = "Okänd (förmodligen borttagen användare eller klient)";
     } else if (transaction.createdBy.type === "user") {
         const userId = transaction.createdBy.id;
         username = getUserFromUserId(userId).nick;
@@ -182,7 +182,7 @@ const TransactionPreview: FC<TransactionPreviewProps> = ({transaction}) => {
 
             <div className='transaction-info'>
                 <p className='transaction-type'>{transactionTypeString}</p>
-                <p className='transacton-user-and-time'>{username}</p>            
+                <p className='username'>{username}</p>            
             </div>
 
             <div className='transaction-amount-and-chevron'>

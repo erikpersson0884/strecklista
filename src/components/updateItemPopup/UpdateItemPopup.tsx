@@ -3,6 +3,7 @@ import ActionPopupWindow from "@/components/actionPopupWindow/ActionPopupWindow"
 
 import useInventoryContext from "@/contexts/InventoryContext";
 import useModalContext from '@/contexts/ModalContext';
+import Switch from "@/components/switch/Switch";
 
 
 interface UpdateItemPopupProps {
@@ -51,7 +52,7 @@ const UpdateItemPopup: React.FC<UpdateItemPopupProps> = ({ item }) => {
                 type === "checkbox"
                     ? checked
                     : type === "number"
-                        ? (value === "" ? 0 : parseFloat(value))
+                        ? (value === "" ? 0 : Number.parseFloat(value))
                         : value,
         }));
     };
@@ -108,17 +109,8 @@ const UpdateItemPopup: React.FC<UpdateItemPopupProps> = ({ item }) => {
             </div>
 
             <div>
-                <label htmlFor="available">Tillgänglig: </label>
-                <label className="switch">
-                    <input
-                        id="available"
-                        type="checkbox"
-                        name="available"
-                        checked={updatedItem.available}
-                        onChange={handleChange}
-                    />
-                    <span className="slider"></span>
-                </label>
+                <label htmlFor="availableItemSwitch">Tillgänglig: </label>
+                <Switch id='availableItemSwitch' name="available" checked={updatedItem.available} onChange={handleChange} />
             </div>
         </ActionPopupWindow>
     );

@@ -22,10 +22,10 @@ const ClientPage: React.FC = () => {
         if (createdClient) openModal(<DisplayClientPopup client={createdClient} secret={secret} title="Skapad klient" />);
     }
 
-    const handleDeleteClient = (clientId: string) => {
+    const handleDeleteClient = async (clientId: string) => {
         const confirmDelete = window.confirm("Är du säker på att du vill ta bort klienten?");
         if (confirmDelete) {
-            deleteClient(clientId);
+            await deleteClient(clientId);
         }
     }
 
@@ -60,10 +60,7 @@ const ClientPage: React.FC = () => {
                 {clients.map((client) => (
                     <li key={client.id} className="list-item" onClick={() => openViewClientModal(client)}>
                         <p>{client.displayName}</p>
-                        <button className="delete-button" onClick={(e) => {
-                            e.stopPropagation();
-                            handleDeleteClient(client.id);
-                        }}>
+                        <button className="delete-button" onClick={(e) => {void handleDeleteClient(client.id)}}>
                             <img src={deleteIcon} alt="Delete" />
                         </button>
                     </li>

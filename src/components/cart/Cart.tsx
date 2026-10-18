@@ -25,7 +25,7 @@ const Cart: FC = () => {
 
 
     return (
-        <div className='cart' onClick={(e) => e.stopPropagation()}>
+        <div className='cart'>
             <CartItems />
             <CartFooter />
             

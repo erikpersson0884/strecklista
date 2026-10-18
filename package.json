@@ -6,10 +6,11 @@
     "scripts": {
         "dev": "vite --host",
         "test": "vitest",
-        "test:coverage": "vitest run --coverage",
+        "test:coverage": "vitest --coverage",
         "build": "tsc -b tsconfig.build.json && vite build",
         "lint": "eslint .",
-        "preview": "vite preview"
+        "preview": "vite preview",
+        "sonar": "sonar-scanner-npm"
     },
     "dependencies": {
         "@vitejs/plugin-react": "^4.3.4",
@@ -26,6 +27,7 @@
         "@babel/preset-react": "^7.26.3",
         "@babel/preset-typescript": "^7.26.0",
         "@eslint/js": "^9.17.0",
+        "@sonar/scan": "^5.0.2",
         "@testing-library/jest-dom": "^6.9.1",
         "@testing-library/react": "^16.3.0",
         "@testing-library/user-event": "^14.6.1",

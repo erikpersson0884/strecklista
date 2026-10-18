@@ -14,7 +14,8 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
 
     const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newQuantity = e.target.value === '' ? 0 : Number(e.target.value); // if i just click remove button, i want it to be zero, not NaN
-        if (isNaN(newQuantity) || newQuantity < 0) return;
+        if (!Number.isInteger(newQuantity) || newQuantity < 0) return;
+        if (Number.isNaN(newQuantity) || newQuantity < 0) return;
         setProductQuantity(item.id, newQuantity);
     };
 
