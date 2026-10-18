@@ -34,8 +34,6 @@ export default defineConfig(({ mode }) => {    // This loads the right file base
                     'src/App.tsx',
                     'src/contexts/Providers.tsx',
                     'src/setupTests.ts',
-
-                    'src/pages/**',
                 ],
             },
         },
