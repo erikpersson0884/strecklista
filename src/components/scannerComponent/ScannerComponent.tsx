@@ -120,7 +120,6 @@ const ScannerComponent: React.FC<ScannerComponentProps> = ({className}) => {
             type="text"
             defaultValue=""
             placeholder="Scan barcode..."
-            autoFocus
             ref={inputRef}
             onKeyDown={handleKeyDown}
             onChange={() => {}} // value is driven imperatively via bufferRef, not React state
