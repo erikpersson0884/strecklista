@@ -57,7 +57,7 @@ const apiDepositFixture = {
     type: "deposit",
     createdBy: { clientId: "client-1" },
     createdFor: 200,
-    total: "50",
+    total: 50,
     createdTime: "2024-01-02T00:00:00.000Z",
     removed: false,
     comment: null,
