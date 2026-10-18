@@ -73,7 +73,7 @@ const ShopItems: React.FC<ShopItemsProps> = ({ items, searchTerm}) => {
                 <ShopItem key={item.id} item={item} />
             )}
             
-            {filteredItems.filter((item: Item) => item.favorite == false ).map((item: Item) => 
+            {filteredItems.filter((item: Item) => item.favorite !== true ).map((item: Item) => 
                 <ShopItem key={item.id} item={item} />
             )}
         </div>

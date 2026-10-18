@@ -172,7 +172,7 @@
     font-weight: 500;
 }
 
-.transaction-preview .transacton-user-and-time {
+.transaction-preview .username {
     font-size: 0.75rem;
     color: var(--faint-text-color);
 }

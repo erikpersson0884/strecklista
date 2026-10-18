@@ -21,7 +21,7 @@ const Filter: React.FC<FilterProps> = ({ isVisible, hideFilters }) => {
             <StartDateFilter />
             <EndDateFilter />
             <DeletedTransactionFilter />
-            
+
             <footer className='filter-footer'>
                 <button onClick={resetFilters}>
                     Återställ filter
@@ -30,7 +30,7 @@ const Filter: React.FC<FilterProps> = ({ isVisible, hideFilters }) => {
                 <button onClick={hideFilters}>Stäng filter</button>
             </footer>
         </div>
-    )
+    );
 };
 
 const UserFilter = () => {
@@ -41,8 +41,11 @@ const UserFilter = () => {
         <div className="inputdiv">
             <label htmlFor='user-filter'>Användare:</label>
             <select
-                id='user-filter' 
-                onChange={(e) => setFilters((f) => ({ ...f, userId: e.target.value }))}
+                id='user-filter'
+                onChange={(e) => {
+                    const userId = e.target.value;
+                    setFilters((f) => ({ ...f, userId }));
+                }}
                 value={String(filters.userId)}
             >
                 <option value={'all'}>Alla</option>
@@ -60,16 +63,16 @@ const TypeFilter = () => {
     const { filters, setFilters } = useTransactionsContext();
 
     const handleTransactionTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const value: TransactionType | 'all' = e.target.value as TransactionType | 'all';
-        setFilters(f => ({ ...f, transactionType: value}));
-    }
-    
+        const transactionType = e.target.value as TransactionType | 'all';
+        setFilters(f => ({ ...f, transactionType }));
+    };
+
     return (
         <div className="inputdiv">
             <label htmlFor='transaction-type-filter'>Typ:</label>
             <select
-                id='transaction-type-filter' 
-                onChange={(e) => handleTransactionTypeChange(e)}
+                id='transaction-type-filter'
+                onChange={handleTransactionTypeChange}
                 value={filters.transactionType}
             >
                 <option value={'all'}>Alla</option>
@@ -78,10 +81,8 @@ const TypeFilter = () => {
                 <option value={'stockUpdate'}>Lageruppdatering</option>
             </select>
         </div>
-    )
-}
-    
-
+    );
+};
 
 const StartDateFilter = () => {
     const { filters, setFilters } = useTransactionsContext();
@@ -92,12 +93,14 @@ const StartDateFilter = () => {
                 type='date'
                 id='start-date-filter'
                 value={filters.startDate ?? ''}
-                onChange={(e) => setFilters(f => ({ ...f, startDate: e.target.value || null }))}
+                onChange={(e) => {
+                    const startDate = e.target.value || null;
+                    setFilters(f => ({ ...f, startDate }));
+                }}
             />
         </div>
-    )
-}
-    
+    );
+};
 
 const EndDateFilter = () => {
     const { filters, setFilters } = useTransactionsContext();
@@ -108,11 +111,14 @@ const EndDateFilter = () => {
                 type='date'
                 id='end-date-filter'
                 value={filters.endDate ?? ''}
-                onChange={(e) => setFilters(f => ({ ...f, endDate: e.target.value || null }))}
+                onChange={(e) => {
+                    const endDate = e.target.value || null;
+                    setFilters(f => ({ ...f, endDate }));
+                }}
             />
         </div>
-    )
-}
+    );
+};
 
 const DeletedTransactionFilter = () => {
     const { filters, setFilters } = useTransactionsContext();
@@ -121,11 +127,14 @@ const DeletedTransactionFilter = () => {
             <label htmlFor='show-deleted-transactions'>Visa strukna transaktioner:</label>
             <Switch
                 id='show-deleted-transactions'
-                checked={filters.showDeletedTransactions}
-                onChange={(e) => setFilters(f => ({ ...f, showDeletedTransactions: e.target.checked }))}
+                checked={filters.showRemovedTransactions}
+                onChange={(e) => {
+                    const showRemovedTransactions = e.target.checked;
+                    setFilters(f => ({ ...f, showRemovedTransactions }));
+                }}
             />
         </div>
-    )
-}
+    );
+};
 
 export default Filter;

@@ -124,7 +124,7 @@ const TransactionPopup: FC<TransactionPopupProps> = ({transaction}) => {
                             <span>Utförd av:</span>
                             <span>
                                 {!transaction.createdBy
-                                    ? "Okänd (förmodglien borttagen användare eller klient)"
+                                    ? "Okänd (förmodligen borttagen användare eller klient)"
                                     : "userId" in transaction.createdBy
                                     ? (() => {
                                         const user = getUserFromUserId(transaction.createdBy.id);

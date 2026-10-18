@@ -18,7 +18,7 @@ const ProfilePageHeader = ({
 }) => {
     return (
         <div className='profile-header'>
-            <Icon src={imageUrl ?? backUpIcon} className='profile-image' alt='Profile image' />
+            <Icon src={imageUrl || backUpIcon} className='profile-image' alt='Profilbild' />
             <div className='profile-name'>
                 <h1>{title}</h1>
                 <hr />

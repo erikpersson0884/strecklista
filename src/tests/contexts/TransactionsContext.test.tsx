@@ -143,7 +143,7 @@ describe('TransactionsContext', () => {
             const { result } = await setup();
             expect(ids(result.current.filteredTransactions)).toEqual(['1', '2']);
 
-            act(() => { result.current.setFilters(f => ({ ...f, showRemoved: true })); });
+            act(() => { result.current.setFilters(f => ({ ...f, showRemovedTransactions: true })); });
             expect(ids(result.current.filteredTransactions)).toEqual(['1', '2', '3']);
         });
 
