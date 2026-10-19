@@ -1,0 +1,111 @@
+.statistic-page {
+    --card: #161b26;
+    --card-border: #232a3a;
+    --text: #e5e7eb;
+    --muted: #9aa3b2;
+    --track: #232a3a;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.statistic-page h1 { margin: 0 0 4px; }
+.statistic-page .muted { color: var(--muted); font-size: 0.9rem; margin: 0 0 12px; }
+
+.statistic-page .card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    padding: 18px 20px;
+    color: var(--text);
+}
+.statistic-page .card h2 { margin: 0 0 2px; font-size: 1rem; font-weight: 600; }
+.statistic-page .card.empty { color: var(--muted); text-align: center; padding: 40px; }
+
+/* KPI cards */
+.statistic-page .kpis {
+    display: flex;
+    justify-content: center;
+
+    width: 100%;
+    gap: 16px;
+    margin: 16px 0;
+}
+.statistic-page .kpi .label {
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+.statistic-page .kpi .value { margin-top: 6px; font-size: 1.8rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+.statistic-page .kpi .value small { margin-left: 5px; font-size: 0.9rem; font-weight: 400; color: var(--muted); }
+.statistic-page .kpi .value.spent { color: #fb7185; }
+.statistic-page .kpi .value.income { color: #34d399; }
+
+/* Layout */
+.statistic-page .stack { display: flex; flex-direction: column; gap: 16px; }
+.statistic-page .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 820px) {
+    .statistic-page .grid-2 { grid-template-columns: 1fr; }
+}
+.statistic-page .card-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+
+/* Charts */
+.statistic-page .chart { position: relative; height: 270px; margin-top: 8px; }
+.statistic-page .chart.small { height: 230px; }
+
+.statistic-page .legend { display: flex; gap: 16px; font-size: 0.85rem; color: var(--muted); }
+.statistic-page .legend > span { display: inline-flex; align-items: center; gap: 6px; }
+.statistic-page .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; flex: none; }
+
+/* Hover tooltip */
+.statistic-page .tip {
+    background: #0f131c;
+    border: 1px solid #2a3245;
+    border-radius: 10px;
+    padding: 10px 12px;
+    min-width: 150px;
+    font-size: 0.85rem;
+    color: #e5e7eb;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+.statistic-page .tip-title { margin-bottom: 6px; font-weight: 600; color: var(--muted); }
+.statistic-page .tip-row { display: flex; align-items: center; gap: 8px; margin-top: 3px; }
+.statistic-page .tip-name { flex: 1; }
+.statistic-page .tip-val { font-variant-numeric: tabular-nums; }
+
+/* Donut */
+.statistic-page .donut { display: grid; grid-template-columns: 200px 1fr; gap: 16px; align-items: center; }
+@media (max-width: 560px) {
+    .statistic-page .donut { grid-template-columns: 1fr; }
+}
+.statistic-page .donut .chart { margin-top: 0; }
+.statistic-page .donut-center {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+.statistic-page .donut-center .big { font-size: 1.6rem; font-weight: 600; }
+.statistic-page .donut-center .muted { margin: 0; font-size: 0.8rem; }
+
+.statistic-page .legend-list { list-style: none; margin: 0; padding: 0; }
+.statistic-page .legend-list li { display: flex; align-items: center; gap: 8px; padding: 5px 0; font-size: 0.9rem; }
+.statistic-page .legend-list .name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.statistic-page .legend-list .amt { color: var(--muted); font-variant-numeric: tabular-nums; }
+
+/* Top spenders */
+.statistic-page .toplist { list-style: none; margin: 8px 0 0; padding: 0; }
+.statistic-page .toplist li {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    column-gap: 12px;
+    row-gap: 6px;
+    padding: 8px 0;
+}
+.statistic-page .toplist .name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.statistic-page .toplist .amt { font-variant-numeric: tabular-nums; color: var(--muted); }
+.statistic-page .toplist .track { grid-column: 1 / -1; height: 6px; border-radius: 3px; background: var(--track); overflow: hidden; }
+.statistic-page .toplist .fill { display: block; height: 100%; border-radius: 3px; background: linear-gradient(90deg, #2dd4bf, #818cf8); }
