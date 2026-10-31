@@ -6,9 +6,6 @@ on:
       - main
   pull_request:
 
-permissions:
-  contents: write
-
 jobs:
   coverage:
     runs-on: ubuntu-latest
@@ -62,8 +59,30 @@ jobs:
           }
           EOF
 
+      - name: Upload coverage data
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-data
+          path: /tmp/coverage.json
+
+  update-coverage-branch:
+    if: github.ref == 'refs/heads/main'
+    needs: coverage
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download coverage data
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-data
+          path: /tmp
+
       - name: Update coverage branch
-        if: github.ref == 'refs/heads/main'
         run: |
           git fetch origin coverage || true
 

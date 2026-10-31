@@ -2,7 +2,7 @@ name: Run Frontend Tests
 
 on:
   push:
-    branches: [main, dev]
+    branches: [main, dev, production]
   pull_request:
     branches: [main, dev]
 
@@ -27,4 +27,10 @@ jobs:
       - name: Run tests
         env:
           NODE_ENV: test
-        run: npm test -- --coverage
+        run: npm test -- --run
+
+      - name: Run lint
+        run: npm run lint
+
+      - name: Build application
+        run: npm run build
