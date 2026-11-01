@@ -11,7 +11,12 @@ vi.mock('@/contexts/InventoryContext', () => ({ default: vi.fn() }));
 vi.mock('@/contexts/ModalContext', () => ({ default: vi.fn() }));
 // Stand-in for Switch: a checkbox that reports changes like the real one must (adjust path)
 vi.mock('@/components/switch/Switch', () => ({
-  default: ({ id, name, checked, onChange }: any) => (
+  default: ({ id, name, checked, onChange }: {
+    id: string;
+    name?: string;
+    checked: boolean;
+    onChange: React.ChangeEventHandler<HTMLInputElement>;
+  }) => (
     <input type="checkbox" id={id} name={name} checked={checked} onChange={onChange} />
   ),
 }));
@@ -23,15 +28,19 @@ const item = {
   icon: 'lask.png',
   available: true,
   externalId: 'ext1',
-} as any; // adjust to your Item shape
+} as unknown as Item;
 
 const updateItem = vi.fn();
 const closeModal = vi.fn();
 
 function setup(over: Record<string, unknown> = {}, { updateResult = true } = {}) {
   updateItem.mockResolvedValue(updateResult);
-  vi.mocked(useInventoryContext).mockReturnValue({ updateItem } as any);
-  vi.mocked(useModalContext).mockReturnValue({ closeModal } as any);
+  vi.mocked(useInventoryContext).mockReturnValue(
+    { updateItem } as unknown as ReturnType<typeof useInventoryContext>,
+  );
+  vi.mocked(useModalContext).mockReturnValue(
+    { closeModal } as unknown as ReturnType<typeof useModalContext>,
+  );
   render(<UpdateItemPopup item={{ ...item, ...over }} />);
 }
 

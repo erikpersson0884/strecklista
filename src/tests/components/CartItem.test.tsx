@@ -8,7 +8,7 @@ import { useCartContext } from '@/contexts/CartContext';
 
 vi.mock('@/contexts/CartContext', () => ({ useCartContext: vi.fn() }));
 
-const item = { id: 1, name: 'Läsk', quantity: 3 } as any; // adjust to your ItemInCart shape
+const item = { id: 1, name: 'Läsk', quantity: 3 } as unknown as ItemInCart;
 
 function setup() {
   const cart = {
@@ -17,7 +17,9 @@ function setup() {
     decreaseProductQuantity: vi.fn(),
     setProductQuantity: vi.fn(),
   };
-  vi.mocked(useCartContext).mockReturnValue(cart as any);
+  vi.mocked(useCartContext).mockReturnValue(
+    cart as unknown as ReturnType<typeof useCartContext>,
+  );
 
   render(
     <ul>

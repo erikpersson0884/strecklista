@@ -50,9 +50,18 @@ function setup(o: Setup = {}) {
   vi.mocked(useInventoryContext).mockReturnValue({
     items: o.items ?? [lask, kaffe, cider, chips],
     isLoadingInventory: o.isLoadingInventory ?? false,
-  } as any);
-  vi.mocked(useCartContext).mockReturnValue({ numberOfItemsInCart: o.numberOfItemsInCart ?? 0 } as any);
-  vi.mocked(useModalContext).mockReturnValue({ openModal, modalIsOpen: o.modalIsOpen ?? false } as any);
+  } as ReturnType<typeof useInventoryContext>);
+  vi.mocked(useCartContext).mockReturnValue(
+    { numberOfItemsInCart: o.numberOfItemsInCart ?? 0 } as ReturnType<typeof useCartContext>,
+  );
+  vi.mocked(useModalContext).mockReturnValue(
+    {
+      openModal,
+      closeModal: vi.fn(),
+      modalContent: null,
+      modalIsOpen: o.modalIsOpen ?? false,
+    } as ReturnType<typeof useModalContext>,
+  );
 
   render(<ShopPage />);
   return { openModal };

@@ -12,7 +12,7 @@ const client = {
   displayName: 'P.R.I.T. Scanner',
   description: 'Beep beep!!',
   scope: 'items.read transactions.write',
-} as any; // adjust to your Client shape
+} as unknown as Client;
 
 const writeText = vi.fn();
 
@@ -23,7 +23,9 @@ beforeEach(() => {
     value: { writeText },
     configurable: true,
   });
-  vi.mocked(useModalContext).mockReturnValue({ closeModal: vi.fn() } as any);
+  vi.mocked(useModalContext).mockReturnValue(
+    { closeModal: vi.fn() } as unknown as ReturnType<typeof useModalContext>,
+  );
 });
 
 const idButton = () => screen.getByRole('button', { name: new RegExp(client.id) });

@@ -1,5 +1,12 @@
 const STORAGE_PREFIX = "theme:";
 
+
+// CSSStyleDeclaration has no string index signature, so dynamic property names
+// (e.g. "backgroundColor") need an explicit cast. Keeping it in one place means
+// the cast is documented once instead of scattered through the file.
+const rootStyle = (): Record<string, string> =>
+    document.documentElement.style as unknown as Record<string, string>;
+
 const isCustomProperty = (name: string): boolean => name.startsWith("--");
 
 export const readStoredColor = (cssVariable: string): string | null =>
@@ -15,14 +22,14 @@ const readCssVar = (cssVariable: string): string => {
             .getPropertyValue(cssVariable)
             .trim();
     }
-    return (document.documentElement.style as any)[cssVariable] || "";
+    return rootStyle()[cssVariable] || "";
 };
 
 export const applyCssVar = (cssVariable: string, color: string): void => {
     if (isCustomProperty(cssVariable)) {
         document.documentElement.style.setProperty(cssVariable, color);
     } else {
-        (document.documentElement.style as any)[cssVariable] = color;
+        rootStyle()[cssVariable] = color;
     }
 };
 

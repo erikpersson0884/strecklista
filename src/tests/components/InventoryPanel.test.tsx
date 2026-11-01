@@ -50,8 +50,12 @@ const chips = make({ id: 'i4', name: 'Chips', timesPurchased: 1, externalId: 'ex
 const addItemToCart = vi.fn();
 
 function setup(items: unknown[]) {
-  vi.mocked(useInventoryContext).mockReturnValue({ items } as any);
-  vi.mocked(useCartContext).mockReturnValue({ addItemToCart } as any);
+  vi.mocked(useInventoryContext).mockReturnValue(
+    { items } as unknown as ReturnType<typeof useInventoryContext>,
+  );
+  vi.mocked(useCartContext).mockReturnValue(
+    { addItemToCart } as unknown as ReturnType<typeof useCartContext>,
+  );
   render(<InventoryPanel />);
 }
 

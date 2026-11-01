@@ -13,7 +13,6 @@ const AddProductPopup: React.FC = () => {
     const [ internalPrice, setInternalPrice ] = React.useState<number>(0);
     const [ amountInStock, setAmountInStock ] = React.useState<number>(0);
     const [ icon, seticon ] = React.useState<string>("");
-    const [ available, setAvailable ] = React.useState<boolean>(true);
 
     const handleNumberInputChange = (e: React.ChangeEvent<HTMLInputElement>, setValue: React.Dispatch<React.SetStateAction<number>>) => {
         const value = e.target.value;
@@ -71,7 +70,7 @@ const AddProductPopup: React.FC = () => {
 
             <div className="inputdiv-row">
                 <label htmlFor="item-is-available">Finns i lager:</label>
-                <Switch id="item-is-available"/>
+                <Switch id="item-is-available" />
             </div>
         </ActionPopupWindow>
     );

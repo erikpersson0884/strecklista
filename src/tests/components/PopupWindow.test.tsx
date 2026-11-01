@@ -12,7 +12,9 @@ const closeModal = vi.fn();
 
 beforeEach(() => {
   vi.clearAllMocks();
-  vi.mocked(useModalContext).mockReturnValue({ closeModal } as any);
+  vi.mocked(useModalContext).mockReturnValue(
+    { closeModal } as unknown as ReturnType<typeof useModalContext>,
+  );
 });
 
 describe('PopupWindow', () => {

@@ -53,19 +53,25 @@ const stockUpdate = {
   ],
 };
 
-const tx = (t: object, over: Record<string, unknown> = {}) => ({ ...t, ...over }) as any;
+const tx = (t: object, over: Record<string, unknown> = {}) => ({ ...t, ...over }) as unknown as ITransaction;
 
 // ---------- setup ----------
-function setup(transaction: any, opts: { removeResult?: boolean; lookup?: (id: number) => unknown } = {}) {
+function setup(transaction: ITransaction, opts: { removeResult?: boolean; lookup?: (id: number) => unknown } = {}) {
     const { removeResult = true, lookup = (id: number) => users[id] } = opts;
     const removeTransaction = vi.fn().mockResolvedValue(removeResult);
     const openModal = vi.fn();
     const closeModal = vi.fn();
     const getUserFromUserId = vi.fn(lookup);
 
-    vi.mocked(useTransactionsContext).mockReturnValue({ removeTransaction } as any);
-    vi.mocked(useUsersContext).mockReturnValue({ getUserFromUserId } as any);
-    vi.mocked(useModalContext).mockReturnValue({ openModal, closeModal } as any);
+    vi.mocked(useTransactionsContext).mockReturnValue(
+        { removeTransaction } as unknown as ReturnType<typeof useTransactionsContext>,
+    );
+    vi.mocked(useUsersContext).mockReturnValue(
+        { getUserFromUserId } as unknown as ReturnType<typeof useUsersContext>,
+    );
+    vi.mocked(useModalContext).mockReturnValue(
+        { openModal, closeModal } as unknown as ReturnType<typeof useModalContext>,
+    );
 
     render(<TransactionPopup transaction={transaction} />);
     return { removeTransaction, openModal, closeModal, getUserFromUserId };
@@ -77,7 +83,7 @@ const listItem = (name: string) => screen.getByText(name).closest('li') as HTMLE
 const deleteButton = () => screen.getByRole('button', { name: 'Stryk Transaktion' });
 
 // Clicks "Stryk Transaktion", then renders the dialog that was handed to openModal
-async function openConfirmDialog(transaction: any, opts?: { removeResult?: boolean }) {
+async function openConfirmDialog(transaction: ITransaction, opts?: { removeResult?: boolean }) {
   const ctx = setup(transaction, opts);
   await userEvent.click(deleteButton());
   const dialog = ctx.openModal.mock.calls[0][0];

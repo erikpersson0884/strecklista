@@ -148,7 +148,7 @@ describe('Header tests', () => {
             it('uses the group avatar when one exists', async () => {
                 vi.mocked(usersApi.getGroupInfo).mockResolvedValueOnce({
                     id: '1', name: 'Göken', avatarUrl: 'https://example.com/group.png', gammaId: 'g1',
-                } as any);
+                } as unknown as Awaited<ReturnType<typeof usersApi.getGroupInfo>>);
                 renderHeader();
                 await waitFor(() =>
                     expect(screen.getByAltText('logo')).toHaveAttribute('src', 'https://example.com/group.png')
@@ -164,7 +164,7 @@ describe('Header tests', () => {
             it('falls back to the default logo if the avatar image fails to load', async () => {
                 vi.mocked(usersApi.getGroupInfo).mockResolvedValueOnce({
                     id: '1', name: 'Göken', avatarUrl: 'https://example.com/group.png', gammaId: 'g1',
-                } as any);
+                } as unknown as Awaited<ReturnType<typeof usersApi.getGroupInfo>>);
                 renderHeader();
                 const logo = screen.getByAltText('logo');
                 await waitFor(() => expect(logo).toHaveAttribute('src', 'https://example.com/group.png'));
@@ -176,7 +176,7 @@ describe('Header tests', () => {
             it('resets to the default logo when the user logs out', async () => {
                 vi.mocked(usersApi.getGroupInfo).mockResolvedValueOnce({
                     id: '1', name: 'Göken', avatarUrl: 'https://example.com/group.png', gammaId: 'g1',
-                } as any);
+                } as unknown as Awaited<ReturnType<typeof usersApi.getGroupInfo>>);
                 const { rerender } = renderHeader();
                 await waitFor(() =>
                     expect(screen.getByAltText('logo')).toHaveAttribute('src', 'https://example.com/group.png')

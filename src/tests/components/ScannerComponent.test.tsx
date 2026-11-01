@@ -38,10 +38,16 @@ function setup(o: Overrides = {}) {
   };
   const notify = vi.fn();
 
-  vi.mocked(useCartContext).mockReturnValue(cart as any);
-  vi.mocked(useUsersContext).mockReturnValue({ users: [alice, bob], ...o.users } as any);
-  vi.mocked(useInventoryContext).mockReturnValue({ items: [lask, kaffe], ...o.inventory } as any);
-  vi.mocked(useNotificationContext).mockReturnValue({ notify } as any);
+  vi.mocked(useCartContext).mockReturnValue(cart as unknown as ReturnType<typeof useCartContext>);
+  vi.mocked(useUsersContext).mockReturnValue(
+    { users: [alice, bob], ...o.users } as unknown as ReturnType<typeof useUsersContext>,
+  );
+  vi.mocked(useInventoryContext).mockReturnValue(
+    { items: [lask, kaffe], ...o.inventory } as unknown as ReturnType<typeof useInventoryContext>,
+  );
+  vi.mocked(useNotificationContext).mockReturnValue(
+    { notify } as unknown as ReturnType<typeof useNotificationContext>,
+  );
 
   render(<ScannerComponent className={o.className} />);
   return { cart, notify };

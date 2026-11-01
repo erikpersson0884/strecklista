@@ -74,18 +74,33 @@ export const authApi = {
                 scope: parsed.data.scope,
             }
             return {token, client}
-        } catch (error: any) {
-            console.error("Login failed:", error.response?.data || error.message);
+        } catch (error: unknown) {
+            const details = error instanceof Error
+                ? error.message
+                : typeof error === 'object' && error !== null && 'message' in error
+                    ? String(error.message)
+                    : undefined;
+            const response = typeof error === 'object' && error !== null && 'response' in error
+                ? (error as { response?: { data?: unknown; status?: number } }).response
+                : undefined;
+            const request = typeof error === 'object' && error !== null && 'request' in error
+                ? (error as { request?: unknown }).request
+                : undefined;
+            console.error("Login failed:", response?.data ?? details);
 
             const err = new Error(
-                error.response?.data?.error?.message ||
-                error.response?.data?.message ||
-                error.message ||
+                (typeof response?.data === 'object' && response.data !== null && 'error' in response.data
+                    ? (response.data.error as { message?: string })?.message
+                    : undefined) ||
+                (typeof response?.data === 'object' && response.data !== null && 'message' in response.data
+                    ? String(response.data.message)
+                    : undefined) ||
+                details ||
                 "Login failed, no additional error information available."
             ) as Error & { status?: number };
 
             // 0 = request was sent but no response arrived (network/server down)
-            err.status = error.response?.status ?? (error.request ? 0 : undefined);
+            err.status = response?.status ?? (request ? 0 : undefined);
             throw err;
         }
     },

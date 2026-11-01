@@ -52,10 +52,10 @@ function setup(o: Overrides = {}) {
     ...o.cart,
   };
 
-  vi.mocked(useInventoryContext).mockReturnValue(inventory as any);
-  vi.mocked(useUsersContext).mockReturnValue(users as any);
-  vi.mocked(useAuthContext).mockReturnValue(auth as any);
-  vi.mocked(useCartContext).mockReturnValue(cart as any);
+  vi.mocked(useInventoryContext).mockReturnValue(inventory as unknown as ReturnType<typeof useInventoryContext>);
+  vi.mocked(useUsersContext).mockReturnValue(users as unknown as ReturnType<typeof useUsersContext>);
+  vi.mocked(useAuthContext).mockReturnValue(auth as unknown as ReturnType<typeof useAuthContext>);
+  vi.mocked(useCartContext).mockReturnValue(cart as unknown as ReturnType<typeof useCartContext>);
 
   render(<ConsolePage />);
   return { inventory, users, auth, cart };

@@ -87,7 +87,7 @@ describe('ModalContext', () => {
         it('lets content close the modal itself through the context', () => {
             const Content = () => {
                 const { closeModal } = useModalContext();
-                return <button onClick={(e) => { closeModal(); }}>Done</button>;
+                return <button onClick={() => { closeModal(); }}>Done</button>;
             };
             const { result } = setup();
             act(() => result.current.openModal(<Content />));

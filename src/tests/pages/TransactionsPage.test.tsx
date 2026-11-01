@@ -34,6 +34,12 @@ vi.mock('@/components/transactionPopup/TransactionPopup', () => ({
   ),
 }));
 
+// Casts a partial test double to the hook's real return type in one place,
+// so the tests don't need `as any` at every call site.
+function mockContext<T>(hook: () => T, value: unknown) {
+  vi.mocked(hook).mockReturnValue(value as T);
+}
+
 // ---------- test data ----------
 const alice = { id: 7, nick: 'Alice' };
 const bob = { id: 8, nick: 'Bob' };
@@ -80,7 +86,10 @@ const refund = {
   removed: false,
 };
 
-const tx = (t: object, over: Record<string, unknown> = {}) => ({ ...t, ...over }) as any;
+const tx = (t: object, over: Record<string, unknown> = {}): Record<string, unknown> => ({
+  ...t,
+  ...over,
+});
 
 // ---------- setup ----------
 type Setup = {
@@ -106,9 +115,9 @@ function setup(o: Setup = {}) {
   const usersCtx = { users: [alice, bob], getUserFromUserId, ...o.usersCtx };
   const openModal = vi.fn();
 
-  vi.mocked(useTransactionsContext).mockReturnValue(transactionsCtx as any);
-  vi.mocked(useUsersContext).mockReturnValue(usersCtx as any);
-  vi.mocked(useModalContext).mockReturnValue({ openModal } as any);
+  mockContext(useTransactionsContext, transactionsCtx);
+  mockContext(useUsersContext, usersCtx);
+  mockContext(useModalContext, { openModal });
 
   const view = render(<TransactionsPage />);
   return {
@@ -164,7 +173,7 @@ describe('TransactionsPage', () => {
       const { usersCtx, rerender } = setup({ usersCtx: { users: undefined } });
       await userEvent.click(filterToggle());
 
-      vi.mocked(useUsersContext).mockReturnValue({ ...usersCtx, users: [alice, bob] } as any);
+      mockContext(useUsersContext, { ...usersCtx, users: [alice, bob] });
       rerender();
 
       expect(screen.queryByText('Hämtar användare...')).not.toBeInTheDocument();

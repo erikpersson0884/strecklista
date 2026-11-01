@@ -193,6 +193,8 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
         const notInScope = !currentClient?.scope?.includes('transactions.read');
         if (isLoadingUsers || isLoadingInventory) return;
         if (isAuthenticated && !(currentClient && notInScope)) void fetchTransactions();
+    // fetchTransactions uses the current filter and is intentionally triggered by these state changes.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isLoadingUsers, isAuthenticated, isLoadingInventory, currentClient, refreshSignal, filters.userId]);
 
 
@@ -201,7 +203,7 @@ export const TransactionsProvider: React.FC<{ children: ReactNode }> = ({ childr
             await transactionsApi.removeTransaction(id);
             setTransactions((prevTransactions) => prevTransactions.filter((ITransaction) => ITransaction.id !== id));
             return true;
-        } catch (error) {
+        } catch {
             notify('Något gick fel, försök igen senare.', 'error');
             return false;
         }

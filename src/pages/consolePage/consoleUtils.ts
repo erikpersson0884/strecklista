@@ -15,7 +15,7 @@ export const parseNameAndAmount = (arg: string): { name: string; amount: number 
 
 // Strips emoji and whitespace so "Göken 🐦" becomes a plausible filename "Göken".
 // The .txt extension is purely cosmetic - added when displaying, stripped when reading.
-const EMOJI_REGEX = /[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}]/gu;
+const EMOJI_REGEX = /\p{Extended_Pictographic}|\uFE0F/gu;
 export const sanitizeFilename = (name: string): string => name.replace(EMOJI_REGEX, '').replace(/\s+/g, '');
 export const stripTxtExtension = (name: string): string => name.replace(/\.txt$/i, '');
 

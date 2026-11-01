@@ -6,7 +6,7 @@ import closeImage from '@/assets/images/close.svg';
 
 interface PopupWindowProps {
     children: React.ReactNode;
-    onClose?: () => any;
+    onClose?: () => void | Promise<void>;
 
     title?: string;
 

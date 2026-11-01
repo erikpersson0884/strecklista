@@ -31,12 +31,14 @@ function renderPanel(overrides: Record<string, unknown> = {}) {
     emptyCart: vi.fn(),
     ...overrides,
   };
-  vi.mocked(useCartContext).mockReturnValue(cart as any);
+  vi.mocked(useCartContext).mockReturnValue(cart as unknown as ReturnType<typeof useCartContext>);
   const view = render(<CartPanel />);
 
   // Simulates the context handing the panel a new items array
   const setItems = (itemsInCart: unknown[]) => {
-    vi.mocked(useCartContext).mockReturnValue({ ...cart, itemsInCart } as any);
+    vi.mocked(useCartContext).mockReturnValue(
+      { ...cart, itemsInCart } as unknown as ReturnType<typeof useCartContext>,
+    );
     view.rerender(<CartPanel />);
   };
   return { cart, setItems };
@@ -46,7 +48,9 @@ const row = (name: string) => screen.getByText(name).closest('li') as HTMLElemen
 
 beforeEach(() => {
   vi.clearAllMocks();
-  vi.mocked(useUsersContext).mockReturnValue({ users: [alice, bob] } as any);
+  vi.mocked(useUsersContext).mockReturnValue(
+    { users: [alice, bob] } as unknown as ReturnType<typeof useUsersContext>,
+  );
 });
 
 describe('CartPanel', () => {

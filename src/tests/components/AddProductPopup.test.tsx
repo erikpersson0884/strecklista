@@ -20,8 +20,12 @@ const addItem = vi.fn();
 beforeEach(() => {
   vi.clearAllMocks();
   addItem.mockResolvedValue({ id: 1 });
-  vi.mocked(useInventoryContext).mockReturnValue({ addItem } as any);
-  vi.mocked(useModalContext).mockReturnValue({ closeModal } as any);
+  vi.mocked(useInventoryContext).mockReturnValue(
+    { addItem } as unknown as ReturnType<typeof useInventoryContext>,
+  );
+  vi.mocked(useModalContext).mockReturnValue(
+    { closeModal } as unknown as ReturnType<typeof useModalContext>,
+  );
 });
 
 const nameInput = () => screen.getByLabelText('Varunamn');

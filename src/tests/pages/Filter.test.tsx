@@ -11,7 +11,7 @@ vi.mock('@/contexts/UsersContext', () => ({ default: vi.fn() }));
 vi.mock('@/contexts/TransactionsContext', () => ({ default: vi.fn() }));
 // Stand-in for Switch: a checkbox that reports changes like the real one must (adjust path)
 vi.mock('@/components/switch/Switch', () => ({
-  default: ({ id, checked, onChange }: any) => (
+  default: ({ id, checked, onChange }: { id: string; checked: boolean; onChange: React.ChangeEventHandler<HTMLInputElement> }) => (
     <input type="checkbox" id={id} checked={checked} onChange={onChange} />
   ),
 }));
@@ -57,8 +57,10 @@ function setup(o: Setup = {}) {
   };
   const hideFilters = vi.fn();
 
-  vi.mocked(useTransactionsContext).mockReturnValue(ctx as any);
-  vi.mocked(useUsersContext).mockReturnValue({ users: o.users ?? [alice, bob] } as any);
+  vi.mocked(useTransactionsContext).mockReturnValue(ctx as unknown as ReturnType<typeof useTransactionsContext>);
+  vi.mocked(useUsersContext).mockReturnValue(
+    { users: o.users ?? [alice, bob] } as unknown as ReturnType<typeof useUsersContext>,
+  );
 
   const { container } = render(<Filter isVisible={o.isVisible ?? true} hideFilters={hideFilters} />);
   return { ctx, hideFilters, container };
@@ -279,9 +281,11 @@ describe('Filter', () => {
   // Fails on the current code: the user filter has no guard for a missing users list.
   // `it.fails` passes while the bug exists; switch it to `it` once fixed.
   it.fails('does not crash while the users have not loaded', () => {
-    setup({ users: undefined as any });
+    setup({ users: undefined as unknown as User[] });
     // setup() falls back to [alice, bob] for undefined, so mock it directly:
-    vi.mocked(useUsersContext).mockReturnValue({ users: undefined } as any);
+    vi.mocked(useUsersContext).mockReturnValue(
+      { users: undefined } as unknown as ReturnType<typeof useUsersContext>,
+    );
     render(<Filter isVisible hideFilters={vi.fn()} />);
     expect(screen.getAllByLabelText('Användare:').length).toBeGreaterThan(0);
   });

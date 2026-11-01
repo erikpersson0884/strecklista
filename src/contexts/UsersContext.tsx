@@ -53,7 +53,7 @@ export const UsersProvider = ({ children }: { children: ReactNode }) => {
             triggerTransactionsRefresh();
             notify('Saldo uppdaterat', 'success');
             return true;
-        } catch (error) {
+        } catch {
             notify('Något gick fel, försök igen senare.', 'error');
             return false;
         }

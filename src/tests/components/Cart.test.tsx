@@ -34,13 +34,17 @@ function setup(cartOverrides = {}) {
   const closeModal = vi.fn();
   const notify = vi.fn();
 
-  vi.mocked(useCartContext).mockReturnValue(cart as any);
+  vi.mocked(useCartContext).mockReturnValue(cart as unknown as ReturnType<typeof useCartContext>);
   vi.mocked(useUsersContext).mockReturnValue({
     users: [alice, bob],
     getUserFromUserId: (id: string) => [alice, bob].find((u) => u.id === id),
-  } as any);
-  vi.mocked(useModalContext).mockReturnValue({ closeModal } as any);
-  vi.mocked(useNotificationContext).mockReturnValue({ notify } as any);
+  } as unknown as ReturnType<typeof useCartContext>);
+  vi.mocked(useModalContext).mockReturnValue(
+    { closeModal } as unknown as ReturnType<typeof useModalContext>,
+  );
+  vi.mocked(useNotificationContext).mockReturnValue(
+    { notify } as unknown as ReturnType<typeof useNotificationContext>,
+  );
 
   render(<Cart />);
   return { cart, closeModal, notify };

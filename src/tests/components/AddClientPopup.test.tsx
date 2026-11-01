@@ -20,13 +20,19 @@ const client = {
   displayName: 'Scanner',
   description: 'Beep',
   scope: 'items.read transactions.write',
-} as any; // adjust to your Client shape
+} as unknown as Client;
 
 beforeEach(() => {
   vi.clearAllMocks();
-  vi.mocked(useClientContext).mockReturnValue({ availableScope } as any);
-  vi.mocked(useNotificationContext).mockReturnValue({ notify } as any);
-  vi.mocked(useModalContext).mockReturnValue({ closeModal: vi.fn() } as any);
+  vi.mocked(useClientContext).mockReturnValue(
+    { availableScope } as unknown as ReturnType<typeof useClientContext>,
+  );
+  vi.mocked(useNotificationContext).mockReturnValue(
+    { notify } as unknown as ReturnType<typeof useNotificationContext>,
+  );
+  vi.mocked(useModalContext).mockReturnValue(
+    { closeModal: vi.fn() } as unknown as ReturnType<typeof useModalContext>,
+  );
 });
 
 const nameInput = () => screen.getByPlaceholderText('Namn');

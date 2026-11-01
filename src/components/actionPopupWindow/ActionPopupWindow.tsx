@@ -4,8 +4,8 @@ import PopupWindow from '@/components/popupWindow/PopupWindow';
 
 interface ActionPopupWindowProps {
     children: React.ReactNode;
-    onAccept?: () => any;
-    onClose?: () => any;
+    onAccept?: () => void | Promise<void>;
+    onClose?: () => void | Promise<void>;
 
     title?: string;
     acceptButtonText?: string;

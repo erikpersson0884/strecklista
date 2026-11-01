@@ -71,6 +71,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
         window.addEventListener(UNAUTHORIZED_EVENT, handleUnauthorized);
         return () => window.removeEventListener(UNAUTHORIZED_EVENT, handleUnauthorized);
+    // The listener must be registered once; it reads the current auth state through the ref.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // Read at fire time, not from this render's closure.
@@ -261,6 +263,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return () => {
             cancelled = true;
         };
+    // The initial token check must run once on mount.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {

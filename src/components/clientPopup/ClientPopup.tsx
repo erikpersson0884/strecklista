@@ -38,7 +38,7 @@ const AddClientPopup: React.FC<ClientPopupProps> = ({client, title, onAccept, ac
         try {
             onAccept(name, description, scopes.join(' '));
         }
-        catch (error) {
+        catch {
             notify("Ett fel uppstod vid skapandet av klienten.");
         }
     }

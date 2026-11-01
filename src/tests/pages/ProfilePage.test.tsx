@@ -37,7 +37,7 @@ function setup(o: Setup = {}) {
     currentUser: o.currentUser ?? null,
     currentClient: o.currentClient ?? null,
     logout,
-  } as any);
+  } as unknown as ReturnType<typeof useAuthContext>);
 
   render(<ProfilePage />);
   return { logout };

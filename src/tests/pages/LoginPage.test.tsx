@@ -19,9 +19,17 @@ vi.mock('@/components/clientLoginPopup/ClientLoginPopup', () => ({
 }));
 // Stand-in for Switch: a checkbox that reports changes like the real one must (adjust path)
 vi.mock('@/components/switch/Switch', () => ({
-  default: ({ id, checked, onChange }: any) => (
-    <input type="checkbox" id={id} checked={checked} onChange={onChange} />
-  ),
+  default: function MockSwitch({
+    id,
+    checked,
+    onChange,
+  }: {
+    id: string;
+    checked: boolean;
+    onChange: React.ChangeEventHandler<HTMLInputElement>;
+  }) {
+    return <input type="checkbox" id={id} checked={checked} onChange={onChange} />;
+  },
 }));
 
 // ---------- setup ----------
@@ -42,8 +50,10 @@ function setup(o: Setup = {}) {
   };
   const openModal = vi.fn();
 
-  vi.mocked(useAuthContext).mockReturnValue(auth as any);
-  vi.mocked(useModalContext).mockReturnValue({ openModal } as any);
+  vi.mocked(useAuthContext).mockReturnValue(auth as unknown as ReturnType<typeof useAuthContext>);
+  vi.mocked(useModalContext).mockReturnValue(
+    { openModal } as unknown as ReturnType<typeof useModalContext>,
+  );
 
   render(
     <MemoryRouter initialEntries={['/login']}>

@@ -25,6 +25,8 @@ const AuthCallback = () => {
 
     useEffect(() => {
         void handleAuth();
+        // The callback is a one-time redirect flow.
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location]);
 
     return (

@@ -44,8 +44,10 @@ function setup(o: Setup = {}) {
     isLoadingClients: o.isLoadingClients ?? false,
     createClient,
     deleteClient,
-  } as any);
-  vi.mocked(useModalContext).mockReturnValue({ openModal } as any);
+  } as unknown as ReturnType<typeof useClientContext>);
+  vi.mocked(useModalContext).mockReturnValue(
+    { openModal } as unknown as ReturnType<typeof useModalContext>,
+  );
 
   render(<ClientPage />);
   return { createClient, deleteClient, openModal };

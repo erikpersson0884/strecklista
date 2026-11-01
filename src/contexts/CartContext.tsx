@@ -113,8 +113,8 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             }
             return false;
         }
-        catch (error: any) {
-            notify(error.message, 'error');
+        catch (error: unknown) {
+            notify(error instanceof Error ? error.message : 'Ett okänt fel uppstod', 'error');
             return false
         }
     }

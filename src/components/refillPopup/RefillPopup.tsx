@@ -35,7 +35,7 @@ const RefillPopup: React.FC<RefillPopupPopupProps> = ({ item, currentBalance, re
     }
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const newInput: string = e.target.value.replace(/[^0-9.\-]/g, '');
+        const newInput: string = e.target.value.replace(/[^0-9.-]/g, '');
         setAmountToDeposit(newInput);
     };
 

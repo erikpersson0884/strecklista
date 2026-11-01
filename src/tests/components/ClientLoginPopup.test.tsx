@@ -17,8 +17,12 @@ beforeEach(() => {
   vi.clearAllMocks();
   localStorage.clear();
   clientLogin.mockResolvedValue(undefined);
-  vi.mocked(useAuthContext).mockReturnValue({ clientLogin } as any);
-  vi.mocked(useModalContext).mockReturnValue({ closeModal } as any);
+  vi.mocked(useAuthContext).mockReturnValue(
+    { clientLogin } as unknown as ReturnType<typeof useAuthContext>,
+  );
+  vi.mocked(useModalContext).mockReturnValue(
+    { closeModal } as unknown as ReturnType<typeof useModalContext>,
+  );
 });
 
 const idInput = () => screen.getByPlaceholderText('Client ID');

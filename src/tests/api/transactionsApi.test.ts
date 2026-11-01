@@ -79,7 +79,7 @@ describe("transactions", () => {
                     },
                 },
             };
-            mockedApi.get.mockResolvedValueOnce(mockData as any);
+            mockedApi.get.mockResolvedValueOnce(mockData as never);
 
             const result = await transactionsApi.fetchTransactions(null, 5, 0);
 
@@ -114,7 +114,7 @@ describe("transactions", () => {
 
         it("fetches transactions from a custom URL without adding params", async () => {
             const mockData = { data: { data: { transactions: [], next: null, previous: null } } };
-            mockedApi.get.mockResolvedValueOnce(mockData as any);
+            mockedApi.get.mockResolvedValueOnce(mockData as never);
 
             const result = await transactionsApi.fetchTransactions("/custom-url");
 
@@ -127,7 +127,7 @@ describe("transactions", () => {
             const mockData = {
                 data: { data: { transactions: [{ id: 1, type: "purchase" }], next: null, previous: null } },
             };
-            mockedApi.get.mockResolvedValueOnce(mockData as any);
+            mockedApi.get.mockResolvedValueOnce(mockData as never);
 
             await expect(transactionsApi.fetchTransactions()).rejects.toThrow(
                 /Failed to parse transactions/
@@ -144,7 +144,7 @@ describe("transactions", () => {
     describe("makeDeposit", () => {
         it("makes a deposit successfully", async () => {
             const mockResponse = { data: { data: { balance: 150 } } };
-            mockedApi.post.mockResolvedValueOnce(mockResponse as any);
+            mockedApi.post.mockResolvedValueOnce(mockResponse as never);
 
             const result = await transactionsApi.makeDeposit("1111", 50, "Test deposit");
 
@@ -165,7 +165,7 @@ describe("transactions", () => {
     describe("makePurchase", () => {
         it("makes a purchase successfully, sending the item's own name/price as the purchase price", async () => {
             const mockResponse = { data: { data: { balance: 200 } } };
-            mockedApi.post.mockResolvedValueOnce(mockResponse as any);
+            mockedApi.post.mockResolvedValueOnce(mockResponse as never);
 
             const result = await transactionsApi.makePurchase("1111", mockProducts, "Test purchase");
 

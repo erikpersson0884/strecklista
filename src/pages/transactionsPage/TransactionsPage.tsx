@@ -19,12 +19,13 @@ import LoadingPage from '../loadingPage/LoadingPage';
 
 const TransactionsPage: FC = () => {
     const { isLoadingTransactions } = useTransactionsContext();
+    const { users } = useUsersContext();
 
     const [ showFilters, setShowFilters ] = useState<boolean>(false);
 
     if (isLoadingTransactions) 
         return <LoadingPage message="Hämtar transaktioner..." />
-    else if (showFilters && !useUsersContext().users) 
+    else if (showFilters && !users)
         return <LoadingPage message="Hämtar användare..." />
 
     else return (

@@ -12,7 +12,13 @@ vi.mock('@/contexts/NotificationContext', () => ({ useNotificationContext: vi.fn
 // Each mounted picker gets a new id, so a remount shows up as a changed data-mount-id
 let mountCounter = 0;
 vi.mock('@/components/colorPickerField/CssVarColorPicker', () => ({
-  default: ({ cssVariable, label }: { cssVariable: string; label: string }) => {
+  default: function MockCssVarColorPicker({
+    cssVariable,
+    label,
+  }: {
+    cssVariable: string;
+    label: string;
+  }) {
     const [mountId] = useState(() => ++mountCounter);
     return (
       <div data-testid="picker" data-var={cssVariable} data-mount-id={mountId}>
@@ -40,7 +46,9 @@ const VARIABLES = [
 const notify = vi.fn();
 
 function setup() {
-  vi.mocked(useNotificationContext).mockReturnValue({ notify } as any);
+  vi.mocked(useNotificationContext).mockReturnValue({
+    notify,
+  } as ReturnType<typeof useNotificationContext>);
   render(<StylePage />);
 }
 

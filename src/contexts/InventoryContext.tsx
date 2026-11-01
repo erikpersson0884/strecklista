@@ -43,6 +43,8 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
     useEffect( () => {
         if (!isAuthenticated) return;
         else void fetchInventory();
+    // fetchInventory is intentionally invoked only when authentication changes.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isAuthenticated]);
 
     const getItemById = (id: Id): Item => {
@@ -111,7 +113,7 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
             notify(item.name + (updatedItem.favorite ? ' är nu favorit' : ' är inte längre favorit'), 'success');
             await fetchInventory();
             return updatedItem;
-        } catch (error) {
+        } catch {
             notify(`Misslyckades med att ändra favoritstatus för vara "${item.name}"`, 'error');
             return null;
         }
@@ -127,7 +129,7 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
             triggerTransactionsRefresh();
             notify(`Vara påfylld`, 'success');
             return true;
-        } catch (error) {
+        } catch {
             notify(`Misslyckades med att fylla på vara med id "${id}"`, 'error');
             return false;
         }
@@ -139,7 +141,7 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
             await inventoryApi.deleteItem(id);
             await fetchInventory();
             return true;
-        } catch (error) {
+        } catch {
             notify(`Misslyckades med att ta bort vara med id "${id}"`, 'error');
             return false;
         }

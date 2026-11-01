@@ -34,7 +34,9 @@ function renderAt(url: string, { strict = false } = {}) {
 beforeEach(() => {
   vi.clearAllMocks();
   exchangeCodeForToken.mockResolvedValue(undefined);
-  vi.mocked(useAuthContext).mockReturnValue({ exchangeCodeForToken } as any);
+  vi.mocked(useAuthContext).mockReturnValue(
+    { exchangeCodeForToken } as unknown as ReturnType<typeof useAuthContext>,
+  );
 });
 
 describe('AuthCallback', () => {
